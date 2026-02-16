@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from typing import Dict, FrozenSet, Optional, TYPE_CHECKING, List
+from typing import Dict, FrozenSet, Optional, TYPE_CHECKING, List, Tuple
 
 from BaseClasses import ItemClassification, Item
-from .data import data, BASE_OFFSET
+from .data import data, BASE_OFFSET, ItemCategory
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class PokemonRSOAItem(Item):
     game: str = "PokemonRangerSOA"
-    tags: FrozenSet[str]
+    tags: Tuple[ItemCategory]
 
     def __init__(
         self,
@@ -23,9 +23,9 @@ class PokemonRSOAItem(Item):
         super().__init__(name, classification, code, player)
 
         if code is None:
-            self.tags = frozenset(["Event"])
+            self.tags = (ItemCategory.EVENT,)
         else:
-            self.tags = data.items[reverse_offset_item_value(code)].tags
+            self.tags = data.items[reverse_offset_item_value(code)].item_categories
 
 
 def offset_item_value(item_value: int) -> int:
@@ -85,9 +85,25 @@ def create_all_items(world: PokemonRSOA) -> None:
 
     needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
 
-    for i in range(needed_number_of_filler_items):
-        item_data = data.items[i]
-        item = world.create_item(item_data.label)
+    created = 0
+    for i, item in data.items.items():
+        if ItemCategory.STYLER_UPGRADE in item.item_categories:
+
+            for j in range(item.copies):
+                if created >= needed_number_of_filler_items:
+                    break
+
+                new_item = world.create_item(item.label)
+                itempool.append(new_item)
+                created += 1
+
+        if created >= needed_number_of_filler_items:
+            break
+
+    while created < needed_number_of_filler_items:
+
+        item = world.create_filler()
         itempool.append(item)
 
+        created += 1
     world.multiworld.itempool += itempool

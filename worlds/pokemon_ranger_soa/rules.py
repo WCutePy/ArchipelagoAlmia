@@ -25,10 +25,11 @@ def set_all_location_rules(world: PokemonRSOA) -> None: ...
 def set_completion_condition(world) -> None:
 
     def has_n_checks(state: CollectionState, n: int) -> bool:
-        return state.has_from_list_unique(
+        return state.has_from_list(
             [item.label for item in data.items.values()], world.player, n
         )
 
-    completion_condition = lambda state: has_n_checks(state, 4)
+    captures = world.options.capture_count_target.value
+    completion_condition = lambda state: has_n_checks(state, captures)
 
     world.multiworld.completion_condition[world.player] = completion_condition

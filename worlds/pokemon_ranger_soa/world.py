@@ -49,20 +49,13 @@ class PokemonRSOA(World):
             "glameow",
         ]
 
-        self.blacklisted_captures = {
-            browser_number
-            for browser_number, species in data.species.items()
-            if species.name not in possible_species
-        }
+        # self.blacklisted_captures = {
+        #     browser_number
+        #     for browser_number, species in data.species.items()
+        #     if species.name not in possible_species
+        # }
 
-        # maximum_exploration_state = sweep_from_pool(self.base_state, self.item_pool)
-        # unr = [
-        #     location
-        #     for location in self.multiworld.get_locations()
-        #     if not location.can_reach(maximum_exploration_state)
-        # ]
-        # if unr:
-        #     print(unr)
+        self.blacklisted_captures = set()
 
     def create_regions(self) -> None:
         regions.create_and_connect_regions(self)
@@ -85,8 +78,8 @@ class PokemonRSOA(World):
             "capture_count_target",
             "capture_rank_count_target",
             "capture_rank_rank_target",
-            "deathlink",
-            "deathlink_damage",
+            "death_link",
+            "death_link_damage",
         )
         slot_data["blacklisted_captures"] = self.blacklisted_captures
 

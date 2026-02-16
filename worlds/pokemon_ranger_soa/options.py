@@ -132,8 +132,8 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     capture_rank_count_target: CaptureRankCountTarget
     capture_rank_rank_target: CaptureRankRankTarget
 
-    deathlink: PokemonRSOADeathLink
-    deathlink_damage: DeathlinkDamage
+    death_link: PokemonRSOADeathLink
+    death_link_damage: DeathlinkDamage
 
 
 option_groups = [

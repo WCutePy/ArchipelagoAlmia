@@ -1,7 +1,7 @@
 import pkgutil
 from dataclasses import dataclass
-from enum import IntEnum
-from typing import NamedTuple, Union, List, FrozenSet, Dict, Any, Optional
+from enum import IntEnum, StrEnum, auto
+from typing import NamedTuple, Union, List, FrozenSet, Dict, Any, Optional, Tuple
 
 import re
 import json
@@ -111,14 +111,10 @@ class SpeciesData:
     poke_assist: PokeAssistCategory
     friendship_gauge: tuple[int]
 
-    browser_flag_address: int
+    browser_offset: int
     browser_flag: int
-    browser_rank_flag_address: Optional[int] = None
+    browser_rank_offset: Optional[int] = None
     browser_rank_flag: Optional[int] = None
-
-    @property
-    def browser_offset(self) -> int:
-        return self.browser_flag_address - BROWSER_START_ADDRESS
 
 
 @dataclass
@@ -145,11 +141,28 @@ class RegionData:
         self.events = []
 
 
-class ItemData(NamedTuple):
+class ItemCategory(StrEnum):
+    STYLER_UPGRADE = auto()
+    FILLER = auto()
+    UNIQUE = auto()
+    PROGRESSIVE = auto()
+    EVENT = auto()
+
+
+class RamAddress(NamedTuple):
+    address: int
+    bit_length: Optional[int] = None
+    label: Optional[str] = None
+
+
+@dataclass
+class ItemData:
     label: str
     item_id: int
     classification: ItemClassification
-    tags: FrozenSet[str]
+    item_categories: Tuple[ItemCategory, ...]
+    bit_offset: Optional[int] = None
+    copies: int = 1
 
 
 class PokemonRSOAData:
@@ -157,10 +170,13 @@ class PokemonRSOAData:
     locations: Dict[str, LocationData]
     items: Dict[int, ItemData]
 
+    ram_addresses: Dict[str, RamAddress]
+
     def __init__(self) -> None:
         self.species = {}
         self.locations = {}
         self.items = {}
+        self.ram_addresses = {}
 
 
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
@@ -177,64 +193,64 @@ def _init():
         species = SpeciesData(**species_data)
         data.species[species.browser_id] = species
 
-    styler_power_ups = [
-        "Normal Defense 1",
-        "Normal Defense 2",
-        "Fire Defense 1",
-        "Fire Defense 2",
-        "Water Defense 1",
-        "Water Defense 2",
-        "Electric Defense 1",
-        "Electric Defense 2",
-        "Grass Defense 1",
-        "Grass Defense 2",
-        "Ice Defense 1",
-        "Ice Defense 2",
-        "Fighting Defense 1",
-        "Fighting Defense 2",
-        "Poison Defense 1",
-        "Poison Defense 2",
-        "Ground Defense 1",
-        "Ground Defense 2",
-        "Flying Defense 1",
-        "Flying Defense 2",
-        "Psychic Defense 1",
-        "Psychic Defense 2",
-        "Bug Defense 1",
-        "Bug Defense 2",
-        "Rock Defense 1",
-        "Rock Defense 2",
-        "Ghost Defense 1",
-        "Ghost Defense 2",
-        "Dragon Defense 1",
-        "Dragon Defense 2",
-        "Dark Defense 1",
-        "Dark Defense 2",
-        "Steel Defense 1",
-        "Steel Defense 2",
-        "Supreme Defense 1",
-        "Time Assist 1",
-        "Time Assist 2",
-        "Latent Power 1",
-        "Latent Power 2",
-        "Recovery 1",
-        "Recovery 2",
-        "Combo Bonus 1",
-        "Long Line 1",
-        "Long Line 2",
-        "Power Plus 1",
-        "Power Plus 2",
-        "Energy Plus 1",
-    ]
+    STYLER_UPGRADES = (
+        ("Progressive Grass Defense", 2, 0),
+        ("Progressive Water Defense", 2, 2),
+        ("Progressive Electric Defense", 2, 4),
+        ("Progressive Fire Defense", 2, 6),
+        ("Progressive Fighting Defense", 2, 8),
+        ("Progressive Poison Defense", 2, 10),
+        ("Progressive Psychic Defense", 2, 12),
+        ("Progressive Bug Defense", 2, 14),
+        ("Progressive Ground Defense", 2, 16),
+        ("Progressive Flying Defense", 2, 18),
+        ("Progressive Dark Defense", 2, 20),
+        ("Progressive Rock Defense", 2, 18),
+        ("Progressive Ghost Defense", 2, 24),
+        ("Progressive Ice Defense", 2, 26),
+        ("Progressive Normal Defense", 2, 28),
+        ("Progressive Steel Defense", 2, 30),
+        ("Progressive Dragon Defense", 2, 32),
+        ("Progressive Time Assist", 2, 34),
+        ("Progressive Latent Power", 2, 36),
+        ("Combo Bonus", 1, 38),  # Bit 31 also toggles it on.
+        ("Progressive Recovery", 2, 40),
+        ("Energy Plus", 1, 42),  # Bit 35 also toggles it on.
+        ("Progressive Power Plus", 2, 44),
+        ("Progressive Long Line", 2, 46),
+        #
+        (
+            "Supreme Defense",
+            1,
+            None,
+        ),  # Dragon Defense both bits turned on will indicate Supreme Defense.
+        # This does however not impact the others.
+    )
 
-    for i, power_up in enumerate(styler_power_ups):
-        item = ItemData(power_up, i, ItemClassification.progression, frozenset())
+    for i, (power_up, count, bit) in enumerate(STYLER_UPGRADES):
+        item = ItemData(
+            power_up,
+            i,
+            ItemClassification.progression,
+            (
+                ItemCategory.STYLER_UPGRADE,
+                ItemCategory.UNIQUE if count == 1 else ItemCategory.PROGRESSIVE,
+            ),
+            bit,
+            copies=count,
+        )
 
         data.items[i] = item
 
     data.items[10000] = ItemData(
-        "Filler Item", 10000, ItemClassification.useful, frozenset()
+        "Filler Item", 10000, ItemClassification.useful, (ItemCategory.FILLER,)
     )
+
+    r = RamAddress(0x020BA302, 24, "RECEIVED_ITEM_ADDRESS")
+    data.ram_addresses[r.label] = r
+
+    r = RamAddress(0x020BAE7C, None, "STYLUS_UPGRADE_TABLE_ADDRESS")
+    data.ram_addresses[r.label] = r
 
 
 data = PokemonRSOAData()

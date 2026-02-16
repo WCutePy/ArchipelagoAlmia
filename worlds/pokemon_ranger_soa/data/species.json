@@ -1,0 +1,6424 @@
+[
+    {
+        "name": "Charmander",
+        "label": "CHARMANDER",
+        "browser_id": 137,
+        "species_ids": [
+            1
+        ],
+        "hex_ids": [
+            "1"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            720
+        ],
+        "browser_offset": 0,
+        "browser_flag": 1,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Charmeleon",
+        "label": "CHARMELEON",
+        "browser_id": 138,
+        "species_ids": [
+            2
+        ],
+        "hex_ids": [
+            "2"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            2000
+        ],
+        "browser_offset": 0,
+        "browser_flag": 3,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Squirtle",
+        "label": "SQUIRTLE",
+        "browser_id": 11,
+        "species_ids": [
+            3
+        ],
+        "hex_ids": [
+            "3"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            77
+        ],
+        "browser_offset": 0,
+        "browser_flag": 7,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Wartortle",
+        "label": "WARTORTLE",
+        "browser_id": 12,
+        "species_ids": [
+            4
+        ],
+        "hex_ids": [
+            "4"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            187
+        ],
+        "browser_offset": 1,
+        "browser_flag": 1,
+        "browser_rank_offset": 1,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Blastoise",
+        "label": "BLASTOISE",
+        "browser_id": 13,
+        "species_ids": [
+            5
+        ],
+        "hex_ids": [
+            "5"
+        ],
+        "field_move": {
+            "category": 19,
+            "level": 9
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            850
+        ],
+        "browser_offset": 1,
+        "browser_flag": 3,
+        "browser_rank_offset": 1,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Weedle",
+        "label": "WEEDLE",
+        "browser_id": 57,
+        "species_ids": [
+            6
+        ],
+        "hex_ids": [
+            "6"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            195
+        ],
+        "browser_offset": 2,
+        "browser_flag": 3,
+        "browser_rank_offset": 2,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Beedrill",
+        "label": "BEEDRILL",
+        "browser_id": 58,
+        "species_ids": [
+            7
+        ],
+        "hex_ids": [
+            "7"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            225
+        ],
+        "browser_offset": 2,
+        "browser_flag": 7,
+        "browser_rank_offset": 2,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Rattata",
+        "label": "RATTATA",
+        "browser_id": 67,
+        "species_ids": [
+            8
+        ],
+        "hex_ids": [
+            "8"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            92
+        ],
+        "browser_offset": 3,
+        "browser_flag": 7,
+        "browser_rank_offset": 3,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Raticate",
+        "label": "RATICATE",
+        "browser_id": 68,
+        "species_ids": [
+            9
+        ],
+        "hex_ids": [
+            "9"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            720
+        ],
+        "browser_offset": 4,
+        "browser_flag": 1,
+        "browser_rank_offset": 4,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Spearow",
+        "label": "SPEAROW",
+        "browser_id": 112,
+        "species_ids": [
+            10
+        ],
+        "hex_ids": [
+            "A"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            320
+        ],
+        "browser_offset": 4,
+        "browser_flag": 3,
+        "browser_rank_offset": 4,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Fearow",
+        "label": "FEAROW",
+        "browser_id": 113,
+        "species_ids": [
+            11,
+            275
+        ],
+        "hex_ids": [
+            "B",
+            "113"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            2500,
+            6000
+        ],
+        "browser_offset": 4,
+        "browser_flag": 5,
+        "browser_rank_offset": 4,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pikachu",
+        "label": "PIKACHU",
+        "browser_id": 2,
+        "species_ids": [
+            12,
+            309
+        ],
+        "hex_ids": [
+            "C",
+            "135"
+        ],
+        "field_move": {
+            "category": 11,
+            "level": 3
+        },
+        "poke_assist": 4,
+        "friendship_gauge": [
+            645,
+            60
+        ],
+        "browser_offset": 5,
+        "browser_flag": 3,
+        "browser_rank_offset": 5,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Raichu",
+        "label": "RAICHU",
+        "browser_id": 3,
+        "species_ids": [
+            13
+        ],
+        "hex_ids": [
+            "D"
+        ],
+        "field_move": {
+            "category": 11,
+            "level": 4
+        },
+        "poke_assist": 4,
+        "friendship_gauge": [
+            1540
+        ],
+        "browser_offset": 5,
+        "browser_flag": 5,
+        "browser_rank_offset": 5,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Sandshrew",
+        "label": "SANDSHREW",
+        "browser_id": 194,
+        "species_ids": [
+            14
+        ],
+        "hex_ids": [
+            "E"
+        ],
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            1144
+        ],
+        "browser_offset": 5,
+        "browser_flag": 7,
+        "browser_rank_offset": 5,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Sandslash",
+        "label": "SANDSLASH",
+        "browser_id": 195,
+        "species_ids": [
+            15
+        ],
+        "hex_ids": [
+            "F"
+        ],
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            3250
+        ],
+        "browser_offset": 6,
+        "browser_flag": 1,
+        "browser_rank_offset": 6,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Vulpix",
+        "label": "VULPIX",
+        "browser_id": 171,
+        "species_ids": [
+            16
+        ],
+        "hex_ids": [
+            "10"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            946
+        ],
+        "browser_offset": 8,
+        "browser_flag": 3,
+        "browser_rank_offset": 8,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Ninetales",
+        "label": "NINETALES",
+        "browser_id": 172,
+        "species_ids": [
+            17
+        ],
+        "hex_ids": [
+            "11"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 4
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            3920
+        ],
+        "browser_offset": 8,
+        "browser_flag": 5,
+        "browser_rank_offset": 8,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Jigglypuff",
+        "label": "JIGGLYPUFF",
+        "browser_id": 203,
+        "species_ids": [
+            18
+        ],
+        "hex_ids": [
+            "12"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            1302
+        ],
+        "browser_offset": 8,
+        "browser_flag": 7,
+        "browser_rank_offset": 8,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Wigglytuff",
+        "label": "WIGGLYTUFF",
+        "browser_id": 204,
+        "species_ids": [
+            19
+        ],
+        "hex_ids": [
+            "13"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            1750
+        ],
+        "browser_offset": 9,
+        "browser_flag": 1,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Zubat",
+        "label": "ZUBAT",
+        "browser_id": 14,
+        "species_ids": [
+            20
+        ],
+        "hex_ids": [
+            "14"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            84
+        ],
+        "browser_offset": 9,
+        "browser_flag": 3,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Golbat",
+        "label": "GOLBAT",
+        "browser_id": 15,
+        "species_ids": [
+            21
+        ],
+        "hex_ids": [
+            "15"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            1240
+        ],
+        "browser_offset": 9,
+        "browser_flag": 5,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Oddish",
+        "label": "ODDISH",
+        "browser_id": 114,
+        "species_ids": [
+            22
+        ],
+        "hex_ids": [
+            "16"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            312
+        ],
+        "browser_offset": 9,
+        "browser_flag": 7,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Gloom",
+        "label": "GLOOM",
+        "browser_id": 115,
+        "species_ids": [
+            23
+        ],
+        "hex_ids": [
+            "17"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            912
+        ],
+        "browser_offset": 10,
+        "browser_flag": 1,
+        "browser_rank_offset": 10,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Vileplume",
+        "label": "VILEPLUME",
+        "browser_id": 116,
+        "species_ids": [
+            24
+        ],
+        "hex_ids": [
+            "18"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            2500
+        ],
+        "browser_offset": 10,
+        "browser_flag": 3,
+        "browser_rank_offset": 10,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mankey",
+        "label": "MANKEY",
+        "browser_id": 126,
+        "species_ids": [
+            25
+        ],
+        "hex_ids": [
+            "19"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            384
+        ],
+        "browser_offset": 13,
+        "browser_flag": 1,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Primeape",
+        "label": "PRIMEAPE",
+        "browser_id": 127,
+        "species_ids": [
+            26,
+            272
+        ],
+        "hex_ids": [
+            "1A",
+            "110"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            3750
+        ],
+        "browser_offset": 13,
+        "browser_flag": 3,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Growlithe",
+        "label": "GROWLITHE",
+        "browser_id": 65,
+        "species_ids": [
+            27
+        ],
+        "hex_ids": [
+            "1B"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            252
+        ],
+        "browser_offset": 13,
+        "browser_flag": 5,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Arcanine",
+        "label": "ARCANINE",
+        "browser_id": 66,
+        "species_ids": [
+            28
+        ],
+        "hex_ids": [
+            "1C"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 4
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            3150
+        ],
+        "browser_offset": 13,
+        "browser_flag": 7,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Abra",
+        "label": "ABRA",
+        "browser_id": 183,
+        "species_ids": [
+            29
+        ],
+        "hex_ids": [
+            "1D"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            735
+        ],
+        "browser_offset": 14,
+        "browser_flag": 7,
+        "browser_rank_offset": 14,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Alakazam",
+        "label": "ALAKAZAM",
+        "browser_id": 184,
+        "species_ids": [
+            30,
+            265
+        ],
+        "hex_ids": [
+            "1E",
+            "109"
+        ],
+        "field_move": {
+            "category": 12,
+            "level": 9
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            3900,
+            8000
+        ],
+        "browser_offset": 15,
+        "browser_flag": 3,
+        "browser_rank_offset": 15,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Machop",
+        "label": "MACHOP",
+        "browser_id": 161,
+        "species_ids": [
+            31
+        ],
+        "hex_ids": [
+            "1F"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            3500
+        ],
+        "browser_offset": 15,
+        "browser_flag": 5,
+        "browser_rank_offset": 15,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Machoke",
+        "label": "MACHOKE",
+        "browser_id": 162,
+        "species_ids": [
+            32
+        ],
+        "hex_ids": [
+            "20"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            1161
+        ],
+        "browser_offset": 15,
+        "browser_flag": 7,
+        "browser_rank_offset": 15,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Machamp",
+        "label": "MACHAMP",
+        "browser_id": 163,
+        "species_ids": [
+            33
+        ],
+        "hex_ids": [
+            "21"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            5250
+        ],
+        "browser_offset": 16,
+        "browser_flag": 1,
+        "browser_rank_offset": 16,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Victreebel",
+        "label": "VICTREEBEL",
+        "browser_id": 242,
+        "species_ids": [
+            34
+        ],
+        "hex_ids": [
+            "22"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            3600
+        ],
+        "browser_offset": 16,
+        "browser_flag": 7,
+        "browser_rank_offset": 16,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tentacruel",
+        "label": "TENTACRUEL",
+        "browser_id": 234,
+        "species_ids": [
+            35
+        ],
+        "hex_ids": [
+            "23"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            5130
+        ],
+        "browser_offset": 17,
+        "browser_flag": 3,
+        "browser_rank_offset": 17,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Geodude",
+        "label": "GEODUDE",
+        "browser_id": 41,
+        "species_ids": [
+            36
+        ],
+        "hex_ids": [
+            "24"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            126
+        ],
+        "browser_offset": 17,
+        "browser_flag": 5,
+        "browser_rank_offset": 17,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Graveler",
+        "label": "GRAVELER",
+        "browser_id": 42,
+        "species_ids": [
+            37
+        ],
+        "hex_ids": [
+            "25"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            700
+        ],
+        "browser_offset": 17,
+        "browser_flag": 7,
+        "browser_rank_offset": 17,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Golem",
+        "label": "GOLEM",
+        "browser_id": 43,
+        "species_ids": [
+            38
+        ],
+        "hex_ids": [
+            "26"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            4550
+        ],
+        "browser_offset": 18,
+        "browser_flag": 1,
+        "browser_rank_offset": 18,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Ponyta",
+        "label": "PONYTA",
+        "browser_id": 176,
+        "species_ids": [
+            39
+        ],
+        "hex_ids": [
+            "27"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            980
+        ],
+        "browser_offset": 18,
+        "browser_flag": 3,
+        "browser_rank_offset": 18,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Rapidash",
+        "label": "RAPIDASH",
+        "browser_id": 177,
+        "species_ids": [
+            40
+        ],
+        "hex_ids": [
+            "28"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            1274
+        ],
+        "browser_offset": 18,
+        "browser_flag": 5,
+        "browser_rank_offset": 18,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Magnemite",
+        "label": "MAGNEMITE",
+        "browser_id": 62,
+        "species_ids": [
+            41
+        ],
+        "hex_ids": [
+            "29"
+        ],
+        "field_move": {
+            "category": 11,
+            "level": 2
+        },
+        "poke_assist": 4,
+        "friendship_gauge": [
+            180
+        ],
+        "browser_offset": 19,
+        "browser_flag": 3,
+        "browser_rank_offset": 19,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magneton",
+        "label": "MAGNETON",
+        "browser_id": 63,
+        "species_ids": [
+            42
+        ],
+        "hex_ids": [
+            "2A"
+        ],
+        "field_move": {
+            "category": 11,
+            "level": 5
+        },
+        "poke_assist": 4,
+        "friendship_gauge": [
+            1900
+        ],
+        "browser_offset": 19,
+        "browser_flag": 5,
+        "browser_rank_offset": 19,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Doduo",
+        "label": "DODUO",
+        "browser_id": 134,
+        "species_ids": [
+            43
+        ],
+        "hex_ids": [
+            "2B"
+        ],
+        "field_move": {
+            "category": 9,
+            "level": 9
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            330
+        ],
+        "browser_offset": 20,
+        "browser_flag": 1,
+        "browser_rank_offset": 20,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Dodrio",
+        "label": "DODRIO",
+        "browser_id": 135,
+        "species_ids": [
+            44
+        ],
+        "hex_ids": [
+            "2C"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            1750
+        ],
+        "browser_offset": 20,
+        "browser_flag": 3,
+        "browser_rank_offset": 20,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Muk",
+        "label": "MUK",
+        "browser_id": 152,
+        "species_ids": [
+            45
+        ],
+        "hex_ids": [
+            "2D"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            1800
+        ],
+        "browser_offset": 21,
+        "browser_flag": 3,
+        "browser_rank_offset": 21,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gastly",
+        "label": "GASTLY",
+        "browser_id": 17,
+        "species_ids": [
+            46
+        ],
+        "hex_ids": [
+            "2E"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            40
+        ],
+        "browser_offset": 22,
+        "browser_flag": 1,
+        "browser_rank_offset": 22,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Haunter",
+        "label": "HAUNTER",
+        "browser_id": 18,
+        "species_ids": [
+            47
+        ],
+        "hex_ids": [
+            "2F"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 2
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            1400
+        ],
+        "browser_offset": 22,
+        "browser_flag": 3,
+        "browser_rank_offset": 22,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gengar",
+        "label": "GENGAR",
+        "browser_id": 19,
+        "species_ids": [
+            48,
+            274
+        ],
+        "hex_ids": [
+            "30",
+            "112"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            5200,
+            7000
+        ],
+        "browser_offset": 22,
+        "browser_flag": 5,
+        "browser_rank_offset": 22,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Drowzee",
+        "label": "DROWZEE",
+        "browser_id": 166,
+        "species_ids": [
+            49
+        ],
+        "hex_ids": [
+            "31"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            817
+        ],
+        "browser_offset": 23,
+        "browser_flag": 1,
+        "browser_rank_offset": 23,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Hypno",
+        "label": "HYPNO",
+        "browser_id": 167,
+        "species_ids": [
+            50
+        ],
+        "hex_ids": [
+            "32"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            1300
+        ],
+        "browser_offset": 23,
+        "browser_flag": 3,
+        "browser_rank_offset": 23,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Voltorb",
+        "label": "VOLTORB",
+        "browser_id": 76,
+        "species_ids": [
+            51
+        ],
+        "hex_ids": [
+            "33"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            252
+        ],
+        "browser_offset": 24,
+        "browser_flag": 1,
+        "browser_rank_offset": 24,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Electrode",
+        "label": "ELECTRODE",
+        "browser_id": 77,
+        "species_ids": [
+            52
+        ],
+        "hex_ids": [
+            "34"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            5000
+        ],
+        "browser_offset": 24,
+        "browser_flag": 3,
+        "browser_rank_offset": 24,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Koffing",
+        "label": "KOFFING",
+        "browser_id": 187,
+        "species_ids": [
+            53
+        ],
+        "hex_ids": [
+            "35"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            980
+        ],
+        "browser_offset": 26,
+        "browser_flag": 3,
+        "browser_rank_offset": 26,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Weezing",
+        "label": "WEEZING",
+        "browser_id": 188,
+        "species_ids": [
+            54
+        ],
+        "hex_ids": [
+            "36"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            1750
+        ],
+        "browser_offset": 26,
+        "browser_flag": 5,
+        "browser_rank_offset": 26,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Rhyhorn",
+        "label": "RHYHORN",
+        "browser_id": 149,
+        "species_ids": [
+            55
+        ],
+        "hex_ids": [
+            "37"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            1140
+        ],
+        "browser_offset": 26,
+        "browser_flag": 7,
+        "browser_rank_offset": 26,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Rhydon",
+        "label": "RHYDON",
+        "browser_id": 150,
+        "species_ids": [
+            56
+        ],
+        "hex_ids": [
+            "38"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 3
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            4800
+        ],
+        "browser_offset": 27,
+        "browser_flag": 1,
+        "browser_rank_offset": 27,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kangaskhan",
+        "label": "KANGASKHAN",
+        "browser_id": 146,
+        "species_ids": [
+            57,
+            277
+        ],
+        "hex_ids": [
+            "39",
+            "115"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            1292,
+            13000
+        ],
+        "browser_offset": 27,
+        "browser_flag": 7,
+        "browser_rank_offset": 27,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Horsea",
+        "label": "HORSEA",
+        "browser_id": 229,
+        "species_ids": [
+            58
+        ],
+        "hex_ids": [
+            "3A"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            2090
+        ],
+        "browser_offset": 28,
+        "browser_flag": 1,
+        "browser_rank_offset": 28,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Seadra",
+        "label": "SEADRA",
+        "browser_id": 230,
+        "species_ids": [
+            59
+        ],
+        "hex_ids": [
+            "3B"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            2375
+        ],
+        "browser_offset": 28,
+        "browser_flag": 3,
+        "browser_rank_offset": 28,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Staryu",
+        "label": "STARYU",
+        "browser_id": 94,
+        "species_ids": [
+            60
+        ],
+        "hex_ids": [
+            "3C"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            288
+        ],
+        "browser_offset": 29,
+        "browser_flag": 1,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Starmie",
+        "label": "STARMIE",
+        "browser_id": 95,
+        "species_ids": [
+            61
+        ],
+        "hex_ids": [
+            "3D"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            2375
+        ],
+        "browser_offset": 29,
+        "browser_flag": 3,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mr. Mime",
+        "label": "MR. MIME",
+        "browser_id": 165,
+        "species_ids": [
+            62
+        ],
+        "hex_ids": [
+            "3E"
+        ],
+        "field_move": {
+            "category": 12,
+            "level": 9
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            2520
+        ],
+        "browser_offset": 29,
+        "browser_flag": 5,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Scyther",
+        "label": "SCYTHER",
+        "browser_id": 216,
+        "species_ids": [
+            63
+        ],
+        "hex_ids": [
+            "3F"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            1680
+        ],
+        "browser_offset": 29,
+        "browser_flag": 7,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Jynx",
+        "label": "JYNX",
+        "browser_id": 210,
+        "species_ids": [
+            64
+        ],
+        "hex_ids": [
+            "40"
+        ],
+        "field_move": {
+            "category": 12,
+            "level": 9
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            1680
+        ],
+        "browser_offset": 30,
+        "browser_flag": 1,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Electabuzz",
+        "label": "ELECTABUZZ",
+        "browser_id": 71,
+        "species_ids": [
+            65
+        ],
+        "hex_ids": [
+            "41"
+        ],
+        "field_move": {
+            "category": 17,
+            "level": 9
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            2070
+        ],
+        "browser_offset": 30,
+        "browser_flag": 3,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magmar",
+        "label": "MAGMAR",
+        "browser_id": 74,
+        "species_ids": [
+            66
+        ],
+        "hex_ids": [
+            "42"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            1140
+        ],
+        "browser_offset": 30,
+        "browser_flag": 5,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pinsir",
+        "label": "PINSIR",
+        "browser_id": 123,
+        "species_ids": [
+            67
+        ],
+        "hex_ids": [
+            "43"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            1500
+        ],
+        "browser_offset": 30,
+        "browser_flag": 7,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tauros",
+        "label": "TAUROS",
+        "browser_id": 179,
+        "species_ids": [
+            68
+        ],
+        "hex_ids": [
+            "44"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            800
+        ],
+        "browser_offset": 31,
+        "browser_flag": 1,
+        "browser_rank_offset": 31,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Eevee",
+        "label": "EEVEE",
+        "browser_id": 97,
+        "species_ids": [
+            69,
+            281
+        ],
+        "hex_ids": [
+            "45",
+            "119"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            210,
+            7000
+        ],
+        "browser_offset": 32,
+        "browser_flag": 3,
+        "browser_rank_offset": 32,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Vaporeon",
+        "label": "VAPOREON",
+        "browser_id": 98,
+        "species_ids": [
+            70,
+            283
+        ],
+        "hex_ids": [
+            "46",
+            "11B"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            2900,
+            8500
+        ],
+        "browser_offset": 32,
+        "browser_flag": 5,
+        "browser_rank_offset": 32,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Jolteon",
+        "label": "JOLTEON",
+        "browser_id": 99,
+        "species_ids": [
+            71,
+            284
+        ],
+        "hex_ids": [
+            "47",
+            "11C"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            3780,
+            8500
+        ],
+        "browser_offset": 32,
+        "browser_flag": 7,
+        "browser_rank_offset": 32,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Flareon",
+        "label": "FLAREON",
+        "browser_id": 100,
+        "species_ids": [
+            72,
+            282
+        ],
+        "hex_ids": [
+            "48",
+            "11A"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            1920,
+            8500
+        ],
+        "browser_offset": 33,
+        "browser_flag": 1,
+        "browser_rank_offset": 33,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Omanyte",
+        "label": "OMANYTE",
+        "browser_id": 235,
+        "species_ids": [
+            73
+        ],
+        "hex_ids": [
+            "49"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            2185
+        ],
+        "browser_offset": 33,
+        "browser_flag": 5,
+        "browser_rank_offset": 33,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Omastar",
+        "label": "OMASTAR",
+        "browser_id": 236,
+        "species_ids": [
+            74
+        ],
+        "hex_ids": [
+            "4A"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            6300
+        ],
+        "browser_offset": 33,
+        "browser_flag": 7,
+        "browser_rank_offset": 33,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dratini",
+        "label": "DRATINI",
+        "browser_id": 218,
+        "species_ids": [
+            75
+        ],
+        "hex_ids": [
+            "4B"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            1610
+        ],
+        "browser_offset": 35,
+        "browser_flag": 7,
+        "browser_rank_offset": 35,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Spinarak",
+        "label": "SPINARAK",
+        "browser_id": 155,
+        "species_ids": [
+            76
+        ],
+        "hex_ids": [
+            "4C"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            903
+        ],
+        "browser_offset": 40,
+        "browser_flag": 7,
+        "browser_rank_offset": 40,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ariados",
+        "label": "ARIADOS",
+        "browser_id": 156,
+        "species_ids": [
+            77,
+            289
+        ],
+        "hex_ids": [
+            "4D",
+            "121"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 3
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            3510,
+            8000
+        ],
+        "browser_offset": 41,
+        "browser_flag": 1,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Crobat",
+        "label": "CROBAT",
+        "browser_id": 16,
+        "species_ids": [
+            78,
+            263
+        ],
+        "hex_ids": [
+            "4E",
+            "107"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            3750,
+            8000
+        ],
+        "browser_offset": 41,
+        "browser_flag": 3,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Chinchou",
+        "label": "CHINCHOU",
+        "browser_id": 88,
+        "species_ids": [
+            79
+        ],
+        "hex_ids": [
+            "4F"
+        ],
+        "field_move": {
+            "category": 11,
+            "level": 2
+        },
+        "poke_assist": 4,
+        "friendship_gauge": [
+            260
+        ],
+        "browser_offset": 41,
+        "browser_flag": 5,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Lanturn",
+        "label": "LANTURN",
+        "browser_id": 89,
+        "species_ids": [
+            80
+        ],
+        "hex_ids": [
+            "50"
+        ],
+        "field_move": {
+            "category": 11,
+            "level": 4
+        },
+        "poke_assist": 4,
+        "friendship_gauge": [
+            1900
+        ],
+        "browser_offset": 41,
+        "browser_flag": 7,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Pichu",
+        "label": "PICHU",
+        "browser_id": 1,
+        "species_ids": [
+            81,
+            302
+        ],
+        "hex_ids": [
+            "51",
+            "12E"
+        ],
+        "field_move": {
+            "category": 11,
+            "level": 1
+        },
+        "poke_assist": 4,
+        "friendship_gauge": [
+            66
+        ],
+        "browser_offset": 42,
+        "browser_flag": 1,
+        "browser_rank_offset": 42,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Mareep",
+        "label": "MAREEP",
+        "browser_id": 105,
+        "species_ids": [
+            82
+        ],
+        "hex_ids": [
+            "52"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            860
+        ],
+        "browser_offset": 43,
+        "browser_flag": 7,
+        "browser_rank_offset": 43,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Flaaffy",
+        "label": "FLAAFFY",
+        "browser_id": 106,
+        "species_ids": [
+            83
+        ],
+        "hex_ids": [
+            "53"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            1274
+        ],
+        "browser_offset": 44,
+        "browser_flag": 1,
+        "browser_rank_offset": 44,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Ampharos",
+        "label": "AMPHAROS",
+        "browser_id": 107,
+        "species_ids": [
+            84
+        ],
+        "hex_ids": [
+            "54"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            3900
+        ],
+        "browser_offset": 44,
+        "browser_flag": 3,
+        "browser_rank_offset": 44,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Bellossom",
+        "label": "BELLOSSOM",
+        "browser_id": 117,
+        "species_ids": [
+            85,
+            270
+        ],
+        "hex_ids": [
+            "55",
+            "10E"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            2600,
+            8000
+        ],
+        "browser_offset": 44,
+        "browser_flag": 5,
+        "browser_rank_offset": 44,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Sudowoodo",
+        "label": "SUDOWOODO",
+        "browser_id": 31,
+        "species_ids": [
+            86
+        ],
+        "hex_ids": [
+            "56"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            1176
+        ],
+        "browser_offset": 45,
+        "browser_flag": 3,
+        "browser_rank_offset": 45,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Aipom",
+        "label": "AIPOM",
+        "browser_id": 108,
+        "species_ids": [
+            87
+        ],
+        "hex_ids": [
+            "57"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            281
+        ],
+        "browser_offset": 46,
+        "browser_flag": 5,
+        "browser_rank_offset": 46,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Yanma",
+        "label": "YANMA",
+        "browser_id": 118,
+        "species_ids": [
+            88
+        ],
+        "hex_ids": [
+            "58"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            300
+        ],
+        "browser_offset": 47,
+        "browser_flag": 3,
+        "browser_rank_offset": 47,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Espeon",
+        "label": "ESPEON",
+        "browser_id": 101,
+        "species_ids": [
+            89,
+            285
+        ],
+        "hex_ids": [
+            "59",
+            "11D"
+        ],
+        "field_move": {
+            "category": 12,
+            "level": 9
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            3250,
+            8500
+        ],
+        "browser_offset": 48,
+        "browser_flag": 1,
+        "browser_rank_offset": 48,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Umbreon",
+        "label": "UMBREON",
+        "browser_id": 102,
+        "species_ids": [
+            90,
+            286
+        ],
+        "hex_ids": [
+            "5A",
+            "11E"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            2900,
+            18000
+        ],
+        "browser_offset": 48,
+        "browser_flag": 3,
+        "browser_rank_offset": 48,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Murkrow",
+        "label": "MURKROW",
+        "browser_id": 185,
+        "species_ids": [
+            91
+        ],
+        "hex_ids": [
+            "5B"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            1488
+        ],
+        "browser_offset": 48,
+        "browser_flag": 5,
+        "browser_rank_offset": 48,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Misdreavus",
+        "label": "MISDREAVUS",
+        "browser_id": 220,
+        "species_ids": [
+            92
+        ],
+        "hex_ids": [
+            "5C"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            3400
+        ],
+        "browser_offset": 49,
+        "browser_flag": 1,
+        "browser_rank_offset": 49,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Girafarig",
+        "label": "GIRAFARIG",
+        "browser_id": 178,
+        "species_ids": [
+            93
+        ],
+        "hex_ids": [
+            "5D"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            860
+        ],
+        "browser_offset": 49,
+        "browser_flag": 7,
+        "browser_rank_offset": 49,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Pineco",
+        "label": "PINECO",
+        "browser_id": 110,
+        "species_ids": [
+            94
+        ],
+        "hex_ids": [
+            "5E"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            338
+        ],
+        "browser_offset": 50,
+        "browser_flag": 1,
+        "browser_rank_offset": 50,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Forretress",
+        "label": "FORRETRESS",
+        "browser_id": 111,
+        "species_ids": [
+            95
+        ],
+        "hex_ids": [
+            "5F"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            1716
+        ],
+        "browser_offset": 50,
+        "browser_flag": 3,
+        "browser_rank_offset": 50,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gligar",
+        "label": "GLIGAR",
+        "browser_id": 128,
+        "species_ids": [
+            96
+        ],
+        "hex_ids": [
+            "60"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            448
+        ],
+        "browser_offset": 50,
+        "browser_flag": 7,
+        "browser_rank_offset": 50,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Qwilfish",
+        "label": "QWILFISH",
+        "browser_id": 92,
+        "species_ids": [
+            97
+        ],
+        "hex_ids": [
+            "61"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            450
+        ],
+        "browser_offset": 51,
+        "browser_flag": 7,
+        "browser_rank_offset": 51,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Scizor",
+        "label": "SCIZOR",
+        "browser_id": 217,
+        "species_ids": [
+            98
+        ],
+        "hex_ids": [
+            "62"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 4
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            4050
+        ],
+        "browser_offset": 52,
+        "browser_flag": 1,
+        "browser_rank_offset": 52,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Sneasel",
+        "label": "SNEASEL",
+        "browser_id": 244,
+        "species_ids": [
+            99
+        ],
+        "hex_ids": [
+            "63"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            1960
+        ],
+        "browser_offset": 52,
+        "browser_flag": 7,
+        "browser_rank_offset": 52,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Slugma",
+        "label": "SLUGMA",
+        "browser_id": 140,
+        "species_ids": [
+            100
+        ],
+        "hex_ids": [
+            "64"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            792
+        ],
+        "browser_offset": 53,
+        "browser_flag": 5,
+        "browser_rank_offset": 53,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Magcargo",
+        "label": "MAGCARGO",
+        "browser_id": 141,
+        "species_ids": [
+            101
+        ],
+        "hex_ids": [
+            "65"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            1140
+        ],
+        "browser_offset": 53,
+        "browser_flag": 7,
+        "browser_rank_offset": 53,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Swinub",
+        "label": "SWINUB",
+        "browser_id": 200,
+        "species_ids": [
+            102
+        ],
+        "hex_ids": [
+            "66"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            1364
+        ],
+        "browser_offset": 54,
+        "browser_flag": 1,
+        "browser_rank_offset": 54,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Piloswine",
+        "label": "PILOSWINE",
+        "browser_id": 201,
+        "species_ids": [
+            103
+        ],
+        "hex_ids": [
+            "67"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            4030
+        ],
+        "browser_offset": 54,
+        "browser_flag": 3,
+        "browser_rank_offset": 54,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Corsola",
+        "label": "CORSOLA",
+        "browser_id": 93,
+        "species_ids": [
+            104
+        ],
+        "hex_ids": [
+            "68"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            500
+        ],
+        "browser_offset": 54,
+        "browser_flag": 5,
+        "browser_rank_offset": 54,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Delibird",
+        "label": "DELIBIRD",
+        "browser_id": 209,
+        "species_ids": [
+            105
+        ],
+        "hex_ids": [
+            "69"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            1584
+        ],
+        "browser_offset": 55,
+        "browser_flag": 3,
+        "browser_rank_offset": 55,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mantine",
+        "label": "MANTINE",
+        "browser_id": 91,
+        "species_ids": [
+            106
+        ],
+        "hex_ids": [
+            "6A"
+        ],
+        "field_move": {
+            "category": 22,
+            "level": 9
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            300
+        ],
+        "browser_offset": 55,
+        "browser_flag": 5,
+        "browser_rank_offset": 55,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Skarmory",
+        "label": "SKARMORY",
+        "browser_id": 189,
+        "species_ids": [
+            107
+        ],
+        "hex_ids": [
+            "6B"
+        ],
+        "field_move": {
+            "category": 15,
+            "level": 9
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            1715
+        ],
+        "browser_offset": 55,
+        "browser_flag": 7,
+        "browser_rank_offset": 55,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Houndour",
+        "label": "HOUNDOUR",
+        "browser_id": 153,
+        "species_ids": [
+            108
+        ],
+        "hex_ids": [
+            "6C"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            946
+        ],
+        "browser_offset": 56,
+        "browser_flag": 1,
+        "browser_rank_offset": 56,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Houndoom",
+        "label": "HOUNDOOM",
+        "browser_id": 154,
+        "species_ids": [
+            109,
+            292
+        ],
+        "hex_ids": [
+            "6D",
+            "124"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            2112,
+            9500
+        ],
+        "browser_offset": 56,
+        "browser_flag": 3,
+        "browser_rank_offset": 56,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Tyrogue",
+        "label": "TYROGUE",
+        "browser_id": 61,
+        "species_ids": [
+            110
+        ],
+        "hex_ids": [
+            "6E"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            231
+        ],
+        "browser_offset": 58,
+        "browser_flag": 1,
+        "browser_rank_offset": 58,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Elekid",
+        "label": "ELEKID",
+        "browser_id": 70,
+        "species_ids": [
+            111
+        ],
+        "hex_ids": [
+            "6F"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            231
+        ],
+        "browser_offset": 58,
+        "browser_flag": 7,
+        "browser_rank_offset": 58,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Magby",
+        "label": "MAGBY",
+        "browser_id": 73,
+        "species_ids": [
+            112
+        ],
+        "hex_ids": [
+            "70"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            231
+        ],
+        "browser_offset": 59,
+        "browser_flag": 1,
+        "browser_rank_offset": 59,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Miltank",
+        "label": "MILTANK",
+        "browser_id": 46,
+        "species_ids": [
+            113
+        ],
+        "hex_ids": [
+            "71"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            294
+        ],
+        "browser_offset": 59,
+        "browser_flag": 3,
+        "browser_rank_offset": 59,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Larvitar",
+        "label": "LARVITAR",
+        "browser_id": 120,
+        "species_ids": [
+            114
+        ],
+        "hex_ids": [
+            "72"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            416
+        ],
+        "browser_offset": 60,
+        "browser_flag": 5,
+        "browser_rank_offset": 60,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pupitar",
+        "label": "PUPITAR",
+        "browser_id": 121,
+        "species_ids": [
+            115
+        ],
+        "hex_ids": [
+            "73"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            1300
+        ],
+        "browser_offset": 60,
+        "browser_flag": 7,
+        "browser_rank_offset": 60,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tyranitar",
+        "label": "TYRANITAR",
+        "browser_id": 122,
+        "species_ids": [
+            116,
+            279
+        ],
+        "hex_ids": [
+            "74",
+            "117"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            8750,
+            15000
+        ],
+        "browser_offset": 61,
+        "browser_flag": 1,
+        "browser_rank_offset": 61,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Sceptile",
+        "label": "SCEPTILE",
+        "browser_id": 243,
+        "species_ids": [
+            117
+        ],
+        "hex_ids": [
+            "75"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            2730
+        ],
+        "browser_offset": 62,
+        "browser_flag": 5,
+        "browser_rank_offset": 62,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Blaziken",
+        "label": "BLAZIKEN",
+        "browser_id": 255,
+        "species_ids": [
+            118,
+            273
+        ],
+        "hex_ids": [
+            "76",
+            "111"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            3750,
+            8000
+        ],
+        "browser_offset": 63,
+        "browser_flag": 3,
+        "browser_rank_offset": 63,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Seedot",
+        "label": "SEEDOT",
+        "browser_id": 33,
+        "species_ids": [
+            119
+        ],
+        "hex_ids": [
+            "77"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            180
+        ],
+        "browser_offset": 67,
+        "browser_flag": 3,
+        "browser_rank_offset": 67,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Nuzleaf",
+        "label": "NUZLEAF",
+        "browser_id": 34,
+        "species_ids": [
+            120
+        ],
+        "hex_ids": [
+            "78"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            1127
+        ],
+        "browser_offset": 67,
+        "browser_flag": 5,
+        "browser_rank_offset": 67,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Shiftry",
+        "label": "SHIFTRY",
+        "browser_id": 35,
+        "species_ids": [
+            121,
+            261
+        ],
+        "hex_ids": [
+            "79",
+            "105"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            4800,
+            10000
+        ],
+        "browser_offset": 67,
+        "browser_flag": 7,
+        "browser_rank_offset": 67,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Taillow",
+        "label": "TAILLOW",
+        "browser_id": 6,
+        "species_ids": [
+            122
+        ],
+        "hex_ids": [
+            "7A"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            56
+        ],
+        "browser_offset": 68,
+        "browser_flag": 1,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Swellow",
+        "label": "SWELLOW",
+        "browser_id": 7,
+        "species_ids": [
+            123,
+            276
+        ],
+        "hex_ids": [
+            "7B",
+            "114"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            600,
+            7000
+        ],
+        "browser_offset": 68,
+        "browser_flag": 3,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Wingull",
+        "label": "WINGULL",
+        "browser_id": 78,
+        "species_ids": [
+            124
+        ],
+        "hex_ids": [
+            "7C"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            252
+        ],
+        "browser_offset": 68,
+        "browser_flag": 5,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pelipper",
+        "label": "PELIPPER",
+        "browser_id": 79,
+        "species_ids": [
+            125
+        ],
+        "hex_ids": [
+            "7D"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            1920
+        ],
+        "browser_offset": 68,
+        "browser_flag": 7,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ralts",
+        "label": "RALTS",
+        "browser_id": 157,
+        "species_ids": [
+            126
+        ],
+        "hex_ids": [
+            "7E"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            774
+        ],
+        "browser_offset": 69,
+        "browser_flag": 1,
+        "browser_rank_offset": 69,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kirlia",
+        "label": "KIRLIA",
+        "browser_id": 158,
+        "species_ids": [
+            127
+        ],
+        "hex_ids": [
+            "7F"
+        ],
+        "field_move": {
+            "category": 12,
+            "level": 9
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            1200
+        ],
+        "browser_offset": 69,
+        "browser_flag": 3,
+        "browser_rank_offset": 69,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gardevoir",
+        "label": "GARDEVOIR",
+        "browser_id": 159,
+        "species_ids": [
+            128,
+            260
+        ],
+        "hex_ids": [
+            "80",
+            "104"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            3900,
+            12000
+        ],
+        "browser_offset": 69,
+        "browser_flag": 5,
+        "browser_rank_offset": 69,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Slakoth",
+        "label": "SLAKOTH",
+        "browser_id": 32,
+        "species_ids": [
+            129
+        ],
+        "hex_ids": [
+            "81"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            88
+        ],
+        "browser_offset": 70,
+        "browser_flag": 7,
+        "browser_rank_offset": 70,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ninjask",
+        "label": "NINJASK",
+        "browser_id": 180,
+        "species_ids": [
+            130
+        ],
+        "hex_ids": [
+            "82"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            490
+        ],
+        "browser_offset": 71,
+        "browser_flag": 7,
+        "browser_rank_offset": 71,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Makuhita",
+        "label": "MAKUHITA",
+        "browser_id": 28,
+        "species_ids": [
+            131
+        ],
+        "hex_ids": [
+            "83"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            989
+        ],
+        "browser_offset": 73,
+        "browser_flag": 1,
+        "browser_rank_offset": 73,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Hariyama",
+        "label": "HARIYAMA",
+        "browser_id": 29,
+        "species_ids": [
+            132
+        ],
+        "hex_ids": [
+            "84"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            2320
+        ],
+        "browser_offset": 73,
+        "browser_flag": 3,
+        "browser_rank_offset": 73,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Nosepass",
+        "label": "NOSEPASS",
+        "browser_id": 44,
+        "species_ids": [
+            133
+        ],
+        "hex_ids": [
+            "85"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            252
+        ],
+        "browser_offset": 73,
+        "browser_flag": 7,
+        "browser_rank_offset": 73,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Sableye",
+        "label": "SABLEYE",
+        "browser_id": 193,
+        "species_ids": [
+            134
+        ],
+        "hex_ids": [
+            "86"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            1334
+        ],
+        "browser_offset": 74,
+        "browser_flag": 5,
+        "browser_rank_offset": 74,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Mawile",
+        "label": "MAWILE",
+        "browser_id": 130,
+        "species_ids": [
+            135
+        ],
+        "hex_ids": [
+            "87"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            480
+        ],
+        "browser_offset": 74,
+        "browser_flag": 7,
+        "browser_rank_offset": 74,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Aron",
+        "label": "ARON",
+        "browser_id": 131,
+        "species_ids": [
+            136
+        ],
+        "hex_ids": [
+            "88"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            416
+        ],
+        "browser_offset": 75,
+        "browser_flag": 1,
+        "browser_rank_offset": 75,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Lairon",
+        "label": "LAIRON",
+        "browser_id": 132,
+        "species_ids": [
+            137
+        ],
+        "hex_ids": [
+            "89"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            1710
+        ],
+        "browser_offset": 75,
+        "browser_flag": 3,
+        "browser_rank_offset": 75,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Aggron",
+        "label": "AGGRON",
+        "browser_id": 133,
+        "species_ids": [
+            138,
+            278
+        ],
+        "hex_ids": [
+            "8A",
+            "116"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 4
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            7200,
+            14000
+        ],
+        "browser_offset": 75,
+        "browser_flag": 5,
+        "browser_rank_offset": 75,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Roselia",
+        "label": "ROSELIA",
+        "browser_id": 9,
+        "species_ids": [
+            139
+        ],
+        "hex_ids": [
+            "8B"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            228
+        ],
+        "browser_offset": 77,
+        "browser_flag": 7,
+        "browser_rank_offset": 77,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Numel",
+        "label": "NUMEL",
+        "browser_id": 124,
+        "species_ids": [
+            140
+        ],
+        "hex_ids": [
+            "8C"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            448
+        ],
+        "browser_offset": 79,
+        "browser_flag": 5,
+        "browser_rank_offset": 79,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Camerupt",
+        "label": "CAMERUPT",
+        "browser_id": 125,
+        "species_ids": [
+            141
+        ],
+        "hex_ids": [
+            "8D"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            3720
+        ],
+        "browser_offset": 79,
+        "browser_flag": 7,
+        "browser_rank_offset": 79,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Torkoal",
+        "label": "TORKOAL",
+        "browser_id": 224,
+        "species_ids": [
+            142
+        ],
+        "hex_ids": [
+            "8E"
+        ],
+        "field_move": {
+            "category": 18,
+            "level": 9
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            1600
+        ],
+        "browser_offset": 80,
+        "browser_flag": 1,
+        "browser_rank_offset": 80,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Cacnea",
+        "label": "CACNEA",
+        "browser_id": 239,
+        "species_ids": [
+            143
+        ],
+        "hex_ids": [
+            "8F"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            2400
+        ],
+        "browser_offset": 81,
+        "browser_flag": 7,
+        "browser_rank_offset": 81,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Cacturne",
+        "label": "CACTURNE",
+        "browser_id": 240,
+        "species_ids": [
+            144,
+            290
+        ],
+        "hex_ids": [
+            "90",
+            "122"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            3125,
+            9000
+        ],
+        "browser_offset": 82,
+        "browser_flag": 1,
+        "browser_rank_offset": 82,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Altaria",
+        "label": "ALTARIA",
+        "browser_id": 260,
+        "species_ids": [
+            145
+        ],
+        "hex_ids": [
+            "91"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            7000
+        ],
+        "browser_offset": 82,
+        "browser_flag": 5,
+        "browser_rank_offset": 82,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Claydol",
+        "label": "CLAYDOL",
+        "browser_id": 250,
+        "species_ids": [
+            146,
+            271
+        ],
+        "hex_ids": [
+            "92",
+            "10F"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            3380
+        ],
+        "browser_offset": 85,
+        "browser_flag": 1,
+        "browser_rank_offset": 85,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Shuppet",
+        "label": "SHUPPET",
+        "browser_id": 147,
+        "species_ids": [
+            147
+        ],
+        "hex_ids": [
+            "93"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            648
+        ],
+        "browser_offset": 87,
+        "browser_flag": 3,
+        "browser_rank_offset": 87,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Banette",
+        "label": "BANETTE",
+        "browser_id": 148,
+        "species_ids": [
+            148,
+            291
+        ],
+        "hex_ids": [
+            "94",
+            "123"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 2
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            3120,
+            8500
+        ],
+        "browser_offset": 87,
+        "browser_flag": 5,
+        "browser_rank_offset": 87,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Duskull",
+        "label": "DUSKULL",
+        "browser_id": 190,
+        "species_ids": [
+            149,
+            239
+        ],
+        "hex_ids": [
+            "95",
+            "EF"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            1196
+        ],
+        "browser_offset": 87,
+        "browser_flag": 7,
+        "browser_rank_offset": 87,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dusclops",
+        "label": "DUSCLOPS",
+        "browser_id": 191,
+        "species_ids": [
+            150
+        ],
+        "hex_ids": [
+            "96"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            2835
+        ],
+        "browser_offset": 88,
+        "browser_flag": 1,
+        "browser_rank_offset": 88,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Absol",
+        "label": "ABSOL",
+        "browser_id": 256,
+        "species_ids": [
+            151,
+            268
+        ],
+        "hex_ids": [
+            "97",
+            "10C"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 4
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            4500,
+            10000
+        ],
+        "browser_offset": 88,
+        "browser_flag": 7,
+        "browser_rank_offset": 88,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Snorunt",
+        "label": "SNORUNT",
+        "browser_id": 213,
+        "species_ids": [
+            152
+        ],
+        "hex_ids": [
+            "98"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            1680
+        ],
+        "browser_offset": 89,
+        "browser_flag": 3,
+        "browser_rank_offset": 89,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Glalie",
+        "label": "GLALIE",
+        "browser_id": 214,
+        "species_ids": [
+            153
+        ],
+        "hex_ids": [
+            "99"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            2030
+        ],
+        "browser_offset": 89,
+        "browser_flag": 5,
+        "browser_rank_offset": 89,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Spheal",
+        "label": "SPHEAL",
+        "browser_id": 197,
+        "species_ids": [
+            154
+        ],
+        "hex_ids": [
+            "9A"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            1364
+        ],
+        "browser_offset": 89,
+        "browser_flag": 7,
+        "browser_rank_offset": 89,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Sealeo",
+        "label": "SEALEO",
+        "browser_id": 198,
+        "species_ids": [
+            155
+        ],
+        "hex_ids": [
+            "9B"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            1612
+        ],
+        "browser_offset": 90,
+        "browser_flag": 1,
+        "browser_rank_offset": 90,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Walrein",
+        "label": "WALREIN",
+        "browser_id": 199,
+        "species_ids": [
+            156
+        ],
+        "hex_ids": [
+            "9C"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            4200
+        ],
+        "browser_offset": 90,
+        "browser_flag": 3,
+        "browser_rank_offset": 90,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Huntail",
+        "label": "HUNTAIL",
+        "browser_id": 232,
+        "species_ids": [
+            157
+        ],
+        "hex_ids": [
+            "9D"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            2300
+        ],
+        "browser_offset": 90,
+        "browser_flag": 7,
+        "browser_rank_offset": 90,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Gorebyss",
+        "label": "GOREBYSS",
+        "browser_id": 233,
+        "species_ids": [
+            158
+        ],
+        "hex_ids": [
+            "9E"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            2400
+        ],
+        "browser_offset": 91,
+        "browser_flag": 1,
+        "browser_rank_offset": 91,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Bagon",
+        "label": "BAGON",
+        "browser_id": 225,
+        "species_ids": [
+            159
+        ],
+        "hex_ids": [
+            "9F"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            1840
+        ],
+        "browser_offset": 91,
+        "browser_flag": 7,
+        "browser_rank_offset": 91,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Shelgon",
+        "label": "SHELGON",
+        "browser_id": 226,
+        "species_ids": [
+            160
+        ],
+        "hex_ids": [
+            "A0"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            2160
+        ],
+        "browser_offset": 92,
+        "browser_flag": 1,
+        "browser_rank_offset": 92,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Turtwig",
+        "label": "TURTWIG",
+        "browser_id": 52,
+        "species_ids": [
+            161
+        ],
+        "hex_ids": [
+            "A1"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            1075
+        ],
+        "browser_offset": 95,
+        "browser_flag": 7,
+        "browser_rank_offset": 95,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Grotle",
+        "label": "GROTLE",
+        "browser_id": 53,
+        "species_ids": [
+            162
+        ],
+        "hex_ids": [
+            "A2"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            750
+        ],
+        "browser_offset": 96,
+        "browser_flag": 1,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Torterra",
+        "label": "TORTERRA",
+        "browser_id": 54,
+        "species_ids": [
+            163,
+            296
+        ],
+        "hex_ids": [
+            "A3",
+            "128"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 4
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            6500,
+            25000
+        ],
+        "browser_offset": 96,
+        "browser_flag": 3,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Chimchar",
+        "label": "CHIMCHAR",
+        "browser_id": 168,
+        "species_ids": [
+            164
+        ],
+        "hex_ids": [
+            "A4"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            1300
+        ],
+        "browser_offset": 96,
+        "browser_flag": 5,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Monferno",
+        "label": "MONFERNO",
+        "browser_id": 169,
+        "species_ids": [
+            165
+        ],
+        "hex_ids": [
+            "A5"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            1700
+        ],
+        "browser_offset": 96,
+        "browser_flag": 7,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Infernape",
+        "label": "INFERNAPE",
+        "browser_id": 170,
+        "species_ids": [
+            166,
+            298
+        ],
+        "hex_ids": [
+            "A6",
+            "12A"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            8000,
+            21000
+        ],
+        "browser_offset": 97,
+        "browser_flag": 1,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Piplup",
+        "label": "PIPLUP",
+        "browser_id": 206,
+        "species_ids": [
+            167
+        ],
+        "hex_ids": [
+            "A7"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            1750
+        ],
+        "browser_offset": 97,
+        "browser_flag": 3,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Prinplup",
+        "label": "PRINPLUP",
+        "browser_id": 207,
+        "species_ids": [
+            168
+        ],
+        "hex_ids": [
+            "A8"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            1488
+        ],
+        "browser_offset": 97,
+        "browser_flag": 5,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Empoleon",
+        "label": "EMPOLEON",
+        "browser_id": 208,
+        "species_ids": [
+            169,
+            297
+        ],
+        "hex_ids": [
+            "A9",
+            "129"
+        ],
+        "field_move": {
+            "category": 23,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            1350,
+            23000
+        ],
+        "browser_offset": 97,
+        "browser_flag": 7,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Starly",
+        "label": "STARLY",
+        "browser_id": 23,
+        "species_ids": [
+            170,
+            257
+        ],
+        "hex_ids": [
+            "AA",
+            "101"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            170,
+            4500
+        ],
+        "browser_offset": 98,
+        "browser_flag": 1,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Staravia",
+        "label": "STARAVIA",
+        "browser_id": 24,
+        "species_ids": [
+            171
+        ],
+        "hex_ids": [
+            "AB"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            480
+        ],
+        "browser_offset": 98,
+        "browser_flag": 3,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Staraptor",
+        "label": "STARAPTOR",
+        "browser_id": 25,
+        "species_ids": [
+            172
+        ],
+        "hex_ids": [
+            "AC"
+        ],
+        "field_move": {
+            "category": 10,
+            "level": 9
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            777
+        ],
+        "browser_offset": 98,
+        "browser_flag": 5,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Bidoof",
+        "label": "BIDOOF",
+        "browser_id": 4,
+        "species_ids": [
+            173,
+            301,
+            310
+        ],
+        "hex_ids": [
+            "AD",
+            "12D",
+            "136"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            66,
+            198
+        ],
+        "browser_offset": 98,
+        "browser_flag": 7,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Bibarel",
+        "label": "BIBAREL",
+        "browser_id": 5,
+        "species_ids": [
+            174,
+            300,
+            303,
+            304,
+            305,
+            306,
+            307,
+            308
+        ],
+        "hex_ids": [
+            "AE",
+            "12C",
+            "12F",
+            "130",
+            "131",
+            "132",
+            "133",
+            "134"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            480
+        ],
+        "browser_offset": 99,
+        "browser_flag": 1,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kricketot",
+        "label": "KRICKETOT",
+        "browser_id": 82,
+        "species_ids": [
+            175
+        ],
+        "hex_ids": [
+            "AF"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            420
+        ],
+        "browser_offset": 99,
+        "browser_flag": 3,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Kricketune",
+        "label": "KRICKETUNE",
+        "browser_id": 83,
+        "species_ids": [
+            176
+        ],
+        "hex_ids": [
+            "B0"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            1650
+        ],
+        "browser_offset": 99,
+        "browser_flag": 5,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Shinx",
+        "label": "SHINX",
+        "browser_id": 49,
+        "species_ids": [
+            177
+        ],
+        "hex_ids": [
+            "B1"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            140
+        ],
+        "browser_offset": 99,
+        "browser_flag": 7,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Luxio",
+        "label": "LUXIO",
+        "browser_id": 50,
+        "species_ids": [
+            178
+        ],
+        "hex_ids": [
+            "B2"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            1978
+        ],
+        "browser_offset": 100,
+        "browser_flag": 1,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Luxray",
+        "label": "LUXRAY",
+        "browser_id": 51,
+        "species_ids": [
+            179
+        ],
+        "hex_ids": [
+            "B3"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            6090
+        ],
+        "browser_offset": 100,
+        "browser_flag": 3,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Budew",
+        "label": "BUDEW",
+        "browser_id": 8,
+        "species_ids": [
+            180
+        ],
+        "hex_ids": [
+            "B4"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            66
+        ],
+        "browser_offset": 100,
+        "browser_flag": 5,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Roserade",
+        "label": "ROSERADE",
+        "browser_id": 10,
+        "species_ids": [
+            181
+        ],
+        "hex_ids": [
+            "B5"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            6000
+        ],
+        "browser_offset": 100,
+        "browser_flag": 7,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Cranidos",
+        "label": "CRANIDOS",
+        "browser_id": 84,
+        "species_ids": [
+            182
+        ],
+        "hex_ids": [
+            "B6"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            420
+        ],
+        "browser_offset": 101,
+        "browser_flag": 1,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Shieldon",
+        "label": "SHIELDON",
+        "browser_id": 181,
+        "species_ids": [
+            183
+        ],
+        "hex_ids": [
+            "B7"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            640
+        ],
+        "browser_offset": 101,
+        "browser_flag": 5,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Bastiodon",
+        "label": "BASTIODON",
+        "browser_id": 182,
+        "species_ids": [
+            184
+        ],
+        "hex_ids": [
+            "B8"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 3
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            4000
+        ],
+        "browser_offset": 101,
+        "browser_flag": 7,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Mothim",
+        "label": "MOTHIM",
+        "browser_id": 241,
+        "species_ids": [
+            185
+        ],
+        "hex_ids": [
+            "B9"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            2500
+        ],
+        "browser_offset": 102,
+        "browser_flag": 5,
+        "browser_rank_offset": 102,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Combee",
+        "label": "COMBEE",
+        "browser_id": 59,
+        "species_ids": [
+            186
+        ],
+        "hex_ids": [
+            "BA"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            140
+        ],
+        "browser_offset": 102,
+        "browser_flag": 7,
+        "browser_rank_offset": 102,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Vespiquen",
+        "label": "VESPIQUEN",
+        "browser_id": 60,
+        "species_ids": [
+            187
+        ],
+        "hex_ids": [
+            "BB"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            1560
+        ],
+        "browser_offset": 103,
+        "browser_flag": 1,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Pachirisu",
+        "label": "PACHIRISU",
+        "browser_id": 26,
+        "species_ids": [
+            188,
+            258
+        ],
+        "hex_ids": [
+            "BC",
+            "102"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            170,
+            5000
+        ],
+        "browser_offset": 103,
+        "browser_flag": 3,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Buizel",
+        "label": "BUIZEL",
+        "browser_id": 55,
+        "species_ids": [
+            189
+        ],
+        "hex_ids": [
+            "BD"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            135
+        ],
+        "browser_offset": 103,
+        "browser_flag": 5,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Floatzel",
+        "label": "FLOATZEL",
+        "browser_id": 56,
+        "species_ids": [
+            190
+        ],
+        "hex_ids": [
+            "BE"
+        ],
+        "field_move": {
+            "category": 23,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            1000
+        ],
+        "browser_offset": 103,
+        "browser_flag": 7,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Cherubi",
+        "label": "CHERUBI",
+        "browser_id": 47,
+        "species_ids": [
+            191
+        ],
+        "hex_ids": [
+            "BF"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            185
+        ],
+        "browser_offset": 104,
+        "browser_flag": 1,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Cherrim",
+        "label": "CHERRIM",
+        "browser_id": 48,
+        "species_ids": [
+            192
+        ],
+        "hex_ids": [
+            "C0"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            1161
+        ],
+        "browser_offset": 104,
+        "browser_flag": 3,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Shellos",
+        "label": "SHELLOS",
+        "browser_id": 37,
+        "species_ids": [
+            193
+        ],
+        "hex_ids": [
+            "C1"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            105
+        ],
+        "browser_offset": 104,
+        "browser_flag": 5,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Gastrodon",
+        "label": "GASTRODON",
+        "browser_id": 38,
+        "species_ids": [
+            194
+        ],
+        "hex_ids": [
+            "C2"
+        ],
+        "field_move": {
+            "category": 6,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            560
+        ],
+        "browser_offset": 104,
+        "browser_flag": 7,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ambipom",
+        "label": "AMBIPOM",
+        "browser_id": 109,
+        "species_ids": [
+            195
+        ],
+        "hex_ids": [
+            "C3"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            1350
+        ],
+        "browser_offset": 105,
+        "browser_flag": 1,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Drifloon",
+        "label": "DRIFLOON",
+        "browser_id": 142,
+        "species_ids": [
+            196
+        ],
+        "hex_ids": [
+            "C4"
+        ],
+        "field_move": {
+            "category": 13,
+            "level": 9
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            500
+        ],
+        "browser_offset": 105,
+        "browser_flag": 3,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Drifblim",
+        "label": "DRIFBLIM",
+        "browser_id": 143,
+        "species_ids": [
+            197,
+            267
+        ],
+        "hex_ids": [
+            "C5",
+            "10B"
+        ],
+        "field_move": {
+            "category": 16,
+            "level": 9
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            800,
+            10000
+        ],
+        "browser_offset": 105,
+        "browser_flag": 5,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Buneary",
+        "label": "BUNEARY",
+        "browser_id": 20,
+        "species_ids": [
+            198
+        ],
+        "hex_ids": [
+            "C6"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            71
+        ],
+        "browser_offset": 105,
+        "browser_flag": 7,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Lopunny",
+        "label": "LOPUNNY",
+        "browser_id": 21,
+        "species_ids": [
+            199
+        ],
+        "hex_ids": [
+            "C7"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            1716
+        ],
+        "browser_offset": 106,
+        "browser_flag": 1,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Mismagius",
+        "label": "MISMAGIUS",
+        "browser_id": 221,
+        "species_ids": [
+            200
+        ],
+        "hex_ids": [
+            "C8"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            3220
+        ],
+        "browser_offset": 106,
+        "browser_flag": 3,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Honchkrow",
+        "label": "HONCHKROW",
+        "browser_id": 186,
+        "species_ids": [
+            201,
+            262
+        ],
+        "hex_ids": [
+            "C9",
+            "106"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            3000,
+            8500
+        ],
+        "browser_offset": 106,
+        "browser_flag": 5,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Glameow",
+        "label": "GLAMEOW",
+        "browser_id": 39,
+        "species_ids": [
+            202
+        ],
+        "hex_ids": [
+            "CA"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            112
+        ],
+        "browser_offset": 106,
+        "browser_flag": 7,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Purugly",
+        "label": "PURUGLY",
+        "browser_id": 40,
+        "species_ids": [
+            203
+        ],
+        "hex_ids": [
+            "CB"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            2300
+        ],
+        "browser_offset": 107,
+        "browser_flag": 1,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Chingling",
+        "label": "CHINGLING",
+        "browser_id": 205,
+        "species_ids": [
+            204
+        ],
+        "hex_ids": [
+            "CC"
+        ],
+        "field_move": {
+            "category": 12,
+            "level": 9
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            2100
+        ],
+        "browser_offset": 107,
+        "browser_flag": 3,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Stunky",
+        "label": "STUNKY",
+        "browser_id": 144,
+        "species_ids": [
+            205
+        ],
+        "hex_ids": [
+            "CD"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            648
+        ],
+        "browser_offset": 107,
+        "browser_flag": 5,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Skuntank",
+        "label": "SKUNTANK",
+        "browser_id": 145,
+        "species_ids": [
+            206
+        ],
+        "hex_ids": [
+            "CE"
+        ],
+        "field_move": {
+            "category": 21,
+            "level": 9
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            3380
+        ],
+        "browser_offset": 107,
+        "browser_flag": 7,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Bronzor",
+        "label": "BRONZOR",
+        "browser_id": 248,
+        "species_ids": [
+            207
+        ],
+        "hex_ids": [
+            "CF"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            2990
+        ],
+        "browser_offset": 108,
+        "browser_flag": 1,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Bronzong",
+        "label": "BRONZONG",
+        "browser_id": 249,
+        "species_ids": [
+            208,
+            264
+        ],
+        "hex_ids": [
+            "D0",
+            "108"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            3900
+        ],
+        "browser_offset": 108,
+        "browser_flag": 3,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Bonsly",
+        "label": "BONSLY",
+        "browser_id": 30,
+        "species_ids": [
+            209
+        ],
+        "hex_ids": [
+            "D1"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            84
+        ],
+        "browser_offset": 108,
+        "browser_flag": 5,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Mime Jr.",
+        "label": "MIME JR.",
+        "browser_id": 164,
+        "species_ids": [
+            210
+        ],
+        "hex_ids": [
+            "D2"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            1204
+        ],
+        "browser_offset": 108,
+        "browser_flag": 7,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Happiny",
+        "label": "HAPPINY",
+        "browser_id": 22,
+        "species_ids": [
+            211
+        ],
+        "hex_ids": [
+            "D3"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            100
+        ],
+        "browser_offset": 109,
+        "browser_flag": 1,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Chatot",
+        "label": "CHATOT",
+        "browser_id": 69,
+        "species_ids": [
+            212
+        ],
+        "hex_ids": [
+            "D4"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            210
+        ],
+        "browser_offset": 109,
+        "browser_flag": 3,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gible",
+        "label": "GIBLE",
+        "browser_id": 251,
+        "species_ids": [
+            213
+        ],
+        "hex_ids": [
+            "D5"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            3000
+        ],
+        "browser_offset": 109,
+        "browser_flag": 7,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Gabite",
+        "label": "GABITE",
+        "browser_id": 252,
+        "species_ids": [
+            214,
+            266
+        ],
+        "hex_ids": [
+            "D6",
+            "10A"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            2600,
+            8000
+        ],
+        "browser_offset": 110,
+        "browser_flag": 1,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Munchlax",
+        "label": "MUNCHLAX",
+        "browser_id": 27,
+        "species_ids": [
+            215,
+            259
+        ],
+        "hex_ids": [
+            "D7",
+            "103"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            180,
+            5000
+        ],
+        "browser_offset": 110,
+        "browser_flag": 5,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Riolu",
+        "label": "RIOLU",
+        "browser_id": 222,
+        "species_ids": [
+            216,
+            240,
+            299
+        ],
+        "hex_ids": [
+            "D8",
+            "F0",
+            "12B"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            1750
+        ],
+        "browser_offset": 110,
+        "browser_flag": 7,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Hippopotas",
+        "label": "HIPPOPOTAS",
+        "browser_id": 246,
+        "species_ids": [
+            217
+        ],
+        "hex_ids": [
+            "D9"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            3200
+        ],
+        "browser_offset": 111,
+        "browser_flag": 3,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Hippowdon",
+        "label": "HIPPOWDON",
+        "browser_id": 247,
+        "species_ids": [
+            218
+        ],
+        "hex_ids": [
+            "DA"
+        ],
+        "field_move": {
+            "category": 20,
+            "level": 9
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            9000
+        ],
+        "browser_offset": 111,
+        "browser_flag": 5,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Skorupi",
+        "label": "SKORUPI",
+        "browser_id": 173,
+        "species_ids": [
+            219
+        ],
+        "hex_ids": [
+            "DB"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            2875
+        ],
+        "browser_offset": 111,
+        "browser_flag": 7,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Croagunk",
+        "label": "CROAGUNK",
+        "browser_id": 80,
+        "species_ids": [
+            220
+        ],
+        "hex_ids": [
+            "DC"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            640
+        ],
+        "browser_offset": 112,
+        "browser_flag": 3,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Toxicroak",
+        "label": "TOXICROAK",
+        "browser_id": 81,
+        "species_ids": [
+            221,
+            243
+        ],
+        "hex_ids": [
+            "DD",
+            "F3"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            1440,
+            24000
+        ],
+        "browser_offset": 112,
+        "browser_flag": 5,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Carnivine",
+        "label": "CARNIVINE",
+        "browser_id": 136,
+        "species_ids": [
+            222
+        ],
+        "hex_ids": [
+            "DE"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            680
+        ],
+        "browser_offset": 112,
+        "browser_flag": 7,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Finneon",
+        "label": "FINNEON",
+        "browser_id": 86,
+        "species_ids": [
+            223
+        ],
+        "hex_ids": [
+            "DF"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            240
+        ],
+        "browser_offset": 113,
+        "browser_flag": 1,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Lumineon",
+        "label": "LUMINEON",
+        "browser_id": 87,
+        "species_ids": [
+            224
+        ],
+        "hex_ids": [
+            "E0"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            910
+        ],
+        "browser_offset": 113,
+        "browser_flag": 3,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mantyke",
+        "label": "MANTYKE",
+        "browser_id": 90,
+        "species_ids": [
+            225
+        ],
+        "hex_ids": [
+            "E1"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            312
+        ],
+        "browser_offset": 113,
+        "browser_flag": 5,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Snover",
+        "label": "SNOVER",
+        "browser_id": 211,
+        "species_ids": [
+            226
+        ],
+        "hex_ids": [
+            "E2"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            2460
+        ],
+        "browser_offset": 113,
+        "browser_flag": 7,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Abomasnow",
+        "label": "ABOMASNOW",
+        "browser_id": 212,
+        "species_ids": [
+            227,
+            269
+        ],
+        "hex_ids": [
+            "E3",
+            "10D"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            3960,
+            14000
+        ],
+        "browser_offset": 114,
+        "browser_flag": 1,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Weavile",
+        "label": "WEAVILE",
+        "browser_id": 245,
+        "species_ids": [
+            228,
+            256
+        ],
+        "hex_ids": [
+            "E4",
+            "100"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 4
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            9000,
+            12000
+        ],
+        "browser_offset": 114,
+        "browser_flag": 3,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Lickilicky",
+        "label": "LICKILICKY",
+        "browser_id": 175,
+        "species_ids": [
+            229
+        ],
+        "hex_ids": [
+            "E5"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            1720
+        ],
+        "browser_offset": 114,
+        "browser_flag": 7,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tangrowth",
+        "label": "TANGROWTH",
+        "browser_id": 36,
+        "species_ids": [
+            230,
+            280
+        ],
+        "hex_ids": [
+            "E6",
+            "118"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            350,
+            20000
+        ],
+        "browser_offset": 115,
+        "browser_flag": 3,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Togekiss",
+        "label": "TOGEKISS",
+        "browser_id": 261,
+        "species_ids": [
+            231
+        ],
+        "hex_ids": [
+            "E7"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            8000
+        ],
+        "browser_offset": 116,
+        "browser_flag": 1,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Leafeon",
+        "label": "LEAFEON",
+        "browser_id": 103,
+        "species_ids": [
+            232,
+            287
+        ],
+        "hex_ids": [
+            "E8",
+            "11F"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            8500,
+            18000
+        ],
+        "browser_offset": 116,
+        "browser_flag": 5,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Glaceon",
+        "label": "GLACEON",
+        "browser_id": 104,
+        "species_ids": [
+            233,
+            288
+        ],
+        "hex_ids": [
+            "E9",
+            "120"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            7900,
+            18000
+        ],
+        "browser_offset": 116,
+        "browser_flag": 7,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Porygon-Z",
+        "label": "PORYGON-Z",
+        "browser_id": 262,
+        "species_ids": [
+            234
+        ],
+        "hex_ids": [
+            "EA"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            8200
+        ],
+        "browser_offset": 117,
+        "browser_flag": 5,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Probopass",
+        "label": "PROBOPASS",
+        "browser_id": 45,
+        "species_ids": [
+            235
+        ],
+        "hex_ids": [
+            "EB"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            5500
+        ],
+        "browser_offset": 118,
+        "browser_flag": 1,
+        "browser_rank_offset": 118,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Sharpedo",
+        "label": "SHARPEDO",
+        "browser_id": 96,
+        "species_ids": [
+            237,
+            406
+        ],
+        "hex_ids": [
+            "ED",
+            "196"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            910
+        ],
+        "browser_offset": 78,
+        "browser_flag": 7,
+        "browser_rank_offset": 78,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Wailmer",
+        "label": "WAILMER",
+        "browser_id": 237,
+        "species_ids": [
+            238
+        ],
+        "hex_ids": [
+            "EE"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [
+            8000
+        ],
+        "browser_offset": 79,
+        "browser_flag": 1,
+        "browser_rank_offset": 79,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Lucario",
+        "label": "LUCARIO",
+        "browser_id": 223,
+        "species_ids": [
+            241,
+            245,
+            412,
+            429
+        ],
+        "hex_ids": [
+            "F1",
+            "F5",
+            "19C",
+            "1AD"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            9000,
+            32000
+        ],
+        "browser_offset": 111,
+        "browser_flag": 1,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Wailord",
+        "label": "WAILORD",
+        "browser_id": 238,
+        "species_ids": [
+            242
+        ],
+        "hex_ids": [
+            "F2"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 5,
+        "friendship_gauge": [],
+        "browser_offset": 79,
+        "browser_flag": 3,
+        "browser_rank_offset": null,
+        "browser_rank_flag": null
+    },
+    {
+        "name": "Spiritomb",
+        "label": "SPIRITOMB",
+        "browser_id": 196,
+        "species_ids": [
+            244,
+            410
+        ],
+        "hex_ids": [
+            "F4",
+            "19A"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            8700,
+            30000
+        ],
+        "browser_offset": 109,
+        "browser_flag": 5,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Heatran",
+        "label": "HEATRAN",
+        "browser_id": 228,
+        "species_ids": [
+            246,
+            424,
+            430
+        ],
+        "hex_ids": [
+            "F6",
+            "1A8",
+            "1AE"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            12800,
+            34000
+        ],
+        "browser_offset": 120,
+        "browser_flag": 3,
+        "browser_rank_offset": 120,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Cresselia",
+        "label": "CRESSELIA",
+        "browser_id": 254,
+        "species_ids": [
+            247,
+            426,
+            431
+        ],
+        "hex_ids": [
+            "F7",
+            "1AA",
+            "1AF"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 15,
+        "friendship_gauge": [
+            19600,
+            36000
+        ],
+        "browser_offset": 121,
+        "browser_flag": 1,
+        "browser_rank_offset": 121,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Yanmega",
+        "label": "YANMEGA",
+        "browser_id": 119,
+        "species_ids": [
+            248,
+            418
+        ],
+        "hex_ids": [
+            "F8",
+            "1A2"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 8,
+        "friendship_gauge": [
+            4500,
+            16000
+        ],
+        "browser_offset": 116,
+        "browser_flag": 3,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gliscor",
+        "label": "GLISCOR",
+        "browser_id": 129,
+        "species_ids": [
+            249,
+            419
+        ],
+        "hex_ids": [
+            "F9",
+            "1A3"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            16100,
+            16000
+        ],
+        "browser_offset": 117,
+        "browser_flag": 1,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Mamoswine",
+        "label": "MAMOSWINE",
+        "browser_id": 202,
+        "species_ids": [
+            250,
+            420
+        ],
+        "hex_ids": [
+            "FA",
+            "1A4"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            9000,
+            20000
+        ],
+        "browser_offset": 117,
+        "browser_flag": 3,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Rhyperior",
+        "label": "RHYPERIOR",
+        "browser_id": 151,
+        "species_ids": [
+            251,
+            415,
+            439
+        ],
+        "hex_ids": [
+            "FB",
+            "19F",
+            "1B7"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 11,
+        "friendship_gauge": [
+            17000,
+            6500,
+            20000
+        ],
+        "browser_offset": 115,
+        "browser_flag": 1,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Flygon",
+        "label": "FLYGON",
+        "browser_id": 259,
+        "species_ids": [
+            252,
+            407
+        ],
+        "hex_ids": [
+            "FC",
+            "197"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 4
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            14000,
+            30000
+        ],
+        "browser_offset": 81,
+        "browser_flag": 5,
+        "browser_rank_offset": 81,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Salamence",
+        "label": "SALAMENCE",
+        "browser_id": 227,
+        "species_ids": [
+            253,
+            408
+        ],
+        "hex_ids": [
+            "FD",
+            "198"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            16500,
+            35000
+        ],
+        "browser_offset": 92,
+        "browser_flag": 3,
+        "browser_rank_offset": 92,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Charizard",
+        "label": "CHARIZARD",
+        "browser_id": 139,
+        "species_ids": [
+            254,
+            401
+        ],
+        "hex_ids": [
+            "FE",
+            "191"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 4
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            15000,
+            40000
+        ],
+        "browser_offset": 0,
+        "browser_flag": 5,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Drapion",
+        "label": "DRAPION",
+        "browser_id": 174,
+        "species_ids": [
+            255,
+            413
+        ],
+        "hex_ids": [
+            "FF",
+            "19D"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 13,
+        "friendship_gauge": [
+            7800,
+            22000
+        ],
+        "browser_offset": 112,
+        "browser_flag": 1,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Garchomp",
+        "label": "GARCHOMP",
+        "browser_id": 253,
+        "species_ids": [
+            293,
+            411
+        ],
+        "hex_ids": [
+            "125",
+            "19B"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 5
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            10000,
+            13000
+        ],
+        "browser_offset": 110,
+        "browser_flag": 3,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magmortar",
+        "label": "MAGMORTAR",
+        "browser_id": 75,
+        "species_ids": [
+            294,
+            417,
+            440
+        ],
+        "hex_ids": [
+            "126",
+            "1A1",
+            "1B8"
+        ],
+        "field_move": {
+            "category": 1,
+            "level": 5
+        },
+        "poke_assist": 9,
+        "friendship_gauge": [
+            15300,
+            6200,
+            24000
+        ],
+        "browser_offset": 115,
+        "browser_flag": 7,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Electivire",
+        "label": "ELECTIVIRE",
+        "browser_id": 72,
+        "species_ids": [
+            295,
+            416
+        ],
+        "hex_ids": [
+            "127",
+            "1A0"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            13050,
+            25000
+        ],
+        "browser_offset": 115,
+        "browser_flag": 5,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Aerodactyl",
+        "label": "AERODACTYL",
+        "browser_id": 258,
+        "species_ids": [
+            402
+        ],
+        "hex_ids": [
+            "192"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 2,
+        "friendship_gauge": [
+            10000
+        ],
+        "browser_offset": 34,
+        "browser_flag": 5,
+        "browser_rank_offset": 34,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Dragonair",
+        "label": "DRAGONAIR",
+        "browser_id": 219,
+        "species_ids": [
+            403
+        ],
+        "hex_ids": [
+            "193"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            6250
+        ],
+        "browser_offset": 36,
+        "browser_flag": 1,
+        "browser_rank_offset": 36,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kingdra",
+        "label": "KINGDRA",
+        "browser_id": 231,
+        "species_ids": [
+            404
+        ],
+        "hex_ids": [
+            "194"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [
+            10000
+        ],
+        "browser_offset": 56,
+        "browser_flag": 5,
+        "browser_rank_offset": 56,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Celebi",
+        "label": "CELEBI",
+        "browser_id": 263,
+        "species_ids": [
+            405
+        ],
+        "hex_ids": [
+            "195"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [
+            12000
+        ],
+        "browser_offset": 61,
+        "browser_flag": 7,
+        "browser_rank_offset": 61,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Rampardos",
+        "label": "RAMPARDOS",
+        "browser_id": 85,
+        "species_ids": [
+            409
+        ],
+        "hex_ids": [
+            "199"
+        ],
+        "field_move": {
+            "category": 8,
+            "level": 5
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            3200
+        ],
+        "browser_offset": 101,
+        "browser_flag": 3,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magnezone",
+        "label": "MAGNEZONE",
+        "browser_id": 64,
+        "species_ids": [
+            414
+        ],
+        "hex_ids": [
+            "19E"
+        ],
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "friendship_gauge": [
+            14000
+        ],
+        "browser_offset": 114,
+        "browser_flag": 5,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Gallade",
+        "label": "GALLADE",
+        "browser_id": 160,
+        "species_ids": [
+            421,
+            438
+        ],
+        "hex_ids": [
+            "1A5",
+            "1B6"
+        ],
+        "field_move": {
+            "category": 3,
+            "level": 5
+        },
+        "poke_assist": 10,
+        "friendship_gauge": [
+            11900,
+            5800
+        ],
+        "browser_offset": 117,
+        "browser_flag": 7,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dusknoir",
+        "label": "DUSKNOIR",
+        "browser_id": 192,
+        "species_ids": [
+            422
+        ],
+        "hex_ids": [
+            "1A6"
+        ],
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "friendship_gauge": [
+            18000
+        ],
+        "browser_offset": 118,
+        "browser_flag": 3,
+        "browser_rank_offset": 118,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Froslass",
+        "label": "FROSLASS",
+        "browser_id": 215,
+        "species_ids": [
+            423
+        ],
+        "hex_ids": [
+            "1A7"
+        ],
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            7500
+        ],
+        "browser_offset": 118,
+        "browser_flag": 5,
+        "browser_rank_offset": 118,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Regigigas",
+        "label": "REGIGIGAS",
+        "browser_id": 267,
+        "species_ids": [
+            425
+        ],
+        "hex_ids": [
+            "1A9"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 3,
+        "friendship_gauge": [
+            36000
+        ],
+        "browser_offset": 120,
+        "browser_flag": 5,
+        "browser_rank_offset": 120,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Darkrai",
+        "label": "DARKRAI",
+        "browser_id": 257,
+        "species_ids": [
+            427,
+            428
+        ],
+        "hex_ids": [
+            "1AB",
+            "1AC"
+        ],
+        "field_move": {
+            "category": 14,
+            "level": 9
+        },
+        "poke_assist": 16,
+        "friendship_gauge": [
+            24000
+        ],
+        "browser_offset": 121,
+        "browser_flag": 7,
+        "browser_rank_offset": 121,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Regirock",
+        "label": "REGIROCK",
+        "browser_id": 264,
+        "species_ids": [
+            432
+        ],
+        "hex_ids": [
+            "1B0"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 6,
+        "friendship_gauge": [
+            25000
+        ],
+        "browser_offset": 93,
+        "browser_flag": 3,
+        "browser_rank_offset": 93,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Regice",
+        "label": "REGICE",
+        "browser_id": 265,
+        "species_ids": [
+            433
+        ],
+        "hex_ids": [
+            "1B1"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 17,
+        "friendship_gauge": [
+            25000
+        ],
+        "browser_offset": 93,
+        "browser_flag": 5,
+        "browser_rank_offset": 93,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Registeel",
+        "label": "REGISTEEL",
+        "browser_id": 266,
+        "species_ids": [
+            434
+        ],
+        "hex_ids": [
+            "1B2"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 12,
+        "friendship_gauge": [
+            25000
+        ],
+        "browser_offset": 93,
+        "browser_flag": 7,
+        "browser_rank_offset": 93,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dialga",
+        "label": "DIALGA",
+        "browser_id": 435,
+        "species_ids": [
+            435,
+            441,
+            442
+        ],
+        "hex_ids": [
+            "1B3",
+            "1B9",
+            "1BA"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [],
+        "browser_offset": 119,
+        "browser_flag": 7,
+        "browser_rank_offset": 119,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Palkia",
+        "label": "PALKIA",
+        "browser_id": 436,
+        "species_ids": [
+            436
+        ],
+        "hex_ids": [
+            "1B4"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 18,
+        "friendship_gauge": [],
+        "browser_offset": 120,
+        "browser_flag": 1,
+        "browser_rank_offset": 120,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Shaymin",
+        "label": "SHAYMIN",
+        "browser_id": 437,
+        "species_ids": [
+            437
+        ],
+        "hex_ids": [
+            "1B5"
+        ],
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 1,
+        "friendship_gauge": [],
+        "browser_offset": 122,
+        "browser_flag": 1,
+        "browser_rank_offset": 122,
+        "browser_rank_flag": 0
+    }
+]

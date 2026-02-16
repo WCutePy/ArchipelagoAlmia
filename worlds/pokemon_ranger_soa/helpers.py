@@ -41,23 +41,7 @@ def modify_data_to_new_json(
     print(f"Wrote modified data to {output_file}")
 
 
-species = data.species.values()
-
-for sp in species:
-    sp.browser_flag_address = sp.browser_flag_address - BROWSER_START_ADDRESS
-    if sp.browser_rank_flag_address is not None:
-        sp.browser_rank_flag_address = (
-            sp.browser_rank_flag_address - BROWSER_RANK_START_ADDRESS
-        )
-
-
 modify_data_to_new_json(
-    "worlds/pokemon_ranger_soa/data/new_species.json",
-    species,
-    None,
-    {
-        "browser_number": "browser_id",
-        "browser_flag_address": "browser_offset",
-        "browser_rank_flag_address": "browser_rank_offset",
-    },
+    "worlds/pokemon_ranger_soa/data/items.json",
+    data.items,
 )
