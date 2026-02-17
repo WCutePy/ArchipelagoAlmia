@@ -102,6 +102,94 @@ class CaptureRankRankTarget(Choice):
     default = option_A
 
 
+class LevelUpType(Choice):
+    """
+    Lets you choose if level up is locked behind progressive level up.
+    The progression items will automatically level you up to the next stat cap.
+
+    Lets you choose between not modifying it,
+    Having separate progression items for Power and Energy or
+    having both together.
+    """
+
+    display_name = "Option to modify how leveling up works"
+
+    option_vanilla = 0
+    option_separate = 1
+    option_together = 2
+
+    default = option_separate
+
+
+class LevelUpCount(Range):
+    """
+    The amount of level up items in the pool.
+    Regardless of setting,
+    Leveling beyond 99 is not possible.
+    """
+
+    display_name = "Level up items"
+
+    range_start = 1
+    range_end = 98
+
+    default = 10
+
+
+class LevelUpIncrement(Range):
+    """
+    Each level up progression item will level you up by this
+    amount of levels. Leveling beyond 99 is not possible.
+    """
+
+    display_name = "Level up increment"
+
+    range_start = 1
+    range_end = 98
+
+    default = 4
+
+
+class RankUpType(Choice):
+    """
+    Choose between ranking up vanilla or as progression item.
+    """
+
+    display_name = "Rank up type"
+
+    option_vanilla = 0
+    option_item = 1
+
+    default = option_item
+
+
+class RankUpItemCount(Range):
+    """
+    Rank is logically required for certain locations.
+    Selecting below 10 rank items restricts what is
+    accessible.
+    """
+
+    display_name = "Rank up items"
+
+    range_start = 0
+    range_end = 15
+    default = 10
+
+
+class RankUpIncrement(Range):
+    """
+    How much Ranger Rank will increment for each Rank up item
+    """
+
+    display_name = "Rank up increment"
+
+    range_start = 1
+    range_end = 10
+
+    default = 1
+
+
 class PokemonRSOADeathLink(DeathLink):
     __doc__ = (
         DeathLink.__doc__
@@ -135,6 +223,14 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     death_link: PokemonRSOADeathLink
     death_link_damage: DeathlinkDamage
 
+    level_up_type: LevelUpType
+    level_up_count: LevelUpCount
+    level_up_increment: LevelUpIncrement
+
+    rank_up_type: RankUpType
+    rank_up_count: RankUpItemCount
+    rank_up_increment: RankUpIncrement
+
 
 option_groups = [
     OptionGroup(
@@ -147,5 +243,7 @@ option_groups = [
             CaptureRankCountTarget,
             CaptureRankRankTarget,
         ],
-    )
+    ),
+    OptionGroup("Level up", [LevelUpType, LevelUpCount, LevelUpIncrement]),
+    OptionGroup("Rank up", [RankUpType, RankUpItemCount, RankUpIncrement]),
 ]

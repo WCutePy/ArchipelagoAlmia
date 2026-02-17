@@ -80,6 +80,12 @@ class PokemonRSOA(World):
             "capture_rank_rank_target",
             "death_link",
             "death_link_damage",
+            "level_up_type",
+            "level_up_count",
+            "level_up_increment",
+            "rank_up_type",
+            "rank_up_count",
+            "rank_up_increment",
         )
         slot_data["blacklisted_captures"] = self.blacklisted_captures
 

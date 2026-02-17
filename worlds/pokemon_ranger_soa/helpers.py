@@ -16,20 +16,32 @@ def modify_data_to_new_json(
     processed = []
 
     for obj in instance:
-        # Convert to dict safely
         if is_dataclass(obj):
             data = asdict(obj)
-        else:
+
+        elif isinstance(obj, dict):
+            data = obj
+
+        elif isinstance(obj, (list, tuple)):
+            processed.append(list(obj))
+            continue
+
+        elif isinstance(obj, (str, int, float, bool)):
+            processed.append(obj)
+            continue
+
+        elif hasattr(obj, "__dict__"):
             data = vars(obj)
+
+        else:
+            processed.append(str(obj))
+            continue
 
         new_data = {}
 
         for key, value in data.items():
-            # Skip removed fields
             if key in remove_fields:
                 continue
-
-            # Rename if needed
             new_key = rename_fields.get(key, key)
             new_data[new_key] = value
 
@@ -39,9 +51,3 @@ def modify_data_to_new_json(
         json.dump(processed, f, indent=4)
 
     print(f"Wrote modified data to {output_file}")
-
-
-modify_data_to_new_json(
-    "worlds/pokemon_ranger_soa/data/items.json",
-    data.items,
-)

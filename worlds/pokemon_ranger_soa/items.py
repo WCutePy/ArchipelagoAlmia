@@ -85,25 +85,37 @@ def create_all_items(world: PokemonRSOA) -> None:
 
     needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
 
-    created = 0
+    if not world.options.level_up_type.option_vanilla:
+        items = []
+        if world.options.level_up_type.option_separate:
+            items = ["Progressive Power", "Progressive Energy"]
+        else:
+            items = ["Progressive Attributes"]
+
+        for label in items:
+            for i in range(world.options.level_up_count):
+                new_item = world.create_item(label)
+                itempool.append(new_item)
+                needed_number_of_filler_items -= 1
+
     for i, item in data.items.items():
         if ItemCategory.STYLER_UPGRADE in item.item_categories:
 
             for j in range(item.copies):
-                if created >= needed_number_of_filler_items:
+                if not needed_number_of_filler_items:
                     break
 
                 new_item = world.create_item(item.label)
                 itempool.append(new_item)
-                created += 1
+                needed_number_of_filler_items -= 1
 
-        if created >= needed_number_of_filler_items:
+        if not needed_number_of_filler_items:
             break
 
-    while created < needed_number_of_filler_items:
+    while needed_number_of_filler_items:
 
         item = world.create_filler()
         itempool.append(item)
 
-        created += 1
+        needed_number_of_filler_items -= 1
     world.multiworld.itempool += itempool

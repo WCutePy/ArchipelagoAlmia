@@ -20,6 +20,14 @@ BROWSER_START_ADDRESS = 0x020BA2DD
 BROWSER_RANK_START_ADDRESS = 0x020BA551
 
 
+class GameStateEnum(IntEnum):
+    OVERWORLD = 0x00
+    BATTLE = 0x01
+    BLACK_SCREEN = 0x02
+    MISSION_SCREEN = 0x08
+    ...
+
+
 class LocationCategory(IntEnum):
     BROWSER = 1
     BROWSER_RANK = 2
@@ -143,6 +151,7 @@ class RegionData:
 
 class ItemCategory(StrEnum):
     STYLER_UPGRADE = auto()
+    PLAYER_ATTRIBUTES = auto()
     FILLER = auto()
     UNIQUE = auto()
     PROGRESSIVE = auto()
@@ -164,11 +173,21 @@ class ItemData:
     bit_offset: Optional[int] = None
     copies: int = 1
 
+    def __post_init__(self):
+        if not isinstance(self.classification, ItemClassification):
+            self.classification = ItemClassification(self.classification)
+
+        self.item_categories = tuple(
+            c if isinstance(c, ItemCategory) else ItemCategory(c)
+            for c in self.item_categories
+        )
+
 
 class PokemonRSOAData:
     species: Dict[int, SpeciesData]
     locations: Dict[str, LocationData]
     items: Dict[int, ItemData]
+    styler_levels: List[Tuple[int, int]]  # each entry is a level with Energy, Power
 
     ram_addresses: Dict[str, RamAddress]
 
@@ -177,6 +196,7 @@ class PokemonRSOAData:
         self.locations = {}
         self.items = {}
         self.ram_addresses = {}
+        self.styler_levels = []
 
 
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
@@ -193,64 +213,33 @@ def _init():
         species = SpeciesData(**species_data)
         data.species[species.browser_id] = species
 
-    STYLER_UPGRADES = (
-        ("Progressive Grass Defense", 2, 0),
-        ("Progressive Water Defense", 2, 2),
-        ("Progressive Electric Defense", 2, 4),
-        ("Progressive Fire Defense", 2, 6),
-        ("Progressive Fighting Defense", 2, 8),
-        ("Progressive Poison Defense", 2, 10),
-        ("Progressive Psychic Defense", 2, 12),
-        ("Progressive Bug Defense", 2, 14),
-        ("Progressive Ground Defense", 2, 16),
-        ("Progressive Flying Defense", 2, 18),
-        ("Progressive Dark Defense", 2, 20),
-        ("Progressive Rock Defense", 2, 18),
-        ("Progressive Ghost Defense", 2, 24),
-        ("Progressive Ice Defense", 2, 26),
-        ("Progressive Normal Defense", 2, 28),
-        ("Progressive Steel Defense", 2, 30),
-        ("Progressive Dragon Defense", 2, 32),
-        ("Progressive Time Assist", 2, 34),
-        ("Progressive Latent Power", 2, 36),
-        ("Combo Bonus", 1, 38),  # Bit 31 also toggles it on.
-        ("Progressive Recovery", 2, 40),
-        ("Energy Plus", 1, 42),  # Bit 35 also toggles it on.
-        ("Progressive Power Plus", 2, 44),
-        ("Progressive Long Line", 2, 46),
-        #
-        (
-            "Supreme Defense",
-            1,
-            None,
-        ),  # Dragon Defense both bits turned on will indicate Supreme Defense.
-        # This does however not impact the others.
-    )
+    extracted_items: List[Dict] = load_json_data("items.json")
 
-    for i, (power_up, count, bit) in enumerate(STYLER_UPGRADES):
-        item = ItemData(
-            power_up,
-            i,
-            ItemClassification.progression,
-            (
-                ItemCategory.STYLER_UPGRADE,
-                ItemCategory.UNIQUE if count == 1 else ItemCategory.PROGRESSIVE,
-            ),
-            bit,
-            copies=count,
+    for i, item_data in enumerate(extracted_items):
+        item = ItemData(**item_data)
+
+        data.items[item.item_id] = item
+
+    ram_addresses = load_json_data("addresses.json")
+    for entry in ram_addresses:
+        address_int = (
+            int(entry.get("address"), 16)
+            if isinstance(entry.get("address"), str)
+            else entry.get("address")
         )
 
-        data.items[i] = item
+        r = RamAddress(
+            address=address_int,
+            bit_length=entry.get("bit_offset"),
+            label=entry.get("label"),
+        )
+        data.ram_addresses[r.label] = r
 
-    data.items[10000] = ItemData(
-        "Filler Item", 10000, ItemClassification.useful, (ItemCategory.FILLER,)
-    )
-
-    r = RamAddress(0x020BA302, 24, "RECEIVED_ITEM_ADDRESS")
-    data.ram_addresses[r.label] = r
-
-    r = RamAddress(0x020BAE7C, None, "STYLUS_UPGRADE_TABLE_ADDRESS")
-    data.ram_addresses[r.label] = r
+    styler_levels = load_json_data("styler_level.json")
+    for i, level in enumerate(styler_levels, start=1):
+        if i == 100:
+            break
+        data.styler_levels.append(tuple(level))
 
 
 data = PokemonRSOAData()

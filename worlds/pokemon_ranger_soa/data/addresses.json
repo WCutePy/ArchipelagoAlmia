@@ -1,0 +1,52 @@
+[
+    {
+        "label": "RECEIVED_ITEM_ADDRESS",
+        "address": "0x020BA302",
+        "bit_length": 24
+    },
+    {
+        "label": "STYLUS_UPGRADE_TABLE_ADDRESS",
+        "address": "0x020BAE7C",
+        "bit_length": null
+    },
+    {
+        "label": "INSTRUCTION_LEVEL_UP_STYLER_LEVEL_UP",
+        "address": "0x020160d4",
+        "bit_length": 32
+    },
+    {
+        "label": "INSTRUCTION_LEVEL_UP_MAX_HEALTH_UP",
+        "address": "0x020160FC",
+        "bit_length": 32
+    },
+    {
+        "label": "INSTRUCTION_LEVEL_UP_HEALTH_UP",
+        "address": "0x02139638",
+        "bit_length": 32
+    },
+    {
+        "label": "GAME_STATE",
+        "address": "0x0208A3B8",
+        "bit_length": 8
+    },
+    {
+        "label": "STYLUS_LEVEL",
+        "address": "0x020BAE7B",
+        "bit_length": 8
+    },
+    {
+        "label": "MAX_HEALTH",
+        "address": "0x020B26A2",
+        "bit_length": 8
+    },
+    {
+        "label": "CURRENT_HEALTH",
+        "address": "0x020B26A1",
+        "bit_length": 8
+    },
+    {
+        "label": "CURRENT_RANK",
+        "address": "0x020B26A3",
+        "bit_length": 4
+    }
+]

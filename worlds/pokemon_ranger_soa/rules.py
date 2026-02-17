@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule
-from .data import data
+from .data import data, ItemCategory
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -26,7 +26,13 @@ def set_completion_condition(world) -> None:
 
     def has_n_checks(state: CollectionState, n: int) -> bool:
         return state.has_from_list(
-            [item.label for item in data.items.values()], world.player, n
+            [
+                item.label
+                for item in data.items.values()
+                if ItemCategory.STYLER_UPGRADE in item.item_categories
+            ],
+            world.player,
+            n,
         )
 
     captures = world.options.capture_count_target.value

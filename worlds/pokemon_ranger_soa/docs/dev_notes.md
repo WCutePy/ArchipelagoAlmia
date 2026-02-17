@@ -1,4 +1,8 @@
 
+NOP: E3A00000: mov r0, r0
+copy paste: 0000A0E3
+
+
 # Version
 
 Development and testing was done on a decrypted rom
@@ -44,3 +48,15 @@ This might become usable, but is highly to require specific scripts.
 
 Wailord can not be loaded in that same way either. -> find a different entry point to load Pokémon
 OR wailord also requires a different script to be loaded (look at encounter hacks)
+
+
+# Prevent level up
+
+There are two ways to prevent level up:
+ - reduce the level cap and have the max level scripts loaded
+- Force the following instructions to nop (at the start of battle)
+  - x02 0160d4              Main RAM    nop to block stylus level up
+  - x02 0160FC	d	h	0	Main RAM	no to block max health increasing on level up
+  - x02 139638	d	h	0	Main RAM	nop to block current health increasing on level up, 
+                                        gets flushed out after combat
+

@@ -1,0 +1,331 @@
+[
+    {
+        "label": "Progressive Grass Defense",
+        "item_id": 0,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 0,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Water Defense",
+        "item_id": 1,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 2,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Electric Defense",
+        "item_id": 2,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 4,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Fire Defense",
+        "item_id": 3,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 6,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Fighting Defense",
+        "item_id": 4,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 8,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Poison Defense",
+        "item_id": 5,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 10,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Psychic Defense",
+        "item_id": 6,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 12,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Bug Defense",
+        "item_id": 7,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 14,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Ground Defense",
+        "item_id": 8,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 16,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Flying Defense",
+        "item_id": 9,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 18,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Dark Defense",
+        "item_id": 10,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 20,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Rock Defense",
+        "item_id": 11,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 18,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Ghost Defense",
+        "item_id": 12,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 24,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Ice Defense",
+        "item_id": 13,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 26,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Normal Defense",
+        "item_id": 14,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 28,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Steel Defense",
+        "item_id": 15,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 30,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Dragon Defense",
+        "item_id": 16,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 32,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Time Assist",
+        "item_id": 17,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 34,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Latent Power",
+        "item_id": 18,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 36,
+        "copies": 2
+    },
+    {
+        "label": "Combo Bonus",
+        "item_id": 19,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "unique"
+        ],
+        "bit_offset": 38,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Recovery",
+        "item_id": 20,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 40,
+        "copies": 2
+    },
+    {
+        "label": "Energy Plus",
+        "item_id": 21,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "unique"
+        ],
+        "bit_offset": 42,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Power Plus",
+        "item_id": 22,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 44,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Long Line",
+        "item_id": 23,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 46,
+        "copies": 2
+    },
+    {
+        "label": "Supreme Defense",
+        "item_id": 24,
+        "classification": 1,
+        "item_categories": [
+            "styler_upgrade",
+            "unique"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Power",
+        "item_id": 1000,
+        "classification": 9,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Energy",
+        "item_id": 1001,
+        "classification": 9,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Attributes",
+        "item_id": 1002,
+        "classification": 9,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Rank",
+        "item_id": 1003,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 10
+    },
+    {
+        "label": "Filler Item",
+        "item_id": 10000,
+        "classification": 0,
+        "item_categories": [
+            "filler"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    }
+]
