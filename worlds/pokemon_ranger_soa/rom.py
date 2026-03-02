@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import Location
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
-from .data import data
+from .data import data, POKE_ID_ROW_ROM_SIZE
 
 if TYPE_CHECKING:
     from . import PokemonRSOA
@@ -80,11 +80,30 @@ def _remove_field_moves(
 
     for pok in data.species.values():
 
-        for val in pok.poke_id_indexes:
-            print("removing shit")
-            address = data.rom_addresses["POKE_ID_TABLE_ADDRESS"].first + val * 24 + 5
+        for val in pok.form_ids:
+            address = (
+                data.rom_addresses["POKE_ID_TABLE_ADDRESS"].first
+                + (val * POKE_ID_ROW_ROM_SIZE)
+                + 5
+            )
+            print(f"{address:x}")
             patch.write_token(
                 APTokenTypes.WRITE,
                 address,
-                struct.pack("<B", 0),
+                (0).to_bytes(1, "little"),
             )
+    #
+    # for i in range(200):
+    #     print("removing shit")
+    #     address = data.rom_addresses["POKE_ID_TABLE_ADDRESS"].first + i
+    #     patch.write_token(
+    #         APTokenTypes.WRITE,
+    #         address,
+    #         (0).to_bytes(1, "little"),
+    #     )
+
+    # patch.write_token(
+    #     APTokenTypes.WRITE,
+    #     0x2BF1A49,
+    #     (0).to_bytes(1, "little"),
+    # )

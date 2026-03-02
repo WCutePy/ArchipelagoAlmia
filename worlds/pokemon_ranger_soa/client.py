@@ -22,6 +22,7 @@ from .data import (
     LocationCategory,
     location_category_to_id,
     FieldMoveCategory,
+    POKE_ID_ROW_RAM_SIZE,
 )
 from . import items, options
 from .items import offset_item_value
@@ -623,11 +624,15 @@ class PokemonRangerSOA(BizHawkClient):
                 continue
             for row in pok.poke_id_indexes:
 
-                writes += (
-                    data.ram_addresses["POKE_ID_TABLE_ADDRESS"].first + row * 24 + 5,
-                    field_move.to_bytes(1, "little"),
-                    "ARM9 System Bus",
-                )
+                writes += [
+                    (
+                        data.ram_addresses["POKE_ID_TABLE_ADDRESS"].first
+                        + row * POKE_ID_ROW_RAM_SIZE
+                        + 5,
+                        field_move.to_bytes(1, "little"),
+                        "ARM9 System Bus",
+                    )
+                ]
         return writes
 
     async def patch_level_up_instructions(self, ctx: "BizHawkClientContext"):

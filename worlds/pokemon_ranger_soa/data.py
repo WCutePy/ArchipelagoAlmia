@@ -15,6 +15,8 @@ from orjson import orjson
 from BaseClasses import ItemClassification
 
 BASE_OFFSET = 1000
+POKE_ID_ROW_ROM_SIZE = 28
+POKE_ID_ROW_RAM_SIZE = 24
 
 
 class GameStateEnum(IntEnum):
@@ -70,33 +72,6 @@ class PokeAssistCategory(IntEnum):
     DRAGON = 18
 
 
-# class FieldMoveCategory(IntEnum):
-#     NONE = 0
-#     BURN = 1  # 7 - done
-#     CRUSH = 2 # 2 - done
-#     CUT = 3  # 1 - done
-#     ELECTRIFY = 4  # 5 - done
-#     PSY_POWER = 5  # 3 - done
-#     SOAK = 6 # 6 - done
-#     TUNNEL = 7  # 8 - done
-#     TACKLE = 8  # 4 - done
-#     AGILITY = 9 # 10 - done
-#     FLY = 10 # 11 - done
-#     RECHARGE = 11 # 9 - done
-#     TELEPORT = 12 # 12 - done
-#     AIRLIFT = 13 # 16 - done
-#     DARK_POWER = 14 # 24 - done
-#     DEMIST = 15 # 14 - done
-#     ELEVATE = 16 # 17 -
-#     FLASH = 17 # 15 - done
-#     MAGMA_FLOW = 18 # 22 - done
-#     RAIN_DANCE = 19 # 13 - done
-#     SAND_FILL = 20 # 19 - done
-#     STINK = 21 # 18 - done
-#     SWIM = 22 # 23 - done
-#     RIVER_FLOW = 23 # 21 - done
-
-
 class FieldMoveCategory(IntEnum):
     NONE = 0
     CUT = 1
@@ -145,8 +120,8 @@ class SpeciesData:
 
     browser_id: int
     national_id: int
-    species_ids: List[int]
-    hex_ids: List[str]
+    form_ids: List[int]
+    hex_form_ids: List[str]
     poke_id_indexes: List[int]
 
     field_move: FieldMove
@@ -158,6 +133,10 @@ class SpeciesData:
 
     browser_rank_offset: Optional[int] = None
     browser_rank_flag: Optional[int] = None
+
+    def __post_init__(self):
+        if isinstance(self.field_move, dict):
+            self.field_move = FieldMove(**self.field_move)
 
 
 @dataclass

@@ -71,17 +71,18 @@ def load_csv_data(data_name: str) -> List[Dict[str, Any]]:
 def add_national_desk():
     pok = list(data.species.values())
 
-    # mapping = {}
-    # file = load_csv_data("nameid_index_map.txt")
-    #
-    # for row in file:
-    #     nat, *nums = row
-    #     mapping[int(nat)] = [int(n) for n in nums]
-    #
-    # for p in pok:
-    #     p.poke_id_indexes = mapping[p.national_id]
-
-    modify_data_to_new_json("worlds/pokemon_ranger_soa/data/new_species.json", pok)
+    modify_data_to_new_json(
+        "worlds/pokemon_ranger_soa/data/new_species.json",
+        pok,
+        {
+            "poke_id_indexes",
+        },
+    )
 
 
-add_national_desk()
+# add_national_desk()
+modify_data_to_new_json(
+    "worlds/pokemon_ranger_soa/data/new_species.json",
+    data.species.values(),
+    {"poke_id_indexes"},
+)
