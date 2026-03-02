@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Set, ClassVar
 
 import settings
 from Fill import sweep_from_pool
+from Options import Option
 from worlds.AutoWorld import World
 from . import items, locations, regions, rules
 from . import options as prsoa_options
@@ -47,6 +48,8 @@ class PokemonRSOA(World):
 
     exclude_field_moves: Set[str]
 
+    ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
+
     def __init__(self, multiworld, player):
         super(PokemonRSOA, self).__init__(multiworld, player)
 
@@ -54,10 +57,39 @@ class PokemonRSOA(World):
 
         self.exclude_field_moves = set()
 
+        self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
+
     def get_filler_item_name(self) -> str:
         return "Woah. This is worthless!"
 
     def generate_early(self) -> None:
+
+        ut_active = False
+        # Check whether this is a fake generation performed by UT.
+        if hasattr(self.multiworld, "re_gen_passthrough"):
+            if self.game in self.multiworld.re_gen_passthrough:
+                ut_active = True
+                # Retrieve slot data from UT.
+                re_gen_slot_data: dict[str, Any] = self.multiworld.re_gen_passthrough[self.game]
+                # Populate options from slot data (for yaml-less tracking).
+                # This goes through all of your options and replaces their (default due to yaml-less) values
+                # with what was stored in slot data.
+                for f in fields(PokemonRSOAOptions):
+                    opt: Option | None = getattr(self.options, f.name, None)
+                    if opt is not None:
+                        setattr(self.options, f.name, opt.from_any(re_gen_slot_data[f.name]))
+                # Get the seed from slot data.
+                self.seed = re_gen_slot_data["seed"]
+
+        if not ut_active:
+            # Real generation, so instead generate a seed.
+            self.seed = self.random.getrandbits(64)
+
+        # "Restart" this world's RNG using the seed that was either generated in a real world
+        # or loaded from slot data (if this a UT re-generation).
+        # This will make the fake world generate exactly like how the actual world generated.
+        self.random.seed(self.seed)
+
         possible_species = [
             "Squirtle",
             "Zubat",
@@ -123,5 +155,12 @@ class PokemonRSOA(World):
         # )
         slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
         slot_data["blacklisted_captures"] = self.blacklisted_captures
+        slot_data["seed"] = self.seed  # Needs to be sent to UT
 
+        return slot_data
+
+    @staticmethod
+    def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
+        # This is a helper function for UT that, when just returning its input, tells UT to start a fake generation
+        # using that slot data.
         return slot_data
