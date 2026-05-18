@@ -165,9 +165,9 @@ class VoltorbFlipWorld(World):
             )
             self.options.artificial_logic.value = 1
         if self.options.artificial_logic == "experimental":
-            # self.options.progression_balancing.value = (
-            #     0  # Reduces rate of generation failures
-            # )
+            self.options.progression_balancing.value = (
+                0  # Reduces rate of generation failures
+            )
 
             if not VoltorbFlipWorld.progression_list:
                 VoltorbFlipWorld.progression_list.extend(
