@@ -141,15 +141,21 @@ class VoltorbFlipWorld(World):
     def set_rules(self) -> None:
         self.regions["Menu"].connect(self.regions["Earlier levels"], "Earlier levels")
         self.regions["Menu"].connect(self.regions["Early coins"], "Early coins")
+
+        custom_coin_regions = self.options.coin_locations_adjustments["Regions"]
+        if custom_coin_regions == -1:
+            coin_regions = 3
+        else:
+            coin_regions = custom_coin_regions
         if create_coin_region_name(0) in self.regions:
             self.regions["Menu"].connect(
                 self.regions[create_coin_region_name(0)], create_coin_region_name(0)
             )
-            if self.options.artificial_logic != "experimental":
-                raise ValueError(
-                    "To set coin regions it is currently required to be working on "
-                    "experimental, else this is not supported."
-                )
+            # if self.options.artificial_logic != "experimental":
+            #     raise ValueError(
+            #         "To set coin regions it is currently required to be working on "
+            #         "experimental, else this is not supported."
+            #     )
         if (
             self.options.artificial_logic == "experimental"
             and not settings.get_settings()["voltorb_flip_settings"][
@@ -177,11 +183,6 @@ class VoltorbFlipWorld(World):
                         if ItemClassification.progression in item.classification
                     ]
                 )
-            custom_coin_regions = self.options.coin_locations_adjustments["Regions"]
-            if custom_coin_regions == -1:
-                coin_regions = 3
-            else:
-                coin_regions = custom_coin_regions
 
             possible_progression = VoltorbFlipWorld.progression_list
             if (
@@ -257,21 +258,33 @@ class VoltorbFlipWorld(World):
                 "Last level",
                 lambda state: state.has("Luck", self.player, count // 2),
             )
-            self.regions["Early coins"].connect(
-                self.regions["Mid coins"],
-                "Mid coins",
-                lambda state: state.has("Luck", self.player, 1),
-            )
-            self.regions["Mid coins"].connect(
-                self.regions["Late coins"],
-                "Late coins",
-                lambda state: state.has("Luck", self.player, max(1, count // 5)),
-            )
-            self.regions["Late coins"].connect(
-                self.regions["Last coins"],
-                "Last coins",
-                lambda state: state.has("Luck", self.player, count // 2),
-            )
+            if custom_coin_regions == -1:
+                self.regions["Early coins"].connect(
+                    self.regions["Mid coins"],
+                    "Mid coins",
+                    lambda state: state.has("Luck", self.player, 1),
+                )
+                self.regions["Mid coins"].connect(
+                    self.regions["Late coins"],
+                    "Late coins",
+                    lambda state: state.has("Luck", self.player, max(1, count // 5)),
+                )
+                self.regions["Late coins"].connect(
+                    self.regions["Last coins"],
+                    "Last coins",
+                    lambda state: state.has("Luck", self.player, count // 2),
+                )
+            else:
+                max_coins = self.options.coin_locations_adjustments["Maximum"]
+                coin_steps = self.options.coin_locations_adjustments["Steps"]
+                for i in range(0, custom_coin_regions - 1):
+                    required_count = ((max_coins // coin_steps) // coin_regions) * i + 1
+
+                    self.regions[create_coin_region_name(i, coin_regions)].connect(
+                        self.regions[create_coin_region_name(i + 1, coin_regions)],
+                        create_coin_region_name(i + 1, coin_regions),
+                        lambda state: state.has("Luck", self.player, required_count),
+                    )
         else:
             self.regions["Earlier levels"].connect(
                 self.regions["Later levels"], "Later levels"
