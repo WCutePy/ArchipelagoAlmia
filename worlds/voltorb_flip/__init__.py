@@ -10,6 +10,13 @@ from . import client, options, locations
 client.register_client()
 
 
+def create_coin_region_name(value, max_regions=None):
+    if isinstance(value, int):
+        return f"Coin region-{value}"
+    else:
+        raise NotImplementedError
+
+
 class VoltorbFlipSettings(settings.Group):
 
     class AllowExperimentalLogic(settings.Bool):
@@ -53,6 +60,7 @@ class VoltorbFlipWorld(World):
             "Late coins": Region("Late coins", self.player, self.multiworld),
             "Last coins": Region("Last coins", self.player, self.multiworld),
         }
+
         max_level = self.options.level_locations_adjustments["Maximum"]
         self.max_level = max_level
         for i in range(1, max_level+1):
@@ -70,29 +78,36 @@ class VoltorbFlipWorld(World):
                 ))
         max_coins = self.options.coin_locations_adjustments["Maximum"]
         coin_steps = self.options.coin_locations_adjustments["Steps"]
+        coin_regions = self.options.coin_locations_adjustments["Regions"]
         last_coin = max_coins - (max_coins % coin_steps)
         self.last_coin = last_coin
+
+        if coin_regions != -1:
+            for i in range(0, coin_regions):
+                name = create_coin_region_name(i, coin_regions)
+                self.regions[name] = Region(name, self.player, self.multiworld)
+
+        def add_coin_location(region_name: str, coin_amount: int):
+            self.regions[region_name].locations.append(locations.VoltorbFlipLocation(
+                self.player, f"Collect {coin_amount} coins", coin_amount, self.regions[region_name]
+            ))
+
         for i in range(coin_steps, last_coin+1, coin_steps):
-            if i == coin_steps:
-                self.regions["Early coins"].locations.append(locations.VoltorbFlipLocation(
-                    self.player, f"Collect {i} coins", i, self.regions["Early coins"]
-                ))
+            if coin_regions != 1:
+                coins_per_region = (max_coins // coin_steps) // coin_regions
+                region_index = i // (coin_steps + coins_per_region * coin_steps)
+                add_coin_location(create_coin_region_name(region_index, coin_regions), i)
+
+            elif i == coin_steps:
+                add_coin_location("Early coins", i)
             elif i == last_coin:
-                self.regions["Last coins"].locations.append(locations.VoltorbFlipLocation(
-                    self.player, f"Collect {i} coins", i, self.regions["Last coins"]
-                ))
+                add_coin_location("Last coins", i)
             elif i <= 1000:
-                self.regions["Early coins"].locations.append(locations.VoltorbFlipLocation(
-                    self.player, f"Collect {i} coins", i, self.regions["Early coins"]
-                ))
+                add_coin_location("Early coins", i)
             elif i <= last_coin//2:
-                self.regions["Mid coins"].locations.append(locations.VoltorbFlipLocation(
-                    self.player, f"Collect {i} coins", i, self.regions["Mid coins"]
-                ))
+                add_coin_location("Mid coins", i)
             else:
-                self.regions["Late coins"].locations.append(locations.VoltorbFlipLocation(
-                    self.player, f"Collect {i} coins", i, self.regions["Late coins"]
-                ))
+                add_coin_location("Late coins", i)
         self.multiworld.regions.extend(self.regions.values())
 
     def create_items(self) -> None:
@@ -104,6 +119,8 @@ class VoltorbFlipWorld(World):
     def set_rules(self) -> None:
         self.regions["Menu"].connect(self.regions["Earlier levels"], "Earlier levels")
         self.regions["Menu"].connect(self.regions["Early coins"], "Early coins")
+        if create_coin_region_name(0) in self.regions:
+            self.regions["Menu"].connect(self.regions[create_coin_region_name(0)], create_coin_region_name(0))
         if self.options.artificial_logic == "experimental" and not settings.get_settings()["voltorb_flip_settings"]["allow_experimental_logic"]:
             import logging
             logging.warning("Experimental logic was disabled in host settings, so it will be reverted to non-experimental for player "+self.player_name+".")
@@ -116,13 +133,27 @@ class VoltorbFlipWorld(World):
                     for item in self.multiworld.itempool
                     if ItemClassification.progression in item.classification
                 ])
-            items = [self.random.choice(VoltorbFlipWorld.progression_list) for _ in range(5)]
+            custom_coin_regions = self.options.coin_locations_adjustments["Regions"]
+            if custom_coin_regions == -1:
+                coin_regions = 3
+            else:
+                coin_regions = custom_coin_regions
+
+            items = [self.random.choice(VoltorbFlipWorld.progression_list) for _ in range(2 + coin_regions)]
             print(items)
             self.regions["Earlier levels"].connect(self.regions["Later levels"], "Later levels", lambda state: state.has(items[0][0], items[0][1]))
             self.regions["Later levels"].connect(self.regions["Last level"], "Last level", lambda state: state.has(items[1][0], items[1][1]))
-            self.regions["Early coins"].connect(self.regions["Mid coins"], "Mid coins", lambda state: state.has(items[2][0], items[2][1]))
-            self.regions["Mid coins"].connect(self.regions["Late coins"], "Late coins", lambda state: state.has(items[3][0], items[3][1]))
-            self.regions["Late coins"].connect(self.regions["Last coins"], "Last coins", lambda state: state.has(items[4][0], items[4][1]))
+
+            if custom_coin_regions == -1:
+                self.regions["Early coins"].connect(self.regions["Mid coins"], "Mid coins", lambda state: state.has(items[2][0], items[2][1]))
+                self.regions["Mid coins"].connect(self.regions["Late coins"], "Late coins", lambda state: state.has(items[3][0], items[3][1]))
+                self.regions["Late coins"].connect(self.regions["Last coins"], "Last coins", lambda state: state.has(items[4][0], items[4][1]))
+            else:
+                for i in range(0, custom_coin_regions):
+                    self.regions[create_coin_region_name(i, coin_regions)].connect(
+                        self.regions[create_coin_region_name(i + 1, coin_regions)], create_coin_region_name(i + 1, coin_regions),
+                        lambda state: state.has(items[i + 2][0], items[i + 2][1])
+                    )
         elif self.options.artificial_logic == "on":
             count = sum(len(reg.locations) for reg in self.regions.values())
             self.regions["Earlier levels"].connect(self.regions["Later levels"], "Later levels", lambda state: state.has("Luck", self.player, 1))

@@ -51,15 +51,18 @@ class CoinLocationsAdjustments(OptionCounter):
 
     - **Maximum** - The maximum amount of coins that locations have. Allowed values are in range 10 to 50000.
     - **Steps** - The amount of coins needed for each next location. Allowed values are in range 10 to 50000. Cannot be higher than **Maximum**.
+    - **Regions** - Evenly distributes all coin locations across that amount of regions. Minimum 2. Cannot be higher than **Maximum** // **Steps**. Only works with experimental logic. Default of -1 ignores this option.
     """
     display_name = "Coin Locations Adjustments"
     valid_keys = [
         "Maximum",
         "Steps",
+        "Regions"
     ]
     default = {
         "Maximum": 10000,
         "Steps": 1000,
+        "Regions": -1,
     }
 
     def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
@@ -73,6 +76,11 @@ class CoinLocationsAdjustments(OptionCounter):
             errors.append(f"Steps: {self.value['Steps']} not in range 10 to 50000")
         if self.value["Steps"] > self.value["Maximum"]:
             errors.append(f"Steps: {self.value['Steps']} is higher than Maximum: {self.value['Maximum']}")
+
+        if self.value["Regions"] != -1 and not self.value["Regions"] >= 2:
+            errors.append(f"Regions: A minimum of 2 region must be set when setting region count")
+        if self.value["Regions"] != -1 and self.value["Regions"] > self.value["Maximum"] // self.value["Steps"]:
+            errors.append(f"Regions: {self.value["Regions"]} is higher than Maximum // Steps: {self.value["Maximum"]} // {self.value["Steps"]}")
 
         if len(errors) != 0:
             errors = [f"For option {getattr(self, 'display_name', self)} of player {player_name}:"] + errors
