@@ -50,7 +50,7 @@ class PokemonRSOA(World):
     def __init__(self, multiworld, player):
         super(PokemonRSOA, self).__init__(multiworld, player)
 
-        self.blacklist_captures = set()
+        self.blacklisted_captures = set()
 
         self.exclude_field_moves = set()
 
@@ -71,6 +71,7 @@ class PokemonRSOA(World):
             "Shellos",
             "glameow",
         ]
+        self.blacklisted_captures = set()
 
         # self.blacklisted_captures = {
         #     browser_number
@@ -78,11 +79,24 @@ class PokemonRSOA(World):
         #     if species.name not in possible_species
         # }
 
-        self.blacklisted_captures = set()
+        manually_blacklisted = [
+            "Shaymin",
+            "Palkia",
+            "Dialga",
+            "Darkrai",
+            # "Regigigas",  # not sure about this one
+        ]
+
+        self.blacklisted_captures |= {
+            b for b, n in data.species.items() if n.name in manually_blacklisted
+        }
 
     def create_regions(self) -> None:
-        regions.create_and_connect_regions(self)
-        locations.create_all_locations(self)
+        all_regions = regions.create_and_connect_regions(self)
+
+        locations.create_all_locations(self, all_regions)
+
+        self.multiworld.regions.extend(all_regions.values())
 
     def create_items(self) -> None:
         items.create_all_items(self)

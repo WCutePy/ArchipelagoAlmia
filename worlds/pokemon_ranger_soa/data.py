@@ -1,5 +1,5 @@
 import pkgutil
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum, StrEnum, auto
 from typing import NamedTuple, Union, List, FrozenSet, Dict, Any, Optional, Tuple
 
@@ -51,6 +51,8 @@ class LocationData:
 
 
 class PokeAssistCategory(IntEnum):
+    """TODO ORDER FOR DATA ORDER IN GAME"""
+
     NONE = 0
     GRASS = 1
     FLYING = 2
@@ -73,6 +75,8 @@ class PokeAssistCategory(IntEnum):
 
 
 class FieldMoveCategory(IntEnum):
+    """CORRECT ORDER"""
+
     NONE = 0
     CUT = 1
     CRUSH = 2
@@ -99,18 +103,44 @@ class FieldMoveCategory(IntEnum):
     SWIM = 23
     DARK_POWER = 24
 
+    @property
+    def item_name(self) -> str:
+        return f"Progressive {self.name.replace("_", " ").title()}"
+
 
 @dataclass(frozen=True)
 class FieldMove:
     category: FieldMoveCategory
     level: int
 
+    def __post_init__(self):
+        object.__setattr__(self, "category", FieldMoveCategory(self.category))
+
+    def __str__(self):
+        return f"{self.category.name}_{self.level}"
+
     def satisfies(self, required: "FieldMove") -> bool:
         return self.category == required.category and self.level >= required.level
 
+    @property
+    def event_can_use_field_move(self):
+        return f"EVENT_USE_FIELD-{self.category}-{self.level}"
+
     @classmethod
     def from_string(cls, string: str) -> "FieldMove":
-        raise NotImplemented
+        category_name, level_str = string.rsplit("_", 1)
+
+        try:
+            category = FieldMoveCategory[category_name]
+        except KeyError as e:
+            raise ValueError(f"Unknown FieldMoveCategory: {category_name}") from e
+
+        try:
+            level = int(level_str)
+        except ValueError as e:
+            raise ValueError(f"Invalid level: {level_str}") from e
+
+        return cls(category=category, level=level)
 
 
 @dataclass
@@ -122,7 +152,6 @@ class SpeciesData:
     national_id: int
     form_ids: List[int]
     hex_form_ids: List[str]
-    poke_id_indexes: List[int]
 
     field_move: FieldMove
     poke_assist: PokeAssistCategory
@@ -138,29 +167,21 @@ class SpeciesData:
         if isinstance(self.field_move, dict):
             self.field_move = FieldMove(**self.field_move)
 
+    @property
+    def location_capture_name(self):
+        return f"CAPTURE_{self.name}"
 
-@dataclass
-class MapData:
-    name: str
-    label: str
+    @property
+    def event_add_to_browser(self):
+        return f"EVENT_ADD_TO_BROWSER_{self.name}"
 
+    @property
+    def event_can_capture(self):
+        return f"EVENT_CAN_CAPTURE_{self.name}"
 
-class EventData(NamedTuple):
-    name: str
-    parent_region: str
-
-
-class RegionData:
-    name: str
-    exits: List[str]
-    locations: List[str]
-    events: List[EventData]
-
-    def __init__(self, name: str):
-        self.name = name
-        self.exits = []
-        self.locations = []
-        self.events = []
+    @property
+    def location_capture_rank_name(self):
+        return f"CAPTURE_RANK_{self.name}"
 
 
 class ItemCategory(StrEnum):
@@ -217,24 +238,80 @@ class ItemData:
         )
 
 
+@dataclass
+class TargetEntry:
+    TARGET_ID: int
+    TARGET_NAME: str
+
+
+@dataclass
+class PokemonSpawnEntry:
+    SPECIES_ID: int
+    SPECIES_NAME: str
+    SPAWN_FLAG: int
+    one_time: Optional[bool] = False
+    rules: list[str] = field(default_factory=list)
+
+
+@dataclass
+class MapData:
+    map_id: str
+
+    INDEX: str
+    HUMAN_NAME: str
+
+    TARGETS: dict[str, TargetEntry] = field(default_factory=dict)
+    POKEMON_SPAWN: dict[str, PokemonSpawnEntry] = field(default_factory=dict)
+    EXITS: dict[str, list[str]] = field(default_factory=dict)
+
+    def __post_init__(self):
+        self.TARGETS = {
+            key: (value if isinstance(value, TargetEntry) else TargetEntry(**value))
+            for key, value in self.TARGETS.items()
+        }
+
+        self.POKEMON_SPAWN = {
+            key: (
+                value
+                if isinstance(value, PokemonSpawnEntry)
+                else PokemonSpawnEntry(
+                    **{
+                        **value,
+                        "SPECIES_ID": (
+                            int(value["SPECIES_ID"], 16)
+                            if isinstance(value.get("SPECIES_ID"), str)
+                            else value["SPECIES_ID"]
+                        ),
+                    }
+                )
+            )
+            for key, value in self.POKEMON_SPAWN.items()
+        }
+
+
 class PokemonRSOAData:
     species: Dict[
         int, SpeciesData
-    ]  # browser id - SpeciesData, duplicate forms have duplicate ids.
+    ]  # browser id - SpeciesData, duplicate forms are stored under the same browser id
+    regions: Dict[str, MapData]
     locations: Dict[str, LocationData]
     items: Dict[int, ItemData]
+
     styler_levels: List[Tuple[int, int]]  # each entry is a level with Energy, Power
+    target_field_move_requirements: Dict[int, FieldMove]
 
     ram_addresses: Dict[str, AddressesGroup]
     rom_addresses: Dict[str, AddressesGroup]
 
     def __init__(self) -> None:
         self.species = {}
+        self.regions = {}
         self.locations = {}
         self.items = {}
         self.ram_addresses = {}
         self.rom_addresses = {}
         self.styler_levels = []
+        self.target_field_move_requirements = {}
 
 
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
@@ -274,6 +351,15 @@ def _init():
             raise
         data.items[item.item_id] = item
 
+    extracted_regions: List[Dict] = load_json_data("regions.json")
+    for i, region_data in extracted_regions.items():
+        region = MapData(
+            map_id=i,
+            **region_data,
+        )
+
+        data.regions[i] = region
+
     extracted_locations: Dict[str, Dict] = load_json_data("locations.json")
 
     counter = 0
@@ -291,16 +377,16 @@ def _init():
 
         data.locations[name] = LocationData(name=name, id=number, **location_data)
 
-    for string in ["Capture {}", "Capture {} Rank"]:
-        if string == "Capture {}":
-            category = LocationCategory.BROWSER
-        if string == "Capture {} Rank":
-            category = LocationCategory.BROWSER_RANK
+    CATEGORY_TO_ATTR = {
+        LocationCategory.BROWSER: "location_capture_name",
+        LocationCategory.BROWSER_RANK: "location_capture_rank_name",
+    }
+    for category, str_attr in CATEGORY_TO_ATTR.items():
         for browser_id, species_data in data.species.items():
 
             id = location_category_to_id(browser_id, category)
 
-            name = string.format(species_data.name)
+            name = getattr(species_data, str_attr)
             location = LocationData(
                 name=name,
                 label=name,
@@ -328,6 +414,12 @@ def _init():
         if i == 100:
             break
         data.styler_levels.append(tuple(level))
+
+    target_requirements = load_json_data("target_field_move_requirements.json")
+    for i, requirements in target_requirements.items():
+        data.target_field_move_requirements[int(i)] = FieldMove(
+            **requirements,
+        )
 
 
 data = PokemonRSOAData()

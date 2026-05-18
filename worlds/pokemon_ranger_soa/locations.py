@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Dict, Set
 
-from BaseClasses import ItemClassification, Location, Region
+from BaseClasses import ItemClassification, Location, Region, LocationProgressType
 
 from .data import data, LocationData, LocationCategory
 
@@ -42,15 +42,27 @@ def get_location_names_with_ids(location_labels: list[str]) -> dict[str, int | N
     return {label: location_label_to_id_map[label] for label in location_labels}
 
 
-def create_all_locations(world: PokemonRSOA) -> None:
-    region = world.get_region("Overworld")
+def create_all_locations(
+    world: PokemonRSOA,
+    regions: Dict[str, Region],
+) -> None:
+    region = regions.get("Overworld")
+
+    locations_categories = [
+        LocationCategory.MISSION,
+        LocationCategory.QUEST,
+    ]
 
     for name, location_data in data.locations.items():
-        if location_data.category not in [
-            LocationCategory.MISSION,
-            LocationCategory.QUEST,
-        ]:
+        if location_data.category not in locations_categories:
             continue
+
+        if location_data.category in [
+            LocationCategory.BROWSER,
+            LocationCategory.BROWSER_RANK,
+        ]:
+            if location_data.name.split("_")[-1] in world.blacklisted_captures:
+                continue
 
         new_location = PokemonRSOALocation(
             world.player,
@@ -61,93 +73,30 @@ def create_all_locations(world: PokemonRSOA) -> None:
 
         region.locations.append(new_location)
 
-    create_pokemon_locations(world)
-
-
-# def create_locations_by_category(
-#     world: "PokemonRSOA",
-#     regions: Dict[str, Region],
-#     categories: Set[LocationCategory],
-# ) -> None:
-#     """
-#     Iterates through region data and adds locations to the multiworld if
-#     those locations include any of the provided tags.
-#     """
-#     for region_name, region_data in data.regions.items():
-#         region = regions[region_name]
-#         filtered_locations = [
-#             loc
-#             for loc in region_data.locations
-#             if data.locations[loc].category in categories
-#         ]
-#
-#         for location_name in filtered_locations:
-#             location_data = data.locations[location_name]
-#
-#             location_id = location_to_ap_id(location_data)
-#             if location_data.flag == 0:  # Dexsanity location
-#                 national_dex_id = int(
-#                     location_name[-3:]
-#                 )  # Location names are formatted POKEDEX_REWARD_###
-#
-#                 # Don't create this pokedex location if player can't find it in the wild
-#                 if (
-#                     NATIONAL_ID_TO_SPECIES_ID[national_dex_id]
-#                     in world.blacklisted_wilds
-#                 ):
-#                     continue
-#
-#                 location_id += POKEDEX_OFFSET + national_dex_id
-#
-#             location = PokemonEmeraldLocation(
-#                 world.player,
-#                 location_data.label,
-#                 location_id,
-#                 region,
-#                 location_name,
-#                 location_data.addresses,
-#                 location_data.default_item,
-#             )
-#             region.locations.append(location)
+    create_pokemon_locations(world, regions)
 
 
 def create_quest_locations(world: PokemonRSOA) -> None:
     return
 
 
-def create_pokemon_locations(world: PokemonRSOA) -> None:
-    # for region_name, region_data in data.regions.items():
-    #
-    #     region = world.get_region(region_name)
-
-    region = world.get_region("Overworld")
+def create_pokemon_locations(
+    world: PokemonRSOA,
+    regions: Dict[str, Region],
+) -> None:
+    region = Region("Browser", world.player, world.multiworld)
+    regions[region.name] = region
+    regions["Overworld"].connect(region, "Browser")
 
     for browser_id, pokemon in data.species.items():
-
-        if pokemon.browser_id in world.blacklisted_captures:
-            continue
-
-        location_name = f"Capture {pokemon.name}"
+        location_name = pokemon.location_capture_name
         new_location = PokemonRSOALocation(
             world.player,
             location_name,
             world.location_name_to_id[location_name],
             region,
         )
-
         region.locations.append(new_location)
 
-        event = PokemonRSOALocation(
-            world.player, f"Capture {pokemon.name} Event", None, region
-        )
-        event.show_in_spoiler = False
-
-        event.place_locked_item(
-            PokemonRSOAItem(
-                f"CAPTURE_{pokemon.browser_id}",
-                ItemClassification.progression_skip_balancing,
-                None,
-                world.player,
-            )
-        )
-        region.locations.append(event)
+        if pokemon.browser_id in world.blacklisted_captures:
+            new_location.progress_type = LocationProgressType.EXCLUDED
