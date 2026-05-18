@@ -145,6 +145,11 @@ class VoltorbFlipWorld(World):
             self.regions["Menu"].connect(
                 self.regions[create_coin_region_name(0)], create_coin_region_name(0)
             )
+            if self.options.artificial_logic != "experimental":
+                raise ValueError(
+                    "To set coin regions it is currently required to be working on "
+                    "experimental, else this is not supported."
+                )
         if (
             self.options.artificial_logic == "experimental"
             and not settings.get_settings()["voltorb_flip_settings"][
@@ -160,9 +165,10 @@ class VoltorbFlipWorld(World):
             )
             self.options.artificial_logic.value = 1
         if self.options.artificial_logic == "experimental":
-            self.options.progression_balancing.value = (
-                0  # Reduces rate of generation failures
-            )
+            # self.options.progression_balancing.value = (
+            #     0  # Reduces rate of generation failures
+            # )
+
             if not VoltorbFlipWorld.progression_list:
                 VoltorbFlipWorld.progression_list.extend(
                     [
@@ -177,10 +183,27 @@ class VoltorbFlipWorld(World):
             else:
                 coin_regions = custom_coin_regions
 
-            items = [
-                self.random.choice(VoltorbFlipWorld.progression_list)
-                for _ in range(2 + coin_regions)
-            ]
+            possible_progression = VoltorbFlipWorld.progression_list
+            if (
+                sum(i[1] != self.player for i in VoltorbFlipWorld.progression_list)
+                >= coin_regions
+            ):
+                possible_progression = [
+                    i for i in possible_progression if i[1] != self.player
+                ]
+            unique = {}
+            for item in possible_progression:
+                unique[item] = item  # dedupe by name
+
+            items = self.random.sample(list(unique.values()), 2 + coin_regions)
+            if any(item[1] == self.player for item in items):
+                import logging
+
+                logging.warning(
+                    "Warning logically dependent on own luck item"
+                    + self.player_name
+                    + "."
+                )
             print(items)
             self.regions["Earlier levels"].connect(
                 self.regions["Later levels"],
@@ -210,11 +233,17 @@ class VoltorbFlipWorld(World):
                     lambda state: state.has(items[4][0], items[4][1]),
                 )
             else:
-                for i in range(0, custom_coin_regions):
+                for i in range(0, custom_coin_regions - 1):
+                    matchable = items[2:]
+                    required_count = i + 1
+
                     self.regions[create_coin_region_name(i, coin_regions)].connect(
                         self.regions[create_coin_region_name(i + 1, coin_regions)],
                         create_coin_region_name(i + 1, coin_regions),
-                        lambda state: state.has(items[i + 2][0], items[i + 2][1]),
+                        # lambda state: state.has(items[i + 2][0], items[i + 2][1]),
+                        lambda state, mc=matchable, req=required_count: (
+                            sum(state.has(j[0], j[1]) for j in mc) >= req
+                        ),
                     )
         elif self.options.artificial_logic == "on":
             count = sum(len(reg.locations) for reg in self.regions.values())

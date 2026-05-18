@@ -62,7 +62,7 @@ class CoinLocationsAdjustments(OptionCounter):
     default = {
         "Maximum": 10000,
         "Steps": 1000,
-        "Regions": -1,
+        "Regions": 3,
     }
 
     def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
