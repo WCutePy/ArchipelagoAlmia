@@ -682,7 +682,7 @@ def set_rules(self) -> None:
     # location.item_rule = ... is likely to be a bit faster
 
     # place "Victory" at "Final Boss" and set collection as win condition
-    self.multiworld.get_location("Final Boss", self.player).place_locked_item(self.create_event("Victory"))
+    self.multiworld.get_location("Final Boss", self.player).place_locked_item(self.create_event_location("Victory"))
 
     self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
 

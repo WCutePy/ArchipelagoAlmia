@@ -4,19 +4,40 @@ from dataclasses import fields
 from typing import Any, Dict, List, Set, ClassVar
 
 import settings
+from BaseClasses import Tutorial
 from Fill import sweep_from_pool
 from Options import Option
-from worlds.AutoWorld import World
+from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
 from .data import data
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
-from .options import PokemonRSOAOptions
+from .options import PokemonRSOAOptions, OPTION_GROUPS
 from .rom import PokemonRangerSOAProcedurePatch, write_tokens
 
 PokemonRangerSOA
+
+
+class PokemonRangerSOAWebWorld(WebWorld):
+    """
+    Webhost info for Pokemon Emerald
+    """
+
+    theme = "ocean"
+
+    setup_en = Tutorial(
+        "Multiworld Setup Guide",
+        "A guide to playing Pokémon Ranger: Shadows of Almia with Archipelago.",
+        "English",
+        "setup_en.md",
+        "setup/en",
+        ["WCutePy"],
+    )
+
+    tutorials = [setup_en]
+    option_groups = OPTION_GROUPS
 
 
 class PokemonRangerSOASettings(settings.Group):
@@ -32,6 +53,7 @@ class PokemonRangerSOASettings(settings.Group):
 
 class PokemonRSOA(World):
     game = "PokemonRangerSOA"
+    web = PokemonRangerSOAWebWorld()
 
     settings_key = "pokemon_ranger_soa_settings"
     settings: ClassVar[PokemonRangerSOASettings]
@@ -70,14 +92,18 @@ class PokemonRSOA(World):
             if self.game in self.multiworld.re_gen_passthrough:
                 ut_active = True
                 # Retrieve slot data from UT.
-                re_gen_slot_data: dict[str, Any] = self.multiworld.re_gen_passthrough[self.game]
+                re_gen_slot_data: dict[str, Any] = self.multiworld.re_gen_passthrough[
+                    self.game
+                ]
                 # Populate options from slot data (for yaml-less tracking).
                 # This goes through all of your options and replaces their (default due to yaml-less) values
                 # with what was stored in slot data.
                 for f in fields(PokemonRSOAOptions):
                     opt: Option | None = getattr(self.options, f.name, None)
                     if opt is not None:
-                        setattr(self.options, f.name, opt.from_any(re_gen_slot_data[f.name]))
+                        setattr(
+                            self.options, f.name, opt.from_any(re_gen_slot_data[f.name])
+                        )
                 # Get the seed from slot data.
                 self.seed = re_gen_slot_data["seed"]
 

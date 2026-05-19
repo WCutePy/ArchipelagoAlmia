@@ -98,5 +98,6 @@ def create_pokemon_locations(
         )
         region.locations.append(new_location)
 
-        if pokemon.browser_id in world.blacklisted_captures:
-            new_location.progress_type = LocationProgressType.EXCLUDED
+        # TODO
+        # if pokemon.browser_id in world.blacklisted_captures:
+        #     new_location.progress_type = LocationProgressType.EXCLUDED

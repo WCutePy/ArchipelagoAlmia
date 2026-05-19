@@ -295,7 +295,7 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     field_move_levels: FieldMoveLevelItem
 
 
-option_groups = [
+OPTION_GROUPS = [
     OptionGroup(
         "Goal options",
         [
