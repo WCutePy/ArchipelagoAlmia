@@ -1,59 +1,49 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, List, Tuple
+from typing import TYPE_CHECKING, Dict, List, Tuple, Set
 
 from BaseClasses import Entrance, Region, ItemClassification
-from rule_builder.rules import Has
+from rule_builder.rules import Has, Rule
 
-from .data import data, SpeciesData, FieldMoveCategory, PokemonSpawnEntry
+from .data import data, SpeciesData, FieldMoveCategory, PokemonSpawnEntry, FieldMove
 from .items import PokemonRSOAItem
 from .locations import PokemonRSOALocation
+from .events import PInstanceEvent
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
 
 
+def create_event_location(
+    world: PokemonRSOA, event_name: str, event_region: Region
+) -> PokemonRSOALocation:
+    event_location = PokemonRSOALocation(world.player, event_name, None, event_region)
+    event_location.show_in_spoiler = False
+
+    event_location.place_locked_item(
+        PokemonRSOAItem(
+            event_name,
+            ItemClassification.progression_skip_balancing,
+            None,
+            world.player,
+        )
+    )
+    event_region.locations.append(event_location)
+    return event_location
+
+
 def attach_pokemon_encounter(
     world: PokemonRSOA,
-    species: SpeciesData,
     instance_name: str,
     spawn_data: PokemonSpawnEntry,
     connect_to: Region,
 ) -> None:
     pokemon_region = Region(instance_name, world.player, world.multiworld)
 
-    browser_event = PokemonRSOALocation(
-        world.player, f"{instance_name}_browser", None, pokemon_region
-    )
-
-    browser_event.show_in_spoiler = False
-
-    browser_event.place_locked_item(
-        PokemonRSOAItem(
-            species.event_add_to_browser,
-            ItemClassification.progression_skip_balancing,
-            None,
-            world.player,
-        ),
-    )
-    pokemon_region.locations.append(browser_event)
+    create_event_location(world, f"{instance_name}_browser", pokemon_region)
 
     if not spawn_data.one_time:
-        capture_event = PokemonRSOALocation(
-            world.player, f"{instance_name}_capture", None, pokemon_region
-        )
-
-        capture_event.show_in_spoiler = False
-
-        capture_event.place_locked_item(
-            PokemonRSOAItem(
-                species.event_can_capture,
-                ItemClassification.progression_skip_balancing,
-                None,
-                world.player,
-            ),
-        )
-        pokemon_region.locations.append(capture_event)
+        create_event_location(world, f"{instance_name}_capture", pokemon_region)
 
     connect_to.connect(pokemon_region, instance_name)
 
@@ -87,19 +77,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
 
         for i, target_data in region_data.TARGETS.items():
             event_name = f"{region_name}.T.{i}"
-            target_location = PokemonRSOALocation(
-                world.player, event_name, None, new_region
-            )
-            target_location.show_in_spoiler = False
-
-            target_location.place_locked_item(
-                PokemonRSOAItem(
-                    event_name,
-                    ItemClassification.progression_skip_balancing,
-                    None,
-                    world.player,
-                )
-            )
+            target_location = create_event_location(world, event_name, new_region)
 
             field_move = data.target_field_move_requirements[target_data.TARGET_ID]
             if field_move.category != FieldMoveCategory.NONE:
@@ -107,16 +85,10 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
                     target_location, Has(field_move.event_can_use_field_move)
                 )
 
-            new_region.locations.append(target_location)
-
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
             pokemon_instance = f"{region_name}.P.{i}"
 
-            species = form_species[spawn_data.SPECIES_ID]
-
-            attach_pokemon_encounter(
-                world, species, pokemon_instance, spawn_data, new_region
-            )
+            attach_pokemon_encounter(world, pokemon_instance, spawn_data, new_region)
 
         for exit_name in region_data.EXITS:
             region_exit = exit_name.split("-> ")[1].split(".")[0]
@@ -134,22 +106,37 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions["Overworld"] = Region("Overworld", world.player, world.multiworld)
     regions["Overworld"].connect(regions["m001_013"], "Start Game")
 
+    """Additional connections that behave different"""
+
     regions["Overworld"].connect(
         regions["m030_001"], "Oil Field Hideout"
     )  # TODO, connect to proper region
-    # regions["m029_001"].connect(regions["m029_009"], "Wailord fight")
-    # wailord = data.species[238]
-    # attach_pokemon_encounter(
-    #     world,
-    #     wailord,
-    #     f"m029_009.P.Wailord",
-    #     PokemonSpawnEntry(
-    #         SPECIES_ID=wailord.form_ids[0],
-    #         SPECIES_NAME=wailord.name,
-    #         SPAWN_FLAG=-1,
-    #         one_time=True,
-    #     ),
-    #     regions["m029_009"],
-    # )
+    regions["m029_001"].connect(regions["m029_009"], "Wailord fight")
+
+    for event in PInstanceEvent:
+        pokemon = data.species[event.browser_id]
+
+        attach_pokemon_encounter(
+            world,
+            event.event_name,
+            PokemonSpawnEntry(
+                SPECIES_ID=pokemon.form_ids[0],
+                SPECIES_NAME=pokemon.name,
+                SPAWN_FLAG=-1,
+                one_time=event.one_time,
+            ),
+            regions[event.map_name],
+        )
+
+    field_move_region = regions["Overworld"]
+    field_moves: Set[FieldMove] = set()
+
+    for i, pokemon in data.species.items():
+        field_moves.add(pokemon.field_move)
+
+    for field_move in field_moves:
+        create_event_location(
+            world, field_move.event_can_use_field_move, field_move_region
+        )
 
     return regions

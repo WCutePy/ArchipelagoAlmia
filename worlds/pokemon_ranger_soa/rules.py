@@ -74,22 +74,8 @@ def set_all_rules(world: PokemonRSOA) -> None:
         )
         field_move_rule = pokemon_rules
 
-        field_move_location = PokemonRSOALocation(
-            world.player, field_move.event_can_use_field_move, None, field_move_region
-        )
-        field_move_location.show_in_spoiler = False
-
-        field_move_location.place_locked_item(
-            PokemonRSOAItem(
-                field_move.event_can_use_field_move,
-                ItemClassification.progression_skip_balancing,
-                None,
-                world.player,
-            )
-        )
-
+        field_move_location = get_location(world, field_move.event_can_use_field_move)
         world.set_rule(field_move_location, field_move_rule)
-        field_move_region.locations.append(field_move_location)
 
     set_tutorial_rules(world)
 
