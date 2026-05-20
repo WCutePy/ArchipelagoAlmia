@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import TYPE_CHECKING, Dict, Union
+from typing import TYPE_CHECKING, Dict, Union, Optional, List, TypeAlias, Iterable
 
 from BaseClasses import CollectionState, Entrance, Location, ItemClassification
 from worlds.generic.Rules import add_rule, set_rule
 
 from rule_builder.options import OptionFilter
-from rule_builder.rules import Has, Rule, HasAllCounts, True_
+from rule_builder.rules import Has, Rule, HasAllCounts, True_, CanReachLocation
 from .data import data, ItemCategory, FieldMove
 from .events import PREvent, get_instance_base, get_instance_capture
 from .items import PokemonRSOAItem
@@ -70,6 +70,62 @@ def can_destroy_target_type(target_id: int) -> Rule:
     return Has(field_move)
 
 
+MonSelect: TypeAlias = Optional[Dict[str, Optional[Iterable[int]]]]
+def can_destroy_target_new(world: PokemonRSOA, map_name: Union[str, int], i: int) -> Rule:
+    if isinstance(map_name, int):
+        map_name = data.map_id_to_region_name[map_name]
+    elif map_name.lower().startswith("0x"):
+        map_name = data.map_id_to_region_name[int(map_name, 16)]
+    target = f"{map_name}.T.{i}"
+    return Has(target)
+
+
+def can_destroy_target_type_new(world: PokemonRSOA, target_id: int, include: MonSelect=None, exclude: MonSelect=None) -> Rule:
+    """
+    The int of the target
+
+    any len 0 iterable in MonSelect evaluates to the whole map.
+    any len >=1 iterable accounts only the specified members in the iterable
+    """
+    field_move: FieldMove = data.target_field_move_requirements[target_id]
+
+    if include is None and exclude is None:
+        return Has(field_move.event_can_use_field_move)
+
+    pokemon_rules = True_
+    for region_name, region_data in data.regions.items():
+        exclude_region = exclude.get(region_name, True)
+        if exclude and not exclude_region: continue
+        if exclude_region is True: exclude_region = []
+        include_region = include.get(region_name, None)
+        if include and include_region is None:
+            continue
+
+        for i, spawn_data in region_data.POKEMON_SPAWN.items():
+            if exclude and i in exclude_region: continue
+            if include and (not include_region or i not in include_region): continue
+
+            species = data.form_id_to_species[spawn_data.SPECIES_ID]
+            if species.field_move.satisfies(field_move):
+                pokemon_rules |= CanReachLocation(get_instance_capture(region_name, i))
+
+    return has_field_move_item(field_move) & pokemon_rules
+
+
+def has_field_move_item(field_move: FieldMove) -> Rule:
+    return Has(
+        field_move.category.item_name,
+        1,
+        options=[
+            OptionFilter(
+                FieldMoveItem,
+                FieldMoveItem.option_vanilla,
+            )
+        ],
+        filtered_resolution=True,
+    )
+
+
 def set_all_rules(world: PokemonRSOA) -> None:
     field_move_rules: Dict[FieldMove, Rule] = {}
     for i, pokemon in data.species.items():
@@ -90,17 +146,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
                 field_move_rules[field_move] |= Has(pokemon.event_can_capture)
 
     for field_move, pokemon_rules in field_move_rules.items():
-        field_move_rule = pokemon_rules & Has(
-            field_move.category.item_name,
-            1,
-            options=[
-                OptionFilter(
-                    FieldMoveItem,
-                    FieldMoveItem.option_vanilla,
-                )
-            ],
-            filtered_resolution=True,
-        )
+        field_move_rule = pokemon_rules & has_field_move_item(field_move)
 
         field_move_location = get_location(world, field_move.event_can_use_field_move)
         world.set_rule(field_move_location, field_move_rule)
