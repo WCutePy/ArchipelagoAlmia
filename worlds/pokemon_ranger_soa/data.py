@@ -298,6 +298,7 @@ class PokemonRSOAData:
     species: Dict[
         int, SpeciesData
     ]  # browser id - SpeciesData, duplicate forms are stored under the same browser id
+    form_id_to_species: Dict[int, SpeciesData]
     regions: Dict[str, MapData]
     map_id_to_region_name: Dict[int, str]
     locations: Dict[str, LocationData]
@@ -311,6 +312,7 @@ class PokemonRSOAData:
 
     def __init__(self) -> None:
         self.species = {}
+        self.form_id_to_species = {}
         self.regions = {}
         self.map_id_to_region_name = {}
         self.locations = {}
@@ -346,6 +348,8 @@ def _init():
     for species_data in extracted_species:
         species = SpeciesData(**species_data)
         data.species[species.browser_id] = species
+        for form in species.form_ids:
+            data.form_id_to_species[form] = species
 
     extracted_items: List[Dict] = load_json_data("items.json")
 

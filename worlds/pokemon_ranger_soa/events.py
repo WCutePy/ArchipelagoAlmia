@@ -3,20 +3,24 @@ from typing import Optional
 
 
 def get_instance_target(map_name: str, index: int) -> str:
+    """target instance location and item name"""
     return f"{map_name}.T.{index}"
 
 
 def get_instance_base(map_name: str, index: int) -> str:
+    """instance region name and connection name"""
     return f"{map_name}.P.{index}"
 
 
 def get_instance_browser(instance: str, index: Optional[int] = None) -> str:
+    """instance browser location name"""
     if index is not None:
         instance = get_instance_base(instance, index)
     return f"{instance}_browser"
 
 
 def get_instance_capture(instance: str, index: Optional[int] = None) -> str:
+    """instance capture location name"""
     if index is not None:
         instance = get_instance_base(instance, index)
     return f"{instance}_capture"
