@@ -299,7 +299,7 @@ class PokemonRSOAData:
         int, SpeciesData
     ]  # browser id - SpeciesData, duplicate forms are stored under the same browser id
     form_id_to_species: Dict[int, SpeciesData]
-    regions: Dict[str, MapData]
+    regions: Dict[str, MapData]  # m001_001 - MapData
     map_id_to_region_name: Dict[int, str]
     locations: Dict[str, LocationData]
     items: Dict[int, ItemData]

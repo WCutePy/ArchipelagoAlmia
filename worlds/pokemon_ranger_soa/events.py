@@ -26,6 +26,11 @@ def get_instance_capture(instance: str, index: Optional[int] = None) -> str:
     return f"{instance}_capture"
 
 
+def get_loading_zone_name(from_: str, to: str) -> str:
+    """loading zone name"""
+    return f"{from_} -> {to}"
+
+
 class PRSOAEvent(Enum):
 
     def __new__(cls, map_name: str):
