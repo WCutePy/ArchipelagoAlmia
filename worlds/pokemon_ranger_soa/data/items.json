@@ -585,7 +585,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Ability",
+        "label": "Progressive Agility",
         "item_id": 10010,
         "classification": 1,
         "item_categories": [
@@ -719,6 +719,17 @@
     {
         "label": "Progressive Swim",
         "item_id": 10023,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+        {
+        "label": "Progressive Dark Power",
+        "item_id": 10024,
         "classification": 1,
         "item_categories": [
             "progressive",

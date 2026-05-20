@@ -2,6 +2,26 @@ from enum import Enum
 from typing import Optional
 
 
+def get_instance_target(map_name: str, index: int) -> str:
+    return f"{map_name}.T.{index}"
+
+
+def get_instance_base(map_name: str, index: int) -> str:
+    return f"{map_name}.P.{index}"
+
+
+def get_instance_browser(instance: str, index: Optional[int] = None) -> str:
+    if index is not None:
+        instance = get_instance_base(instance, index)
+    return f"{instance}_browser"
+
+
+def get_instance_capture(instance: str, index: Optional[int] = None) -> str:
+    if index is not None:
+        instance = get_instance_base(instance, index)
+    return f"{instance}_capture"
+
+
 class PRSOAEvent(Enum):
 
     def __new__(cls, map_name: str):
@@ -17,7 +37,8 @@ class PRSOAEvent(Enum):
 class PREvent(PRSOAEvent):
     """Regular events"""
 
-    pass
+    SCHOOL_COLLECT_STYLERS = "m001_003a"
+    SCHOOL_COMPLETE_NIGHT = "m001_011"
 
 
 class PInstanceEvent(PRSOAEvent):
@@ -41,7 +62,7 @@ class PInstanceEvent(PRSOAEvent):
 
     WAILORD = ("m029_009", 238)
     REGIGIGAS = ("m036_019", 267)
-    DARKRAI = ("Overworld", 257)
+    DARKRAI = ("Overworld", 257, False)
     DIALGA = ("Overworld", 435)
     PALKIA = ("Overworld", 436)
     SHAYMIN = ("Overworld", 437)
@@ -56,9 +77,3 @@ class PInstanceEvent(PRSOAEvent):
     @property
     def event_name(self) -> str:
         return f"EVENT_P_{self.name}"
-
-
-print(PInstanceEvent)
-
-for el in PInstanceEvent:
-    print(el)

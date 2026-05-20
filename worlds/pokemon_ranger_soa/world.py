@@ -138,10 +138,10 @@ class PokemonRSOA(World):
         # }
 
         manually_blacklisted = [
-            "Shaymin",
-            "Palkia",
-            "Dialga",
-            "Darkrai",
+            # "Shaymin",
+            # "Palkia",
+            # "Dialga",
+            # "Darkrai",
             # "Regigigas",  # not sure about this one
         ]
 
@@ -177,23 +177,23 @@ class PokemonRSOA(World):
         return items.create_item_with_correct_classification(self, name)
 
     def fill_slot_data(self) -> Mapping[str, Any]:
-        # slot_data = self.options.as_dict(
-        #     "goal",
-        #     "mission_clear_target",
-        #     "quest_clear_target",
-        #     "capture_count_target",
-        #     "capture_rank_count_target",
-        #     "capture_rank_rank_target",
-        #     "death_link",
-        #     "death_link_damage",
-        #     "level_up_type",
-        #     "level_up_count",
-        #     "level_up_increment",
-        #     "rank_up_type",
-        #     "rank_up_count",
-        #     "rank_up_increment",
-        # )
-        slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
+        slot_data = self.options.as_dict(
+            "goal",
+            "mission_clear_target",
+            "quest_clear_target",
+            "capture_count_target",
+            "capture_rank_count_target",
+            "capture_rank_rank_target",
+            "death_link",
+            "death_link_damage",
+            "level_up_type",
+            "level_up_count",
+            "level_up_increment",
+            "rank_up_type",
+            "rank_up_count",
+            "rank_up_increment",
+        )
+        # slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
         slot_data["blacklisted_captures"] = self.blacklisted_captures
         slot_data["seed"] = self.seed  # Needs to be sent to UT
 

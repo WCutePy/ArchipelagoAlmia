@@ -119,12 +119,17 @@ class FieldMove:
     def __str__(self):
         return f"{self.category.name}_{self.level}"
 
+    def __lt__(self, other):
+        if self.category == other.category:
+            return self.level < other.level
+        return self.category < other.category
+
     def satisfies(self, required: "FieldMove") -> bool:
         return self.category == required.category and self.level >= required.level
 
     @property
     def event_can_use_field_move(self):
-        return f"EVENT_USE_FIELD-{self.category}-{self.level}"
+        return f"EVENT_USE_FIELD-{self.category.name}-{self.level}"
 
     @classmethod
     def from_string(cls, string: str) -> "FieldMove":
@@ -294,6 +299,7 @@ class PokemonRSOAData:
         int, SpeciesData
     ]  # browser id - SpeciesData, duplicate forms are stored under the same browser id
     regions: Dict[str, MapData]
+    map_id_to_region_name: Dict[int, str]
     locations: Dict[str, LocationData]
     items: Dict[int, ItemData]
 
@@ -306,6 +312,7 @@ class PokemonRSOAData:
     def __init__(self) -> None:
         self.species = {}
         self.regions = {}
+        self.map_id_to_region_name = {}
         self.locations = {}
         self.items = {}
         self.ram_addresses = {}
@@ -359,6 +366,7 @@ def _init():
         )
 
         data.regions[i] = region
+        data.map_id_to_region_name[int(region_data["INDEX"], 16)] = i
 
     extracted_locations: Dict[str, Dict] = load_json_data("locations.json")
 

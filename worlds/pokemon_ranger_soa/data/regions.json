@@ -231,7 +231,7 @@
                 "NO_MANUAL_RULES"
             ],
             "m001_002 -> m001_003b": [
-                "UNKNOWN"
+                "TODO"
             ],
             "m001_002 -> m001_013": [
                 "NO_MANUAL_RULES"
@@ -243,14 +243,12 @@
                 "UNKNOWN"
             ],
             "m001_002 -> m001_001": [
-                "UNKNOWN"
+                "TODO"
             ],
             "m001_002 -> m001_014": [
-                "UNKNOWN"
+                "TODO"
             ],
-            "npc_m001_002 -> m001_009": [
-                "UNKNOWN"
-            ]
+            "npc_m001_002 -> m001_002": []
         }
     },
     "m001_003a": {
@@ -322,8 +320,7 @@
                 "NO_MANUAL_RULES"
             ],
             "m001_003a -> m001_002": [
-                "NO_MANUAL_RULES",
-                "REMOVE"
+                "NO_MANUAL_RULES"
             ],
             "m001_003a -> m001_007": [
                 "NO_MANUAL_RULES"
@@ -333,7 +330,8 @@
             ],
             "m001_003a -> m001_003b": [
                 "TODO"
-            ]
+            ],
+            "npc_m001_003a -> m001_005": []
         }
     },
     "m001_003b": {
@@ -446,12 +444,14 @@
             "0": {
                 "SPECIES_ID": "0x0AD",
                 "SPECIES_NAME": "Bidoof",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "one_time": true
             },
             "1": {
                 "SPECIES_ID": "0x051",
                 "SPECIES_NAME": "Pichu",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "one_time": true
             }
         },
         "EXITS": {
@@ -485,7 +485,6 @@
                 "SPECIES_ID": "0x003",
                 "SPECIES_NAME": "Squirtle",
                 "SPAWN_FLAG": 0,
-                "one_time": true,
                 "rules": [
                     "NO_MANUAL_RULES"
                 ]
@@ -494,7 +493,6 @@
                 "SPECIES_ID": "0x0AD",
                 "SPECIES_NAME": "Bidoof",
                 "SPAWN_FLAG": 0,
-                "one_time": true,
                 "rules": [
                     "NO_MANUAL_RULES"
                 ]
@@ -512,9 +510,9 @@
         },
         "EXITS": {
             "m001_005 -> m001_002": [],
-            "m001_005 -> m001_016": [],
-            "npc_m001_005 -> m001_009": [],
-            "npc_m001_005 -> m001_005": []
+            "m001_005 -> m001_016": [
+                "TODO"
+            ]
         }
     },
     "m001_006": {
@@ -568,6 +566,7 @@
                 "SPECIES_ID": "0x051",
                 "SPECIES_NAME": "Pichu",
                 "SPAWN_FLAG": 0,
+                "one_time": true,
                 "rules": [
                     "TODO"
                 ]
@@ -575,7 +574,9 @@
         },
         "EXITS": {
             "m001_006 -> m001_003a": [],
-            "m001_006 -> m001_003b": []
+            "m001_006 -> m001_003b": [],
+            "npc_m001_006 -> m001_005": [],
+            "npc_m001_006 -> m001_002": []
         }
     },
     "m001_007": {
@@ -695,7 +696,10 @@
             ],
             "m001_007 -> m001_003b": [
                 "TODO"
-            ]
+            ],
+            "npc_m001_007 -> m001_002": [],
+            "npc_m001_007 -> m001_009": [],
+            "npc_m001_007 -> m001_005": []
         }
     },
     "m001_008": {
@@ -835,7 +839,9 @@
             ],
             "m001_009 -> m001_003b": [
                 "TODO"
-            ]
+            ],
+            "npc_m001_009 -> m001_009": [],
+            "npc_m001_009 -> m001_005": []
         }
     },
     "m001_010": {
@@ -875,22 +881,26 @@
             "0": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "one_time": true
             },
             "1": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "one_time": true
             },
             "2": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "one_time": true
             },
             "3": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "one_time": true
             },
             "4": {
                 "SPECIES_ID": "0x014",
@@ -900,7 +910,10 @@
             "5": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "rules": [
+                    "TODO"
+                ]
             }
         },
         "EXITS": {

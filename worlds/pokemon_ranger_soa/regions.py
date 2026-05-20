@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, List, Tuple, Set
+from typing import TYPE_CHECKING, Dict, List, Tuple, Set, Optional
 
 from BaseClasses import Entrance, Region, ItemClassification
 from rule_builder.rules import Has, Rule
@@ -8,21 +8,35 @@ from rule_builder.rules import Has, Rule
 from .data import data, SpeciesData, FieldMoveCategory, PokemonSpawnEntry, FieldMove
 from .items import PokemonRSOAItem
 from .locations import PokemonRSOALocation
-from .events import PInstanceEvent
+from .events import (
+    PInstanceEvent,
+    PREvent,
+    get_instance_target,
+    get_instance_base,
+    get_instance_browser,
+    get_instance_capture,
+)
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
 
 
 def create_event_location(
-    world: PokemonRSOA, event_name: str, event_region: Region
+    world: PokemonRSOA,
+    event_loc_name: str,
+    event_region: Region,
+    event_item_name: Optional[str] = None,
 ) -> PokemonRSOALocation:
-    event_location = PokemonRSOALocation(world.player, event_name, None, event_region)
+    if event_item_name is None:
+        event_item_name = event_loc_name
+    event_location = PokemonRSOALocation(
+        world.player, event_loc_name, None, event_region
+    )
     event_location.show_in_spoiler = False
 
     event_location.place_locked_item(
         PokemonRSOAItem(
-            event_name,
+            event_item_name,
             ItemClassification.progression_skip_balancing,
             None,
             world.player,
@@ -34,16 +48,27 @@ def create_event_location(
 
 def attach_pokemon_encounter(
     world: PokemonRSOA,
+    species: SpeciesData,
     instance_name: str,
     spawn_data: PokemonSpawnEntry,
     connect_to: Region,
 ) -> None:
     pokemon_region = Region(instance_name, world.player, world.multiworld)
 
-    create_event_location(world, f"{instance_name}_browser", pokemon_region)
+    create_event_location(
+        world,
+        get_instance_browser(instance_name),
+        pokemon_region,
+        species.event_add_to_browser,
+    )
 
     if not spawn_data.one_time:
-        create_event_location(world, f"{instance_name}_capture", pokemon_region)
+        create_event_location(
+            world,
+            get_instance_capture(instance_name),
+            pokemon_region,
+            species.event_can_capture,
+        )
 
     connect_to.connect(pokemon_region, instance_name)
 
@@ -76,7 +101,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
         new_region = Region(region_data.HUMAN_NAME, world.player, world.multiworld)
 
         for i, target_data in region_data.TARGETS.items():
-            event_name = f"{region_name}.T.{i}"
+            event_name = get_instance_target(region_name, i)
             target_location = create_event_location(world, event_name, new_region)
 
             field_move = data.target_field_move_requirements[target_data.TARGET_ID]
@@ -86,9 +111,12 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
                 )
 
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
-            pokemon_instance = f"{region_name}.P.{i}"
+            pokemon_instance = get_instance_base(region_name, i)
+            species = form_species[spawn_data.SPECIES_ID]
 
-            attach_pokemon_encounter(world, pokemon_instance, spawn_data, new_region)
+            attach_pokemon_encounter(
+                world, species, pokemon_instance, spawn_data, new_region
+            )
 
         for exit_name in region_data.EXITS:
             region_exit = exit_name.split("-> ")[1].split(".")[0]
@@ -118,6 +146,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
 
         attach_pokemon_encounter(
             world,
+            pokemon,
             event.event_name,
             PokemonSpawnEntry(
                 SPECIES_ID=pokemon.form_ids[0],
@@ -134,9 +163,15 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     for i, pokemon in data.species.items():
         field_moves.add(pokemon.field_move)
 
+    field_moves = sorted(field_moves)
     for field_move in field_moves:
         create_event_location(
             world, field_move.event_can_use_field_move, field_move_region
         )
+
+    regions["Events"] = Region("Events", world.player, world.multiworld)
+    regions["Overworld"].connect(regions["Events"], "Events region")
+    for event in PREvent:
+        create_event_location(world, event.event_name, regions["Events"])
 
     return regions

@@ -120,3 +120,8 @@ and 01 for normal pokémon. Other numbers also do things but it's kinda weird, 0
 I was able to edit the field move for charmander through editing the table
 
 each Pokémon uses 24 bytes, are they contigous??? idk, eek
+
+
+# known crashes
+
+ - Getting Rampardos early, and going down the ladder in cargo ship (likely due to npc following)
