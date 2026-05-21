@@ -361,8 +361,6 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
         world, "m006_001", 2, include=include
     ) | can_destroy_target(world, "m006_001", 3, include=include)
 
-    # TODO have these captures be seperate from field move use (relevant for the tree in m007_001...)
-
     world.set_rule(
         get_connection(world, "m006_001", "m006_002"), can_destroy_wooden_gate
     )
