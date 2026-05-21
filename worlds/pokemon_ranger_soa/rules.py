@@ -332,8 +332,9 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.TANGROWTH.event_name),
-        CanReachLocation(mission_0),
-    )
+        # CanReachLocation(mission_0),
+        CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+    )  # causes explicit indirect condition if tied to CanReachLocation
 
 
 def set_mission_1_and_2_rules(world: PokemonRSOA):
@@ -344,7 +345,8 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     )
 
     # m005_001b is reached without requiring rules based on
-    # the only way to leave school
+    # the only way to leave school and no obstacles in the way
+    # only missions
 
     """Mission 2 - Investigate the Marine Cave!"""
     """Marine cave"""
@@ -366,7 +368,8 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     )
     world.set_rule(
         get_connection(world, "m006_001", "m006_003"),
-        can_destroy_wooden_gate & can_destroy_target(world, "m006_001", 1),
+        can_destroy_wooden_gate
+        & can_destroy_target(world, "m006_001", 1, include=include),
     )
 
     world.set_rule(
