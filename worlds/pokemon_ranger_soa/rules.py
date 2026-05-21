@@ -3,6 +3,8 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import TYPE_CHECKING, Dict, Union, Optional, List, TypeAlias, Iterable
 
+from narwhals import exclude
+
 from BaseClasses import CollectionState, Entrance, Location, ItemClassification
 from worlds.generic.Rules import add_rule, set_rule
 
@@ -137,13 +139,14 @@ def can_destroy_target(
     map_name = sanitize_map_name(map_name)
     target = get_instance_target(map_name, i)
 
-    if include is None and exclude is None:
-        return Has(target)
-
     field_move = data.target_field_move_requirements[
         data.regions[map_name].TARGETS[str(i)].TARGET_ID
     ]
-    return Has(target) & access_field_move(
+
+    if include is None and exclude is None:
+        return Has(field_move.event_can_use_field_move)
+
+    return has_field_move_item(field_move) & access_field_move(
         world, field_move, include, exclude, include_one_time
     )
 
@@ -211,14 +214,26 @@ def set_all_rules(world: PokemonRSOA) -> None:
         world.set_rule(field_move_location, field_move_rule)
 
     set_tutorial_rules(world)
+    set_mission_1_and_2_rules(world)
 
     set_completion_condition(world)
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
+
     world.set_rule(
         get_pokemon_instance(world, "m001_002", 7),
         can_destroy_target(world, "m001_002", 3),
+    )
+
+    for i in [6, 12]:
+        world.set_rule(
+            get_pokemon_instance(world, "m001_002", i),
+            False_()
+        )
+    world.set_rule(
+        get_connection(world, "m001_002", "m001_014"),
+        False_()
     )
 
     """School first night"""
@@ -254,10 +269,11 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     )
 
     # basement access
-    world.set_rule(
-        get_connection(world, "m001_003a", "m001_011"),
-        Has(PREvent.SCHOOL_COLLECT_STYLERS.event_name),
-    )
+    for from_ in ["m001_003a", "m001_003b"]:
+        world.set_rule(
+            get_connection(world, from_, "m001_011"),
+            Has(PREvent.SCHOOL_COLLECT_STYLERS.event_name),
+        )
     world.set_rule(
         get_location(world, PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
         can_destroy_target_type(
@@ -280,10 +296,25 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
             Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
         )
 
+    world.set_rule(
+        get_pokemon_instance(world, "m001_007", 5),
+        False_()
+    ) # TODO figure out when separate ghastly spawns
+
     """School day 3"""
 
-    # TODO, check if early school REQUIRES using a field move in the story to return to, or just continouing story.
     # and specify the available mons
+
+    # TODO, swap over to an exclusion ("out of logic" ship is not accounted for now for acces), expand when known how to permanently return to school
+    include_og = {
+        "m001_002": [],
+        "m001_003a": [], # quite sure all are available
+        "m001_005": [],
+        "m001_009": [],
+        "m001_011": [],
+        "m001_001": [0, 1, 2, 5],
+        "m001_015": [],
+    }
 
     world.set_rule(
         get_pokemon_instance(world, "m001_009", 0),
@@ -291,10 +322,10 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     )
     world.set_rule(
         get_connection(world, "m001_005", "m001_016"),
-        Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name)
-        & can_destroy_target(world, "m001_005", 1),
-    )
-    # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
+        (Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name)
+        & can_destroy_target(world, "m001_005", 1, include=include_og)) | False_(),
+    ) # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
+
     for i in [0, 1, 2, 3]:
         world.set_rule(
             get_pokemon_instance(world, "m001_005", i),
@@ -308,15 +339,18 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     for name in [get_instance_capture("m001_001", 5)]:
         world.set_rule(
             get_location(world, name),
-            can_destroy_target(world, "m001_001", 5),
+            can_destroy_target(world, "m001_001", 5, include=include_og) | False_(),
         )
 
     world.set_rule(
         get_connection(world, "m001_001", "m001_015"),
-        can_destroy_target(world, "m001_001", 0),
+        can_destroy_target(world, "m001_001", 0, include=include_og) | False_(),
     )
 
     """School day 3 - leave school oneway"""
+
+    for from_, to in [("m004_001", "m009_002"), ("m008_001", "m039_012"), ("m008_003", "m017_007"),]:
+        world.set_rule(get_connection(world, from_, to), False_())
 
     # TODO figure out what the full scope for the tree in chicole will be before potential bk
     world.set_rule(
@@ -324,6 +358,7 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         can_destroy_target(world, "m007_001", 1),  # tree
     )
 
+    # maybe consider making an event
     mission_0 = data.locations["MISSION_00"].label
     world.set_rule(
         get_location(world, mission_0),
@@ -332,9 +367,14 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.TANGROWTH.event_name),
-        # CanReachLocation(mission_0),
         CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
-    )  # causes explicit indirect condition if tied to CanReachLocation
+    )
+
+    for from_ in ["m001_002", "m001_003a", "m001_004", "m001_006", "m001_007", "m001_008", "m001_009", "m001_011"]:
+        world.set_rule(
+            get_connection(world, from_, "m001_003b"),
+            CanReachRegion(data.regions["m005_001a"].HUMAN_NAME)
+        )
 
 
 def set_mission_1_and_2_rules(world: PokemonRSOA):
@@ -346,7 +386,7 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 
     # m005_001b is reached without requiring rules based on
     # the only way to leave school and no obstacles in the way
-    # only missions
+    # only missions, thus indirect
 
     """Mission 2 - Investigate the Marine Cave!"""
     """Marine cave"""
@@ -408,17 +448,41 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
         CanReachLocation(quest_1),
     )  # not possible if goal is mission 2
 
-    for from_, to in []:
-        world.set_rule(get_connection(world, from_, to), False_())
+    """blacklist connections past goal"""
+
+    # world.set_rule(
+    #     # get_pokemon_instance(world, "m001_001", 0),
+    #     get_location(world, "CAPTURE_Croagunk"),
+    #     False_()
+    # )
+
+    # world.set_rule(
+    #     get_location(world, data.species[1].location_capture_name),
+    #     False_()
+    # )
+    #
+    # world.set_rule(
+    #     get_entrance(world, PInstanceEvent.CHIMCHAR.event_name),
+    #     False_()
+    # )
+    #
+    # world.set_rule(
+    #     get_pokemon_instance(world, "m001_001", 0),
+    #     False_()
+    # )
 
 
 def set_completion_condition(world) -> None:
     def captured_n_pokemon(state: CollectionState, n: int) -> bool:
-        return state.has_from_list_unique(
-            [i.event_add_to_browser for i in data.species.values()], world.player, n
-        )
+        return sum(state.can_reach_location(s.location_capture_name, world.player) for s in data.species.values()) >= n
+
+    # def captured_n_pokemon(state: CollectionState, n: int) -> bool:
+    #     return state.has_from_list_unique(
+    #         [i.event_add_to_browser for i in data.species.values()], world.player, n
+    #     )
 
     captures = world.options.capture_count_target.value
+    captures = 21
     completion_condition = lambda state: captured_n_pokemon(state, captures)
 
     world.multiworld.completion_condition[world.player] = completion_condition

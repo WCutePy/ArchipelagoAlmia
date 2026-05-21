@@ -53,33 +53,40 @@ class PREvent(PRSOAEvent):
 class PInstanceEvent(PRSOAEvent):
     """MAP_NAME, BROWSER_ID"""
 
-    MACHOP = ("Overworld", 161)
-    MISDREAVUS = ("Overworld", 220)
-    SNEASEL = ("Overworld", 244)
-    TURTWIG = ("Overworld", 52)
-    CHIMCHAR = ("Overworld", 168)
-    PIPLUP = ("Overworld", 206)
-    STARLY = ("Overworld", 23)
-    KRICKETOT = ("Overworld", 82)
-    CRANIDOS = ("Overworld", 84)
-    SHIELDON = ("Overworld", 181)
-    PACHIRISU = ("Overworld", 26)
-    MIME_JR = ("Overworld", 164)
-    GIBLE = ("Overworld", 251)
-    MUNCHLAX = ("Overworld", 27)
-    HIPPOPOTAS = ("Overworld", 246)
-    CROAGUNK = ("Overworld", 80)
-    SNOVER = ("Overworld", 211)
-
+    """Script based """
     TANGROWTH = ("m001_003b", 36)  # unsure about form
     MILTANK = ("m004_001", 46)
 
+
+
     WAILORD = ("m029_009", 238)
+
+
+    """Partners"""
+    MACHOP = ("m041_001", 161)
+    MISDREAVUS = ("m041_001", 220)
+    SNEASEL = ("m041_001", 244)
+    TURTWIG = ("m041_001", 52)
+    CHIMCHAR = ("m041_001", 168)
+    PIPLUP = ("m041_001", 206)
+    STARLY = ("m041_001", 23)
+    KRICKETOT = ("m041_001", 82)
+    CRANIDOS = ("m041_001", 84)
+    SHIELDON = ("m041_001", 181)
+    PACHIRISU = ("m041_001", 26)
+    MIME_JR = ("m041_001", 164)
+    GIBLE = ("m041_001", 251)
+    MUNCHLAX = ("m041_001", 27)
+    HIPPOPOTAS = ("m041_001", 246)
+    CROAGUNK = ("m041_001", 80)
+    SNOVER = ("m041_001", 211)
+
+    """DLC?"""
+    DARKRAI = ("m041_001", 257, False)
     REGIGIGAS = ("m036_019", 267)
-    DARKRAI = ("Overworld", 257, False)
-    DIALGA = ("Overworld", 435)
-    PALKIA = ("Overworld", 436)
-    SHAYMIN = ("Overworld", 437)
+    DIALGA = ("m041_001", 435)
+    PALKIA = ("m041_001", 436)
+    SHAYMIN = ("m041_001", 437)
 
     def __new__(cls, map_name: str, browser_id: int, one_time: Optional[bool] = True):
         obj = object.__new__(cls)

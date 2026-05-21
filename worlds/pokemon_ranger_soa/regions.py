@@ -32,7 +32,7 @@ def create_event_location(
     event_location = PokemonRSOALocation(
         world.player, event_loc_name, None, event_region
     )
-    event_location.show_in_spoiler = False
+    # event_location.show_in_spoiler = False
 
     event_location.place_locked_item(
         PokemonRSOAItem(
@@ -103,12 +103,12 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
         for i, target_data in region_data.TARGETS.items():
             event_name = get_instance_target(region_name, i)
             target_location = create_event_location(world, event_name, new_region)
-
-            field_move = data.target_field_move_requirements[target_data.TARGET_ID]
-            if field_move.category != FieldMoveCategory.NONE:
-                world.set_rule(
-                    target_location, Has(field_move.event_can_use_field_move)
-                )
+            #
+            # field_move = data.target_field_move_requirements[target_data.TARGET_ID]
+            # if field_move.category != FieldMoveCategory.NONE:
+            #     world.set_rule(
+            #         target_location, Has(field_move.event_can_use_field_move)
+            #     )
 
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
             pokemon_instance = get_instance_base(region_name, i)
@@ -136,7 +136,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
 
     """Additional connections that behave different"""
 
-    regions["Overworld"].connect(
+    regions["m029_001"].connect(
         regions["m030_001"], "Oil Field Hideout"
     )  # TODO, connect to proper region
     regions["m029_001"].connect(regions["m029_009"], "Wailord fight")

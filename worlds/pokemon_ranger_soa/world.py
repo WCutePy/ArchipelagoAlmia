@@ -154,6 +154,8 @@ class PokemonRSOA(World):
 
         locations.create_all_locations(self, all_regions)
 
+        print(all_regions)
+
         self.multiworld.regions.extend(all_regions.values())
 
     def create_items(self) -> None:
