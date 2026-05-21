@@ -13,7 +13,7 @@ from rule_builder.rules import (
     HasAllCounts,
     True_,
     CanReachLocation,
-    CanReachRegion,
+    CanReachRegion, False_,
 )
 from .data import data, ItemCategory, FieldMove
 from .events import (
@@ -406,7 +406,10 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     world.set_rule(
         get_entrance(world, PInstanceEvent.MILTANK.event_name),
         CanReachLocation(quest_1),
-    )
+    )  # not possible if goal is mission 2
+
+    for from_, to in []:
+        world.set_rule(get_connection(world, from_, to), False_())
 
 
 def set_completion_condition(world) -> None:
