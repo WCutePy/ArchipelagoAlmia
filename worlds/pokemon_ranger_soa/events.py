@@ -51,6 +51,8 @@ class PREvent(PRSOAEvent):
 
 
 class PInstanceEvent(PRSOAEvent):
+    """MAP_NAME, BROWSER_ID"""
+
     MACHOP = ("Overworld", 161)
     MISDREAVUS = ("Overworld", 220)
     SNEASEL = ("Overworld", 244)
@@ -68,6 +70,9 @@ class PInstanceEvent(PRSOAEvent):
     HIPPOPOTAS = ("Overworld", 246)
     CROAGUNK = ("Overworld", 80)
     SNOVER = ("Overworld", 211)
+
+    TANGROWTH = ("m001_003b", 36)  # unsure about form
+    MILTANK = ("m004_001", 46)
 
     WAILORD = ("m029_009", 238)
     REGIGIGAS = ("m036_019", 267)

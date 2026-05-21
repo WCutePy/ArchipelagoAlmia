@@ -7,7 +7,14 @@ from BaseClasses import CollectionState, Entrance, Location, ItemClassification
 from worlds.generic.Rules import add_rule, set_rule
 
 from rule_builder.options import OptionFilter
-from rule_builder.rules import Has, Rule, HasAllCounts, True_, CanReachLocation
+from rule_builder.rules import (
+    Has,
+    Rule,
+    HasAllCounts,
+    True_,
+    CanReachLocation,
+    CanReachRegion,
+)
 from .data import data, ItemCategory, FieldMove
 from .events import (
     PREvent,
@@ -16,6 +23,7 @@ from .events import (
     get_instance_target,
     get_loading_zone_name,
     get_instance_browser,
+    PInstanceEvent,
 )
 from .items import PokemonRSOAItem
 from .locations import PokemonRSOALocation
@@ -69,8 +77,8 @@ def access_field_move(
     include: MonSelect = None,
     exclude: MonSelect = None,
     include_one_time: bool = False,
-):
-    pokemon_rules = True_
+) -> Rule:
+    pokemon_rules = True_()
     for region_name, region_data in data.regions.items():
         exclude_region = True if exclude is None else exclude.get(region_name, True)
         if exclude and (
@@ -106,6 +114,7 @@ def access_field_move(
                     pokemon_rules |= CanReachLocation(
                         get_instance_capture(region_name, i)
                     )
+    return pokemon_rules
 
 
 def can_destroy_target(
@@ -121,6 +130,9 @@ def can_destroy_target(
     and instead handle it here fully, for now leaving as is, some minor duplication of
     logic is here right now, as being able to use field move item is inhernt from
     Has(target)
+
+    MUST be exhausted directly, as include and exclude are expected to be expanded over
+    its use
     """
     map_name = sanitize_map_name(map_name)
     target = get_instance_target(map_name, i)
@@ -271,6 +283,7 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     """School day 3"""
 
     # TODO, check if early school REQUIRES using a field move in the story to return to, or just continouing story.
+    # and specify the available mons
 
     world.set_rule(
         get_pokemon_instance(world, "m001_009", 0),
@@ -305,8 +318,94 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
 
     """School day 3 - leave school oneway"""
 
-    for from_ in ["m004_001", "m004_007"]:
-        world.set_rule(get_connection(world, from_, "m005_001b"), Has())
+    # TODO figure out what the full scope for the tree in chicole will be before potential bk
+    world.set_rule(
+        get_pokemon_instance(world, "m007_001", 4),
+        can_destroy_target(world, "m007_001", 1),  # tree
+    )
+
+    mission_0 = data.locations["MISSION_00"].label
+    world.set_rule(
+        get_location(world, mission_0),
+        CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+    )
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.TANGROWTH.event_name),
+        CanReachLocation(mission_0),
+    )
+
+
+def set_mission_1_and_2_rules(world: PokemonRSOA):
+    mission_1 = data.locations["MISSION_01"].label
+    world.set_rule(
+        get_location(world, mission_1),
+        CanReachLocation(data.locations["MISSION_00"].label),
+    )
+
+    # m005_001b is reached without requiring rules based on
+    # the only way to leave school
+
+    """Mission 2 - Investigate the Marine Cave!"""
+    """Marine cave"""
+    include = {
+        "m001_001": [3, 4],
+        "m005_001b": [],
+        "m007_001": [],
+        "m006_002": [],  # unreachable until a bit later
+        "m006_003": [],  # unreachable until a bit later
+        "m006_004": [],  # unreachable until a bit later
+    }
+
+    can_destroy_wooden_gate = can_destroy_target(
+        world, "m006_001", 2, include=include
+    ) | can_destroy_target(world, "m006_001", 3, include=include)
+
+    # TODO have these captures be seperate from field move use (relevant for the tree in m007_001...)
+
+    world.set_rule(
+        get_connection(world, "m006_001", "m006_002"), can_destroy_wooden_gate
+    )
+    world.set_rule(
+        get_connection(world, "m006_001", "m006_003"),
+        can_destroy_wooden_gate & can_destroy_target(world, "m006_001", 1),
+    )
+
+    world.set_rule(
+        get_location(world, get_instance_target("m006_001", 0)),
+        can_destroy_wooden_gate
+        & can_destroy_target(world, "m006_001", 0, include=include),  # red gigaremo
+    )
+
+    for i in range(7):
+        world.set_rule(
+            get_location(world, get_instance_capture("m006_001", i)),
+            Has(get_instance_target("m006_001", 0)),
+        )  # only 2 zubats at first, after mission 2 complete the rest
+
+        if i in [5, 6]:
+            continue
+        world.set_rule(
+            get_pokemon_instance(world, "m006_001", i),
+            can_destroy_wooden_gate,
+        )
+
+    world.set_rule(
+        get_connection(world, "m006_002", "m006_004"),
+        can_destroy_target(world, "m006_002", 0, include=include),  # rock crush 2
+    )
+
+    mission_2 = data.locations["MISSION_02"].label
+    world.set_rule(
+        get_location(world, mission_2), Has(get_instance_target("m006_001", 0))
+    )
+
+    quest_1 = data.locations["QUEST_01"].label
+    world.set_rule(get_location(world, quest_1), CanReachLocation(mission_2))
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.MILTANK.event_name),
+        CanReachLocation(quest_1),
+    )
 
 
 def set_completion_condition(world) -> None:
