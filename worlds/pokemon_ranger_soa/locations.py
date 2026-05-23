@@ -46,7 +46,7 @@ def create_all_locations(
     world: PokemonRSOA,
     regions: Dict[str, Region],
 ) -> None:
-    region = regions.get("Overworld")
+    default_region = regions.get("Overworld")
 
     locations_categories = [
         LocationCategory.MISSION,
@@ -63,6 +63,11 @@ def create_all_locations(
         ]:
             if location_data.name.split("_")[-1] in world.blacklisted_captures:
                 continue
+
+        if location_data.parent_region is None:
+            region = default_region
+        else:
+            region = regions[location_data.parent_region]
 
         new_location = PokemonRSOALocation(
             world.player,

@@ -265,18 +265,20 @@ class MapData:
     INDEX: str
     HUMAN_NAME: str
 
-    TARGETS: dict[str, TargetEntry] = field(default_factory=dict)
-    POKEMON_SPAWN: dict[str, PokemonSpawnEntry] = field(default_factory=dict)
+    TARGETS: dict[int, TargetEntry] = field(default_factory=dict)
+    POKEMON_SPAWN: dict[int, PokemonSpawnEntry] = field(default_factory=dict)
     EXITS: dict[str, list[str]] = field(default_factory=dict)
 
     def __post_init__(self):
         self.TARGETS = {
-            key: (value if isinstance(value, TargetEntry) else TargetEntry(**value))
+            int(key): (
+                value if isinstance(value, TargetEntry) else TargetEntry(**value)
+            )
             for key, value in self.TARGETS.items()
         }
 
         self.POKEMON_SPAWN = {
-            key: (
+            int(key): (
                 value
                 if isinstance(value, PokemonSpawnEntry)
                 else PokemonSpawnEntry(

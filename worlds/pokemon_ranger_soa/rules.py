@@ -1,7 +1,16 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import TYPE_CHECKING, Dict, Union, Optional, List, TypeAlias, Iterable
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    Union,
+    Optional,
+    List,
+    TypeAlias,
+    Iterable,
+    Sized,
+)
 
 from narwhals import exclude
 
@@ -17,8 +26,10 @@ from rule_builder.rules import (
     CanReachLocation,
     CanReachRegion,
     False_,
+    HasFromList,
+    HasFromListUnique,
 )
-from .data import data, ItemCategory, FieldMove
+from .data import data, ItemCategory, FieldMove, LocationCategory
 from .events import (
     PREvent,
     get_instance_base,
@@ -31,6 +42,7 @@ from .events import (
 from .items import PokemonRSOAItem
 from .locations import PokemonRSOALocation
 from .options import FieldMoveItem
+from .regions import exclude_map
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -81,29 +93,32 @@ def access_field_move(
     exclude: MonSelect = None,
     include_one_time: bool = False,
 ) -> Rule:
+    if include is None:
+        include = {}
+    if exclude is None:
+        exclude = {}
+
     pokemon_rules = False_()
     for region_name, region_data in data.regions.items():
-        exclude_region = True if exclude is None else exclude.get(region_name, True)
+        region_name = region_name.lower()
         if exclude and (
-            not exclude_region
-            or any(region_name.startswith(e) for e in exclude if "_" not in e)
+            len(exclude.get(region_name, [1])) == 0
+            or any(region_name.startswith(e.lower()) for e in exclude if "_" not in e)
         ):
             continue
-        if exclude_region is True:
-            exclude_region = []
-        include_region = None if include is None else include.get(region_name, None)
-        if include and (
-            include_region is None
-            or any(region_name.startswith(i) for i in include if "_" not in i)
-        ):
+        exclude_region = exclude.get(region_name, [])
+        include_region: bool = next(
+            (include[i] for i in include if region_name.startswith(i.lower())), False
+        )
+        if include and include_region is False:
             continue
-
-        print("anything passing???")
+        include_region: Sized
 
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
+
             if exclude and i in exclude_region:
                 continue
-            if include and (not include_region or i not in include_region):
+            if include and len(include_region) > 0 and i not in include_region:
                 continue
 
             if not include_one_time and spawn_data.one_time:
@@ -112,10 +127,14 @@ def access_field_move(
             species = data.form_id_to_species[spawn_data.SPECIES_ID]
             if species.field_move.satisfies(field_move):
                 if include_one_time:
-                    pokemon_rules |= Has(get_instance_browser(region_name, i))
+                    pokemon_rules |= CanReachLocation(
+                        get_instance_browser(region_name, i)
+                    )
                 else:
-                    pokemon_rules |= Has(get_instance_capture(region_name, i))
-    print(pokemon_rules)
+                    pokemon_rules |= CanReachLocation(
+                        get_instance_capture(region_name, i)
+                    )
+
     return pokemon_rules
 
 
@@ -140,13 +159,13 @@ def can_destroy_target(
     target = get_instance_target(map_name, i)
 
     field_move = data.target_field_move_requirements[
-        data.regions[map_name].TARGETS[str(i)].TARGET_ID
+        data.regions[map_name].TARGETS[i].TARGET_ID
     ]
 
     if include is None and exclude is None:
         return Has(field_move.event_can_use_field_move)
 
-    return has_field_move_item(field_move) & access_field_move(
+    return has_field_move_item(world, field_move) & access_field_move(
         world, field_move, include, exclude, include_one_time
     )
 
@@ -169,22 +188,18 @@ def can_destroy_target_type(
     if include is None and exclude is None:
         return Has(field_move.event_can_use_field_move)
 
-    return has_field_move_item(field_move) & access_field_move(
+    return has_field_move_item(world, field_move) & access_field_move(
         world, field_move, include, exclude, include_one_time
     )
 
 
-def has_field_move_item(field_move: FieldMove) -> Rule:
+def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
+    if world.options.field_move_item == FieldMoveItem.option_vanilla:
+        return True_()
+
     return Has(
         field_move.category.item_name,
         1,
-        options=[
-            OptionFilter(
-                FieldMoveItem,
-                FieldMoveItem.option_vanilla,
-            )
-        ],
-        filtered_resolution=True,
     )
 
 
@@ -208,10 +223,18 @@ def set_all_rules(world: PokemonRSOA) -> None:
                 field_move_rules[field_move] |= Has(pokemon.event_can_capture)
 
     for field_move, pokemon_rules in field_move_rules.items():
-        field_move_rule = pokemon_rules & has_field_move_item(field_move)
+        field_move_rule = pokemon_rules & has_field_move_item(world, field_move)
 
         field_move_location = get_location(world, field_move.event_can_use_field_move)
         world.set_rule(field_move_location, field_move_rule)
+
+    for region_name, region_data in data.regions.items():
+        if exclude_map(world, region_name, region_data):
+            continue
+
+        for i, mon_data in region_data.POKEMON_SPAWN.items():
+            if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
+                world.set_rule(get_pokemon_instance(world, region_name, i), False_())
 
     set_tutorial_rules(world)
     set_mission_1_and_2_rules(world)
@@ -260,6 +283,12 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         can_destroy_target_type(
             world, 27, include=school_night_include, include_one_time=True
         ),  # crate
+    )
+
+    print(
+        can_destroy_target_type(
+            world, 27, include=school_night_include, include_one_time=True
+        ),
     )
 
     # basement access
@@ -320,8 +349,6 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
             )
             | False_(),
         )  # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
-    print("test print:")
-    print(can_destroy_target(world, "m001_004", 14, include=include_og))
 
     for i in [0, 1, 2, 3]:
         world.set_rule(
@@ -474,8 +501,22 @@ def set_completion_condition(world) -> None:
     #         [i.event_add_to_browser for i in data.species.values()], world.player, n
     #     )
 
-    captures = world.options.capture_count_target.value
-    captures = 39
-    completion_condition = lambda state: captured_n_pokemon(state, captures)
+    browser = world.options.capture_count_target.value
+    browser = 19
+    missions = 3
+    quests = 1
 
-    world.multiworld.completion_condition[world.player] = completion_condition
+    has_captures = HasFromListUnique(
+        *[s.event_add_to_browser for s in data.species.values()], count=browser
+    )
+    has_missions = True_()
+    count = 0
+    for loc_name, loc_data in data.locations.items():
+        count += 1
+        if count > missions:
+            break
+        if loc_data.category == LocationCategory.MISSION:
+            has_missions &= CanReachLocation(loc_data.label)
+    completion_condition = has_captures & has_missions
+
+    world.set_completion_rule(completion_condition)

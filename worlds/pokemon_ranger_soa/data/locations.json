@@ -1,7 +1,7 @@
 {
   "MISSION_00": {
     "label": "Rookie mission: Soothe Pokemon on the beach!",
-    "parent_region": null,
+    "parent_region": "m005_001a",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -9,7 +9,7 @@
   },
   "MISSION_01": {
     "label": "Mission 01: Deliver Vien Tribune!",
-    "parent_region": null,
+    "parent_region": "m004_002",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -17,7 +17,7 @@
   },
     "MISSION_02": {
     "label": "Mission 02: Investigate the Marine Cave!",
-    "parent_region": null,
+    "parent_region": "m004_002",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -25,7 +25,7 @@
   },
   "MISSION_03": {
     "label": "Mission 03: Fight the Vien Forest fire!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -33,7 +33,7 @@
   },
   "MISSION_04": {
     "label": "Mission 04: Destroy the Strange Machines!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -41,7 +41,7 @@
   },
   "MISSION_05": {
     "label": "Mission 05: Recover a Key from Sharpedo!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -49,7 +49,7 @@
   },
   "MISSION_06": {
     "label": "Mission 06: Seek the Origin of the Quake!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -57,7 +57,7 @@
   },
   "MISSION_07": {
     "label": "Mission 07: Teach at Ranger School!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -65,7 +65,7 @@
   },
   "MISSION_08": {
     "label": "Mission 08: Look for Missing Barlow!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -73,7 +73,7 @@
   },
   "MISSION_09": {
     "label": "Mission 09: Support Sven at the Ruins!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -81,7 +81,7 @@
   },
   "MISSION_10": {
     "label": "Mission 10: Get the Blue Gem!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -89,7 +89,7 @@
   },
   "MISSION_11": {
     "label": "Mission 11: Get the Red Gem!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -97,7 +97,7 @@
   },
   "MISSION_12": {
     "label": "Mission 12: Rescue Wailord!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -105,7 +105,7 @@
   },
   "MISSION_13": {
     "label": "Mission 13: Reveal the Hideout's Secrets!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -113,7 +113,7 @@
   },
   "MISSION_14": {
     "label": "Mission 14: Get the Yellow Gem!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -121,7 +121,7 @@
   },
   "MISSION_15": {
     "label": "Mission 15: Protect the Ranger Union HQ!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -129,7 +129,7 @@
   },
   "MISSION_16": {
     "label": "Mission 16: Execute Operation Brighton!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -137,7 +137,7 @@
   },
   "QUEST_01": {
     "label": "Quest 01: Calm Down Miltank",
-    "parent_region": null,
+    "parent_region": "m004_001",
     "default_item": "Progressive Grass Defense",
     "addresses": "0x020B264D",
     "flag": 1,
@@ -145,7 +145,7 @@
   },
     "QUEST_02": {
     "label": "Quest 02: Breeze Hill Sign Recovery",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Dark Defense",
     "addresses": "0x020B264E",
     "flag": 1,
@@ -153,7 +153,7 @@
   },
       "QUEST_03": {
     "label": "Quest 03: Is Combee Okay?",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Electric Defense",
     "addresses": "0x020B264F",
     "flag": 1,
@@ -161,7 +161,7 @@
   },
         "QUEST_04": {
     "label": "Quest 04: Clear the Crates!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Bug Defense",
     "addresses": "0x020B2650",
     "flag": 1,
@@ -169,7 +169,7 @@
   },
           "QUEST_05": {
     "label": "Quest 05: The Boy Who Cried Lumineon",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Rock Defense",
     "addresses": "0x020B2651",
     "flag": 1,
@@ -177,14 +177,14 @@
   },
             "QUEST_06": {
     "label": "Quest 06: Nosepass! Must Have Nosepass!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Ground Defense",
     "addresses": "0x020B2652",
     "flag": 1,
     "category": "quest"
   },            "QUEST_07": {
     "label": "Quest 07: Who Ate My Lunch!?",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Power Plus",
     "addresses": "0x020B2653",
     "flag": 1,
@@ -192,7 +192,7 @@
   },
   "QUEST_08": {
     "label": "Quest 08: Eeve for Marital Bliss",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Steel Defense",
     "addresses": "0x020B2654",
     "flag": 1,
@@ -200,7 +200,7 @@
   },
   "QUEST_09": {
     "label": "Quest 09: Oddish Research",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Fire Defense",
     "addresses": "0x020B2655",
     "flag": 1,
@@ -208,7 +208,7 @@
   },
   "QUEST_10": {
     "label": "Quest 10: Light the Leaves",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Time Assist",
     "addresses": "0x020B2656",
     "flag": 1,
@@ -216,7 +216,7 @@
   },
   "QUEST_11": {
     "label": "Quest 11: Clear Some Fallen Logs",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Long Line",
     "addresses": "0x020B2657",
     "flag": 1,
@@ -224,7 +224,7 @@
   },
   "QUEST_12": {
     "label": "Quest 12: Cherrim, Cherrim, Come to Us",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Ghost Defense",
     "addresses": "0x020B2658",
     "flag": 1,
@@ -232,7 +232,7 @@
   },
   "QUEST_13": {
     "label": "Quest 13: Team Dim Sun's Appetite",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Recovery",
     "addresses": "0x020B2659",
     "flag": 1,
@@ -240,7 +240,7 @@
   },
   "QUEST_14": {
     "label": "Quest 14: That Smell of Muk",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Poison Defense",
     "addresses": "0x020B265A",
     "flag": 1,
@@ -248,7 +248,7 @@
   },
   "QUEST_15": {
     "label": "Quest 15: Dim...Sun...Come Back...",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Ice Defense",
     "addresses": "0x020B265B",
     "flag": 1,
@@ -256,7 +256,7 @@
   },
   "QUEST_16": {
     "label": "Quest 16: Apologies to Vespiquen",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Energy Plus",
     "addresses": "0x020B265C",
     "flag": 1,
@@ -264,7 +264,7 @@
   },
   "QUEST_17": {
     "label": "Quest 17: Lonely Chingling",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Dragon Defense",
     "addresses": "0x020B265D",
     "flag": 1,
@@ -272,7 +272,7 @@
   },
   "QUEST_18": {
     "label": "Quest 18: Abomasnow Research",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Fighting Defense",
     "addresses": "0x020B265E",
     "flag": 1,
@@ -280,7 +280,7 @@
   },
     "QUEST_19": {
     "label": "Quest 19: Melt The Ice",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Water Defense",
     "addresses": "0x020B265F",
     "flag": 1,
@@ -288,7 +288,7 @@
   },
     "QUEST_20": {
     "label": "Quest 20: Drifblim's Moving Service",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Power Plus",
     "addresses": "0x020B2660",
     "flag": 1,
@@ -296,7 +296,7 @@
   },
     "QUEST_21": {
     "label": "Quest 21: Secure The Hidden Harbor",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Fire Defense",
     "addresses": "0x020B2661",
     "flag": 1,
@@ -304,7 +304,7 @@
   },
     "QUEST_22": {
     "label": "Quest 22: Thaw The Frozen Door",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Normal Defense",
     "addresses": "0x020B2662",
     "flag": 1,
@@ -312,7 +312,7 @@
   },
     "QUEST_23": {
     "label": "Quest 23: My Precious Fishing Rod",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Psychic Defense",
     "addresses": "0x020B2663",
     "flag": 1,
@@ -320,7 +320,7 @@
   },
     "QUEST_24": {
     "label": "Quest 24: Unidentified Fleeing Omastar",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Latent Power",
     "addresses": "0x020B2664",
     "flag": 1,
@@ -328,7 +328,7 @@
   },
     "QUEST_25": {
     "label": "Quest 25: Cacturne Research",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Grass Defense",
     "addresses": "0x020B2665",
     "flag": 1,
@@ -336,7 +336,7 @@
   },
     "QUEST_26": {
     "label": "Quest 26: Smell of Skuntak & Weezing",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Dark Defense",
     "addresses": "0x020B2666",
     "flag": 1,
@@ -344,7 +344,7 @@
   },
   "QUEST_27": {
     "label": "Quest 27: Capture Gigaremo Units",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Ghost Defense",
     "addresses": "0x020B2667",
     "flag": 1,
@@ -352,7 +352,7 @@
   },
     "QUEST_28": {
     "label": "Quest 28: Elaine's Favorite",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Combo Bonus",
     "addresses": "0x020B2668",
     "flag": 1,
@@ -360,7 +360,7 @@
   },
     "QUEST_29": {
     "label": "Quest 29: Murph's Ranger Contest",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Time Assist",
     "addresses": "0x020B2669",
     "flag": 1,
@@ -368,7 +368,7 @@
   },
     "QUEST_30": {
     "label": "Quest 30: Roserade Red, Roserade Blue",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Bug Defense",
     "addresses": "0x020B266A",
     "flag": 1,
@@ -376,7 +376,7 @@
   },
     "QUEST_31": {
     "label": "Quest 31: Charge Up The Trio!",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Electric Defense",
     "addresses": "0x020B266B",
     "flag": 1,
@@ -384,7 +384,7 @@
   },
     "QUEST_32": {
     "label": "Quest 32: Access the Ice Castle",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Flying Defense",
     "addresses": "0x020B266C",
     "flag": 1,
@@ -392,7 +392,7 @@
   },
     "QUEST_33": {
     "label": "Quest 33: Mom's Recipe",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Fighting Defense",
     "addresses": "0x020B266D",
     "flag": 1,
@@ -400,7 +400,7 @@
   },
     "QUEST_34": {
     "label": "Quest 34: White Pokémon For Peace",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Poison Defense",
     "addresses": "0x020B266E",
     "flag": 1,
@@ -408,7 +408,7 @@
   },
     "QUEST_35": {
     "label": "Quest 35: Please Save Cranidos",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Cranidos",
     "addresses": "0x020B266F",
     "flag": 1,
@@ -416,7 +416,7 @@
   },
     "QUEST_36": {
     "label": "Quest 36: Please Save Shieldon",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Shieldon",
     "addresses": "0x020B2670",
     "flag": 1,
@@ -424,7 +424,7 @@
   },
     "QUEST_37": {
     "label": "Quest 37: Please Save Chimchar",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Chimchar",
     "addresses": "0x020B2671",
     "flag": 1,
@@ -432,7 +432,7 @@
   },
     "QUEST_38": {
     "label": "Quest 38: Mischeivous Sneasel",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Sneasel",
     "addresses": "0x020B2672",
     "flag": 1,
@@ -440,7 +440,7 @@
   },
     "QUEST_39": {
     "label": "Quest 39: Snover's Mysterious Presence",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Snover",
     "addresses": "0x020B2673",
     "flag": 1,
@@ -448,7 +448,7 @@
   },
     "QUEST_40": {
     "label": "Quest 40: Misdreavus Mischief Mystery",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Misdreavus",
     "addresses": "0x020B2674",
     "flag": 1,
@@ -456,7 +456,7 @@
   },
     "QUEST_41": {
     "label": "Quest 41: Pachirisu's Hide & Seek / Things that Go Bump / Starly Lost Its Way",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": ["0x020B2675", "0x020B2676", "0x020B2677"],
     "flag": 1,
@@ -464,7 +464,7 @@
   },
     "QUEST_42": {
     "label": "Quest 42: Pachirisu's Hide & Seek / Things that Go Bump / Starly Lost Its Way",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": null,
     "addresses": ["0x020B2675", "0x020B2676", "0x020B2677"],
     "flag": 1,
@@ -472,7 +472,7 @@
   },
     "QUEST_43": {
     "label": "Quest 43: What Happened to Machop?",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Machop",
     "addresses": "0x020B2678",
     "flag": 1,
@@ -480,7 +480,7 @@
   },
     "QUEST_44": {
     "label": "Quest 44: Please Save Piplup",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Piplup",
     "addresses": "0x020B2679",
     "flag": 1,
@@ -488,7 +488,7 @@
   },
     "QUEST_45": {
     "label": "Quest 45: Please Save Turtwig",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Turtwig",
     "addresses": "0x020B267A",
     "flag": 1,
@@ -496,7 +496,7 @@
   },
     "QUEST_46": {
     "label": "Quest 46: Who is on Hippowdon's Nose?",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Hippopotas",
     "addresses": "0x020B267B",
     "flag": 1,
@@ -504,7 +504,7 @@
   },
     "QUEST_47": {
     "label": "Quest 47: Pelipper's Plea",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Partner Pokemon - Gible",
     "addresses": "0x020B267C",
     "flag": 1,
@@ -512,7 +512,7 @@
   },
     "QUEST_48": {
     "label": "Quest 48: Under the Bridge",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Water Defense",
     "addresses": "0x020B267D",
     "flag": 1,
@@ -520,7 +520,7 @@
   },
     "QUEST_49": {
     "label": "Quest 49: Strange Crates Washed Ashore",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Normal Defense",
     "addresses": "0x020B267E",
     "flag": 1,
@@ -528,7 +528,7 @@
   },
     "QUEST_50": {
     "label": "Quest 50: Go Task To My Mom",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Flying Defense",
     "addresses": "0x020B267F",
     "flag": 1,
@@ -536,7 +536,7 @@
   },
     "QUEST_51": {
     "label": "Quest 51: What Reporter Hans Forgot",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Psychic Defense",
     "addresses": "0x020B2680",
     "flag": 1,
@@ -544,7 +544,7 @@
   },
     "QUEST_52": {
     "label": "Quest 52: Bring Back The Oasis",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Recovery",
     "addresses": "0x020B2681",
     "flag": 1,
@@ -552,7 +552,7 @@
   },
     "QUEST_53": {
     "label": "Quest 53: Wish For Vien Forest",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Supreme Defense",
     "addresses": "0x020B2682",
     "flag": 1,
@@ -560,7 +560,7 @@
   },
     "QUEST_54": {
     "label": "Quest 54: Secret Kept by Three",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Dragon Defense",
     "addresses": "0x020B2683",
     "flag": 1,
@@ -568,7 +568,7 @@
   },
     "QUEST_55": {
     "label": "Quest 55: Snow in Boyleland",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive  Defense",
     "addresses": "0x020B2684",
     "flag": 1,
@@ -576,7 +576,7 @@
   },
     "QUEST_56": {
     "label": "Quest 56: For Little Tim",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Ground Defense",
     "addresses": "0x020B2685",
     "flag": 1,
@@ -584,7 +584,7 @@
   },
     "QUEST_57": {
     "label": "Quest 57: Murph's Disappearing Act",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Steel Defense",
     "addresses": "0x020B2686",
     "flag": 1,
@@ -592,7 +592,7 @@
   },
     "QUEST_58": {
     "label": "Quest 58: Staraptor High In The Sky",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Latent Power",
     "addresses": "0x020B2687",
     "flag": 1,
@@ -600,7 +600,7 @@
   },
     "QUEST_59": {
     "label": "Quest 59: Gift of Music for Isaac",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Long Line",
     "addresses": "0x020B2688",
     "flag": 1,
@@ -608,7 +608,7 @@
   },
   "QUEST_60": {
     "label": "Quest 60: Ponte's Path to Take",
-    "parent_region": null,
+    "parent_region": "m041_001",
     "default_item": "Progressive Rock Defense",
     "addresses": "0x020B2689",
     "flag": 1,

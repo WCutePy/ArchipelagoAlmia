@@ -5,7 +5,14 @@ from typing import TYPE_CHECKING, Dict, List, Tuple, Set, Optional
 from BaseClasses import Entrance, Region, ItemClassification
 from rule_builder.rules import Has, Rule
 
-from .data import data, SpeciesData, FieldMoveCategory, PokemonSpawnEntry, FieldMove
+from .data import (
+    data,
+    SpeciesData,
+    FieldMoveCategory,
+    PokemonSpawnEntry,
+    FieldMove,
+    MapData,
+)
 from .items import PokemonRSOAItem
 from .locations import PokemonRSOALocation
 from .events import (
@@ -52,7 +59,7 @@ def attach_pokemon_encounter(
     instance_name: str,
     spawn_data: PokemonSpawnEntry,
     connect_to: Region,
-) -> None:
+) -> Region:
     pokemon_region = Region(instance_name, world.player, world.multiworld)
 
     create_event_location(
@@ -71,6 +78,22 @@ def attach_pokemon_encounter(
         )
 
     connect_to.connect(pokemon_region, instance_name)
+    return pokemon_region
+
+
+def exclude_map(world: PokemonRSOA, map_name: str, region_data: MapData) -> bool:
+    return any(
+        w in region_data.HUMAN_NAME
+        for w in [
+            "DLC",
+            "-UNK",
+            "-UNUSED",
+            "ALTRU_TOWER-SKY-BLUE",
+            "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
+            "VIENTOWN-RANGER_STATION_BACKROOM",
+            "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
+        ]
+    )
 
 
 def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
@@ -84,18 +107,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     connections: List[Tuple[str, str, str]] = []
     for region_name, region_data in data.regions.items():
 
-        if any(
-            w in region_data.HUMAN_NAME
-            for w in [
-                "DLC",
-                "-UNK",
-                "-UNUSED",
-                "ALTRU_TOWER-SKY-BLUE",
-                "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
-                "VIENTOWN-RANGER_STATION_BACKROOM",
-                "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
-            ]
-        ):
+        if exclude_map(world, region_name, region_data):
             continue
 
         new_region = Region(region_data.HUMAN_NAME, world.player, world.multiworld)
@@ -114,9 +126,10 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             pokemon_instance = get_instance_base(region_name, i)
             species = form_species[spawn_data.SPECIES_ID]
 
-            attach_pokemon_encounter(
+            p_region = attach_pokemon_encounter(
                 world, species, pokemon_instance, spawn_data, new_region
             )
+            regions[pokemon_instance] = p_region
 
         for exit_name in region_data.EXITS:
             region_exit = exit_name.split("-> ")[1].split(".")[0]
@@ -144,7 +157,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     for event in PInstanceEvent:
         pokemon = data.species[event.browser_id]
 
-        attach_pokemon_encounter(
+        p_region = attach_pokemon_encounter(
             world,
             pokemon,
             event.event_name,
@@ -156,6 +169,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             ),
             regions[event.map_name],
         )
+        regions[event.event_name] = p_region
 
     field_move_region = regions["Overworld"]
     field_moves: Set[FieldMove] = set()
