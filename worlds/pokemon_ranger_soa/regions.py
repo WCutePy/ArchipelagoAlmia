@@ -3,18 +3,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Dict, List, Tuple, Set, Optional
 
 from BaseClasses import Entrance, Region, ItemClassification
-from rule_builder.rules import Has, Rule
 
 from .data import (
     data,
     SpeciesData,
-    FieldMoveCategory,
     PokemonSpawnEntry,
     FieldMove,
     MapData,
 )
-from .items import PokemonRSOAItem
-from .locations import PokemonRSOALocation
 from .events import (
     PInstanceEvent,
     PREvent,
@@ -23,34 +19,10 @@ from .events import (
     get_instance_browser,
     get_instance_capture,
 )
+from .locations import create_event_location
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
-
-
-def create_event_location(
-    world: PokemonRSOA,
-    event_loc_name: str,
-    event_region: Region,
-    event_item_name: Optional[str] = None,
-) -> PokemonRSOALocation:
-    if event_item_name is None:
-        event_item_name = event_loc_name
-    event_location = PokemonRSOALocation(
-        world.player, event_loc_name, None, event_region
-    )
-    # event_location.show_in_spoiler = False
-
-    event_location.place_locked_item(
-        PokemonRSOAItem(
-            event_item_name,
-            ItemClassification.progression_skip_balancing,
-            None,
-            world.player,
-        )
-    )
-    event_region.locations.append(event_location)
-    return event_location
 
 
 def attach_pokemon_encounter(

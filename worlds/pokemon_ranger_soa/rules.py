@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from dataclasses import field, dataclass
 from typing import (
     TYPE_CHECKING,
     Dict,
@@ -10,14 +11,11 @@ from typing import (
     TypeAlias,
     Iterable,
     Sized,
+    ClassVar,
 )
 
-from narwhals import exclude
-
 from BaseClasses import CollectionState, Entrance, Location, ItemClassification
-from worlds.generic.Rules import add_rule, set_rule
 
-from rule_builder.options import OptionFilter
 from rule_builder.rules import (
     Has,
     Rule,
@@ -38,9 +36,8 @@ from .events import (
     get_loading_zone_name,
     get_instance_browser,
     PInstanceEvent,
+    get_mission_event,
 )
-from .items import PokemonRSOAItem
-from .locations import PokemonRSOALocation
 from .options import FieldMoveItem
 from .regions import exclude_map
 
@@ -83,114 +80,142 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
     return world.multiworld.get_location(location, world.player)
 
 
-MonSelect: TypeAlias = Optional[Dict[str, Optional[Iterable[int]]]]
+@dataclass
+class MonSelect:
+    world: ClassVar[Optional[PokemonRSOA]]
+    include: Dict[str, List] = field(default_factory=dict)
+    exclude: Dict[str, List] = field(default_factory=dict)
+    include_one_time: bool = False
 
+    def access_field_move(
+        self,
+        field_move: FieldMove,
+    ) -> Rule:
+        pokemon_rules = False_()
+        for region_name, region_data in data.regions.items():
+            region_name = region_name.lower()
 
-def access_field_move(
-    world: PokemonRSOA,
-    field_move: FieldMove,
-    include: MonSelect = None,
-    exclude: MonSelect = None,
-    include_one_time: bool = False,
-) -> Rule:
-    if include is None:
-        include = {}
-    if exclude is None:
-        exclude = {}
+            if exclude_map(self.world, region_name, region_data):
+                continue
 
-    pokemon_rules = False_()
-    for region_name, region_data in data.regions.items():
-        region_name = region_name.lower()
-        if exclude and (
-            len(exclude.get(region_name, [1])) == 0
-            or any(region_name.startswith(e.lower()) for e in exclude if "_" not in e)
-        ):
-            continue
-        exclude_region = exclude.get(region_name, [])
-        include_region: bool = next(
-            (include[i] for i in include if region_name.startswith(i.lower())), False
+            if self.exclude and (
+                len(self.exclude.get(region_name, [1])) == 0
+                or any(
+                    region_name.startswith(e.lower())
+                    for e in self.exclude
+                    if "_" not in e and not self.exclude.get(region_name, [])
+                )
+            ):
+                continue
+            exclude_region = self.exclude.get(region_name, [])
+            include_region: bool = next(
+                (
+                    self.include[i]
+                    for i in self.include
+                    if region_name.startswith(i.lower())
+                ),
+                False,
+            )
+            if self.include and include_region is False:
+                continue
+            include_region: Sized
+
+            for i, spawn_data in region_data.POKEMON_SPAWN.items():
+
+                if self.exclude and i in exclude_region:
+                    continue
+                if self.include and len(include_region) > 0 and i not in include_region:
+                    continue
+
+                if not self.include_one_time and spawn_data.one_time:
+                    continue
+
+                species = data.form_id_to_species[spawn_data.SPECIES_ID]
+                if species.field_move.satisfies(field_move):
+                    if self.include_one_time:
+                        pokemon_rules |= CanReachLocation(
+                            get_instance_browser(region_name, i)
+                        )
+                    else:
+                        pokemon_rules |= CanReachLocation(
+                            get_instance_capture(region_name, i)
+                        )
+
+        return pokemon_rules
+
+    def can_destroy_target(
+        self,
+        map_name: Union[str, int],
+        i: int,
+        on_self: bool = False,
+    ) -> Rule:
+        """
+        TODO, reconsider if it's necessary to have a field move restriction to target events
+        and instead handle it here fully, for now leaving as is, some minor duplication of
+        logic is here right now, as being able to use field move item is inhernt from
+        Has(target)
+
+        MUST be exhausted directly, as include and exclude are expected to be expanded over
+        its use
+        """
+        map_name = sanitize_map_name(map_name)
+        target = get_instance_target(map_name, i)
+
+        field_move = data.target_field_move_requirements[
+            data.regions[map_name].TARGETS[i].TARGET_ID
+        ]
+
+        if not self.include and not self.exclude:
+            base = Has(field_move.event_can_use_field_move)
+            if not on_self:
+                base &= Has(target)
+
+        return has_field_move_item(self.world, field_move) & self.access_field_move(
+            field_move
         )
-        if include and include_region is False:
-            continue
-        include_region: Sized
 
-        for i, spawn_data in region_data.POKEMON_SPAWN.items():
+    def can_destroy_target_type(
+        self,
+        target_id: int,
+    ) -> Rule:
+        """
+        The int of the target
 
-            if exclude and i in exclude_region:
-                continue
-            if include and len(include_region) > 0 and i not in include_region:
-                continue
+        any len 0 iterable in MonSelect evaluates to the whole map.
+        any len >=1 iterable accounts only the specified members in the iterable
+        """
+        field_move: FieldMove = data.target_field_move_requirements[target_id]
 
-            if not include_one_time and spawn_data.one_time:
-                continue
+        if not self.include and not self.exclude:
+            return Has(field_move.event_can_use_field_move)
 
-            species = data.form_id_to_species[spawn_data.SPECIES_ID]
-            if species.field_move.satisfies(field_move):
-                if include_one_time:
-                    pokemon_rules |= CanReachLocation(
-                        get_instance_browser(region_name, i)
-                    )
-                else:
-                    pokemon_rules |= CanReachLocation(
-                        get_instance_capture(region_name, i)
-                    )
+        return has_field_move_item(self.world, field_move) & self.access_field_move(
+            field_move
+        )
 
-    return pokemon_rules
+    @classmethod
+    def school_area(cls) -> MonSelect:
+        return MonSelect(include={})
 
+    @classmethod
+    def outside_school_before_return_school(cls) -> MonSelect:
+        return MonSelect(exclude=cls.school_area().include)
 
-def can_destroy_target(
-    world: PokemonRSOA,
-    map_name: Union[str, int],
-    i: int,
-    include: MonSelect = None,
-    exclude: MonSelect = None,
-    include_one_time: bool = False,
-) -> Rule:
-    """
-    TODO, reconsider if it's necessary to have a field move restriction to target events
-    and instead handle it here fully, for now leaving as is, some minor duplication of
-    logic is here right now, as being able to use field move item is inhernt from
-    Has(target)
-
-    MUST be exhausted directly, as include and exclude are expected to be expanded over
-    its use
-    """
-    map_name = sanitize_map_name(map_name)
-    target = get_instance_target(map_name, i)
-
-    field_move = data.target_field_move_requirements[
-        data.regions[map_name].TARGETS[i].TARGET_ID
-    ]
-
-    if include is None and exclude is None:
-        return Has(field_move.event_can_use_field_move)
-
-    return has_field_move_item(world, field_move) & access_field_move(
-        world, field_move, include, exclude, include_one_time
-    )
-
-
-def can_destroy_target_type(
-    world: PokemonRSOA,
-    target_id: int,
-    include: MonSelect = None,
-    exclude: MonSelect = None,
-    include_one_time: bool = False,
-) -> Rule:
-    """
-    The int of the target
-
-    any len 0 iterable in MonSelect evaluates to the whole map.
-    any len >=1 iterable accounts only the specified members in the iterable
-    """
-    field_move: FieldMove = data.target_field_move_requirements[target_id]
-
-    if include is None and exclude is None:
-        return Has(field_move.event_can_use_field_move)
-
-    return has_field_move_item(world, field_move) & access_field_move(
-        world, field_move, include, exclude, include_one_time
-    )
+    @classmethod
+    def marine_cave(cls) -> MonSelect:
+        """Technically identical to outside_school_before_return_school,
+        but semantically preferred to strictly specify on such
+        small sample size"""
+        return MonSelect(
+            include={
+                "m001_001": [3, 4],
+                "m005_001b": [],
+                "m007_001": [],
+                "m006_002": [],  # unreachable until a bit later
+                "m006_003": [],  # unreachable until a bit later
+                "m006_004": [],  # unreachable until a bit later
+            },
+        )
 
 
 def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
@@ -204,6 +229,8 @@ def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
 
 
 def set_all_rules(world: PokemonRSOA) -> None:
+    MonSelect.world = world
+
     field_move_rules: Dict[FieldMove, Rule] = {}
     for i, pokemon in data.species.items():
 
@@ -240,13 +267,15 @@ def set_all_rules(world: PokemonRSOA) -> None:
     set_mission_1_and_2_rules(world)
 
     set_completion_condition(world)
+    MonSelect.world = None
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
+    normal = MonSelect()
 
     world.set_rule(
         get_pokemon_instance(world, "m001_002", 7),
-        can_destroy_target(world, "m001_002", 3),
+        normal.can_destroy_target("m001_002", 3),
     )
 
     for i in [6, 12]:
@@ -254,41 +283,35 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     world.set_rule(get_connection(world, "m001_002", "m001_014"), False_())
 
     """School first night"""
-    # TODO when randomizing this only has access to indoor pokemon
-    school_night_include = {
-        "m001_003a": [],
-        "m001_004": [],
-        "m001_006": [],
-        "m001_007": [],
-        "m001_008": [],
-        "m001_011": [],
-    }
+    school_night = MonSelect(
+        include={
+            "m001_003a": [],
+            "m001_004": [],
+            "m001_006": [],
+            "m001_007": [],
+            "m001_008": [],
+            "m001_011": [],
+        },
+        include_one_time=True,
+    )
     world.set_rule(
         get_pokemon_instance(world, "m001_004", 0),
-        can_destroy_target_type(
-            world, 27, include=school_night_include, include_one_time=True
-        ),  # crate
+        school_night.can_destroy_target_type(27),  # crate
     )
 
     for i in [0, 1, 2, 3]:
         world.set_rule(
             get_pokemon_instance(world, "m001_007", i),
-            can_destroy_target_type(
-                world, 27, include=school_night_include, include_one_time=True
-            ),  # crate
+            school_night.can_destroy_target_type(27),  # crate
         )
 
     world.set_rule(
         get_location(world, PREvent.SCHOOL_COLLECT_STYLERS.event_name),
-        can_destroy_target_type(
-            world, 27, include=school_night_include, include_one_time=True
-        ),  # crate
+        school_night.can_destroy_target_type(27),  # crate
     )
 
     print(
-        can_destroy_target_type(
-            world, 27, include=school_night_include, include_one_time=True
-        ),
+        school_night.can_destroy_target_type(27),
     )
 
     # basement access
@@ -299,19 +322,13 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         )
     world.set_rule(
         get_location(world, PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
-        can_destroy_target_type(
-            world, 27, include=school_night_include, include_one_time=True
-        )
-        & can_destroy_target_type(
-            world, 37, include=school_night_include, include_one_time=True
-        ),  # crate
+        school_night.can_destroy_target_type(27)
+        & school_night.can_destroy_target_type(37),  # crate
     )
 
     world.set_rule(
         get_pokemon_instance(world, "m001_011", 4),
-        can_destroy_target_type(
-            world, 27, include=school_night_include, include_one_time=True
-        ),  # crate
+        school_night.can_destroy_target_type(27),  # crate
     )
     for i in [0, 1, 2, 3]:
         world.set_rule(
@@ -325,15 +342,17 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
 
     """School day 3"""
     # TODO, swap over to an exclusion ("out of logic" ship is not accounted for now for acces), expand when known how to permanently return to school
-    include_og = {
-        "m001_002": [],
-        "m001_003a": [],  # quite sure all are available
-        "m001_005": [],
-        "m001_009": [],
-        "m001_011": [],
-        "m001_001": [0, 1, 2, 5],
-        "m001_015": [],
-    }
+    include_og = MonSelect(
+        include={
+            "m001_002": [],
+            "m001_003a": [],  # quite sure all are available
+            "m001_005": [],
+            "m001_009": [],
+            "m001_011": [],
+            "m001_001": [0, 1, 2, 5],
+            "m001_015": [],
+        },
+    )
 
     world.set_rule(
         get_pokemon_instance(world, "m001_009", 0),
@@ -345,7 +364,7 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
             get_connection(world, from_, "m001_016"),
             (
                 Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name)
-                & can_destroy_target(world, "m001_005", 1, include=include_og)
+                & include_og.can_destroy_target("m001_005", 1)
             )
             | False_(),
         )  # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
@@ -363,12 +382,12 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     for name in [get_instance_capture("m001_001", 5)]:
         world.set_rule(
             get_location(world, name),
-            can_destroy_target(world, "m001_001", 5, include=include_og) | False_(),
+            include_og.can_destroy_target("m001_001", 5) | False_(),
         )
 
     world.set_rule(
         get_connection(world, "m001_001", "m001_015"),
-        can_destroy_target(world, "m001_001", 0, include=include_og) | False_(),
+        include_og.can_destroy_target("m001_001", 0) | False_(),
     )
 
     """School day 3 - leave school oneway"""
@@ -380,22 +399,25 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     ]:
         world.set_rule(get_connection(world, from_, to), False_())
 
-    # TODO figure out what the full scope for the tree in chicole will be before potential bk
+    # TODO figure out what the full scope for the tree in chicole will be before returning to school.
+    outside_school = MonSelect.outside_school_before_return_school()
+
     world.set_rule(
         get_pokemon_instance(world, "m007_001", 4),
-        can_destroy_target(world, "m007_001", 1),  # tree
+        outside_school.can_destroy_target("m007_001", 1),  # tree
     )
 
     # maybe consider making an event
     mission_0 = data.locations["MISSION_00"].label
     world.set_rule(
-        get_location(world, mission_0),
+        world.get_location(get_mission_event(0)),
         CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
     )
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.TANGROWTH.event_name),
-        CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+        # CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+        Has(get_mission_event(0)),
     )
 
     for from_ in [
@@ -410,7 +432,8 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     ]:
         world.set_rule(
             get_connection(world, from_, "m001_003b"),
-            CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+            # CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+            Has(get_mission_event(0)),
         )
 
 
@@ -427,32 +450,25 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 
     """Mission 2 - Investigate the Marine Cave!"""
     """Marine cave"""
-    include = {
-        "m001_001": [3, 4],
-        "m005_001b": [],
-        "m007_001": [],
-        "m006_002": [],  # unreachable until a bit later
-        "m006_003": [],  # unreachable until a bit later
-        "m006_004": [],  # unreachable until a bit later
-    }
+    marine_cave = MonSelect.marine_cave()
+    optional_marine = MonSelect.marine_cave()
 
-    can_destroy_wooden_gate = can_destroy_target(
-        world, "m006_001", 2, include=include
-    ) | can_destroy_target(world, "m006_001", 3, include=include)
+    can_destroy_wooden_gate = marine_cave.can_destroy_target(
+        "m006_001", 2
+    ) | marine_cave.can_destroy_target("m006_001", 3)
 
     world.set_rule(
         get_connection(world, "m006_001", "m006_002"), can_destroy_wooden_gate
     )
     world.set_rule(
         get_connection(world, "m006_001", "m006_003"),
-        can_destroy_wooden_gate
-        & can_destroy_target(world, "m006_001", 1, include=include),
-    )
+        can_destroy_wooden_gate & optional_marine.can_destroy_target("m006_001", 1),
+    )  # TODO, optional uses different scope for the rock
 
     world.set_rule(
         get_location(world, get_instance_target("m006_001", 0)),
         can_destroy_wooden_gate
-        & can_destroy_target(world, "m006_001", 0, include=include),  # red gigaremo
+        & marine_cave.can_destroy_target("m006_001", 0),  # red gigaremo
     )
 
     for i in range(7):
@@ -470,8 +486,8 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 
     world.set_rule(
         get_connection(world, "m006_002", "m006_004"),
-        can_destroy_target(world, "m006_002", 0, include=include),  # rock crush 2
-    )
+        optional_marine.can_destroy_target("m006_002", 0),  # rock crush 2
+    )  # optional when randomized pokémon
 
     mission_2 = data.locations["MISSION_02"].label
     world.set_rule(

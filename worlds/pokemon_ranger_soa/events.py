@@ -31,6 +31,14 @@ def get_loading_zone_name(from_: str, to: str) -> str:
     return f"{from_} -> {to}"
 
 
+def get_mission_event(num: int) -> str:
+    return f"COMPLETE_MISSION_{num:0>2}"
+
+
+def get_quest_event(num: int) -> str:
+    return f"COMPLETE_QUEST_{num:0>2}"
+
+
 class PRSOAEvent(Enum):
 
     def __new__(cls, map_name: str):
@@ -57,10 +65,7 @@ class PInstanceEvent(PRSOAEvent):
     TANGROWTH = ("m001_003b", 36)  # unsure about form
     MILTANK = ("m004_001", 46)
 
-
-
     WAILORD = ("m029_009", 238)
-
 
     """Partners"""
     MACHOP = ("m041_001", 161)

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, Set
+from typing import TYPE_CHECKING, Dict, Set, Optional
 
 from BaseClasses import ItemClassification, Location, Region, LocationProgressType
 
 from .data import data, LocationData, LocationCategory
-
-from . import items
 from .items import PokemonRSOAItem
 
 if TYPE_CHECKING:
@@ -15,6 +13,34 @@ if TYPE_CHECKING:
 
 class PokemonRSOALocation(Location):
     game = "PokemonRangerSOA"
+
+
+def create_event_location(
+    world: PokemonRSOA,
+    event_loc_name: str,
+    event_region: Region,
+    event_item_name: Optional[str] = None,
+    show_spoiler: bool = True,  # todo swithc
+) -> PokemonRSOALocation:
+    if event_item_name is None:
+        event_item_name = event_loc_name
+    event_location = PokemonRSOALocation(
+        world.player, event_loc_name, None, event_region
+    )
+
+    if not show_spoiler:
+        event_location.show_in_spoiler = False
+
+    event_location.place_locked_item(
+        PokemonRSOAItem(
+            event_item_name,
+            ItemClassification.progression_skip_balancing,
+            None,
+            world.player,
+        )
+    )
+    event_region.locations.append(event_location)
+    return event_location
 
 
 def location_to_ap_id(location: data.LocationData) -> int:
@@ -77,6 +103,9 @@ def create_all_locations(
         )
 
         region.locations.append(new_location)
+
+        if location_data.category in [LocationCategory.MISSION, LocationCategory.QUEST]:
+            create_event_location(world, f"COMPLETE_{name}", region, show_spoiler=False)
 
     create_pokemon_locations(world, regions)
 

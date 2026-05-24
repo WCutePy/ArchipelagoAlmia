@@ -124,7 +124,3 @@ def create_all_items(world: PokemonRSOA) -> None:
 
         needed_number_of_filler_items -= 1
     world.multiworld.itempool += itempool
-
-    print("dit is de item")
-    print(len(itempool), itempool)
-    print(len(world.multiworld.itempool), world.multiworld.itempool)
