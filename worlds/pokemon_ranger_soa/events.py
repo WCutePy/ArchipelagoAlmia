@@ -62,8 +62,9 @@ class PInstanceEvent(PRSOAEvent):
     """MAP_NAME, BROWSER_ID"""
 
     """Script based """
-    TANGROWTH = ("m001_003b", 36)  # unsure about form
-    MILTANK = ("m004_001", 46)
+    TANGROWTH = ("m001_003b", 36)  # m0 graduation
+    MILTANK = ("m004_001", 46)  # quest 1
+    BUDEW_4 = ("m009_002", 8)  # m3 jump out at burning log
 
     WAILORD = ("m029_009", 238)
 

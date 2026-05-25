@@ -1,5 +1,5 @@
 import struct
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable
 
 from BaseClasses import Location
 from settings import get_settings
@@ -107,3 +107,48 @@ def _remove_field_moves(
     #     0x2BF1A49,
     #     (0).to_bytes(1, "little"),
     # )
+
+
+def _path_script_files(world: "PokemonRSOA", patch: PokemonRangerSOAProcedurePatch):
+    """For now hardcoded in here, will need changing"""
+    addresses = []
+
+    """ school gate"""
+    # school gate top, EventRect001104
+    # JZ loc_35 -> NOP 0; @31
+    # one of potential patches, without breaking story (untested)
+    addresses += 0x6A74EC
+
+    # school gate bottom, EventRect001100
+    # JZ loc_86 -> NOP 0; @82
+    addresses += 0x6A3D48
+
+    """mission 3 forest fire block going back"""
+    # vientown -> school road, EventRect004101
+    # 	JZ loc_35		; @30 -> JMP loc_44
+    addresses += (0x06AB200 + 0x78, 0x000D0008)
+
+    # vientown -> beach, EventRect004102
+    # JZ loc_43		; @38 -> JMP loc_52
+    addresses += (0x6AB400 + 0x98, 0x000D0008)
+
+    # vientown -> chicole path, EventRect004103
+    # JZ loc_35		; @30 -> JMP loc_53
+    addresses += (0x6AB600 + 0x78, 0x00160008)
+
+    # vien forest -> vientown block during mission 3, EventRect009106
+    # JZ loc_36 -> JMP loc_54; @31
+    addresses += (0x6BCC00 + 0x7C, 0x00160008)
+    # JZ loc_71 -> JZ loc_87; @66
+    addresses += (0x6BCC00 + 0x108, 0x00140208)
+
+    for pack in addresses:
+        if isinstance(pack, Iterable) and not isinstance(pack, (str, bytes)):
+            address, instruction = pack
+        else:
+            address, instruction = pack, 0x00000000
+        patch.write_token(
+            APTokenTypes.WRITE,
+            address,
+            struct.pack("<I", instruction),
+        )

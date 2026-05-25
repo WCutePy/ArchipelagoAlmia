@@ -343,6 +343,26 @@ def location_category_to_id(base_number: int, category: str):
     raise ValueError(category)
 
 
+def pokemon_to_target_id(name: str) -> Optional[int]:
+    name = name.lower()
+    mapping = {
+        "oddish": 0x1,
+        "gloom": 0x2,
+        "vileplume": 0x3,
+        "geodude": 0x4,
+        "graveler": 0x5,
+        "sudowoodo": 0x6,
+        "cacturne": 0x7,
+        # "claydol": 0x8,
+        "torterra": 0x9,
+        "bronzor": 0xA,
+        "bonsly": 0xB,
+        "carnivine": 0xC,
+        "abomasnow": 0xD,
+    }
+    return mapping.get(name)
+
+
 def _init():
 
     extracted_species: List[Dict] = load_json_data("species.json")

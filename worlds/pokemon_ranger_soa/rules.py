@@ -27,7 +27,7 @@ from rule_builder.rules import (
     HasFromList,
     HasFromListUnique,
 )
-from .data import data, ItemCategory, FieldMove, LocationCategory
+from .data import data, ItemCategory, FieldMove, LocationCategory, pokemon_to_target_id
 from .events import (
     PREvent,
     get_instance_base,
@@ -194,12 +194,23 @@ class MonSelect:
         )
 
     @classmethod
-    def school_area(cls) -> MonSelect:
-        return MonSelect(include={})
+    def full_map(cls) -> MonSelect:
+        return MonSelect()
 
     @classmethod
-    def outside_school_before_return_school(cls) -> MonSelect:
-        return MonSelect(exclude=cls.school_area().include)
+    def tutorial_school_area(cls) -> MonSelect:
+        #  TODO, add ship area to include when randomizing
+        return MonSelect(
+            include={
+                "m001_002": [],
+                "m001_003a": [],  # quite sure all are available
+                "m001_005": [],
+                "m001_009": [],
+                "m001_011": [],
+                "m001_001": [0, 1, 2, 5],
+                "m001_015": [],
+            },
+        )
 
     @classmethod
     def marine_cave(cls) -> MonSelect:
@@ -265,17 +276,20 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
     set_tutorial_rules(world)
     set_mission_1_and_2_rules(world)
+    set_mission_3_rules(world)
 
     set_completion_condition(world)
+
     MonSelect.world = None
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
-    normal = MonSelect()
+    full_map = MonSelect.full_map()
 
     world.set_rule(
         get_pokemon_instance(world, "m001_002", 7),
-        normal.can_destroy_target("m001_002", 3),
+        full_map.can_destroy_target("m001_002", 3)
+        & full_map.can_destroy_target_type(pokemon_to_target_id("bonsly")),
     )
 
     for i in [6, 12]:
@@ -341,18 +355,6 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     )  # TODO figure out when separate ghastly spawns
 
     """School day 3"""
-    # TODO, swap over to an exclusion ("out of logic" ship is not accounted for now for acces), expand when known how to permanently return to school
-    include_og = MonSelect(
-        include={
-            "m001_002": [],
-            "m001_003a": [],  # quite sure all are available
-            "m001_005": [],
-            "m001_009": [],
-            "m001_011": [],
-            "m001_001": [0, 1, 2, 5],
-            "m001_015": [],
-        },
-    )
 
     world.set_rule(
         get_pokemon_instance(world, "m001_009", 0),
@@ -364,9 +366,8 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
             get_connection(world, from_, "m001_016"),
             (
                 Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name)
-                & include_og.can_destroy_target("m001_005", 1)
-            )
-            | False_(),
+                & full_map.can_destroy_target("m001_005", 1)
+            ),
         )  # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
 
     for i in [0, 1, 2, 3]:
@@ -382,12 +383,12 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     for name in [get_instance_capture("m001_001", 5)]:
         world.set_rule(
             get_location(world, name),
-            include_og.can_destroy_target("m001_001", 5) | False_(),
+            full_map.can_destroy_target("m001_001", 5),
         )
 
     world.set_rule(
         get_connection(world, "m001_001", "m001_015"),
-        include_og.can_destroy_target("m001_001", 0) | False_(),
+        full_map.can_destroy_target("m001_001", 0),
     )
 
     """School day 3 - leave school oneway"""
@@ -400,15 +401,14 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         world.set_rule(get_connection(world, from_, to), False_())
 
     # TODO figure out what the full scope for the tree in chicole will be before returning to school.
-    outside_school = MonSelect.outside_school_before_return_school()
 
     world.set_rule(
         get_pokemon_instance(world, "m007_001", 4),
-        outside_school.can_destroy_target("m007_001", 1),  # tree
+        full_map.can_destroy_target("m007_001", 1),  # tree
     )
 
     # maybe consider making an event
-    mission_0 = data.locations["MISSION_00"].label
+    # mission_0 = data.locations["MISSION_00"].label
     world.set_rule(
         world.get_location(get_mission_event(0)),
         CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
@@ -439,19 +439,21 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
 
 def set_mission_1_and_2_rules(world: PokemonRSOA):
     mission_1 = data.locations["MISSION_01"].label
+    world.set_rule(get_location(world, get_mission_event(1)), Has(get_mission_event(0)))
     world.set_rule(
         get_location(world, mission_1),
-        CanReachLocation(data.locations["MISSION_00"].label),
+        Has(get_mission_event(0)),
     )
 
     # m005_001b is reached without requiring rules based on
     # the only way to leave school and no obstacles in the way
-    # only missions, thus indirect
+    # only missions, thus indirect, only need to set this if filtering
+    # out even mission 1 and 2.
 
     """Mission 2 - Investigate the Marine Cave!"""
     """Marine cave"""
-    marine_cave = MonSelect.marine_cave()
-    optional_marine = MonSelect.marine_cave()
+    marine_cave = MonSelect.full_map()
+    optional_marine = MonSelect.full_map()
 
     can_destroy_wooden_gate = marine_cave.can_destroy_target(
         "m006_001", 2
@@ -463,7 +465,11 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     world.set_rule(
         get_connection(world, "m006_001", "m006_003"),
         can_destroy_wooden_gate & optional_marine.can_destroy_target("m006_001", 1),
-    )  # TODO, optional uses different scope for the rock
+    )
+    world.set_rule(
+        get_pokemon_instance(world, "m006_003", 0),
+        optional_marine.can_destroy_target_type(pokemon_to_target_id("graveler")),
+    )
 
     world.set_rule(
         get_location(world, get_instance_target("m006_001", 0)),
@@ -484,6 +490,11 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
             can_destroy_wooden_gate,
         )
 
+    for i in [5, 6]:
+        world.set_rule(
+            get_pokemon_instance(world, "m006_002", i),
+            optional_marine.can_destroy_target_type(pokemon_to_target_id("geodude")),
+        )
     world.set_rule(
         get_connection(world, "m006_002", "m006_004"),
         optional_marine.can_destroy_target("m006_002", 0),  # rock crush 2
@@ -493,13 +504,73 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     world.set_rule(
         get_location(world, mission_2), Has(get_instance_target("m006_001", 0))
     )
+    world.set_rule(
+        get_location(world, get_mission_event(2)),
+        Has(get_instance_target("m006_001", 0)),
+    )
 
     quest_1 = data.locations["QUEST_01"].label
-    world.set_rule(get_location(world, quest_1), CanReachLocation(mission_2))
+    world.set_rule(get_location(world, quest_1), Has(get_mission_event(2)))
     world.set_rule(
         get_entrance(world, PInstanceEvent.MILTANK.event_name),
-        CanReachLocation(quest_1),
+        Has(get_mission_event(2)),
     )  # not possible if goal is mission 2
+
+
+def set_mission_3_rules(world: PokemonRSOA):
+    all_maps = MonSelect.full_map()
+
+    quest_48 = data.locations["QUEST_48"].label
+    world.set_rule(get_location(world, quest_48), Has(get_mission_event(2)))
+
+    """m009_002"""
+    world.set_rule(
+        get_connection(world, "m004_001", "m009_002"), Has(get_mission_event(2))
+    )
+
+    for to in [
+        "m009_009",
+        "m009_001b",
+        "m009_001c",
+        "m009_004",  # requires surf
+    ]:
+        world.set_rule(
+            get_connection(world, "m009_002", to),
+            False_(),
+        )
+
+    # not at all: 2 cherubi, 4 sphinx, 5 taillow, 8 cherubi, 0xB pichu, 0xC happiny
+    for i in [0x13, 0x14]:
+        world.set_rule(
+            get_pokemon_instance(world, "m009_002", i),
+            all_maps.can_destroy_target_type(72),
+        )
+
+    for i in [
+        0xE,  # happiny
+        0xF,  # happiny
+        0x10,  # pichu
+        0x11,  # sphinx
+        0x12,  # wartortle
+        # occurences past this require & (target_type(49) | target_type(49))
+        # for now irrelevant.
+        0x1,  # wartortle
+        0x3,  # sphinx
+        0x6,  # pichu
+        0x7,  # taillow
+        0x9,  # cherubi
+        0xA,  # cherubi
+        0xD,  # wartortle
+        0x15,  # beedrill
+    ]:
+        world.set_rule(
+            get_pokemon_instance(world, "m009_002", i),
+            all_maps.can_destroy_target_type(49),
+        )
+
+    """m009_001a"""
+
+    # nothing for: 5 wartortle
 
 
 def set_completion_condition(world) -> None:
