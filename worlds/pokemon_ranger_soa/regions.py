@@ -65,6 +65,7 @@ def exclude_map(world: PokemonRSOA, map_name: str, region_data: MapData) -> bool
             "VIENTOWN-RANGER_STATION_BACKROOM",
             "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
         ]
+        if not (w == "-UNK" and "m009" in map_name)
     )
 
 

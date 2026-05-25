@@ -124,6 +124,8 @@ def _path_script_files(world: "PokemonRSOA", patch: PokemonRangerSOAProcedurePat
     addresses += 0x6A3D48
 
     """mission 3 forest fire block going back"""
+    """an unknown c028Tap05_0 is left in 
+    with the vientown jumps"""
     # vientown -> school road, EventRect004101
     # 	JZ loc_35		; @30 -> JMP loc_44
     addresses += (0x06AB200 + 0x78, 0x000D0008)

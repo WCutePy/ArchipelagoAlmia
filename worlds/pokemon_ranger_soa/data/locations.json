@@ -25,7 +25,7 @@
   },
   "MISSION_03": {
     "label": "Mission 03: Fight the Vien Forest fire!",
-    "parent_region": "m041_001",
+    "parent_region": "m009_001a",
     "default_item": null,
     "addresses": null,
     "flag": null,

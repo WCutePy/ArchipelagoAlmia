@@ -27,7 +27,14 @@ from rule_builder.rules import (
     HasFromList,
     HasFromListUnique,
 )
-from .data import data, ItemCategory, FieldMove, LocationCategory, pokemon_to_target_id
+from .data import (
+    data,
+    ItemCategory,
+    FieldMove,
+    LocationCategory,
+    pokemon_to_target_id,
+    FieldMoveCategory,
+)
 from .events import (
     PREvent,
     get_instance_base,
@@ -186,6 +193,14 @@ class MonSelect:
         """
         field_move: FieldMove = data.target_field_move_requirements[target_id]
 
+        if not self.include and not self.exclude:
+            return Has(field_move.event_can_use_field_move)
+
+        return has_field_move_item(self.world, field_move) & self.access_field_move(
+            field_move
+        )
+
+    def can_use_field_move(self, field_move: FieldMove) -> Rule:
         if not self.include and not self.exclude:
             return Has(field_move.event_can_use_field_move)
 
@@ -528,22 +543,13 @@ def set_mission_3_rules(world: PokemonRSOA):
         get_connection(world, "m004_001", "m009_002"), Has(get_mission_event(2))
     )
 
-    for to in [
-        "m009_009",
-        "m009_001b",
-        "m009_001c",
-        "m009_004",  # requires surf
-    ]:
-        world.set_rule(
-            get_connection(world, "m009_002", to),
-            False_(),
-        )
+    burning_log = all_maps.can_destroy_target_type(72)
 
     # not at all: 2 cherubi, 4 sphinx, 5 taillow, 8 cherubi, 0xB pichu, 0xC happiny
     for i in [0x13, 0x14]:
         world.set_rule(
             get_pokemon_instance(world, "m009_002", i),
-            all_maps.can_destroy_target_type(72),
+            burning_log,
         )
 
     for i in [
@@ -554,6 +560,7 @@ def set_mission_3_rules(world: PokemonRSOA):
         0x12,  # wartortle
         # occurences past this require & (target_type(49) | target_type(49))
         # for now irrelevant.
+        0x0,  # blastoise
         0x1,  # wartortle
         0x3,  # sphinx
         0x6,  # pichu
@@ -565,12 +572,63 @@ def set_mission_3_rules(world: PokemonRSOA):
     ]:
         world.set_rule(
             get_pokemon_instance(world, "m009_002", i),
-            all_maps.can_destroy_target_type(49),
+            burning_log,
         )
+
+    for to in ["m009_001a", "m009_004", "m009_009"]:
+        world.set_rule(get_connection(world, "m009_002", to), burning_log)
 
     """m009_001a"""
 
-    # nothing for: 5 wartortle
+    for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
+        world.set_rule(get_connection(world, "m009_001a", to), False_())
+
+    # wartortle 0x5 is accessible without problems
+    for i in [0, 1, 2, 3, 4]:
+        world.set_rule(get_pokemon_instance(world, "m009_001a", i), burning_log)
+
+    for loc in [data.locations["MISSION_03"].label, get_mission_event(3)]:
+        world.set_rule(
+            get_location(world, loc),
+            burning_log
+            & all_maps.can_use_field_move(
+                FieldMove(category=FieldMoveCategory.RAIN_DANCE, level=1)
+            ),
+        )
+
+    """m009_009"""
+    for i in [2, 3]:
+        world.set_rule(get_pokemon_instance(world, "m009_009", i), False_())
+
+    """m009_004"""
+
+    for i in range(13):
+        if i == 8:  # grotle is available through initial connection
+            continue
+        world.set_rule(
+            get_pokemon_instance(world, "m009_004", i),
+            False_(),  # requires surf
+        )
+
+    for to in ["m009_003", "m009_006"]:
+        world.set_rule(get_connection(world, "m009_004", to), False_())
+
+    """m009_001b"""
+
+    for from_ in ["m009_002", "m009_009"]:
+        world.set_rule(
+            get_connection(world, from_, "m009_001b"), Has(get_mission_event(3))
+        )
+
+    for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
+        world.set_rule(get_connection(world, "m009_001b", to), False_())
+
+    # TODO left of here
+
+    """m009_001c"""
+    # TODO
+    for from_ in ["m009_002", "m009_001c"]:
+        world.set_rule(get_connection(world, from_, "m009_001c"), False_())
 
 
 def set_completion_condition(world) -> None:
@@ -589,8 +647,8 @@ def set_completion_condition(world) -> None:
     #     )
 
     browser = world.options.capture_count_target.value
-    browser = 19
-    missions = 3
+    browser = 30
+    missions = 4
     quests = 1
 
     has_captures = HasFromListUnique(
