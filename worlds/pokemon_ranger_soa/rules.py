@@ -588,6 +588,9 @@ def set_mission_3_rules(world: PokemonRSOA):
     for to in ["m009_001a", "m009_004", "m009_009"]:
         world.set_rule(get_connection(world, "m009_002", to), burning_log)
 
+    for to in ["m009_001b", "m009_001b"]:
+        world.set_rule(get_connection(world, "m009_002", to), False_())
+
     """m009_001a"""
 
     for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
@@ -600,6 +603,9 @@ def set_mission_3_rules(world: PokemonRSOA):
     """m009_009"""
     for i in [2, 3]:
         world.set_rule(get_pokemon_instance(world, "m009_009", i), False_())
+
+    for to in ["m009_001b", "m009_001b"]:
+        world.set_rule(get_connection(world, "m009_002", to), False_())
 
     """m009_004"""
 
@@ -614,7 +620,7 @@ def set_mission_3_rules(world: PokemonRSOA):
     for to in ["m009_003", "m009_006"]:
         world.set_rule(get_connection(world, "m009_004", to), False_())
 
-    """Mission 3 complete triggers"""
+    """Mission 3 complete"""
 
     for loc in [data.locations["MISSION_03"].label, get_mission_event(3)]:
         world.set_rule(
@@ -624,6 +630,10 @@ def set_mission_3_rules(world: PokemonRSOA):
                 FieldMove(category=FieldMoveCategory.RAIN_DANCE, level=1)
             ),
         )
+
+
+def set_mission_4_rules(world: PokemonRSOA):
+    all_maps = MonSelect.full_map()
 
     """m009_001b"""
 
@@ -635,14 +645,7 @@ def set_mission_3_rules(world: PokemonRSOA):
     for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
         world.set_rule(get_connection(world, "m009_001b", to), False_())
 
-    """m009_001c"""
-    # TODO
-    for from_ in ["m009_002", "m009_009"]:
-        world.set_rule(get_connection(world, from_, "m009_001c"), False_())
-
-
-def set_mission_4_rules(world: PokemonRSOA):
-    all_maps = MonSelect.full_map()
+    """quests"""
 
     for loc in [data.locations["QUEST_03"].label, get_quest_event(3)]:
         world.set_rule(
@@ -676,6 +679,11 @@ def set_mission_4_rules(world: PokemonRSOA):
             get_location(world, loc),
             Has(get_mission_event(3)) & all_maps.can_destroy_target("m005_001b", 1),
         )
+
+    """m009_001c"""
+    # TODO
+    for from_ in ["m009_002", "m009_009"]:
+        world.set_rule(get_connection(world, from_, "m009_001c"), False_())
 
 
 def set_completion_condition(world) -> None:
