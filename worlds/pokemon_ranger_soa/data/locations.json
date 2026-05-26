@@ -143,7 +143,7 @@
     "flag": 1,
     "category": "quest"
   },
-    "QUEST_02": {
+  "QUEST_02": {
     "label": "Quest 02: Breeze Hill Sign Recovery",
     "parent_region": "m041_001",
     "default_item": "Progressive Dark Defense",
@@ -151,15 +151,15 @@
     "flag": 1,
     "category": "quest"
   },
-      "QUEST_03": {
+  "QUEST_03": {
     "label": "Quest 03: Is Combee Okay?",
-    "parent_region": "m041_001",
+    "parent_region": "m004_001",
     "default_item": "Progressive Electric Defense",
     "addresses": "0x020B264F",
     "flag": 1,
     "category": "quest"
   },
-        "QUEST_04": {
+  "QUEST_04": {
     "label": "Quest 04: Clear the Crates!",
     "parent_region": "m041_001",
     "default_item": "Progressive Bug Defense",
@@ -167,7 +167,7 @@
     "flag": 1,
     "category": "quest"
   },
-          "QUEST_05": {
+  "QUEST_05": {
     "label": "Quest 05: The Boy Who Cried Lumineon",
     "parent_region": "m041_001",
     "default_item": "Progressive Rock Defense",
@@ -175,14 +175,15 @@
     "flag": 1,
     "category": "quest"
   },
-            "QUEST_06": {
+  "QUEST_06": {
     "label": "Quest 06: Nosepass! Must Have Nosepass!",
     "parent_region": "m041_001",
     "default_item": "Progressive Ground Defense",
     "addresses": "0x020B2652",
     "flag": 1,
     "category": "quest"
-  },            "QUEST_07": {
+  },
+  "QUEST_07": {
     "label": "Quest 07: Who Ate My Lunch!?",
     "parent_region": "m041_001",
     "default_item": "Progressive Power Plus",
@@ -216,7 +217,7 @@
   },
   "QUEST_11": {
     "label": "Quest 11: Clear Some Fallen Logs",
-    "parent_region": "m041_001",
+    "parent_region": "m004_006",
     "default_item": "Progressive Long Line",
     "addresses": "0x020B2657",
     "flag": 1,
@@ -512,7 +513,7 @@
   },
     "QUEST_48": {
     "label": "Quest 48: Under the Bridge",
-    "parent_region": "m041_001",
+    "parent_region": "m008_001",
     "default_item": "Progressive Water Defense",
     "addresses": "0x020B267D",
     "flag": 1,
@@ -520,7 +521,7 @@
   },
     "QUEST_49": {
     "label": "Quest 49: Strange Crates Washed Ashore",
-    "parent_region": "m041_001",
+    "parent_region": "m004_001",
     "default_item": "Progressive Normal Defense",
     "addresses": "0x020B267E",
     "flag": 1,

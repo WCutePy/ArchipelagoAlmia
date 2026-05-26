@@ -44,6 +44,7 @@ from .events import (
     get_instance_browser,
     PInstanceEvent,
     get_mission_event,
+    get_quest_event,
 )
 from .options import FieldMoveItem
 from .regions import exclude_map
@@ -289,9 +290,16 @@ def set_all_rules(world: PokemonRSOA) -> None:
             if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
                 world.set_rule(get_pokemon_instance(world, region_name, i), False_())
 
+    for i in range(1, 61):
+        world.set_rule(
+            get_location(world, data.locations[f"QUEST_{i:02}"].label), False_()
+        )
+        world.set_rule(get_location(world, get_quest_event(i)), False_())
+
     set_tutorial_rules(world)
     set_mission_1_and_2_rules(world)
     set_mission_3_rules(world)
+    set_mission_4_rules(world)
 
     set_completion_condition(world)
 
@@ -524,8 +532,8 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
         Has(get_instance_target("m006_001", 0)),
     )
 
-    quest_1 = data.locations["QUEST_01"].label
-    world.set_rule(get_location(world, quest_1), Has(get_mission_event(2)))
+    for loc in [data.locations["QUEST_01"].label, get_quest_event(1)]:
+        world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
     world.set_rule(
         get_entrance(world, PInstanceEvent.MILTANK.event_name),
         Has(get_mission_event(2)),
@@ -535,10 +543,12 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 def set_mission_3_rules(world: PokemonRSOA):
     all_maps = MonSelect.full_map()
 
-    quest_48 = data.locations["QUEST_48"].label
-    world.set_rule(get_location(world, quest_48), Has(get_mission_event(2)))
+    for loc in [data.locations["QUEST_48"].label, get_quest_event(48)]:
+        world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
 
     """m009_002"""
+    # TODO, figure out how mandatory the happiny are and in what way.
+    # will affect randomizations.
     world.set_rule(
         get_connection(world, "m004_001", "m009_002"), Has(get_mission_event(2))
     )
@@ -587,15 +597,6 @@ def set_mission_3_rules(world: PokemonRSOA):
     for i in [0, 1, 2, 3, 4]:
         world.set_rule(get_pokemon_instance(world, "m009_001a", i), burning_log)
 
-    for loc in [data.locations["MISSION_03"].label, get_mission_event(3)]:
-        world.set_rule(
-            get_location(world, loc),
-            burning_log
-            & all_maps.can_use_field_move(
-                FieldMove(category=FieldMoveCategory.RAIN_DANCE, level=1)
-            ),
-        )
-
     """m009_009"""
     for i in [2, 3]:
         world.set_rule(get_pokemon_instance(world, "m009_009", i), False_())
@@ -613,6 +614,17 @@ def set_mission_3_rules(world: PokemonRSOA):
     for to in ["m009_003", "m009_006"]:
         world.set_rule(get_connection(world, "m009_004", to), False_())
 
+    """Mission 3 complete triggers"""
+
+    for loc in [data.locations["MISSION_03"].label, get_mission_event(3)]:
+        world.set_rule(
+            get_location(world, loc),
+            burning_log
+            & all_maps.can_use_field_move(
+                FieldMove(category=FieldMoveCategory.RAIN_DANCE, level=1)
+            ),
+        )
+
     """m009_001b"""
 
     for from_ in ["m009_002", "m009_009"]:
@@ -623,12 +635,47 @@ def set_mission_3_rules(world: PokemonRSOA):
     for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
         world.set_rule(get_connection(world, "m009_001b", to), False_())
 
-    # TODO left of here
-
     """m009_001c"""
     # TODO
-    for from_ in ["m009_002", "m009_001c"]:
+    for from_ in ["m009_002", "m009_009"]:
         world.set_rule(get_connection(world, from_, "m009_001c"), False_())
+
+
+def set_mission_4_rules(world: PokemonRSOA):
+    all_maps = MonSelect.full_map()
+
+    for loc in [data.locations["QUEST_03"].label, get_quest_event(3)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(3)) & Has(data.species[59].event_can_capture),
+        )
+
+    without_fallen_tree_section = MonSelect(
+        exclude={
+            "m009_002": [
+                0x3,  # sphinx
+                0x6,  # pichu
+                0x7,  # taillow
+                0x9,  # cherubi
+                0xA,  # cherubi
+                0xD,  # wartortle
+            ]
+        }
+    )
+
+    for loc in [data.locations["QUEST_11"].label, get_quest_event(11)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(3))
+            & without_fallen_tree_section.can_destroy_target("m009_002", 2)
+            & without_fallen_tree_section.can_destroy_target("m009_002", 7),
+        )  # really identical fallen logs
+
+    for loc in [data.locations["QUEST_49"].label, get_quest_event(49)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(3)) & all_maps.can_destroy_target("m005_001b", 1),
+        )
 
 
 def set_completion_condition(world) -> None:
@@ -649,7 +696,7 @@ def set_completion_condition(world) -> None:
     browser = world.options.capture_count_target.value
     browser = 30
     missions = 4
-    quests = 1
+    quests = 5
 
     has_captures = HasFromListUnique(
         *[s.event_add_to_browser for s in data.species.values()], count=browser
@@ -662,6 +709,9 @@ def set_completion_condition(world) -> None:
             break
         if loc_data.category == LocationCategory.MISSION:
             has_missions &= CanReachLocation(loc_data.label)
-    completion_condition = has_captures & has_missions
+    has_quests = HasFromListUnique(
+        *[get_quest_event(i) for i in range(1, 61)], count=quests
+    )
+    completion_condition = has_captures & has_missions & has_quests
 
     world.set_completion_rule(completion_condition)
