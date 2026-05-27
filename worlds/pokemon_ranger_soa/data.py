@@ -254,6 +254,7 @@ class PokemonSpawnEntry:
     SPECIES_ID: int
     SPECIES_NAME: str
     SPAWN_FLAG: int
+    missable: Optional[bool] = False
     one_time: Optional[bool] = False
     rules: list[str] = field(default_factory=list)
 

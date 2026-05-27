@@ -19,6 +19,13 @@ def get_instance_browser(instance: str, index: Optional[int] = None) -> str:
     return f"{instance}_browser"
 
 
+def get_instance_missable(instance: str, index: Optional[int] = None) -> str:
+    """instance browser location name"""
+    if index is not None:
+        instance = get_instance_base(instance, index)
+    return f"{instance}_missable"
+
+
 def get_instance_capture(instance: str, index: Optional[int] = None) -> str:
     """instance capture location name"""
     if index is not None:

@@ -18,6 +18,7 @@ from .events import (
     get_instance_base,
     get_instance_browser,
     get_instance_capture,
+    get_instance_missable,
 )
 from .locations import create_event_location
 
@@ -33,13 +34,21 @@ def attach_pokemon_encounter(
     connect_to: Region,
 ) -> Region:
     pokemon_region = Region(instance_name, world.player, world.multiworld)
+    connect_to.connect(pokemon_region, instance_name)
 
+    if spawn_data.missable:
+        browser_name = get_instance_missable(instance_name)
+    else:
+        browser_name = get_instance_browser(instance_name)
     create_event_location(
         world,
-        get_instance_browser(instance_name),
+        browser_name,
         pokemon_region,
         species.event_add_to_browser,
     )
+
+    if spawn_data.missable:
+        return pokemon_region
 
     if not spawn_data.one_time:
         create_event_location(
@@ -49,7 +58,6 @@ def attach_pokemon_encounter(
             species.event_can_capture,
         )
 
-    connect_to.connect(pokemon_region, instance_name)
     return pokemon_region
 
 

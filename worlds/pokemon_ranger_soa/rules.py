@@ -45,6 +45,7 @@ from .events import (
     PInstanceEvent,
     get_mission_event,
     get_quest_event,
+    get_instance_missable,
 )
 from .options import FieldMoveItem
 from .regions import exclude_map
@@ -94,6 +95,7 @@ class MonSelect:
     include: Dict[str, List] = field(default_factory=dict)
     exclude: Dict[str, List] = field(default_factory=dict)
     include_one_time: bool = False
+    include_missable: bool = False
 
     def access_field_move(
         self,
@@ -135,12 +137,18 @@ class MonSelect:
                 if self.include and len(include_region) > 0 and i not in include_region:
                     continue
 
+                if not self.include_missable and spawn_data.missable:
+                    continue
                 if not self.include_one_time and spawn_data.one_time:
                     continue
 
                 species = data.form_id_to_species[spawn_data.SPECIES_ID]
                 if species.field_move.satisfies(field_move):
-                    if self.include_one_time:
+                    if self.include_missable and spawn_data.missable:
+                        pokemon_rules |= CanReachLocation(
+                            get_instance_missable(region_name, i)
+                        )
+                    elif self.include_one_time:
                         pokemon_rules |= CanReachLocation(
                             get_instance_browser(region_name, i)
                         )
@@ -330,6 +338,7 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
             "m001_011": [],
         },
         include_one_time=True,
+        include_missable=True,
     )
     world.set_rule(
         get_pokemon_instance(world, "m001_004", 0),
@@ -689,7 +698,17 @@ def set_mission_4_rules(world: PokemonRSOA):
 
     fallen_tree = all_maps.can_destroy_target("m009_008", 1)
     for i in [4, 5]:
-        world.set_rule(get_pokemon_instance("m009_008", i), fallen_tree)
+        world.set_rule(get_pokemon_instance(world, "m009_008", i), fallen_tree)
+
+    world.set_rule(
+        get_pokemon_instance(world, "m009_008", 5),
+        fallen_tree
+        & all_maps.can_destroy_target_type(pokemon_to_target_id("torterra")),
+    )
+    world.set_rule(
+        get_pokemon_instance(world, "m009_008", 5),
+        all_maps.can_destroy_target_type(pokemon_to_target_id("bonsly")),
+    )
 
     # the others are free as well due to side route
 
@@ -699,6 +718,7 @@ def set_mission_4_rules(world: PokemonRSOA):
     # which pokémon is spawned
     for i in [0, 2, 3, 4]:
         world.set_rule(get_pokemon_instance(world, "m009_010", i), False_())
+    # set these to not possible at all ^^^
 
     """m009_001c"""
     # TODO
