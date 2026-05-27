@@ -588,7 +588,7 @@ def set_mission_3_rules(world: PokemonRSOA):
     for to in ["m009_001a", "m009_004", "m009_009"]:
         world.set_rule(get_connection(world, "m009_002", to), burning_log)
 
-    for to in ["m009_001b", "m009_001b"]:
+    for to in ["m009_001b", "m009_001c"]:
         world.set_rule(get_connection(world, "m009_002", to), False_())
 
     """m009_001a"""
@@ -604,7 +604,7 @@ def set_mission_3_rules(world: PokemonRSOA):
     for i in [2, 3]:
         world.set_rule(get_pokemon_instance(world, "m009_009", i), False_())
 
-    for to in ["m009_001b", "m009_001b"]:
+    for to in ["m009_001b", "m009_001c"]:
         world.set_rule(get_connection(world, "m009_002", to), False_())
 
     """m009_004"""
@@ -634,16 +634,6 @@ def set_mission_3_rules(world: PokemonRSOA):
 
 def set_mission_4_rules(world: PokemonRSOA):
     all_maps = MonSelect.full_map()
-
-    """m009_001b"""
-
-    for from_ in ["m009_002", "m009_009"]:
-        world.set_rule(
-            get_connection(world, from_, "m009_001b"), Has(get_mission_event(3))
-        )
-
-    for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
-        world.set_rule(get_connection(world, "m009_001b", to), False_())
 
     """quests"""
 
@@ -679,6 +669,36 @@ def set_mission_4_rules(world: PokemonRSOA):
             get_location(world, loc),
             Has(get_mission_event(3)) & all_maps.can_destroy_target("m005_001b", 1),
         )
+
+    """m009_001b"""
+
+    for from_ in ["m009_002", "m009_009"]:
+        world.set_rule(
+            get_connection(world, from_, "m009_001b"), Has(get_mission_event(3))
+        )
+
+    for to in ["m009_013", "m009_014", "m009_015", "m009_016"]:
+        world.set_rule(get_connection(world, "m009_001b", to), False_())
+
+    """m009_008"""
+    for to in ["m009_001c", "m009_010", "m009_011", "m017_001", "m017_002"]:
+        world.set_rule(get_connection(world, "m009_008", to), False_())
+
+    # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06, beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B
+    # bonsly, torterra
+
+    fallen_tree = all_maps.can_destroy_target("m009_008", 1)
+    for i in [4, 5]:
+        world.set_rule(get_pokemon_instance("m009_008", i), fallen_tree)
+
+    # the others are free as well due to side route
+
+    """m009_010"""
+
+    # TODO figure out what determines
+    # which pokémon is spawned
+    for i in [0, 2, 3, 4]:
+        world.set_rule(get_pokemon_instance(world, "m009_010", i), False_())
 
     """m009_001c"""
     # TODO
