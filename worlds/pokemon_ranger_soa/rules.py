@@ -713,12 +713,11 @@ def set_mission_4_rules(world: PokemonRSOA):
     # the others are free as well due to side route
 
     """m009_010"""
+    # set to missable as only one is spawned based on chapter scripts
+    for from_ in ["m009_002", "m009_009"]:
+        world.set_rule(get_connection(world, from_, "m009_001c"), False_())
 
-    # TODO figure out what determines
-    # which pokémon is spawned
-    for i in [0, 2, 3, 4]:
-        world.set_rule(get_pokemon_instance(world, "m009_010", i), False_())
-    # set these to not possible at all ^^^
+    """m009_011"""
 
     """m009_001c"""
     # TODO
