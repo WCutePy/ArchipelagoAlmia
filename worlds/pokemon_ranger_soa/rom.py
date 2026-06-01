@@ -13,8 +13,14 @@ import NetUtils
 import Utils
 from BaseClasses import Location
 from settings import get_settings
-from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes, APAutoPatchInterface
+from worlds.Files import (
+    APProcedurePatch,
+    APTokenMixin,
+    APTokenTypes,
+    APAutoPatchInterface,
+)
 from .data import data, POKE_ID_ROW_ROM_SIZE
+from .options import RandomizePokemon
 
 if TYPE_CHECKING:
     from . import PokemonRSOA
@@ -44,7 +50,9 @@ class PokemonRSOAPatch(APAutoPatchInterface):
         PatchMethods.patch(self, target, "prsoa")
 
     def read_contents(self, opened_zipfile: ZipFile) -> Dict[str, Any]:
-        return PatchMethods.read_contents(self, opened_zipfile, super().read_contents(opened_zipfile))
+        return PatchMethods.read_contents(
+            self, opened_zipfile, super().read_contents(opened_zipfile)
+        )
 
     def get_file(self, file: str) -> bytes:
         return PatchMethods.get_file(self, file)
@@ -54,15 +62,24 @@ class PatchMethods:
 
     @staticmethod
     def write_contents(patch: PokemonRSOAPatch, opened_zipfile: ZipFile) -> None:
+        from .patch import map_patch
 
         procedures: list[str] = ["base_patch"]
 
+        if patch.world.options.randomize_pokemon != RandomizePokemon.option_vanilla:
+            procedures.append("map_patch")
+            map_patch.write_patch(patch, opened_zipfile)
+
         opened_zipfile.writestr("procedures.txt", "\n".join(procedures))
-        opened_zipfile.writestr("slot_data.json",
-                                orjson.dumps(NetUtils.convert_to_base_types(patch.world.part_slot_data())))
+        # opened_zipfile.writestr(
+        #     "slot_data.json",
+        #     orjson.dumps(NetUtils.convert_to_base_types(patch.world.part_slot_data())),
+        # )  # for when I need the slot data
 
     @staticmethod
-    def get_manifest(patch: PokemonRSOAPatch, manifest: dict[str, Any]) -> Dict[str, Any]:
+    def get_manifest(
+        patch: PokemonRSOAPatch, manifest: dict[str, Any]
+    ) -> Dict[str, Any]:
         manifest["prsoa_patch_format"] = 10
         return manifest
 
@@ -77,26 +94,45 @@ class PatchMethods:
         #         if version.rom() == found_rom_version:
         #             return
 
-        from .ndspy import rom as ndspy_rom
+        from .apnds import rom as apnds_rom
         from .patch import base_patch, map_patch
 
-        patch_procedures: dict[str, Callable[[ndspy_rom.NintendoDSRom, str, PokemonRSOAPatch,
-                                              dict[str, bytes | bytearray]], None]] = {
+        patch_procedures: dict[
+            str,
+            Callable[
+                [
+                    apnds_rom.Rom,
+                    str,
+                    PokemonRSOAPatch,
+                    dict[str, bytes | bytearray],
+                ],
+                None,
+            ],
+        ] = {
             "base_patch": base_patch.patch,
             "map_patch": map_patch.patch,
         }
 
         files_dump: dict[str, bytes | bytearray] = {}
         base_data = get_base_rom_bytes(version_name)
-        rom = ndspy_rom.NintendoDSRom(base_data)
-        procedures: list[str] = str(patch.get_file("procedures.txt"), "utf-8").splitlines()
+        rom = apnds_rom.Rom.from_bytes(base_data)
+        procedures: list[str] = str(
+            patch.get_file("procedures.txt"), "utf-8"
+        ).splitlines()
         for prod in procedures:
             patch_procedures[prod](rom, __name__, patch, files_dump)
 
         class PRSOAPatchPlugin(Protocol):
             name: str
-            patch: Callable[[ndspy_rom.NintendoDSRom, PokemonRSOAPatch,
-                             dict[str, bytes | bytearray], list[ModuleType]], None]
+            patch: Callable[
+                [
+                    apnds_rom.Rom,
+                    PokemonRSOAPatch,
+                    dict[str, bytes | bytearray],
+                    list[ModuleType],
+                ],
+                None,
+            ]
 
         plugins = []
         plugin_errors = []
@@ -106,61 +142,75 @@ class PatchMethods:
         for module_name, module_type in plugins:
             try:
                 if not hasattr(module_type, "Plugin"):
-                    logging.warning(f"{module_name[7:]} has the patch plugin naming scheme, "
-                                    f"but doesn't contain a class named 'Plugin' in __init__.py")
+                    logging.warning(
+                        f"{module_name[7:]} has the patch plugin naming scheme, "
+                        f"but doesn't contain a class named 'Plugin' in __init__.py"
+                    )
                     continue
                 if not isinstance(module_type.Plugin, type):
                     raise Exception(f"{module_name[7:]}.Plugin is not a class")
                 plugin: PRSOAPatchPlugin = getattr(module_type, "Plugin")
-                if not hasattr(plugin, "patch") or not isinstance(plugin.patch, Callable):
-                    raise Exception(f"{module_name[7:]}.Plugin doesn't have a method called 'patch'")
+                if not hasattr(plugin, "patch") or not isinstance(
+                    plugin.patch, Callable
+                ):
+                    raise Exception(
+                        f"{module_name[7:]}.Plugin doesn't have a method called 'patch'"
+                    )
                 plugin.patch(rom, patch, files_dump, plugins)
             except Exception as e:
                 for arg in e.args:
                     plugin_errors.append(f"[{module_name[7:]}] {arg}")
         if plugin_errors:
             import ctypes
+
             message = f"Following error{'s' if len(plugin_errors) > 1 else ''} appeared during patch plugin loading:\n"
             message += "".join(("\n" + error) for error in plugin_errors)
-            message += ("\n\nThe affected plugins might have only partially been applied.\n"
-                        "Click OK to continue or CANCEL to abort patching.")
+            message += (
+                "\n\nThe affected plugins might have only partially been applied.\n"
+                "Click OK to continue or CANCEL to abort patching."
+            )
             if ctypes.windll.user32.MessageBoxW(0, message, "Warning", 1) == 2:
-                raise Exception("Patching was aborted by the user after a plugin threw an error")
+                raise Exception(
+                    "Patching was aborted by the user after a plugin threw an error"
+                )
             logging.warning(message)
 
-        with open(target, 'wb') as f:
+        with open(target, "wb") as f:
             f.write(rom.save(updateDeviceCapacity=True))
         if get_settings()["pokemon_ranger_soa_settings"]["dump_patched_files"]:
-            with ZipFile(target.replace(".nds", "_files_dump.zip"), "w", ZIP_DEFLATED, True, 9) as dump:
+            with ZipFile(
+                target.replace(".nds", "_files_dump.zip"), "w", ZIP_DEFLATED, True, 9
+            ) as dump:
                 for path, data in files_dump.items():
                     dump.writestr(path, data)
 
-        @staticmethod
-        def read_contents(patch: PokemonRSOAPatch, opened_zipfile: ZipFile,
-                          manifest: Dict[str, Any]) -> Dict[str, Any]:
-            for file in opened_zipfile.namelist():
-                if file not in ["archipelago.json"]:
-                    patch.files[file] = opened_zipfile.read(file)
+    @staticmethod
+    def read_contents(
+        patch: PokemonRSOAPatch, opened_zipfile: ZipFile, manifest: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        for file in opened_zipfile.namelist():
+            if file not in ["archipelago.json"]:
+                patch.files[file] = opened_zipfile.read(file)
 
-            found_version: tuple[int, ...] = tuple(manifest["prsoa_patch_format"])
-            # accept = version.patch_accept(found_version)
-            #
-            # if accept == 1:
-            #     raise Exception(f"File (patch version: {version_str(manifest['prsoa_patch_format'])}) too new "
-            #                     f"for this apworld (patch version: {version_str(version.patch_file())}). "
-            #                     f"Please update your apworld.")
-            # elif accept == -1:
-            #     raise Exception(f"File (patch version: {version_str(manifest['prsoa_patch_format'])}) too old "
-            #                     f"for this apworld (patch version: {version_str(version.patch_file())}). "
-            #                     f"Either re-generate your world or downgrade to an older apworld version.")
+        # found_version: tuple[int, ...] = tuple(manifest["prsoa_patch_format"])
+        # accept = version.patch_accept(found_version)
+        #
+        # if accept == 1:
+        #     raise Exception(f"File (patch version: {version_str(manifest['prsoa_patch_format'])}) too new "
+        #                     f"for this apworld (patch version: {version_str(version.patch_file())}). "
+        #                     f"Please update your apworld.")
+        # elif accept == -1:
+        #     raise Exception(f"File (patch version: {version_str(manifest['prsoa_patch_format'])}) too old "
+        #                     f"for this apworld (patch version: {version_str(version.patch_file())}). "
+        #                     f"Either re-generate your world or downgrade to an older apworld version.")
 
-            return manifest
+        return manifest
 
-        @staticmethod
-        def get_file(patch: PokemonRSOAPatch, file: str) -> bytes:
-            if file not in patch.files:
-                patch.read()
-            return patch.files[file]
+    @staticmethod
+    def get_file(patch: PokemonRSOAPatch, file: str) -> bytes:
+        if file not in patch.files:
+            patch.read()
+        return patch.files[file]
 
 
 def get_base_rom_bytes(version: str, file_name: str = "") -> bytes:
@@ -176,7 +226,7 @@ def get_base_rom_bytes(version: str, file_name: str = "") -> bytes:
 
 def get_base_rom_path(version: str, file_name: str = "") -> str:
     if not file_name:
-        file_name = get_settings()["pokemon_ranger_soa_settings"][f"{version}_rom"]
+        file_name = get_settings()["pokemon_ranger_soa_settings"]["rom_file"]
     if not os.path.exists(file_name):
         file_name = Utils.user_path(file_name)
     return file_name
@@ -185,7 +235,7 @@ def get_base_rom_path(version: str, file_name: str = "") -> str:
 class PokemonRangerSOAProcedurePatch(APProcedurePatch, APTokenMixin):
     game = "PokemonRangerSOA"
     hash = "f957f5784abf9557be086fdb6fdc74cc"
-    patch_file_ending = ".apprsoa"
+    patch_file_ending = ".apprsoa_old"
     result_file_ending = ".nds"
 
     procedure = [

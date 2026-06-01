@@ -269,6 +269,27 @@ class FieldMoveLevelItem(Range):
     default = 1
 
 
+class RandomizePokemon(Choice):
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_full_random = 1
+    # option_field_move_replacement = 2
+    # option_full_random_with_softlock = 3
+
+    default = option_full_random
+
+
+class RandomizeTargetFieldMove(Choice):
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_full_random = 1
+    option_same_level = 2
+
+    default = option_vanilla
+
+
 @dataclass
 class PokemonRSOAOptions(PerGameCommonOptions):
     goal: Goal
@@ -294,6 +315,9 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     field_move_item: FieldMoveItem
     field_move_levels: FieldMoveLevelItem
 
+    randomize_pokemon: RandomizePokemon
+    randomize_target_field_move: RandomizeTargetFieldMove
+
 
 OPTION_GROUPS = [
     OptionGroup(
@@ -309,4 +333,5 @@ OPTION_GROUPS = [
     ),
     OptionGroup("Level up", [LevelUpType, LevelUpCount, LevelUpIncrement]),
     OptionGroup("Rank up", [RankUpType, RankUpItemCount, RankUpIncrement]),
+    OptionGroup("Randomization", [RandomizePokemon, RandomizeTargetFieldMove]),
 ]

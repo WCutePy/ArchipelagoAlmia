@@ -86,7 +86,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             form_species[i] = species_data
 
     connections: List[Tuple[str, str, str]] = []
-    for region_name, region_data in data.regions.items():
+    for region_name, region_data in world.modified_regions.items():
 
         if exclude_map(world, region_name, region_data):
             continue

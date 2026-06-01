@@ -1,3 +1,4 @@
+import copy
 import os
 from collections.abc import Mapping
 from dataclasses import fields
@@ -10,12 +11,12 @@ from Options import Option
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data
+from .data import data, MapData
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
 from .options import PokemonRSOAOptions, OPTION_GROUPS
-from .rom import PokemonRangerSOAProcedurePatch, write_tokens
+from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
 
 PokemonRangerSOA
 
@@ -70,6 +71,8 @@ class PokemonRSOA(World):
 
     exclude_field_moves: Set[str]
 
+    modified_regions: Dict[str, MapData]
+
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
 
     def __init__(self, multiworld, player):
@@ -78,6 +81,8 @@ class PokemonRSOA(World):
         self.blacklisted_captures = set()
 
         self.exclude_field_moves = set()
+
+        self.modified_regions = copy.deepcopy(data.regions)
 
         self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
 
@@ -170,8 +175,21 @@ class PokemonRSOA(World):
         write_tokens(self, patch)
         out_file_name = self.multiworld.get_out_file_name_base(self.player)
         patch.write(
-            os.path.join(output_directory, f"{out_file_name}{patch.patch_file_ending}")
+            os.path.join(
+                output_directory, f"{out_file_name}_old{patch.patch_file_ending}"
+            )
         )
+
+        PokemonRSOAPatch(
+            path=os.path.join(
+                output_directory,
+                self.multiworld.get_out_file_name_base(self.player)
+                + PokemonRSOAPatch.patch_file_ending,
+            ),
+            world=self,
+            player=self.player,
+            player_name=self.player_name,
+        ).write()
 
     def create_item(self, name: str) -> items.PokemonRSOAItem:
         return items.create_item_with_correct_classification(self, name)
@@ -192,6 +210,8 @@ class PokemonRSOA(World):
             "rank_up_type",
             "rank_up_count",
             "rank_up_increment",
+            "randomize_pokemon",
+            "randomize_target_field_move",
         )
         # slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
         slot_data["blacklisted_captures"] = self.blacklisted_captures

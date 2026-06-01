@@ -102,7 +102,7 @@ class MonSelect:
         field_move: FieldMove,
     ) -> Rule:
         pokemon_rules = False_()
-        for region_name, region_data in data.regions.items():
+        for region_name, region_data in self.world.modified_regions.items():
             region_name = region_name.lower()
 
             if exclude_map(self.world, region_name, region_data):
@@ -178,7 +178,7 @@ class MonSelect:
         target = get_instance_target(map_name, i)
 
         field_move = data.target_field_move_requirements[
-            data.regions[map_name].TARGETS[i].TARGET_ID
+            self.world.modified_regions[map_name].TARGETS[i].TARGET_ID
         ]
 
         if not self.include and not self.exclude:
@@ -290,24 +290,24 @@ def set_all_rules(world: PokemonRSOA) -> None:
         field_move_location = get_location(world, field_move.event_can_use_field_move)
         world.set_rule(field_move_location, field_move_rule)
 
-    for region_name, region_data in data.regions.items():
-        if exclude_map(world, region_name, region_data):
-            continue
+    # for region_name, region_data in world.modified_regions.items():
+    #     if exclude_map(world, region_name, region_data):
+    #         continue
+    #
+    #     for i, mon_data in region_data.POKEMON_SPAWN.items():
+    #         if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
+    #             world.set_rule(get_pokemon_instance(world, region_name, i), False_())
+    #
+    # for i in range(1, 61):
+    #     world.set_rule(
+    #         get_location(world, data.locations[f"QUEST_{i:02}"].label), False_()
+    #     )
+    #     world.set_rule(get_location(world, get_quest_event(i)), False_())
 
-        for i, mon_data in region_data.POKEMON_SPAWN.items():
-            if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
-                world.set_rule(get_pokemon_instance(world, region_name, i), False_())
-
-    for i in range(1, 61):
-        world.set_rule(
-            get_location(world, data.locations[f"QUEST_{i:02}"].label), False_()
-        )
-        world.set_rule(get_location(world, get_quest_event(i)), False_())
-
-    set_tutorial_rules(world)
-    set_mission_1_and_2_rules(world)
-    set_mission_3_rules(world)
-    set_mission_4_rules(world)
+    # set_tutorial_rules(world)
+    # set_mission_1_and_2_rules(world)
+    # set_mission_3_rules(world)
+    # set_mission_4_rules(world)
 
     set_completion_condition(world)
 
@@ -443,7 +443,7 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     # mission_0 = data.locations["MISSION_00"].label
     world.set_rule(
         world.get_location(get_mission_event(0)),
-        CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+        CanReachRegion(world.modified_regions["m005_001a"].HUMAN_NAME),
     )
 
     world.set_rule(
@@ -690,7 +690,7 @@ def set_mission_4_rules(world: PokemonRSOA):
         world.set_rule(get_connection(world, "m009_001b", to), False_())
 
     """m009_008"""
-    for to in ["m009_001c", "m009_010", "m009_011", "m017_001", "m017_002"]:
+    for to in ["m009_001c", "m009_010", "m017_001", "m017_002"]:
         world.set_rule(get_connection(world, "m009_008", to), False_())
 
     # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06, beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B
@@ -714,10 +714,12 @@ def set_mission_4_rules(world: PokemonRSOA):
 
     """m009_010"""
     # set to missable as only one is spawned based on chapter scripts
-    for from_ in ["m009_002", "m009_009"]:
-        world.set_rule(get_connection(world, from_, "m009_001c"), False_())
+    for to in ["m009_013", "m009_014", "m009_015", "m009_016"]:
+        world.set_rule(get_connection(world, "m009_010", to), False_())
 
     """m009_011"""
+
+    # TODO continue from here
 
     """m009_001c"""
     # TODO
@@ -741,9 +743,9 @@ def set_completion_condition(world) -> None:
     #     )
 
     browser = world.options.capture_count_target.value
-    browser = 30
-    missions = 4
-    quests = 5
+    browser = 15  # 30
+    missions = 3
+    quests = 4  # 5
 
     has_captures = HasFromListUnique(
         *[s.event_add_to_browser for s in data.species.values()], count=browser

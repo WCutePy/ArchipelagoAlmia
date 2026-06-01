@@ -386,10 +386,16 @@ def _init():
         data.items[item.item_id] = item
 
     extracted_regions: List[Dict] = load_json_data("regions.json")
+
+    region_data_fields = ["TRIGGERS"]
     for i, region_data in extracted_regions.items():
+        filtered_data = {
+            k: v for k, v in region_data.items() if k not in region_data_fields
+        }
+
         region = MapData(
             map_id=i,
-            **region_data,
+            **filtered_data,
         )
 
         data.regions[i] = region
@@ -457,6 +463,8 @@ def _init():
         )
 
 
-data = PokemonRSOAData()
-
-_init()
+try:
+    data
+except NameError:
+    data = PokemonRSOAData()
+    _init()
