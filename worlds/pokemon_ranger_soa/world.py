@@ -155,11 +155,12 @@ class PokemonRSOA(World):
         }
 
 
-        # for map_name in ["m001_002", "m002_001", "m003_001"]:
-        #
-        #     map_data: MapData = self.modified_regions[map_name]
-        #     for key, values in map_data.POKEMON_SPAWN.items():
-        #         map_data.POKEMON_SPAWN[key].SPECIES_ID = 0xAD
+        for map_name in ["m001_002", "m001_011","m002_001", "m003_001"]:
+
+            map_data: MapData = self.modified_regions[map_name]
+            for key, values in map_data.POKEMON_SPAWN.items():
+                if key == 5 and map_name == "m001_011": continue
+                map_data.POKEMON_SPAWN[key].SPECIES_ID = 0xAD
 
 
     def create_regions(self) -> None:

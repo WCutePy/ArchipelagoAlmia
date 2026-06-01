@@ -161,6 +161,7 @@ class PatchMethods:
                     raise Exception(
                         f"{module_name[7:]}.Plugin doesn't have a method called 'patch'"
                     )
+                logging.warning(f"Doing this plugin: {module_name}, {module_type}")
                 plugin.patch(rom, patch, files_dump, plugins)
             except Exception as e:
                 for arg in e.args:
