@@ -154,6 +154,14 @@ class PokemonRSOA(World):
             b for b, n in data.species.items() if n.name in manually_blacklisted
         }
 
+
+        # for map_name in ["m001_002", "m002_001", "m003_001"]:
+        #
+        #     map_data: MapData = self.modified_regions[map_name]
+        #     for key, values in map_data.POKEMON_SPAWN.items():
+        #         map_data.POKEMON_SPAWN[key].SPECIES_ID = 0xAD
+
+
     def create_regions(self) -> None:
         all_regions = regions.create_and_connect_regions(self)
 
@@ -169,16 +177,16 @@ class PokemonRSOA(World):
 
     def generate_output(self, output_directory: str) -> None:
 
-        patch = PokemonRangerSOAProcedurePatch(
-            player=self.player, player_name=self.player_name
-        )
-        write_tokens(self, patch)
-        out_file_name = self.multiworld.get_out_file_name_base(self.player)
-        patch.write(
-            os.path.join(
-                output_directory, f"{out_file_name}_old{patch.patch_file_ending}"
-            )
-        )
+        # patch = PokemonRangerSOAProcedurePatch(
+        #     player=self.player, player_name=self.player_name
+        # )
+        # write_tokens(self, patch)
+        # out_file_name = self.multiworld.get_out_file_name_base(self.player)
+        # patch.write(
+        #     os.path.join(
+        #         output_directory, f"{out_file_name}_old{patch.patch_file_ending}"
+        #     )
+        # )
 
         PokemonRSOAPatch(
             path=os.path.join(

@@ -1,3 +1,4 @@
+import logging
 import struct
 import zipfile
 from typing import TYPE_CHECKING
@@ -43,6 +44,7 @@ def patch_map(
     if not objects and not pokemon and not npc:
         return
 
+
     file_name = f"/data/field/map/{map_name}.map.dat.lz"
 
     narc_map_b = rom.files[file_name]
@@ -62,19 +64,29 @@ def patch_map(
     npc_index = 0
     pokemon_index = 0
 
+    logging.warning(
+        f"Writing pokemon: {pokemon=}, {npc=}, {objects}"
+    )
+
     for i, file_group in enumerate(narc_lyr.files):
         narc_layer_list = Narc.from_bytes(file_group)
 
         for j, layer_data in enumerate(narc_layer_list.files):
-            layer_data = bytearray(layer_data)
             layer_type = struct.unpack("<I", layer_data[:4])[0]
-            offset = 0
+
+
 
             if objects and layer_type == 0x04:
                 ...
             elif npc and layer_type == 0x08:
                 ...
             elif pokemon and layer_type == 0x09:
+                logging.warning(
+                    f"Pokemon layer: {j}"
+                )
+
+                layer_data = bytearray(layer_data)
+                offset = 0
                 entry_count = (len(layer_data) - 8) // 10
                 offset += 8 + 6
                 for _ in range(entry_count):
@@ -82,7 +94,7 @@ def patch_map(
                     offset += 10
 
                     pokemon_index += 1
-            narc_layer_list.files[j] = layer_data
+                narc_layer_list.files[j] = layer_data
         narc_lyr.files[i] = narc_layer_list.to_bytes()
 
     narc_map.files[lyr_index] = lyr_header + narc_lyr.to_bytes()
@@ -90,6 +102,13 @@ def patch_map(
     narc_map_rec = narc_map.to_bytes()
     narc_map_rec_b = compress(narc_map_rec)
     rom.files[file_name] = narc_map_rec_b
+
+    logging.warning(
+        f"Map has been edited: {narc_map_b != narc_map_rec_b}"
+    )
+    logging.warning(
+        f"Patched map: {map_name}"
+    )
 
 
 def patch(
@@ -99,7 +118,11 @@ def patch(
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
 
+    limit_patch_count_debug = 0
     for file_name, file_data in prsoa_patch_instance.files.items():
+        limit_patch_count_debug += 1
+        if limit_patch_count_debug >= 20:
+            return  # TODO remove
         if not file_name.startswith("map/m"):
             continue
         patch_file = prsoa_patch_instance.get_file(file_name)
@@ -107,12 +130,12 @@ def patch(
 
         (
             num_objects,
-            num_pokemon,
             num_npc,
+            num_pokemon,
         ) = struct.unpack_from("<III", patch_file, 0)
         offset = 12
         objects = list(struct.unpack_from(f"<{num_objects}H", patch_file, offset))
-        offset += num_pokemon * 2
+        offset += num_objects * 2
 
         npc = list(struct.unpack_from(f"<{num_npc}H", patch_file, offset))
         offset += num_npc * 2
@@ -120,3 +143,4 @@ def patch(
         pokemon = list(struct.unpack_from(f"<{num_pokemon}H", patch_file, offset))
 
         patch_map(rom, map_name, objects, npc, pokemon)
+
