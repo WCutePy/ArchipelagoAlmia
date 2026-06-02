@@ -111,6 +111,11 @@ def patch_map(
     )
 
 
+def patch_scripts(    rom: Rom,
+):
+    ...
+
+
 def patch(
     rom: Rom,
     world_package: str,
