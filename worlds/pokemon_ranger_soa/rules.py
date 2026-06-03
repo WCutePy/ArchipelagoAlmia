@@ -48,18 +48,14 @@ from .events import (
     get_instance_missable,
 )
 from .options import FieldMoveItem
+from .randomize import sanitize_map_name, MonSelect, has_field_move_item
 from .regions import exclude_map
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
 
 
-def sanitize_map_name(map_name: Union[str, int]) -> str:
-    if isinstance(map_name, int):
-        map_name = data.map_id_to_region_name[map_name]
-    elif map_name.lower().startswith("0x"):
-        map_name = data.map_id_to_region_name[int(map_name, 16)]
-    return map_name
+
 
 
 def get_entrance(world: PokemonRSOA, entrance: str) -> Entrance:
@@ -89,179 +85,6 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
     return world.multiworld.get_location(location, world.player)
 
 
-@dataclass
-class MonSelect:
-    world: ClassVar[Optional[PokemonRSOA]]
-    include: Dict[str, List] = field(default_factory=dict)
-    exclude: Dict[str, List] = field(default_factory=dict)
-    include_one_time: bool = False
-    include_missable: bool = False
-
-    def access_field_move(
-        self,
-        field_move: FieldMove,
-    ) -> Rule:
-        pokemon_rules = False_()
-        for region_name, region_data in self.world.modified_regions.items():
-            region_name = region_name.lower()
-
-            if exclude_map(self.world, region_name, region_data):
-                continue
-
-            if self.exclude and (
-                len(self.exclude.get(region_name, [1])) == 0
-                or any(
-                    region_name.startswith(e.lower())
-                    for e in self.exclude
-                    if "_" not in e and not self.exclude.get(region_name, [])
-                )
-            ):
-                continue
-            exclude_region = self.exclude.get(region_name, [])
-            include_region: bool = next(
-                (
-                    self.include[i]
-                    for i in self.include
-                    if region_name.startswith(i.lower())
-                ),
-                False,
-            )
-            if self.include and include_region is False:
-                continue
-            include_region: Sized
-
-            for i, spawn_data in region_data.POKEMON_SPAWN.items():
-
-                if self.exclude and i in exclude_region:
-                    continue
-                if self.include and len(include_region) > 0 and i not in include_region:
-                    continue
-
-                if not self.include_missable and spawn_data.missable:
-                    continue
-                if not self.include_one_time and spawn_data.one_time:
-                    continue
-
-                species = data.form_id_to_species[spawn_data.SPECIES_ID]
-                if species.field_move.satisfies(field_move):
-                    if self.include_missable and spawn_data.missable:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_missable(region_name, i)
-                        )
-                    elif self.include_one_time:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_browser(region_name, i)
-                        )
-                    else:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_capture(region_name, i)
-                        )
-
-        return pokemon_rules
-
-    def can_destroy_target(
-        self,
-        map_name: Union[str, int],
-        i: int,
-        on_self: bool = False,
-    ) -> Rule:
-        """
-        TODO, reconsider if it's necessary to have a field move restriction to target events
-        and instead handle it here fully, for now leaving as is, some minor duplication of
-        logic is here right now, as being able to use field move item is inhernt from
-        Has(target)
-
-        MUST be exhausted directly, as include and exclude are expected to be expanded over
-        its use
-        """
-        map_name = sanitize_map_name(map_name)
-        target = get_instance_target(map_name, i)
-
-        field_move = data.target_field_move_requirements[
-            self.world.modified_regions[map_name].TARGETS[i].TARGET_ID
-        ]
-
-        if not self.include and not self.exclude:
-            base = Has(field_move.event_can_use_field_move)
-            if not on_self:
-                base &= Has(target)
-
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
-
-    def can_destroy_target_type(
-        self,
-        target_id: int,
-    ) -> Rule:
-        """
-        The int of the target
-
-        any len 0 iterable in MonSelect evaluates to the whole map.
-        any len >=1 iterable accounts only the specified members in the iterable
-        """
-        field_move: FieldMove = data.target_field_move_requirements[target_id]
-
-        if not self.include and not self.exclude:
-            return Has(field_move.event_can_use_field_move)
-
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
-
-    def can_use_field_move(self, field_move: FieldMove) -> Rule:
-        if not self.include and not self.exclude:
-            return Has(field_move.event_can_use_field_move)
-
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
-
-    @classmethod
-    def full_map(cls) -> MonSelect:
-        return MonSelect()
-
-    @classmethod
-    def tutorial_school_area(cls) -> MonSelect:
-        #  TODO, add ship area to include when randomizing
-        return MonSelect(
-            include={
-                "m001_002": [],
-                "m001_003a": [],  # quite sure all are available
-                "m001_005": [],
-                "m001_009": [],
-                "m001_011": [],
-                "m001_001": [0, 1, 2, 5],
-                "m001_015": [],
-            },
-        )
-
-    @classmethod
-    def marine_cave(cls) -> MonSelect:
-        """Technically identical to outside_school_before_return_school,
-        but semantically preferred to strictly specify on such
-        small sample size"""
-        return MonSelect(
-            include={
-                "m001_001": [3, 4],
-                "m005_001b": [],
-                "m007_001": [],
-                "m006_002": [],  # unreachable until a bit later
-                "m006_003": [],  # unreachable until a bit later
-                "m006_004": [],  # unreachable until a bit later
-            },
-        )
-
-
-def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
-    if world.options.field_move_item == FieldMoveItem.option_vanilla:
-        return True_()
-
-    return Has(
-        field_move.category.item_name,
-        1,
-    )
-
 
 def set_all_rules(world: PokemonRSOA) -> None:
     MonSelect.world = world
@@ -290,21 +113,21 @@ def set_all_rules(world: PokemonRSOA) -> None:
         field_move_location = get_location(world, field_move.event_can_use_field_move)
         world.set_rule(field_move_location, field_move_rule)
 
-    # for region_name, region_data in world.modified_regions.items():
-    #     if exclude_map(world, region_name, region_data):
-    #         continue
-    #
-    #     for i, mon_data in region_data.POKEMON_SPAWN.items():
-    #         if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
-    #             world.set_rule(get_pokemon_instance(world, region_name, i), False_())
-    #
-    # for i in range(1, 61):
-    #     world.set_rule(
-    #         get_location(world, data.locations[f"QUEST_{i:02}"].label), False_()
-    #     )
-    #     world.set_rule(get_location(world, get_quest_event(i)), False_())
+    for region_name, region_data in world.modified_regions.items():
+        if exclude_map(world, region_name, region_data):
+            continue
 
-    # set_tutorial_rules(world)
+        for i, mon_data in region_data.POKEMON_SPAWN.items():
+            if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
+                world.set_rule(get_pokemon_instance(world, region_name, i), False_())
+
+    for i in range(1, 61):
+        world.set_rule(
+            get_location(world, data.locations[f"QUEST_{i:02}"].label), False_()
+        )
+        world.set_rule(get_location(world, get_quest_event(i)), False_())
+
+    set_tutorial_rules(world)
     # set_mission_1_and_2_rules(world)
     # set_mission_3_rules(world)
     # set_mission_4_rules(world)
@@ -315,6 +138,23 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
+    """
+    Goal: capture cutscene Tangrowth
+
+    Possibly reachable instances:
+
+    missions: 1
+    quests: 0
+    missable_pokemon: 17
+    browser_entries:
+    captures:
+
+    if ship is included
+    missable_locations:
+    browser_locations:
+    capture_locations:
+    """
+
     full_map = MonSelect.full_map()
 
     world.set_rule(
@@ -690,7 +530,9 @@ def set_mission_4_rules(world: PokemonRSOA):
         world.set_rule(get_connection(world, "m009_001b", to), False_())
 
     """m009_008"""
-    for to in ["m009_001c", "m009_010", "m017_001", "m017_002"]:
+    for to in ["m009_001c", "m017_001", "m017_002",
+               "m009_011"
+               ]:
         world.set_rule(get_connection(world, "m009_008", to), False_())
 
     # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06, beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B
@@ -743,7 +585,7 @@ def set_completion_condition(world) -> None:
     #     )
 
     browser = world.options.capture_count_target.value
-    browser = 15  # 30
+    browser = 50  # 30
     missions = 3
     quests = 4  # 5
 

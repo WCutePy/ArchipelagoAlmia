@@ -125,3 +125,11 @@ each Pokémon uses 24 bytes, are they contigous??? idk, eek
 # known crashes
 
  - Getting Rampardos early, and going down the ladder in cargo ship (likely due to npc following)
+
+
+Advice from Mysteryem on field moves
+If that's a big long list of different pokemon, you might want to look into a world.collect() override in the future, to collect a fake item into the state that signifies having a pokemon that can use a specific field move, so then the rule could be reduced to HAS_FIELD_MOVE_ITEM & HAS_POKEMON_THAT_CAN_USE_FIELD_MOVE, if collecting a pokemon event updates the state for whether you have access to a pokemon that can use a field move.
+
+Pokemon FRLG uses this with its HM compatibility logic: https://github.com/vyneras/Archipelago/blob/36100eebc4b5fcc521ddd7f15ed20a1a24c74308/worlds/pokemon_frlg/__init__.py#L778-L796 https://github.com/vyneras/Archipelago/blob/36100eebc4b5fcc521ddd7f15ed20a1a24c74308/worlds/pokemon_frlg/rules.py#L136-L138
+
+FRLG's way of handling HM compatibility, I think, is to place the pokemon events randomly, and then 'fix' the HM compatibility if HM users end up unreachable, forcing other, reachable, pokemon species to be able to learn the needed HM. edit: Yes, it's done in https://github.com/vyneras/Archipelago/blob/36100eebc4b5fcc521ddd7f15ed20a1a24c74308/worlds/pokemon_frlg/rules.py#L2492-L2532 
