@@ -49,7 +49,6 @@ from .events import (
 )
 from .options import FieldMoveItem
 from .randomize import sanitize_map_name, MonSelect, has_field_move_item
-from .regions import exclude_map
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -88,6 +87,7 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
 
 def set_all_rules(world: PokemonRSOA) -> None:
     MonSelect.world = world
+    full_map = MonSelect.get_rules_scope()
 
     field_move_rules: Dict[FieldMove, Rule] = {}
     for i, pokemon in data.species.items():
@@ -114,7 +114,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
         world.set_rule(field_move_location, field_move_rule)
 
     for region_name, region_data in world.modified_regions.items():
-        if exclude_map(world, region_name, region_data):
+        if not full_map.region_included(region_name, region_data):
             continue
 
         for i, mon_data in region_data.POKEMON_SPAWN.items():
@@ -585,9 +585,9 @@ def set_completion_condition(world) -> None:
     #     )
 
     browser = world.options.capture_count_target.value
-    browser = 50  # 30
-    missions = 3
-    quests = 4  # 5
+    browser = 10  # 30
+    missions = 1
+    quests = 0  # 5
 
     has_captures = HasFromListUnique(
         *[s.event_add_to_browser for s in data.species.values()], count=browser

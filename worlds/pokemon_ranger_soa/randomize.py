@@ -31,7 +31,7 @@ from .data import (
     FieldMove,
     LocationCategory,
     pokemon_to_target_id,
-    FieldMoveCategory,
+    FieldMoveCategory, MapData,
 )
 from .events import (
     PREvent,
@@ -46,7 +46,6 @@ from .events import (
     get_instance_missable,
 )
 from .options import FieldMoveItem
-from .regions import exclude_map
 if TYPE_CHECKING:
     from .world import PokemonRSOA
 
@@ -91,6 +90,29 @@ class MonSelect:
     include_one_time: bool = False
     include_missable: bool = False
 
+    def region_included(self, region_name: str, region_data: MapData) -> bool:
+        """
+        If the map should be excluded for the current set
+        of includes and excludes.
+        """
+        return not any(
+            w in region_data.HUMAN_NAME
+            for w in [
+                "DLC",
+                "-UNK",
+                "-UNUSED",
+                "ALTRU_TOWER-SKY-BLUE",
+                "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
+                "VIENTOWN-RANGER_STATION_BACKROOM",
+                "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
+            ]
+            if not (w == "-UNK" and "m009" in region_name)
+        )
+
+    def instance_included(self, region_name: str, i: int, instance_type: Optional[str] = "pokemon") -> bool:
+
+        return True
+
     def access_field_move(
         self,
         field_move: FieldMove,
@@ -99,7 +121,7 @@ class MonSelect:
         for region_name, region_data in self.world.modified_regions.items():
             region_name = region_name.lower()
 
-            if exclude_map(self.world, region_name, region_data):
+            if not self.region_included(region_name, region_data):
                 continue
 
             if self.exclude and (
@@ -212,11 +234,11 @@ class MonSelect:
         )
 
     @classmethod
-    def full_map(cls) -> "MonSelect":
+    def full_map(cls) -> MonSelect:
         return MonSelect()
 
     @classmethod
-    def tutorial_school_area(cls) -> "MonSelect":
+    def tutorial_school_area(cls) -> MonSelect:
         #  TODO, add ship area to include when randomizing
         return MonSelect(
             include={
@@ -231,7 +253,7 @@ class MonSelect:
         )
 
     @classmethod
-    def marine_cave(cls) -> "MonSelect":
+    def marine_cave(cls) -> MonSelect:
         """Technically identical to outside_school_before_return_school,
         but semantically preferred to strictly specify on such
         small sample size"""
@@ -244,6 +266,36 @@ class MonSelect:
                 "m006_003": [],  # unreachable until a bit later
                 "m006_004": [],  # unreachable until a bit later
             },
+        )
+
+    @classmethod
+    def get_rules_scope(cls) -> MonSelect:
+        """
+        Go through the rules to determine the currently
+        applicable MonSelect instance
+        """
+        return cls.tutorial_randomizer()
+
+    @classmethod
+    def tutorial_randomizer(cls) -> MonSelect:
+        """The area for the tutorial goal which involves capturing Tangrowth
+        Currently does not account for potential ship.
+        """
+
+        return MonSelect(
+            include={
+                "m001": []
+            },
+            exclude={
+                "m001_001": [2],
+                "m001_002": [6, 12],
+                "m001_014": [],
+                "m001_011": [5],
+                "m003_001": [0, 3],
+                "m007_001": [0, 2],
+            }
+
+
         )
 
 

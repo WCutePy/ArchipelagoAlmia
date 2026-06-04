@@ -74,6 +74,7 @@ def create_all_items(world: PokemonRSOA) -> None:
 
     itempool: List[Item] = []
 
+    count = 0
     if world.options.field_move_item != world.options.field_move_item.option_vanilla:
         for i, item in data.items.items():
             if ItemCategory.FIELD_MOVE not in item.item_categories:
@@ -82,6 +83,9 @@ def create_all_items(world: PokemonRSOA) -> None:
                 continue
             new_item = world.create_item(item.label)
             itempool.append(new_item)
+            count += 1
+            if count >= 10:
+                break
 
     number_of_items = len(itempool)
     number_of_unfilled_locations = len(

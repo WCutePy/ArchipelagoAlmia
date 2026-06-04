@@ -21,6 +21,7 @@ from .events import (
     get_instance_missable,
 )
 from .locations import create_event_location
+from .randomize import MonSelect
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -38,43 +39,27 @@ def attach_pokemon_encounter(
 
     if spawn_data.missable:
         browser_name = get_instance_missable(instance_name)
-    else:
-        browser_name = get_instance_browser(instance_name)
-    create_event_location(
-        world,
-        browser_name,
-        pokemon_region,
-        species.event_add_to_browser,
-    )
-
-    if spawn_data.missable:
-        return pokemon_region
-
-    if not spawn_data.one_time:
         create_event_location(
             world,
-            get_instance_capture(instance_name),
+            browser_name,
             pokemon_region,
-            species.event_can_capture,
+            species.event_add_to_browser,
         )
+        return pokemon_region
+
+    if spawn_data.one_time:
+        browser_name = get_instance_browser(instance_name)
+    else:
+        browser_name = get_instance_capture(instance_name)
+    create_event_location(
+        world,
+        get_instance_capture(instance_name),
+        pokemon_region,
+        species.event_can_capture,
+        place_locked=False
+    )
 
     return pokemon_region
-
-
-def exclude_map(world: PokemonRSOA, map_name: str, region_data: MapData) -> bool:
-    return any(
-        w in region_data.HUMAN_NAME
-        for w in [
-            "DLC",
-            "-UNK",
-            "-UNUSED",
-            "ALTRU_TOWER-SKY-BLUE",
-            "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
-            "VIENTOWN-RANGER_STATION_BACKROOM",
-            "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
-        ]
-        if not (w == "-UNK" and "m009" in map_name)
-    )
 
 
 def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
@@ -86,9 +71,15 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             form_species[i] = species_data
 
     connections: List[Tuple[str, str, str]] = []
+
+
+    """Logic chain"""
+    MonSelect.world = world
+    full_map = MonSelect.tutorial_randomizer()
+
     for region_name, region_data in world.modified_regions.items():
 
-        if exclude_map(world, region_name, region_data):
+        if not full_map.region_included(region_name, region_data):
             continue
 
         new_region = Region(region_data.HUMAN_NAME, world.player, world.multiworld)
@@ -104,6 +95,8 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             #     )
 
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
+            if not full_map.instance_included(region_name, i):
+                continue
             pokemon_instance = get_instance_base(region_name, i)
             species = form_species[spawn_data.SPECIES_ID]
 
@@ -168,5 +161,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions["Overworld"].connect(regions["Events"], "Events region")
     for event in PREvent:
         create_event_location(world, event.event_name, regions["Events"])
+
+    MonSelect.world = None
 
     return regions

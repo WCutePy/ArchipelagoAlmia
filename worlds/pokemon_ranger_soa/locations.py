@@ -21,15 +21,20 @@ def create_event_location(
     event_region: Region,
     event_item_name: Optional[str] = None,
     show_spoiler: bool = True,  # todo swithc
+    place_locked: bool = True,
 ) -> PokemonRSOALocation:
     if event_item_name is None:
         event_item_name = event_loc_name
     event_location = PokemonRSOALocation(
         world.player, event_loc_name, None, event_region
     )
+    event_region.locations.append(event_location)
 
     if not show_spoiler:
         event_location.show_in_spoiler = False
+
+    if not place_locked:
+        return event_location
 
     event_location.place_locked_item(
         PokemonRSOAItem(
@@ -39,7 +44,6 @@ def create_event_location(
             world.player,
         )
     )
-    event_region.locations.append(event_location)
     return event_location
 
 
