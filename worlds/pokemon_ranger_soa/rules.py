@@ -90,9 +90,15 @@ def set_all_rules(world: PokemonRSOA) -> None:
     for i in world.included_browser_entries:
         pokemon = data.species[i]
 
+        base_rule = Has(pokemon.event_add_to_browser) | Has(pokemon.event_can_capture)
+        target_id = pokemon_to_target_id(pokemon.name.lower())
+        if target_id is not None:
+            target_rule = full_map.can_destroy_target_type(target_id)
+            base_rule &= target_rule
+
         world.set_rule(
             get_location(world, pokemon.location_capture_name),
-            Has(pokemon.event_add_to_browser) | Has(pokemon.event_can_capture),
+            base_rule,
         )
 
         start_level = pokemon.field_move.level
@@ -101,7 +107,13 @@ def set_all_rules(world: PokemonRSOA) -> None:
             field_move = FieldMove(category=pokemon.field_move.category, level=j)
             current_rule = field_move_rules.get(field_move, None)
             if current_rule is None:
-                field_move_rules[field_move] = Has(pokemon.event_can_capture)
+                field_move_rules[field_move] = False_()
+
+            if target_id is not None:
+                field_move_rules[field_move] |= (
+                    Has(pokemon.event_can_capture) & target_rule
+                )
+
             else:
                 field_move_rules[field_move] |= Has(pokemon.event_can_capture)
 

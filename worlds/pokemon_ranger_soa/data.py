@@ -368,7 +368,7 @@ def pokemon_to_target_id(name: str) -> Optional[int]:
         "carnivine": 0xC,
         "abomasnow": 0xD,
     }
-    return mapping.get(name)
+    return mapping.get(name, None)
 
 
 def _init():

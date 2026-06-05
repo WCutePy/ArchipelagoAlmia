@@ -117,7 +117,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             if not full_map.instance_included(region_name, i):
                 continue
             pokemon_instance = get_instance_base(region_name, i)
-            species = form_species[spawn_data.SPECIES_ID]
+            species = data.form_id_to_species[spawn_data.SPECIES_ID]
 
             p_region = attach_pokemon_encounter(
                 world, species, pokemon_instance, spawn_data, new_region
