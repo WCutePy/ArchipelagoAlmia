@@ -5,19 +5,21 @@ from dataclasses import fields, dataclass
 from typing import Any, Dict, List, Set, ClassVar
 
 import settings
-from BaseClasses import Tutorial
+from BaseClasses import Tutorial, Location, Item, CollectionState, ItemClassification
 from Fill import sweep_from_pool
 from Options import Option
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData
+from .data import data, MapData, SpeciesData
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
-from .options import PokemonRSOAOptions, OPTION_GROUPS
+from .options import PokemonRSOAOptions, OPTION_GROUPS, RandomizePokemon
 from .MonSelect import MonSelect
+from .randomize import apply_randomized_pokemon
 from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
+from Fill import FillError, fill_restrictive
 
 PokemonRangerSOA
 
@@ -69,7 +71,13 @@ class PokemonRSOA(World):
     origin_region_name = "Overworld"
 
     blacklisted_captures: Set[int]
-    included_captures: Set[int]
+    included_browser_entries: Set[int]
+    missable_captures: List[Location]
+    missable_items: List[Item]
+    browser_captures: List[Location]
+    browser_items: List[Item]
+    capture_captures: List[Location]
+    capture_items: List[Item]
 
     exclude_field_moves: Set[str]
 
@@ -81,7 +89,14 @@ class PokemonRSOA(World):
         super(PokemonRSOA, self).__init__(multiworld, player)
 
         self.blacklisted_captures = set()
-        self.included_captures = set()
+        self.included_browser_entries = set()
+
+        self.missable_captures = []
+        self.missable_items = []
+        self.browser_captures = []
+        self.browser_items = []
+        self.capture_captures = []
+        self.capture_items = []
 
         self.exclude_field_moves = set()
 
@@ -125,19 +140,6 @@ class PokemonRSOA(World):
         # This will make the fake world generate exactly like how the actual world generated.
         self.random.seed(self.seed)
 
-        possible_species = [
-            "Squirtle",
-            "Zubat",
-            "Pichu",
-            "Taillow",
-            "Slakoth",
-            "Bidoof",
-            "Budew",
-            "Doduo",
-            "Buneary",
-            "Shellos",
-            "glameow",
-        ]
         self.blacklisted_captures = set()
 
         # self.blacklisted_captures = {
@@ -145,18 +147,6 @@ class PokemonRSOA(World):
         #     for browser_number, species in data.species.items()
         #     if species.name not in possible_species
         # }
-
-        manually_blacklisted = [
-            # "Shaymin",
-            # "Palkia",
-            # "Dialga",
-            # "Darkrai",
-            # "Regigigas",  # not sure about this one
-        ]
-
-        self.blacklisted_captures |= {
-            b for b, n in data.species.items() if n.name in manually_blacklisted
-        }
 
         for map_name in ["m001_002", "m001_011", "m002_001", "m003_001"]:
 
@@ -177,7 +167,37 @@ class PokemonRSOA(World):
         items.create_all_items(self)
 
     def set_rules(self) -> None:
+        print(
+            "quick test:",
+            len(self.multiworld.get_unfilled_locations(self.player)),
+            len(self.multiworld.itempool),
+            len(self.capture_captures),
+            len(self.capture_items),
+        )
         rules.set_all_rules(self)
+
+        if self.options.randomize_pokemon != RandomizePokemon.option_vanilla:
+            apply_randomized_pokemon(self)
+
+    def write_spoiler(self, spoiler_handle) -> None:
+        browser_instances = sum(
+            1
+            for loc in self.multiworld.get_locations(self.player)
+            if loc.item and loc.item.name.startswith("EVENT_ADD_TO_BROWSER")
+        )
+
+        capture_instances = sum(
+            1
+            for loc in self.multiworld.get_locations(self.player)
+            if loc.item and loc.item.name.startswith("EVENT_CAN_CAPTURE")
+        )
+
+        spoiler_handle.write("\nPokemon Statistics:\n")
+        spoiler_handle.write(
+            f"  Unique Browser Captures: {len(self.included_browser_entries)}\n"
+        )
+        spoiler_handle.write(f"  Browser Instances: {browser_instances}\n")
+        spoiler_handle.write(f"  Capture Instances: {capture_instances}\n")
 
     def generate_output(self, output_directory: str) -> None:
 

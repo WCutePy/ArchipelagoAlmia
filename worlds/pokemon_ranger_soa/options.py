@@ -20,14 +20,14 @@ class Goal(Choice):
 
 class MissionClearTarget(Choice):
     """
-    When mission clear is set as goal, this is the mission
-    required to be beaten to complete the game.
+    When mission clear is set as goal, this is the
+    mission/story section required to be
+    beaten to complete the game.
     """
 
     display_name = "Missing clear target"
 
-    option_rookie_soothe_the_pokemon_on_the_beach = 0
-    option_deliver_vien_tribune = 1
+    option_graduate_school = 0
     option_investigate_the_marine_cave = 2
     option_fight_the_forest_fire = 3
     option_destroy_the_strange_machines = 4
@@ -44,7 +44,7 @@ class MissionClearTarget(Choice):
     option_protect_ranger_union_hq = 15
     option_execute_operation_brighton = 16
 
-    default = option_deliver_vien_tribune
+    default = option_investigate_the_marine_cave
 
 
 class QuestClearTarget(Range):

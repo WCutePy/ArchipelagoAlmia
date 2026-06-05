@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from collections import defaultdict
 from dataclasses import field, dataclass
 from typing import (
@@ -86,11 +87,12 @@ def set_all_rules(world: PokemonRSOA) -> None:
     full_map = MonSelect.get_rules_scope()
 
     field_move_rules: Dict[FieldMove, Rule] = {}
-    for i, pokemon in data.species.items():
+    for i in world.included_browser_entries:
+        pokemon = data.species[i]
 
         world.set_rule(
             get_location(world, pokemon.location_capture_name),
-            Has(pokemon.event_add_to_browser),
+            Has(pokemon.event_add_to_browser) | Has(pokemon.event_can_capture),
         )
 
         start_level = pokemon.field_move.level
@@ -106,27 +108,40 @@ def set_all_rules(world: PokemonRSOA) -> None:
     for field_move, pokemon_rules in field_move_rules.items():
         field_move_rule = pokemon_rules & has_field_move_item(world, field_move)
 
-        field_move_location = get_location(world, field_move.event_can_use_field_move)
+        try:
+            field_move_location = get_location(
+                world, field_move.event_can_use_field_move
+            )
+        except KeyError:
+            logging.warning(
+                f"{field_move} is part of browser, but potentially not as capture"
+            )
+            continue
         world.set_rule(field_move_location, field_move_rule)
 
-    for region_name, region_data in world.modified_regions.items():
-        if not full_map.region_included(region_name, region_data):
-            continue
-
-        for i, mon_data in region_data.POKEMON_SPAWN.items():
-            if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
-                world.set_rule(get_pokemon_instance(world, region_name, i), False_())
-
-    for i in range(1, 61):
-        world.set_rule(
-            get_location(world, data.locations[f"QUEST_{i:02}"].label), False_()
-        )
-        world.set_rule(get_location(world, get_quest_event(i)), False_())
+    # for region_name, region_data in world.modified_regions.items():
+    #     if not full_map.region_included(region_name, region_data):
+    #         continue
+    #
+    #     for i, mon_data in region_data.POKEMON_SPAWN.items():
+    #         if mon_data.SPECIES_NAME in ["Doduo", "Staraptor"]:
+    #             world.set_rule(get_pokemon_instance(world, region_name, i), False_())
 
     set_tutorial_rules(world)
     # set_mission_1_and_2_rules(world)
     # set_mission_3_rules(world)
     # set_mission_4_rules(world)
+    goal_based_rules = {
+        0: set_tutorial_rules,
+        2: set_mission_1_and_2_rules,
+        3: set_mission_3_rules,
+        4: set_mission_4_rules,
+    }
+
+    up_to_mission = world.options.mission_clear_target.value
+    for i, rule_func in goal_based_rules.items():
+        if i <= up_to_mission:
+            rule_func(world)
 
     set_completion_condition(world)
 
@@ -134,23 +149,6 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
-    """
-    Goal: capture cutscene Tangrowth
-
-    Possibly reachable instances:
-
-    missions: 1
-    quests: 0
-    missable_pokemon: 17
-    browser_entries:
-    captures:
-
-    if ship is included
-    missable_locations:
-    browser_locations:
-    capture_locations:
-    """
-
     full_map = MonSelect.full_map()
 
     world.set_rule(
@@ -159,41 +157,32 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         & full_map.can_destroy_target_type(pokemon_to_target_id("bonsly")),
     )
 
-    for i in [6, 12]:
-        world.set_rule(get_pokemon_instance(world, "m001_002", i), False_())
+    # for i in [6, 12]:
+    #     world.set_rule(get_pokemon_instance(world, "m001_002", i), False_())
     world.set_rule(get_connection(world, "m001_002", "m001_014"), False_())
 
     """School first night"""
-    school_night = MonSelect(
-        include={
-            "m001_003a": [],
-            "m001_004": [],
-            "m001_006": [],
-            "m001_007": [],
-            "m001_008": [],
-            "m001_011": [],
-        },
-        include_one_time=True,
-        include_missable=True,
+    has_crate_field_move = has_field_move_item(
+        world, data.target_field_move_requirements[27]
     )
+    has_gate_field_move = has_field_move_item(
+        world, data.target_field_move_requirements[37]
+    )
+
     world.set_rule(
         get_pokemon_instance(world, "m001_004", 0),
-        school_night.can_destroy_target_type(27),  # crate
+        has_crate_field_move,  # crate
     )
 
     for i in [0, 1, 2, 3]:
         world.set_rule(
             get_pokemon_instance(world, "m001_007", i),
-            school_night.can_destroy_target_type(27),  # crate
+            has_crate_field_move,  # crate
         )
 
     world.set_rule(
         get_location(world, PREvent.SCHOOL_COLLECT_STYLERS.event_name),
-        school_night.can_destroy_target_type(27),  # crate
-    )
-
-    print(
-        school_night.can_destroy_target_type(27),
+        has_crate_field_move,  # crate
     )
 
     # basement access
@@ -204,13 +193,12 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         )
     world.set_rule(
         get_location(world, PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
-        school_night.can_destroy_target_type(27)
-        & school_night.can_destroy_target_type(37),  # crate
+        has_crate_field_move & has_gate_field_move,  # crate
     )
 
     world.set_rule(
         get_pokemon_instance(world, "m001_011", 4),
-        school_night.can_destroy_target_type(27),  # crate
+        has_crate_field_move,  # crate
     )
     for i in [0, 1, 2, 3]:
         world.set_rule(
@@ -218,9 +206,9 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
             Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
         )
 
-    world.set_rule(
-        get_pokemon_instance(world, "m001_011", 5), False_()
-    )  # TODO figure out when separate ghastly spawns
+    # world.set_rule(
+    #     get_pokemon_instance(world, "m001_011", 5), False_()
+    # )  # TODO figure out when separate ghastly spawns
 
     """School day 3"""
 
@@ -304,6 +292,10 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
             Has(get_mission_event(0)),
         )
 
+    # world.set_rule(
+    #     get_connection(world, "m001")
+    # )
+
 
 def set_mission_1_and_2_rules(world: PokemonRSOA):
     mission_1 = data.locations["MISSION_01"].label
@@ -377,15 +369,15 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
         Has(get_instance_target("m006_001", 0)),
     )
 
+
+def set_mission_3_rules(world: PokemonRSOA):
     for loc in [data.locations["QUEST_01"].label, get_quest_event(1)]:
         world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
     world.set_rule(
         get_entrance(world, PInstanceEvent.MILTANK.event_name),
         Has(get_mission_event(2)),
-    )  # not possible if goal is mission 2
+    )
 
-
-def set_mission_3_rules(world: PokemonRSOA):
     all_maps = MonSelect.full_map()
 
     for loc in [data.locations["QUEST_48"].label, get_quest_event(48)]:
@@ -488,25 +480,23 @@ def set_mission_4_rules(world: PokemonRSOA):
             Has(get_mission_event(3)) & Has(data.species[59].event_can_capture),
         )
 
-    without_fallen_tree_section = MonSelect(
-        exclude={
-            "m009_002": [
-                0x3,  # sphinx
-                0x6,  # pichu
-                0x7,  # taillow
-                0x9,  # cherubi
-                0xA,  # cherubi
-                0xD,  # wartortle
-            ]
-        }
-    )
+    """
+    During quest 11 te following are unavailable to destroy the first obstacle, 
+    but you can cancel the quest to access them again.
+    0x3,  # sphinx
+    0x6,  # pichu
+    0x7,  # taillow
+    0x9,  # cherubi
+    0xA,  # cherubi
+    0xD,  # wartortle
+    """
 
     for loc in [data.locations["QUEST_11"].label, get_quest_event(11)]:
         world.set_rule(
             get_location(world, loc),
             Has(get_mission_event(3))
-            & without_fallen_tree_section.can_destroy_target("m009_002", 2)
-            & without_fallen_tree_section.can_destroy_target("m009_002", 7),
+            & all_maps.can_destroy_target("m009_002", 2)
+            & all_maps.can_destroy_target("m009_002", 7),
         )  # really identical fallen logs
 
     for loc in [data.locations["QUEST_49"].label, get_quest_event(49)]:
@@ -564,36 +554,29 @@ def set_mission_4_rules(world: PokemonRSOA):
 
 
 def set_completion_condition(world) -> None:
-    def captured_n_pokemon(state: CollectionState, n: int) -> bool:
-        return (
-            sum(
-                state.can_reach_location(s.location_capture_name, world.player)
-                for s in data.species.values()
-            )
-            >= n
-        )
-
-    # def captured_n_pokemon(state: CollectionState, n: int) -> bool:
-    #     return state.has_from_list_unique(
-    #         [i.event_add_to_browser for i in data.species.values()], world.player, n
-    #     )
 
     browser = world.options.capture_count_target.value
-    browser = 10  # 30
-    missions = 1
+    browser = 34  # 30
+    missions = world.options.mission_clear_target.value
     quests = 0  # 5
 
-    has_captures = HasFromListUnique(
-        *[s.event_add_to_browser for s in data.species.values()], count=browser
-    )
+    capture_check = []
+    for i in world.included_browser_entries:
+        mon = data.species[i]
+        capture_check.append(mon.event_add_to_browser)
+        capture_check.append(mon.event_can_capture)
+
+    has_captures = HasFromListUnique(*capture_check, count=browser)
     has_missions = True_()
     count = 0
     for loc_name, loc_data in data.locations.items():
         count += 1
+
         if count > missions:
             break
         if loc_data.category == LocationCategory.MISSION:
-            has_missions &= CanReachLocation(loc_data.label)
+            has_missions &= Has(get_mission_event(count))
+
     has_quests = HasFromListUnique(
         *[get_quest_event(i) for i in range(1, 61)], count=quests
     )

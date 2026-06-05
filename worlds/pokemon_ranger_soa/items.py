@@ -83,13 +83,12 @@ def create_all_items(world: PokemonRSOA) -> None:
                 continue
             new_item = world.create_item(item.label)
             itempool.append(new_item)
-            count += 1
-            if count >= 10:
-                break
 
     number_of_items = len(itempool)
-    number_of_unfilled_locations = len(
-        world.multiworld.get_unfilled_locations(world.player)
+    number_of_unfilled_locations = (
+        len(world.multiworld.get_unfilled_locations(world.player))
+        - len(world.capture_captures)
+        - len(world.browser_captures)
     )
 
     needed_number_of_filler_items = number_of_unfilled_locations - number_of_items

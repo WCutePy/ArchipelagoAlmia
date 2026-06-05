@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Dict, Set, Optional
 
 from BaseClasses import ItemClassification, Location, Region, LocationProgressType
 
-from .data import data, LocationData, LocationCategory, SpeciesData
+from .data import data, LocationData, LocationCategory, SpeciesData, FieldMove
 from .events import PInstanceEvent
 from .items import PokemonRSOAItem
 from .options import RandomizePokemon
@@ -89,15 +89,21 @@ def create_all_locations(
         LocationCategory.QUEST,
     ]
 
+    max_mission = world.options.mission_clear_target.value
+    permitted_quests = []
+    quests_table = {3: [1, 48], 4: [3, 11, 49]}
+    for i in range(0, max_mission + 1):
+        permitted_quests += quests_table.get(i, [])
+
     for name, location_data in data.locations.items():
         if location_data.category not in locations_categories:
             continue
 
-        if location_data.category in [
-            LocationCategory.BROWSER,
-            LocationCategory.BROWSER_RANK,
-        ]:
-            if location_data.name.split("_")[-1] in world.blacklisted_captures:
+        if location_data.category == LocationCategory.MISSION:
+            if int(name.strip("MISSION_")) > max_mission:
+                continue
+        elif location_data.category == LocationCategory.QUEST:
+            if int(name.strip("QUEST_")) not in permitted_quests:
                 continue
 
         if location_data.parent_region is None:
@@ -115,7 +121,7 @@ def create_all_locations(
         region.locations.append(new_location)
 
         if location_data.category in [LocationCategory.MISSION, LocationCategory.QUEST]:
-            create_event_location(world, f"COMPLETE_{name}", region, show_spoiler=False)
+            create_event_location(world, f"COMPLETE_{name}", region, show_spoiler=True)
 
 
 def create_quest_locations(world: PokemonRSOA) -> None:
@@ -126,12 +132,15 @@ def create_pokemon_locations(
     world: PokemonRSOA,
     regions: Dict[str, Region],
 ) -> None:
+
     region = Region("Browser", world.player, world.multiworld)
     regions[region.name] = region
     regions["Overworld"].connect(region, "Browser")
 
-    full_map = MonSelect.tutorial_randomizer()
+    full_map = MonSelect.get_rules_scope()
     if world.options.randomize_pokemon == RandomizePokemon.option_vanilla:
+        possible_captures = set()
+
         for region_name, region_data in world.modified_regions.items():
             if not full_map.region_included(region_name, region_data):
                 continue
@@ -142,7 +151,10 @@ def create_pokemon_locations(
                 if mon_data.missable:
                     continue
                 pokemon = data.form_id_to_species[mon_data.SPECIES_ID]
-                if pokemon.browser_id in world.included_captures:
+                if not mon_data.one_time:
+                    possible_captures.add(pokemon.browser_id)
+
+                if pokemon.browser_id in world.included_browser_entries:
                     continue
                 """Does currently not support blacklisting"""
                 location_name = pokemon.location_capture_name
@@ -154,9 +166,13 @@ def create_pokemon_locations(
                 )
                 region.locations.append(new_location)
 
-                world.included_captures.add(pokemon.browser_id)
+                world.included_browser_entries.add(pokemon.browser_id)
+
+        field_move_region = regions["Overworld"]
+        add_field_move_events(world, possible_captures, field_move_region)
         return
 
+    missable_mons = 0
     browser_mons = 0
     capture_mons = 0
     already_used_ids: Set[int] = set()
@@ -171,16 +187,19 @@ def create_pokemon_locations(
                 already_used_ids.add(value.browser_id)
 
             elif loc.item is not None and "EVENT" in loc.item.name:
-                if "missable" in loc.item.name:
+                if "missable" in loc.item.name.lower():
                     continue
                 m, _, i = loc.name.split(".")
-                i = i.strip("_capturebowsmisbl")
+                i = i.lower().strip("_capturebowsmisbl")
                 b_id = data.form_id_to_species[
                     world.modified_regions[m].POKEMON_SPAWN[int(i)].SPECIES_ID
                 ].browser_id
                 already_used_ids.add(b_id)
 
             continue
+
+        if "missable" in loc.name:
+            missable_mons += 1
 
         if "browser" in loc.name:
             browser_mons += 1
@@ -199,6 +218,14 @@ def create_pokemon_locations(
 
     one_count = min(len(available_pool), capture_mons)
     one_each = world.random.sample(available_pool, one_count)
+
+    for i in [17, 4, 14]:  # TODO, don't do this like this.
+        if i in one_each:
+            continue
+        # gastly from tutorial that can't be randomized yet
+        one_each.pop(0)
+        one_each.append(17)
+
     dupe_captures = world.random.choices(available_pool, k=capture_mons - one_count)
     captures = one_each + dupe_captures
 
@@ -210,7 +237,7 @@ def create_pokemon_locations(
             None,
             world.player,
         )
-        world.multiworld.itempool.append(new_item)
+        world.capture_items.append(new_item)
         already_used_ids.add(i)
 
     # TODO ensure all necessary field moves are inside the capture list *first*
@@ -226,4 +253,36 @@ def create_pokemon_locations(
             region,
         )
         region.locations.append(new_location)
-    world.included_captures |= already_used_ids
+    world.included_browser_entries |= already_used_ids
+
+    field_move_region = regions["Overworld"]
+    add_field_move_events(world, one_each, field_move_region)
+
+    missable_items = world.random.choices(
+        list(world.included_browser_entries), k=missable_mons
+    )
+    for i in missable_items:
+        mon = data.species[i]
+        new_item = PokemonRSOAItem(
+            mon.event_missable,
+            ItemClassification.filler,
+            None,
+            world.player,
+        )
+        world.missable_items.append(new_item)
+
+
+def add_field_move_events(world, pool, region):
+    field_moves: Set[FieldMove] = set()
+
+    for i in pool:
+        pokemon = data.species[i]
+        start_level = pokemon.field_move.level
+
+        for j in range(1, start_level + 1):
+            field_move = FieldMove(category=pokemon.field_move.category, level=j)
+            field_moves.add(field_move)
+
+    field_moves = sorted(field_moves)
+    for field_move in field_moves:
+        create_event_location(world, field_move.event_can_use_field_move, region)

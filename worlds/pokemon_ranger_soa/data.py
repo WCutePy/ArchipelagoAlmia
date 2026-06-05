@@ -178,15 +178,15 @@ class SpeciesData:
 
     @property
     def event_missable(self):
-        return f"EVENT_MISSABLE,{self.name}"
+        return f"EVENT_MISSABLE;{self.name}"
 
     @property
     def event_add_to_browser(self):
-        return f"EVENT_ADD_TO_BROWSER,{self.name}"
+        return f"EVENT_ADD_TO_BROWSER;{self.name}"
 
     @property
     def event_can_capture(self):
-        return f"EVENT_CAN_CAPTURE,{self.name}"
+        return f"EVENT_CAN_CAPTURE;{self.name}"
 
     @property
     def location_capture_rank_name(self):
@@ -274,6 +274,8 @@ class MapData:
     TARGETS: dict[int, TargetEntry] = field(default_factory=dict)
     POKEMON_SPAWN: dict[int, PokemonSpawnEntry] = field(default_factory=dict)
     EXITS: dict[str, list[str]] = field(default_factory=dict)
+
+    modified: Optional[bool] = False
 
     def __post_init__(self):
         self.TARGETS = {

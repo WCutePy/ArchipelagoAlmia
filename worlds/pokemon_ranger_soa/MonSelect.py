@@ -47,7 +47,7 @@ from .events import (
     get_quest_event,
     get_instance_missable,
 )
-from .options import FieldMoveItem
+from .options import FieldMoveItem, Goal
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -91,31 +91,72 @@ class MonSelect:
     world: ClassVar[Optional[PokemonRSOA]]
     include: Dict[str, List] = field(default_factory=dict)
     exclude: Dict[str, List] = field(default_factory=dict)
+    event_mon: List[PInstanceEvent] = field(default_factory=list)
+
     include_one_time: bool = False
     include_missable: bool = False
 
-    def region_included(self, region_name: str, region_data: MapData) -> bool:
+    def region_included(
+        self, region_name: str, region_data: Optional[MapData] = None
+    ) -> bool:
         """
         If the map should be excluded for the current set
         of includes and excludes.
         """
-        return not any(
-            w in region_data.HUMAN_NAME
-            for w in [
-                "DLC",
-                "-UNK",
-                "-UNUSED",
-                "ALTRU_TOWER-SKY-BLUE",
-                "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
-                "VIENTOWN-RANGER_STATION_BACKROOM",
-                "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
-            ]
-            if not (w == "-UNK" and "m009" in region_name)
+        if region_data:
+            blacklisted = any(
+                w in region_data.HUMAN_NAME
+                for w in [
+                    "DLC",
+                    "-UNK",
+                    "-UNUSED",
+                    "ALTRU_TOWER-SKY-BLUE",
+                    "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
+                    "VIENTOWN-RANGER_STATION_BACKROOM",
+                    "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
+                ]
+                if not (w == "-UNK" and "m009" in region_name)
+            )
+            if blacklisted:
+                return False
+
+        if self.exclude and (
+            len(self.exclude.get(region_name, [1])) == 0
+            or any(
+                region_name.startswith(e.lower())
+                for e in self.exclude
+                if "_" not in e and not self.exclude.get(region_name, [])
+            )
+        ):
+            return False
+
+        include_region: bool = next(
+            (
+                self.include[i]
+                for i in self.include
+                if region_name.startswith(i.lower())
+            ),
+            False,
         )
+        if self.include and include_region is False:
+            return False
+        return True
 
     def instance_included(
         self, region_name: str, i: int, instance_type: Optional[str] = "pokemon"
     ) -> bool:
+
+        if self.exclude and i in self.exclude.get(region_name, []):
+            return False
+
+        if self.include:
+            base_region = region_name.split("_")[0].lower()
+            if base_region in self.include:
+                return True
+
+            include_region = self.include.get(region_name, [-1])
+            if len(include_region) > 0 and i not in include_region:
+                return False
 
         return True
 
@@ -133,34 +174,11 @@ class MonSelect:
 
             if not self.region_included(region_name, region_data):
                 continue
-
-            if self.exclude and (
-                len(self.exclude.get(region_name, [1])) == 0
-                or any(
-                    region_name.startswith(e.lower())
-                    for e in self.exclude
-                    if "_" not in e and not self.exclude.get(region_name, [])
-                )
-            ):
-                continue
-            exclude_region = self.exclude.get(region_name, [])
-            include_region: bool = next(
-                (
-                    self.include[i]
-                    for i in self.include
-                    if region_name.startswith(i.lower())
-                ),
-                False,
-            )
-            if self.include and include_region is False:
-                continue
             include_region: Sized
 
             for i, spawn_data in region_data.POKEMON_SPAWN.items():
 
-                if self.exclude and i in exclude_region:
-                    continue
-                if self.include and len(include_region) > 0 and i not in include_region:
+                if not self.instance_included(region_name, i):
                     continue
 
                 if not self.include_missable and spawn_data.missable:
@@ -174,7 +192,7 @@ class MonSelect:
                         pokemon_rules |= CanReachLocation(
                             get_instance_missable(region_name, i)
                         )
-                    elif self.include_one_time:
+                    elif self.include_one_time and spawn_data.one_time:
                         pokemon_rules |= CanReachLocation(
                             get_instance_browser(region_name, i)
                         )
@@ -209,8 +227,9 @@ class MonSelect:
 
         if not self.include and not self.exclude:
             base = Has(field_move.event_can_use_field_move)
-            if not on_self:
-                base &= Has(target)
+            # if not on_self:
+            #     base &= Has(target)
+            return base
 
         return has_field_move_item(self.world, field_move) & self.access_field_move(
             field_move
@@ -284,16 +303,37 @@ class MonSelect:
         Go through the rules to determine the currently
         applicable MonSelect instance
         """
-        return cls.tutorial_randomizer()
+        goals = {
+            0: cls.goal_school,
+            2: cls.goal_marine_cave,
+        }
+
+        if cls.world.options.goal == Goal.option_mission_clear:
+
+            return goals[cls.world.options.mission_clear_target.value]()
 
     @classmethod
-    def tutorial_randomizer(cls) -> MonSelect:
-        """The area for the tutorial goal which involves capturing Tangrowth
-        Currently does not account for potential ship.
+    def goal_school(cls) -> MonSelect:
+        """
+        Goal: capture cutscene Tangrowth
+
+        Possibly reachable instances:
+
+        missions: 1
+        quests: 0
+        Missable_pokemon: 17
+        Unique Browser Captures: 34
+        Browser Instances: 1
+        Capture Instances: 33
+
+        if ship is included
+        missable_locations:
+        browser_locations:
+        capture_locations:
         """
 
         return MonSelect(
-            include={"m001": []},
+            include={"m001": [], "m003": [], "m007": []},
             exclude={
                 "m001_001": [2],
                 "m001_002": [6, 12],
@@ -302,7 +342,36 @@ class MonSelect:
                 "m003_001": [0, 3],
                 "m007_001": [0, 2],
             },
+            event_mon=[PInstanceEvent.TANGROWTH],
         )
+
+    @classmethod
+    def goal_marine_cave(cls) -> MonSelect:
+        """
+
+        Unique Browser Captures: 57
+        Browser Instances: 1
+        Capture Instances: 56
+        """
+        base = cls.goal_school()
+        base.include |= {
+            "m005_001b": [],
+            "m006": [],
+        }
+        return base
+
+    @classmethod
+    def goal_forest_fire(cls) -> MonSelect:
+        base = cls.goal_marine_cave()
+        base.include |= {
+            "m009_002": [],
+            "m009_001a": [],
+            "m009_009": [],
+            "m009_004": [8],
+        }
+        base.exclude |= {"m009_009": [2, 3]}
+
+        base.event_mon += [PInstanceEvent.MILTANK]
 
 
 def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:

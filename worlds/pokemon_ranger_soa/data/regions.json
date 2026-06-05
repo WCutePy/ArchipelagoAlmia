@@ -1099,6 +1099,7 @@
                 "SPECIES_ID": "0x014",
                 "SPECIES_NAME": "Zubat",
                 "SPAWN_FLAG": 0,
+                "randomize": false,
                 "missable": true,
                 "rules": [
                     "NO_MANUAL_RULES"
@@ -1126,6 +1127,7 @@
                 "SPECIES_ID": "0x0AD",
                 "SPECIES_NAME": "Bidoof",
                 "SPAWN_FLAG": 0,
+                "randomize": false,
                 "missable": true,
                 "rules": [
                     "NO_MANUAL_RULES"
@@ -1298,24 +1300,28 @@
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
                 "SPAWN_FLAG": 0,
+                "randomize": false,
                 "missable": true
             },
             "1": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
                 "SPAWN_FLAG": 0,
+                "randomize": false,
                 "missable": true
             },
             "2": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
                 "SPAWN_FLAG": 0,
+                "randomize": false,
                 "missable": true
             },
             "3": {
                 "SPECIES_ID": "0x02E",
                 "SPECIES_NAME": "Gastly",
                 "SPAWN_FLAG": 0,
+                "randomize": false,
                 "missable": true
             },
             "4": {
@@ -1430,7 +1436,8 @@
             "0": {
                 "SPECIES_ID": "0x0AD",
                 "SPECIES_NAME": "Bidoof",
-                "SPAWN_FLAG": 0
+                "SPAWN_FLAG": 0,
+                "randomize": false
             }
         },
         "EXITS": {
