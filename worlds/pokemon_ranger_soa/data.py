@@ -177,12 +177,16 @@ class SpeciesData:
         return f"CAPTURE_{self.name}"
 
     @property
+    def event_missable(self):
+        return f"EVENT_MISSABLE,{self.name}"
+
+    @property
     def event_add_to_browser(self):
-        return f"EVENT_ADD_TO_BROWSER_{self.name}"
+        return f"EVENT_ADD_TO_BROWSER,{self.name}"
 
     @property
     def event_can_capture(self):
-        return f"EVENT_CAN_CAPTURE_{self.name}"
+        return f"EVENT_CAN_CAPTURE,{self.name}"
 
     @property
     def location_capture_rank_name(self):
@@ -256,6 +260,7 @@ class PokemonSpawnEntry:
     SPAWN_FLAG: int
     missable: Optional[bool] = False
     one_time: Optional[bool] = False
+    randomize: Optional[bool] = True
     rules: list[str] = field(default_factory=list)
 
 

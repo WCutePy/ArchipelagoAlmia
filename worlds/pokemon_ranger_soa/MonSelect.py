@@ -9,7 +9,8 @@ from typing import (
     TypeAlias,
     Iterable,
     Sized,
-    ClassVar, Any,
+    ClassVar,
+    Any,
 )
 from collections import defaultdict
 from dataclasses import field, dataclass
@@ -31,7 +32,8 @@ from .data import (
     FieldMove,
     LocationCategory,
     pokemon_to_target_id,
-    FieldMoveCategory, MapData,
+    FieldMoveCategory,
+    MapData,
 )
 from .events import (
     PREvent,
@@ -46,6 +48,7 @@ from .events import (
     get_instance_missable,
 )
 from .options import FieldMoveItem
+
 if TYPE_CHECKING:
     from .world import PokemonRSOA
 
@@ -73,6 +76,7 @@ mission 3
  - 4 budew that jump out
  - maybe happiny related
 """
+
 
 def sanitize_map_name(map_name: Union[str, int]) -> str:
     if isinstance(map_name, int):
@@ -109,7 +113,13 @@ class MonSelect:
             if not (w == "-UNK" and "m009" in region_name)
         )
 
-    def instance_included(self, region_name: str, i: int, instance_type: Optional[str] = "pokemon") -> bool:
+    def instance_included(
+        self, region_name: str, i: int, instance_type: Optional[str] = "pokemon"
+    ) -> bool:
+
+        return True
+
+    def event_mon_included(self, event: PInstanceEvent):
 
         return True
 
@@ -283,9 +293,7 @@ class MonSelect:
         """
 
         return MonSelect(
-            include={
-                "m001": []
-            },
+            include={"m001": []},
             exclude={
                 "m001_001": [2],
                 "m001_002": [6, 12],
@@ -293,9 +301,7 @@ class MonSelect:
                 "m001_011": [5],
                 "m003_001": [0, 3],
                 "m007_001": [0, 2],
-            }
-
-
+            },
         )
 
 

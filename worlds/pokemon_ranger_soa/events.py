@@ -101,11 +101,18 @@ class PInstanceEvent(PRSOAEvent):
     PALKIA = ("m041_001", 436)
     SHAYMIN = ("m041_001", 437)
 
-    def __new__(cls, map_name: str, browser_id: int, one_time: Optional[bool] = True):
+    def __new__(
+        cls,
+        map_name: str,
+        browser_id: int,
+        one_time: Optional[bool] = True,
+        randomize: Optional[bool] = False,
+    ):
         obj = object.__new__(cls)
         obj.map_name = map_name
         obj.browser_id = browser_id
         obj.one_time = one_time
+        obj.randomize = randomize
         return obj
 
     @property

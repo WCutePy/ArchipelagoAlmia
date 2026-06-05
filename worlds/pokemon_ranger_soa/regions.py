@@ -10,6 +10,7 @@ from .data import (
     PokemonSpawnEntry,
     FieldMove,
     MapData,
+    FieldMoveCategory,
 )
 from .events import (
     PInstanceEvent,
@@ -21,7 +22,8 @@ from .events import (
     get_instance_missable,
 )
 from .locations import create_event_location
-from .randomize import MonSelect
+from .options import RandomizePokemon
+from .MonSelect import MonSelect
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -43,20 +45,29 @@ def attach_pokemon_encounter(
             world,
             browser_name,
             pokemon_region,
-            species.event_add_to_browser,
+            species.event_missable,
         )
         return pokemon_region
 
+    place_locked = False
+    if (
+        world.options.randomize_pokemon == RandomizePokemon.option_vanilla
+        or not spawn_data.randomize
+    ):
+        place_locked = True
+
     if spawn_data.one_time:
         browser_name = get_instance_browser(instance_name)
+        item_name = species.event_add_to_browser
     else:
         browser_name = get_instance_capture(instance_name)
+        item_name = species.event_can_capture
     create_event_location(
         world,
-        get_instance_capture(instance_name),
+        browser_name,
         pokemon_region,
-        species.event_can_capture,
-        place_locked=False
+        event_item_name=item_name,
+        place_locked=place_locked,
     )
 
     return pokemon_region
@@ -72,27 +83,31 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
 
     connections: List[Tuple[str, str, str]] = []
 
-
     """Logic chain"""
     MonSelect.world = world
     full_map = MonSelect.tutorial_randomizer()
 
     for region_name, region_data in world.modified_regions.items():
 
-        if not full_map.region_included(region_name, region_data):
-            continue
-
         new_region = Region(region_data.HUMAN_NAME, world.player, world.multiworld)
 
+        regions[region_name] = new_region
+
         for i, target_data in region_data.TARGETS.items():
+            field_move = data.target_field_move_requirements[target_data.TARGET_ID]
+            if field_move.category == FieldMoveCategory.NONE:
+                continue
+
             event_name = get_instance_target(region_name, i)
+
             target_location = create_event_location(world, event_name, new_region)
-            #
-            # field_move = data.target_field_move_requirements[target_data.TARGET_ID]
-            # if field_move.category != FieldMoveCategory.NONE:
-            #     world.set_rule(
-            #         target_location, Has(field_move.event_can_use_field_move)
-            #     )
+
+        for exit_name in region_data.EXITS:
+            region_exit = exit_name.split("-> ")[1].split(".")[0]
+            connections.append((exit_name, region_name, region_exit))
+
+        if not full_map.region_included(region_name, region_data):
+            continue
 
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
             if not full_map.instance_included(region_name, i):
@@ -104,12 +119,6 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
                 world, species, pokemon_instance, spawn_data, new_region
             )
             regions[pokemon_instance] = p_region
-
-        for exit_name in region_data.EXITS:
-            region_exit = exit_name.split("-> ")[1].split(".")[0]
-            connections.append((exit_name, region_name, region_exit))
-
-        regions[region_name] = new_region
 
     for name, source, dest in connections:
         source = regions.get(source, None)
@@ -129,6 +138,9 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions["m029_001"].connect(regions["m029_009"], "Wailord fight")
 
     for event in PInstanceEvent:
+        if not full_map.event_mon_included(event):
+            continue
+
         pokemon = data.species[event.browser_id]
 
         p_region = attach_pokemon_encounter(
@@ -140,6 +152,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
                 SPECIES_NAME=pokemon.name,
                 SPAWN_FLAG=-1,
                 one_time=event.one_time,
+                randomize=False,
             ),
             regions[event.map_name],
         )
@@ -161,7 +174,5 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions["Overworld"].connect(regions["Events"], "Events region")
     for event in PREvent:
         create_event_location(world, event.event_name, regions["Events"])
-
-    MonSelect.world = None
 
     return regions

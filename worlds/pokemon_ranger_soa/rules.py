@@ -48,13 +48,10 @@ from .events import (
     get_instance_missable,
 )
 from .options import FieldMoveItem
-from .randomize import sanitize_map_name, MonSelect, has_field_move_item
+from .MonSelect import sanitize_map_name, MonSelect, has_field_move_item
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
-
-
-
 
 
 def get_entrance(world: PokemonRSOA, entrance: str) -> Entrance:
@@ -82,7 +79,6 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
         location = data.locations[location].label
 
     return world.multiworld.get_location(location, world.player)
-
 
 
 def set_all_rules(world: PokemonRSOA) -> None:
@@ -530,9 +526,7 @@ def set_mission_4_rules(world: PokemonRSOA):
         world.set_rule(get_connection(world, "m009_001b", to), False_())
 
     """m009_008"""
-    for to in ["m009_001c", "m017_001", "m017_002",
-               "m009_011"
-               ]:
+    for to in ["m009_001c", "m017_001", "m017_002", "m009_011"]:
         world.set_rule(get_connection(world, "m009_008", to), False_())
 
     # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06, beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B

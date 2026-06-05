@@ -1,7 +1,7 @@
 import copy
 import os
 from collections.abc import Mapping
-from dataclasses import fields
+from dataclasses import fields, dataclass
 from typing import Any, Dict, List, Set, ClassVar
 
 import settings
@@ -16,6 +16,7 @@ from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
 from .options import PokemonRSOAOptions, OPTION_GROUPS
+from .MonSelect import MonSelect
 from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
 
 PokemonRangerSOA
@@ -68,6 +69,7 @@ class PokemonRSOA(World):
     origin_region_name = "Overworld"
 
     blacklisted_captures: Set[int]
+    included_captures: Set[int]
 
     exclude_field_moves: Set[str]
 
@@ -79,12 +81,14 @@ class PokemonRSOA(World):
         super(PokemonRSOA, self).__init__(multiworld, player)
 
         self.blacklisted_captures = set()
+        self.included_captures = set()
 
         self.exclude_field_moves = set()
 
         self.modified_regions = copy.deepcopy(data.regions)
 
         self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
+        MonSelect.world = self
 
     def get_filler_item_name(self) -> str:
         return "Woah. This is worthless!"
@@ -154,14 +158,13 @@ class PokemonRSOA(World):
             b for b, n in data.species.items() if n.name in manually_blacklisted
         }
 
-
-        for map_name in ["m001_002", "m001_011","m002_001", "m003_001"]:
+        for map_name in ["m001_002", "m001_011", "m002_001", "m003_001"]:
 
             map_data: MapData = self.modified_regions[map_name]
             for key, values in map_data.POKEMON_SPAWN.items():
-                if key == 5 and map_name == "m001_011": continue
+                if key == 5 and map_name == "m001_011":
+                    continue
                 map_data.POKEMON_SPAWN[key].SPECIES_ID = 0xAD
-
 
     def create_regions(self) -> None:
         all_regions = regions.create_and_connect_regions(self)
