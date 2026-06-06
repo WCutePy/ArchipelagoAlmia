@@ -29,7 +29,7 @@ def patch(
 ) -> None:
 
     EVENTRECT_PATCHES = {
-        """school gate"""
+        # school gate"""
         # school gate top, EventRect001104
         # JZ loc_35 -> NOP 0; @31
         "EventRect001104": [
@@ -40,7 +40,7 @@ def patch(
         "EventRect001100": [
             (82 * 4, 0x00000000),
         ],
-        """mission 3 forest fire stuff"""
+        # mission 3 forest fire stuff
         # vientown -> school road, EventRect004101
         # 	JZ loc_35		; @30 -> JMP loc_44
         "EventRect004101": [
@@ -48,7 +48,7 @@ def patch(
         ],
         # vientown -> beach, EventRect004102
         # JZ loc_43		; @38 -> JMP loc_52
-        "EventRect004101": [
+        "EventRect004102": [
             (0x98, 0x000D0008),
         ],
         # vientown -> chicole path, EventRect004103
