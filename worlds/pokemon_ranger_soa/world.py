@@ -140,7 +140,8 @@ class PokemonRSOA(World):
         # This will make the fake world generate exactly like how the actual world generated.
         self.random.seed(self.seed)
 
-        self.blacklisted_captures = set()
+        self.blacklisted_captures = {238,  # wailord
+                                     }
 
         # self.blacklisted_captures = {
         #     browser_number
