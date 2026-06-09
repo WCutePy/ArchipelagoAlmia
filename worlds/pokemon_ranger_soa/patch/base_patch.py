@@ -27,40 +27,60 @@ def patch(
     bw_patch_instance: "PokemonRSOAPatch",
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
+    EVENTRECT_PATCHES = {}
+    FIELD_MAP_PATCHES = {}
 
-    EVENTRECT_PATCHES = {
-        # school gate"""
-        # school gate top, EventRect001104
-        # JZ loc_35 -> NOP 0; @31
+    """School gate"""
+    EVENTRECT_PATCHES |= {
+        # school gate top
+        # PUSH 36		; @29 -> PUSH 14
         "EventRect001104": [
-            (31 * 4, 0x00000000),
-        ],
+            (29 * 4, 0x00_0E_00_10),
+        ],  # TODO fix bug
         # school gate bottom, EventRect001100
-        # JZ loc_86 -> NOP 0; @82
+        # PUSH 36		; @80 -> PUSH 14
         "EventRect001100": [
-            (82 * 4, 0x00000000),
+            (80 * 4, 0x00_0E_00_10),
+        ],  # TODO fix bug
+    }
+
+    """Mission 2"""
+    """Patches that after destroying the red gigaremo 50495488
+    Instead of checking for event variable 0 to be 7,
+    to check for any variable 7 or below. This allows
+    going out of sequence and not triggering events in
+    m006_002, preventing the game from hard softlocking itself,
+    even when events in m006_002 are performed later.
+    This makes m006_002 optional.
+    """
+    FIELD_MAP_PATCHES |= {
+        # field / map
+        # IS_EQ 		; @254 -> IS_LE
+        "m006_001": [
+            (254 * 4, 0x00_10_00_16)
         ],
-        # mission 3 forest fire stuff
+    }
+
+    """mission 3 forest fire stuff"""
+    EVENTRECT_PATCHES |= {
         # vientown -> school road, EventRect004101
         # 	JZ loc_35		; @30 -> JMP loc_44
         "EventRect004101": [
             (0x78, 0x000D0008),
         ],
         # vientown -> beach, EventRect004102
-        # JZ loc_43		; @38 -> JMP loc_52
+        # JZ loc_43		; @38 -> JZ loc_52
         "EventRect004102": [
-            (0x98, 0x000D0008),
+            (0x98, 0x000D0208),
         ],
         # vientown -> chicole path, EventRect004103
-        # JZ loc_35		; @30 -> JMP loc_53
+        # JZ loc_35		; @30 -> JZ loc_53
         "EventRect004103": [
-            (0x78, 0x00160008),
+            (0x78, 0x00160208),
         ],
         # vien forest -> vientown block during mission 3, EventRect009106
-        # JZ loc_36 -> JMP loc_54; @31
         # JZ loc_71 -> JZ loc_87; @66
         "EventRect009106": [
-            (0x7C, 0x00160008),
             (0x108, 0x00140208),
         ],
     }

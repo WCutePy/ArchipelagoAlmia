@@ -31,6 +31,8 @@ def write_patch(
             for i, spawn_data in map_data.POKEMON_SPAWN.items():
                 pokemon.append(spawn_data.SPECIES_ID)
 
+            for i, spawn_data in map_data.NPC.items():
+                npc.append(spawn_data.unk2)
         data = (
             struct.pack("<III", len(objects), len(npc), len(pokemon))
             + struct.pack(f"<{len(objects)}H", *objects)
@@ -76,7 +78,14 @@ def patch_map(
             if objects and layer_type == 0x04:
                 ...
             elif npc and layer_type == 0x08:
-                ...
+                layer_data = bytearray(layer_data)
+
+                offset = 0
+                entry_count = (len(layer_data) - 8) // 11
+                for _ in range(entry_count):
+                    struct.pack_into("<H", layer_data, offset, npc[npc_index])
+                    offset += 1
+                    npc_index += 1
             elif pokemon and layer_type == 0x09:
                 logging.warning(f"Pokemon layer: {j}")
 

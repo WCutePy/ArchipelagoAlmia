@@ -1,0 +1,13 @@
+
+
+
+0x0D - 13 - One day internship
+0x0E - 14 - Letter n about graduation
+0x0F - 15 - Graduation day
+0x14 - 20 - Post graduation letter
+0x15 - 21 - First day as ranger, mission 1
+0x10 - 22 - Mission 1 completed backroom card
+0x11 - 23 - Mission 2 marine cave
+0x12 - 24 - Mission 2 clear, quest 1
+0x13 - 25 - M2,M3 next day screen
+0x1A - 26 - Mission 3: Forest fire

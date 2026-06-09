@@ -264,6 +264,13 @@ class PokemonSpawnEntry:
     rules: list[str] = field(default_factory=list)
 
 
+class NPCEntry:
+    unk1: int
+    unk2: int
+    unk3: int
+    randomize: Optional[bool] = False
+
+
 @dataclass
 class MapData:
     map_id: str
@@ -273,6 +280,7 @@ class MapData:
 
     TARGETS: dict[int, TargetEntry] = field(default_factory=dict)
     POKEMON_SPAWN: dict[int, PokemonSpawnEntry] = field(default_factory=dict)
+    NPC: dict[int, NPCEntry] = field(default_factory=dict)
     EXITS: dict[str, list[str]] = field(default_factory=dict)
 
     modified: Optional[bool] = False
