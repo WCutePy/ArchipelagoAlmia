@@ -140,8 +140,22 @@ class PokemonRSOA(World):
         # This will make the fake world generate exactly like how the actual world generated.
         self.random.seed(self.seed)
 
-        self.blacklisted_captures = {238,  # wailord
-                                     }
+        self.blacklisted_captures = {
+            238,  # wailord
+            # until I ensure their required field moves are in the pool
+            114,  # oddish
+            115,  # Gloom
+            116,  # Vileplume
+            41,  # geodude
+            42,  # graveler
+            31,  # sudowoodo
+            240,  # cacturne
+            54,  # torterra
+            248,  # bronzor
+            30,  # bonsly
+            136,  # carnivine
+            212,  # abomasnow
+        }
 
         # self.blacklisted_captures = {
         #     browser_number
@@ -171,6 +185,32 @@ class PokemonRSOA(World):
 
         if self.options.randomize_pokemon != RandomizePokemon.option_vanilla:
             apply_randomized_pokemon(self)
+
+            import json
+
+            dump = {}
+
+            for region_id, map_data in self.modified_regions.items():
+                dump[region_id] = {
+                    "map_id": map_data.map_id,
+                    "human_name": map_data.HUMAN_NAME,
+                    "modified": map_data.modified,
+                    "pokemon_spawn": {
+                        spawn_id: {
+                            "SPECIES_ID": spawn.SPECIES_ID,
+                            "SPECIES_NAME": spawn.SPECIES_NAME,
+                            "SPAWN_FLAG": spawn.SPAWN_FLAG,
+                            "missable": spawn.missable,
+                            "one_time": spawn.one_time,
+                            "randomize": spawn.randomize,
+                            "rules": spawn.rules,
+                        }
+                        for spawn_id, spawn in map_data.POKEMON_SPAWN.items()
+                    },
+                }
+
+            with open("mapdata_modified_dump.json", "w", encoding="utf-8") as f:
+                json.dump(dump, f, indent=2)
 
             # for map_name in ["m001_002", "m001_011", "m002_001", "m003_001"]:
             #

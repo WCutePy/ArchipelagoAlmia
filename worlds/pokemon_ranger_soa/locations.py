@@ -219,18 +219,22 @@ def create_pokemon_locations(
     one_count = min(len(available_pool), capture_mons)
     one_each = world.random.sample(available_pool, one_count)
 
-    for i in [17, 4, 14]:  # TODO, don't do this like this.
-        if i in one_each:
-            continue
-        # gastly from tutorial that can't be randomized yet
+    for i in [
+        17,
+        4,
+        14,
+        13,
+        22,
+    ]:  # TODO, don't do this like this. # HARDCODED BROWSER IDS
         one_each.pop(0)
-        one_each.append(17)
+        one_each.append(i)
 
     dupe_captures = world.random.choices(available_pool, k=capture_mons - one_count)
     captures = one_each + dupe_captures
 
     for i in captures:
         mon = data.species[i]
+        print("making item:", i, mon.name)
         new_item = PokemonRSOAItem(
             mon.event_can_capture,
             ItemClassification.progression_skip_balancing,

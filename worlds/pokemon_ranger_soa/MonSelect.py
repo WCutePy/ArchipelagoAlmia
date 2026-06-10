@@ -276,6 +276,7 @@ class MonSelect:
             0: cls.goal_school,
             2: cls.goal_marine_cave,
             3: cls.goal_forest_fire,
+            4: cls.goal_mission_4,
         }
 
         if cls.world.options.goal == Goal.option_mission_clear:
@@ -313,7 +314,11 @@ class MonSelect:
                 "m003_001": [0, 3],
                 "m007_001": [0, 2],
             },
-            event_mon=[PInstanceEvent.TUT_BIDOOF, PInstanceEvent.TIM_BIDOOF, PInstanceEvent.TANGROWTH],
+            event_mon=[
+                PInstanceEvent.TUT_BIDOOF,
+                PInstanceEvent.TIM_BIDOOF,
+                PInstanceEvent.TANGROWTH,
+            ],
         )
 
     @classmethod
@@ -349,12 +354,9 @@ class MonSelect:
     def goal_mission_4(cls) -> MonSelect:
         base = cls.goal_forest_fire()
         base.include |= {
-            "m009_001b": [
-                2, 3, 4, 8
-            ],
+            "m009_001b": [2, 3, 4, 8],
             "m009_008": [],
             "m009_010": [],
-
         }
 
         return base

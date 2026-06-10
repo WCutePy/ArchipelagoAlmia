@@ -91,6 +91,8 @@ def create_all_items(world: PokemonRSOA) -> None:
         - len(world.browser_captures)
     )
 
+    print(f"printing: {number_of_unfilled_locations}")
+
     needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
     #
     # if not world.options.level_up_type.option_vanilla:

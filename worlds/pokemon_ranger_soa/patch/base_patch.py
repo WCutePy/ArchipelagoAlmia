@@ -2,6 +2,8 @@ import struct
 from collections import defaultdict
 from typing import TYPE_CHECKING
 
+from orjson import orjson
+
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
 
@@ -29,9 +31,12 @@ def patch_script(
 def patch(
     rom: Rom,
     world_package: str,
-    bw_patch_instance: "PokemonRSOAPatch",
+    prsoa_patch_instance: "PokemonRSOAPatch",
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
+    slot_data = orjson.loads(prsoa_patch_instance.get_file("slot_data.json"))
+    random_pokemon: bool = bool(slot_data["randomize_pokemon"])
+
     EVENTRECT_PATCHES = defaultdict(list)
     FIELD_MAP_PATCHES = defaultdict(list)
     CHAPTER_PATCHES = defaultdict(list)
@@ -89,21 +94,38 @@ def patch(
     }
 
     """mission 3 mimi happiny"""
-
-    CHAPTER_PATCHES["c026"] += [
-        # PUSH32 17018892		; @5068 -> PUSH 211
-        (5068, 0X00_D3_00_10),
-        (5069, 0X0),
-        # SYSCALL 2, 142, 1		;syscall_2_142 @5070 -> SYSCALL 2, 141, 1
-        (5070, 0x08_8D_01_01),
-        # IS_EQ 		; @5073 -> IS_GE
-        (5073, 0x0),
-        # JZ loc_5113		; @5074 -> JZ loc_5203
-        (5074, 0x0),
-
-        # PUSH 3		; @5206 -> PUSH 1 ??
-        (5206, 0x0)
-    ]
+    """A drop in that allows any happiny to be used to help mimi
+    A singular happiny will be enough and make happiny leave
+    The normal animations where mimi gets her happiny do not play.
+    This is one solution to randomize mimi's happiny location,
+    but should not stay this way in the future.
+    There is a chunk of code that can be replaced to require her
+    to get multiple happiny, potentially in place.
+    
+    This patch means the 3 happiny will not get disabled,
+    and stay present and stay even in chapter 27.
+    They will stay marked missable and randomized
+    for now, but this is something to keep in mind
+    
+    It's also possible to make you need to capture 3
+    happiny at the exact time, that code is currently
+    commented out.
+    """
+    if random_pokemon:
+        CHAPTER_PATCHES["c026"] += [
+            # PUSH32 17018892		; @5068 -> JMP loc_5203
+            (5068, 0x00_59_00_08),
+            (5069, 0x0),
+            # PUSH 3		; @5206 -> PUSH 0
+            (5206, 0x00_00_00_10),
+            #
+            # # PUSH 0		; @5203 -> PUSH 211
+            # (5203, 0x00_D3_00_10),
+            # # SYSCALL 2, 131, 1		;syscall_2_131 @5204 -> SYSCALL 2, 141, 1
+            # (5204, 0x08_8D_01_01),
+            # # PUSH 3		; @5206 -> PUSH 2
+            # (5206, 0x00_02_00_10),
+        ]
 
     """mission 3 blastoise"""
     """A patch to allow any blastoise to be usable to complete the 
@@ -111,12 +133,11 @@ def patch(
     # TODO modify this if species field moves become random
     CHAPTER_PATCHES["c026"] += [
         # PUSH32 17018880		; @4429 -> PUSH 5 and NOP 0
-        (4429 * 4, 0x00_05_00_10),
-        (4430 * 4, 0x0),
+        (4429, 0x00_05_00_10),
+        (4430, 0x0),
         # SYSCALL 2, 142, 1		;syscall_2_142 @4431 -> SYSCALL 2, 141, 1
-        (4431 * 4, 0x08_8D_01_01),
+        (4431, 0x08_8D_01_01),
     ]
-
 
     for eventrect, writes in EVENTRECT_PATCHES.items():
         base_num = eventrect.strip("EventRect")[0:3]

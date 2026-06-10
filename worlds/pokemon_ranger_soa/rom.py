@@ -71,10 +71,10 @@ class PatchMethods:
             map_patch.write_patch(patch, opened_zipfile)
 
         opened_zipfile.writestr("procedures.txt", "\n".join(procedures))
-        # opened_zipfile.writestr(
-        #     "slot_data.json",
-        #     orjson.dumps(NetUtils.convert_to_base_types(patch.world.part_slot_data())),
-        # )  # for when I need the slot data
+        opened_zipfile.writestr(
+            "slot_data.json",
+            orjson.dumps(NetUtils.convert_to_base_types(patch.world.fill_slot_data())),
+        )  # for when I need the slot data
 
     @staticmethod
     def get_manifest(
@@ -94,10 +94,7 @@ class PatchMethods:
         #         if version.rom() == found_rom_version:
         #             return
 
-
-        logging.warning(
-            f"Starting rom patching"
-        )
+        logging.warning(f"Starting rom patching")
 
         from .apnds import rom as apnds_rom
         from .patch import base_patch, map_patch
@@ -183,7 +180,9 @@ class PatchMethods:
 
         with open(target, "wb") as f:
             f.write(rom.to_bytes())
-        if get_settings()["pokemon_ranger_soa_settings"].get("dump_patched_files", None):
+        if get_settings()["pokemon_ranger_soa_settings"].get(
+            "dump_patched_files", None
+        ):
             with ZipFile(
                 target.replace(".nds", "_files_dump.zip"), "w", ZIP_DEFLATED, True, 9
             ) as dump:

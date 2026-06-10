@@ -23,6 +23,9 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     for item in my_progression_items:
         state.collect(item, True)
 
+    if len(world.capture_captures) != len(world.capture_items):
+        raise ValueError(f"{len(world.capture_captures)} != {len(world.capture_items)}")
+
     fill_restrictive(
         world.multiworld,
         state,
@@ -58,14 +61,20 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
         region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name
 
-    apply_manually_fixed_pokemon(world)
+    # apply_manually_fixed_pokemon(world)
 
 
-def copy_over_map_pokemon(world: PokemonRSOA, from_: str, to: str, mapping: Optional[Dict[int, int]]) -> None:
+def copy_over_map_pokemon(
+    world: PokemonRSOA, from_: str, to: str, mapping: Optional[Dict[int, int]]
+) -> None:
     from_map = world.modified_regions[from_]
     to_map = world.modified_regions[to]
-    if not mapping and len(from_map.POKEMON_SPAWN.keys()) != len(to_map.POKEMON_SPAWN.keys()):
-        raise ValueError(f"Two unequally sized maps have been passed without a mapping table: {from_=}, {to=}")
+    if not mapping and len(from_map.POKEMON_SPAWN.keys()) != len(
+        to_map.POKEMON_SPAWN.keys()
+    ):
+        raise ValueError(
+            f"Two unequally sized maps have been passed without a mapping table: {from_=}, {to=}"
+        )
 
     to_map.modified = True
     for i, mon_data in from_map.POKEMON_SPAWN.items():
@@ -91,6 +100,5 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
         5: 9,
     }
     copy_over_map_pokemon(world, "m009_001a", "m009_001b", m009_001a_to_m009_001b)
-
 
     return

@@ -405,13 +405,23 @@ def set_mission_3_rules(world: PokemonRSOA):
     )
 
     burning_log = all_maps.can_destroy_target_type(72)
+    completed_mimi = Has(PREvent.GIVE_HAPPINY_TO_MIMI.event_name)
+
+    world.set_rule(
+        get_location(world, PREvent.GIVE_HAPPINY_TO_MIMI.event_name),
+        Has(data.species[22].event_can_capture)
+        & CanReachRegion(world.modified_regions["m009_002"].HUMAN_NAME),
+    )
 
     # not at all: 2 cherubi, 4 sphinx, 5 taillow, 8 cherubi, 0xB pichu, 0xC happiny
-    for i in [0x13, 0x14]:
-        world.set_rule(
-            get_pokemon_instance(world, "m009_002", i),
-            burning_log,
-        )
+    world.set_rule(
+        get_pokemon_instance(world, "m009_002", 0x13),
+        all_maps.can_destroy_target_type(72),
+    )
+    world.set_rule(
+        get_pokemon_instance(world, "m009_002", 0x14),
+        all_maps.can_destroy_target_type(72) & burning_log,
+    )
 
     for i in [
         0xE,  # happiny
@@ -436,20 +446,27 @@ def set_mission_3_rules(world: PokemonRSOA):
             burning_log,
         )
 
-    for to in ["m009_001a", "m009_004", "m009_009"]:
-        world.set_rule(get_connection(world, "m009_002", to), burning_log)
+    for to in ["m009_004", "m009_009"]:
+        world.set_rule(
+            get_connection(world, "m009_002", to), burning_log & completed_mimi
+        )
 
     for to in ["m009_001b", "m009_001c"]:
         world.set_rule(get_connection(world, "m009_002", to), False_())
 
     """m009_001a"""
+    world.set_rule(
+        get_connection(world, "m009_001a", "m009_009"), burning_log & completed_mimi
+    )
 
     for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
         world.set_rule(get_connection(world, "m009_001a", to), False_())
 
     # wartortle 0x5 is accessible without problems
     for i in [0, 1, 2, 3, 4]:
-        world.set_rule(get_pokemon_instance(world, "m009_001a", i), burning_log)
+        world.set_rule(
+            get_pokemon_instance(world, "m009_001a", i), burning_log & completed_mimi
+        )
 
     """m009_009"""
     # i 2, 3 are not yet reachable from mission 3
@@ -469,6 +486,7 @@ def set_mission_3_rules(world: PokemonRSOA):
         world.set_rule(
             get_location(world, loc),
             burning_log
+            & completed_mimi
             & all_maps.can_use_field_move(
                 FieldMove(category=FieldMoveCategory.RAIN_DANCE, level=1)
             ),
@@ -562,7 +580,7 @@ def set_mission_4_rules(world: PokemonRSOA):
 def set_completion_condition(world) -> None:
 
     browser = world.options.capture_count_target.value
-    browser = 34  # 30
+    browser = 20  # 30
     missions = world.options.mission_clear_target.value
     quests = 0  # 5
 
