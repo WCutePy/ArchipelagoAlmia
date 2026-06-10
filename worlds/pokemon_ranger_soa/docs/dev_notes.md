@@ -133,3 +133,30 @@ If that's a big long list of different pokemon, you might want to look into a wo
 Pokemon FRLG uses this with its HM compatibility logic: https://github.com/vyneras/Archipelago/blob/36100eebc4b5fcc521ddd7f15ed20a1a24c74308/worlds/pokemon_frlg/__init__.py#L778-L796 https://github.com/vyneras/Archipelago/blob/36100eebc4b5fcc521ddd7f15ed20a1a24c74308/worlds/pokemon_frlg/rules.py#L136-L138
 
 FRLG's way of handling HM compatibility, I think, is to place the pokemon events randomly, and then 'fix' the HM compatibility if HM users end up unreachable, forcing other, reachable, pokemon species to be able to learn the needed HM. edit: Yes, it's done in https://github.com/vyneras/Archipelago/blob/36100eebc4b5fcc521ddd7f15ed20a1a24c74308/worlds/pokemon_frlg/rules.py#L2492-L2532 
+
+
+maps with 12 or more pokemon, unqiue species count:
+
+m001_002: 8
+m009_002: 9 unique pokemon
+m009_003: 9
+m009_004: 9
+m009_008: 9
+m009_013: 9
+m009_014: 9
+m009_015: 9
+m009_016: 9
+m010_003: 8
+m011_003: 6
+m015_004: 9
+m016_002: 10
+m016_003: 9
+m020_002: 9
+m020_013: 7
+m021_001: 11
+m022_001: 8
+m026_001: 7
+m029_006: 1 (many qwilfish)
+m034_001: 7 unique
+
+

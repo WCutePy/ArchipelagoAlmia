@@ -31,8 +31,8 @@ def write_patch(
             for i, spawn_data in map_data.POKEMON_SPAWN.items():
                 pokemon.append(spawn_data.SPECIES_ID)
 
-            for i, spawn_data in map_data.NPC.items():
-                npc.append(spawn_data.unk2)
+            for i, npc_data in map_data.NPC.items():
+                npc.append(npc_data.unk2)
         data = (
             struct.pack("<III", len(objects), len(npc), len(pokemon))
             + struct.pack(f"<{len(objects)}H", *objects)

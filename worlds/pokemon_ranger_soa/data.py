@@ -264,6 +264,7 @@ class PokemonSpawnEntry:
     rules: list[str] = field(default_factory=list)
 
 
+@dataclass
 class NPCEntry:
     unk1: int
     unk2: int
@@ -292,6 +293,14 @@ class MapData:
             )
             for key, value in self.TARGETS.items()
         }
+
+        if self.NPC:
+            self.NPC = {
+                int(key): (
+                    value if isinstance(value, NPCEntry) else NPCEntry(**value)
+                )
+                for key, value in self.NPC.items()
+            }
 
         self.POKEMON_SPAWN = {
             int(key): (

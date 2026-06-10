@@ -69,6 +69,9 @@ class PInstanceEvent(PRSOAEvent):
     """MAP_NAME, BROWSER_ID"""
 
     """Script based """
+    TUT_BIDOOF = ("m001_002", 4)  # quite sure these count for browser
+    TIM_BIDOOF = ("m001_001", 4)  # 2 bidoof that attack Tim when leaving school
+
     TANGROWTH = ("m001_003b", 36)  # m0 graduation
     MILTANK = ("m004_001", 46)  # quest 1
     BUDEW_4 = ("m009_002", 8)  # m3 jump out at burning log

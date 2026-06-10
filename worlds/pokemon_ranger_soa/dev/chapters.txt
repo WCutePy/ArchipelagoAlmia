@@ -11,3 +11,4 @@
 0x12 - 24 - Mission 2 clear, quest 1
 0x13 - 25 - M2,M3 next day screen
 0x1A - 26 - Mission 3: Forest fire
+0x1B - 27 - After mission 3 back in ranger base, ranger rank 2 promotion

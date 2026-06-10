@@ -267,37 +267,6 @@ class MonSelect:
         return MonSelect()
 
     @classmethod
-    def tutorial_school_area(cls) -> MonSelect:
-        #  TODO, add ship area to include when randomizing
-        return MonSelect(
-            include={
-                "m001_002": [],
-                "m001_003a": [],  # quite sure all are available
-                "m001_005": [],
-                "m001_009": [],
-                "m001_011": [],
-                "m001_001": [0, 1, 2, 5],
-                "m001_015": [],
-            },
-        )
-
-    @classmethod
-    def marine_cave(cls) -> MonSelect:
-        """Technically identical to outside_school_before_return_school,
-        but semantically preferred to strictly specify on such
-        small sample size"""
-        return MonSelect(
-            include={
-                "m001_001": [3, 4],
-                "m005_001b": [],
-                "m007_001": [],
-                "m006_002": [],  # unreachable until a bit later
-                "m006_003": [],  # unreachable until a bit later
-                "m006_004": [],  # unreachable until a bit later
-            },
-        )
-
-    @classmethod
     def get_rules_scope(cls) -> MonSelect:
         """
         Go through the rules to determine the currently
@@ -306,6 +275,7 @@ class MonSelect:
         goals = {
             0: cls.goal_school,
             2: cls.goal_marine_cave,
+            3: cls.goal_forest_fire,
         }
 
         if cls.world.options.goal == Goal.option_mission_clear:
@@ -323,7 +293,7 @@ class MonSelect:
         quests: 0
         Missable_pokemon: 17
         Unique Browser Captures: 34
-        Browser Instances: 1
+        Browser Instances: 3
         Capture Instances: 33
 
         if ship is included
@@ -343,7 +313,7 @@ class MonSelect:
                 "m003_001": [0, 3],
                 "m007_001": [0, 2],
             },
-            event_mon=[PInstanceEvent.TANGROWTH],
+            event_mon=[PInstanceEvent.TUT_BIDOOF, PInstanceEvent.TIM_BIDOOF, PInstanceEvent.TANGROWTH],
         )
 
     @classmethod
@@ -372,7 +342,22 @@ class MonSelect:
         }
         base.exclude |= {"m009_009": [2, 3]}
 
-        base.event_mon += [PInstanceEvent.MILTANK]
+        base.event_mon += [PInstanceEvent.MILTANK, PInstanceEvent.BUDEW_4]
+        return base
+
+    @classmethod
+    def goal_mission_4(cls) -> MonSelect:
+        base = cls.goal_forest_fire()
+        base.include |= {
+            "m009_001b": [
+                2, 3, 4, 8
+            ],
+            "m009_008": [],
+            "m009_010": [],
+
+        }
+
+        return base
 
 
 def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:

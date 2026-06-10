@@ -349,6 +349,8 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
         & marine_cave.can_destroy_target("m006_001", 0),  # red gigaremo
     )
 
+    # The pokemon can be added to browser before destroying the machine
+    # capturing for field move is only possible after
     for i in range(7):
         world.set_rule(
             get_location(world, get_instance_capture("m006_001", i)),
@@ -450,21 +452,13 @@ def set_mission_3_rules(world: PokemonRSOA):
         world.set_rule(get_pokemon_instance(world, "m009_001a", i), burning_log)
 
     """m009_009"""
-    for i in [2, 3]:
-        world.set_rule(get_pokemon_instance(world, "m009_009", i), False_())
+    # i 2, 3 are not yet reachable from mission 3
 
     for to in ["m009_001b", "m009_001c"]:
         world.set_rule(get_connection(world, "m009_002", to), False_())
 
     """m009_004"""
-
-    for i in range(13):
-        if i == 8:  # grotle is available through initial connection
-            continue
-        world.set_rule(
-            get_pokemon_instance(world, "m009_004", i),
-            False_(),  # requires surf
-        )
+    # only i 8, grotle is reachable at this stage
 
     for to in ["m009_003", "m009_006"]:
         world.set_rule(get_connection(world, "m009_004", to), False_())

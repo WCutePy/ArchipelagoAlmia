@@ -19,6 +19,7 @@ To allow backtracking throughout the game multiple scripts have been patched to 
 ### Fixes
 These are fixes to the game to allow the randomizer to function properly
 
-| What              | When      |
-|-------------------|-----------|
-|Patched that destroying the red gigaremo before triggering events in the top room of Marine cave does not hard softlock the game | Mission 2 |
+| What                                                                                                                             | When      |
+|----------------------------------------------------------------------------------------------------------------------------------|-----------|
+| Patched that destroying the red gigaremo before triggering events in the top room of Marine cave does not hard softlock the game | Mission 2 |
+| Patched that any Blastoise can be used to put out the forest fire                                                                | Mission 3 |

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-from typing import Dict, TYPE_CHECKING
+from typing import Dict, TYPE_CHECKING, Optional
 
 from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
@@ -57,3 +57,40 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
 
         region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
         region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name
+
+    apply_manually_fixed_pokemon(world)
+
+
+def copy_over_map_pokemon(world: PokemonRSOA, from_: str, to: str, mapping: Optional[Dict[int, int]]) -> None:
+    from_map = world.modified_regions[from_]
+    to_map = world.modified_regions[to]
+    if not mapping and len(from_map.POKEMON_SPAWN.keys()) != len(to_map.POKEMON_SPAWN.keys()):
+        raise ValueError(f"Two unequally sized maps have been passed without a mapping table: {from_=}, {to=}")
+
+    to_map.modified = True
+    for i, mon_data in from_map.POKEMON_SPAWN.items():
+
+        if mapping:
+            j = mapping.get(i, None)
+            if j is None:
+                continue
+        else:
+            j = i
+        to_map.POKEMON_SPAWN[j].SPECIES_ID = mon_data.SPECIES_ID
+        to_map.POKEMON_SPAWN[j].SPECIES_NAME = mon_data.SPECIES_NAME
+
+
+def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
+
+    m009_001a_to_m009_001b = {
+        0: 0,
+        1: 1,
+        2: 7,
+        3: 5,
+        4: 6,
+        5: 9,
+    }
+    copy_over_map_pokemon(world, "m009_001a", "m009_001b", m009_001a_to_m009_001b)
+
+
+    return
