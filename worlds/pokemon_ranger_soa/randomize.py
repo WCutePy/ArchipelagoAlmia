@@ -6,6 +6,7 @@ from typing import Dict, TYPE_CHECKING, Optional
 from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
 from .data import SpeciesData, data
+from .items import PokemonRSOAItem
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -38,6 +39,20 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
 
     for loc, item in zip(world.missable_captures, world.missable_items):
         loc.item = item
+
+    print("these are the important")
+    for loc in world.browser_before_capture:
+        cap_loc_name = loc.name.replace("browser", "capture")
+        print(loc, cap_loc_name)
+        cap_loc = world.multiworld.get_location(cap_loc_name, world.player)
+        item_name = cap_loc.item.name.replace("CAN_CAPTURE", "ADD_TO_BROWSER")
+        assert "ADD_TO_BROWSER" in item_name
+        loc.item = PokemonRSOAItem(
+            item_name,
+            ItemClassification.progression_skip_balancing,
+            None,
+            world.player,
+        )
 
     name_to_mon: Dict[str, SpeciesData] = {}
     for i, mon in data.species.items():

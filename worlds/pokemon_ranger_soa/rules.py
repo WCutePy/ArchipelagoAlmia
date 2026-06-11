@@ -540,7 +540,7 @@ def set_mission_4_rules(world: PokemonRSOA):
         world.set_rule(get_connection(world, "m009_001b", to), False_())
 
     """m009_008"""
-    for to in ["m009_001c", "m017_001", "m017_002", "m009_011"]:
+    for to in ["m009_001c", "m017_001", "m017_002"]:
         world.set_rule(get_connection(world, "m009_008", to), False_())
 
     # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06, beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B
@@ -568,14 +568,22 @@ def set_mission_4_rules(world: PokemonRSOA):
         world.set_rule(get_connection(world, "m009_010", to), False_())
 
     """m009_011"""
+    # all mons
+    for to in ["m009_013", "m009_014", "m009_015", "m009_016"]:
+        world.set_rule(get_connection(world, "m009_011", to), False_())
 
-    # TODO continue from here
+    """m009_012"""
+    # staraptor and doduo not catchable yet
+    world.set_rule(get_connection(world, "m009_012", "m014_003a"), False_())
 
     """m009_001c"""
     # TODO
     for from_ in ["m009_002", "m009_009"]:
         world.set_rule(get_connection(world, from_, "m009_001c"), False_())
 
+
+    """m010_001"""
+    destroy_red_gigaremo = ...
 
 def set_completion_condition(world) -> None:
 

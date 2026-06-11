@@ -97,6 +97,7 @@ class PokemonRSOA(World):
         self.browser_items = []
         self.capture_captures = []
         self.capture_items = []
+        self.browser_before_capture = []
 
         self.exclude_field_moves = set()
 

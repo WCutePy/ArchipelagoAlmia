@@ -234,7 +234,6 @@ def create_pokemon_locations(
 
     for i in captures:
         mon = data.species[i]
-        print("making item:", i, mon.name)
         new_item = PokemonRSOAItem(
             mon.event_can_capture,
             ItemClassification.progression_skip_balancing,

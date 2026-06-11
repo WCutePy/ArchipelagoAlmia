@@ -267,6 +267,15 @@ class MonSelect:
         return MonSelect()
 
     @classmethod
+    def browser_before_capture(cls) -> MonSelect:
+        return MonSelect(
+            include={
+                "m006_001": [],
+                "m010_001": [...],
+            }
+        )
+
+    @classmethod
     def get_rules_scope(cls) -> MonSelect:
         """
         Go through the rules to determine the currently
@@ -357,6 +366,8 @@ class MonSelect:
             "m009_001b": [2, 3, 4, 8],
             "m009_008": [],
             "m009_010": [],
+            "m009_011": [],
+            "m009_012": [0, 3]
         }
 
         return base

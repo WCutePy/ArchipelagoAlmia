@@ -261,6 +261,7 @@ class PokemonSpawnEntry:
     missable: Optional[bool] = False
     one_time: Optional[bool] = False
     randomize: Optional[bool] = True
+    browser_before_capture: Optional[bool] = False
     rules: list[str] = field(default_factory=list)
 
 

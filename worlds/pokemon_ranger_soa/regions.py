@@ -62,6 +62,18 @@ def attach_pokemon_encounter(
         event_item_name=item_name,
         place_locked=place_locked,
     )
+
+    if spawn_data.browser_before_capture:
+        browser_name = get_instance_browser(instance_name)
+        item_name = species.event_add_to_browser
+        browser_loc = create_event_location(
+            world, browser_name,
+            pokemon_region,
+            event_item_name=item_name,
+            place_locked=place_locked
+        )
+        world.browser_before_capture.append(browser_loc)
+
     if place_locked:
         return pokemon_region
 
@@ -88,8 +100,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     """Logic chain"""
     MonSelect.world = world
     full_map = MonSelect.get_rules_scope()
-
-    print(full_map)
+    browser_before_captures = MonSelect.browser_before_capture()
 
     for region_name, region_data in world.modified_regions.items():
 
@@ -116,6 +127,8 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
             if not full_map.instance_included(region_name, i):
                 continue
+            if browser_before_captures.instance_included(region_name, i):
+                spawn_data.browser_before_capture = True
             pokemon_instance = get_instance_base(region_name, i)
             species = data.form_id_to_species[spawn_data.SPECIES_ID]
 
