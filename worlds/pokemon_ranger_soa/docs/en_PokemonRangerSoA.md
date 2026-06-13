@@ -19,9 +19,10 @@ To allow backtracking throughout the game multiple scripts have been patched to 
 ### Fixes
 These are fixes to the game to allow pokemon randomization to function as one would expect
 
-| What                                                                                                                                | When      |
-|-------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| Patched that destroying the red gigaremo before triggering events in the top room of Marine cave does not hard softlock the game    | Mission 2 |
-| Mimi will now accept any Happiny. A singular Happiny will now be enough to have her leave. When shown one Happiny she simply leaves | Mission 3 |
-| Patched that any Blastoise can be used to put out the forest fire                                                                   | Mission 3 |
+| What                                                                                                                                                              | When      |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| Patched that destroying the red gigaremo before triggering events in the top room of Marine cave does not hard softlock the game                                  | Mission 2 |
+| Mimi will now accept any Happiny. A singular Happiny will now be enough to have her leave. When shown one Happiny she simply leaves                               | Mission 3 |
+| Patched that any Blastoise can be used to put out the forest fire                                                                                                 | Mission 3 |
+| Extended the event trigger of being pushed back by the Elekid wall in Pueltown-center, it now extends to behind it to prevent getting softlocked in Pueltown-west | Mission 4 |
 

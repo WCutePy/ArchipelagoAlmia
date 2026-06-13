@@ -154,7 +154,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     )  # TODO, connect to proper region
     regions["m029_001"].connect(regions["m029_009"], "Wailord fight")
 
-    for event in PInstanceEvent:
+    for event in PInstanceEvent.events():
         if event not in full_map.event_mon:
             continue
 

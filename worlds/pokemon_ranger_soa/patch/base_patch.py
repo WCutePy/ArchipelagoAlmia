@@ -139,6 +139,10 @@ def patch(
         (4431, 0x08_8D_01_01),
     ]
 
+    """mission 4 anti-softlock"""
+    """This code is placed in map_patch"""
+
+
     for eventrect, writes in EVENTRECT_PATCHES.items():
         base_num = eventrect.strip("EventRect")[0:3]
         file_name = f"/data/Script/field/eventrect/er{base_num}/{eventrect}.fsb"

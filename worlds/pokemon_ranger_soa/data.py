@@ -228,7 +228,7 @@ class AddressesGroup(NamedTuple):
         )
 
 
-@dataclass
+@dataclass()
 class ItemData:
     label: str
     item_id: int

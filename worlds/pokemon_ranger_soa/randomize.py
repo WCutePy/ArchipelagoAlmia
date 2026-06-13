@@ -76,7 +76,7 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
         region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name
 
-    # apply_manually_fixed_pokemon(world)
+    apply_manually_fixed_pokemon(world)
 
 
 def copy_over_map_pokemon(

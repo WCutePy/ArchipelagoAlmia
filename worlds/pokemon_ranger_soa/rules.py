@@ -582,8 +582,103 @@ def set_mission_4_rules(world: PokemonRSOA):
         world.set_rule(get_connection(world, from_, "m009_001c"), False_())
 
 
-    """m010_001"""
-    destroy_red_gigaremo = ...
+    """m010"""
+    gigaremos_center = (all_maps.can_destroy_target("m010_001", 3)
+                        & all_maps.can_destroy_target("m010_001", 13))
+    west_gate = all_maps.can_destroy_target("m010_022", 11)
+    east_gate = all_maps.can_destroy_target("m010_002", 19)
+
+    can_reach_west = gigaremos_center | west_gate | east_gate
+    gigaremos_west = (all_maps.can_destroy_target("m010_022", 4)
+                      & all_maps.can_destroy_target("m010_022", 9)
+                      & can_reach_west)
+
+    can_reach_east = gigaremos_west | east_gate
+    gigaremos_east = (all_maps.can_destroy_target("m010_002", 14)
+                      & all_maps.can_destroy_target("m010_002", 20)
+                      & can_reach_east)
+
+    if world.options.mission_clear_target.value > 4:
+        gigaremos_west |= Has(get_mission_event(4))
+        gigaremos_center |= Has(get_mission_event(4))
+
+    """m010_001 center"""
+    for i in range(0, 7):
+        world.set_rule(get_location(world, get_instance_capture("m010_001", i)), gigaremos_center | gigaremos_east)
+
+    world.set_rule(get_pokemon_instance(world, "m010_001", 6), gigaremos_west | can_reach_east)
+
+    world.set_rule(get_connection(world, "m010_001", "m010_022"),
+                   can_reach_west
+                   )
+
+    for from_, to in [("m010_001", "m014_003b"), ("npc_m010_001", "m011_001"), ("npc_m010_001", "m201_003")]:
+        world.set_rule(get_connection(world, from_, to), False_())
+    """m010_022 west"""
+
+    for i in range(0, 9):
+        if i == 6:
+            continue
+        world.set_rule(get_location(world, get_instance_capture("m010_022", i)), gigaremos_west | gigaremos_east)
+        world.set_rule(get_pokemon_instance(world, "m010_022", i), can_reach_west)
+        # I believe one pokemon is missing at the start??? I don't see murkrow at all
+
+        """m010_022 west houses"""
+        # These are all fine, and growlithe access is by can reach west on m010_022
+
+    """m010_002 east"""
+
+    for i in range(0, 10):
+        if i == 3:
+            continue
+        world.set_rule(get_location(world, get_instance_capture("m010_002", i)), gigaremos_east)
+
+        if i == 9:
+            continue
+        world.set_rule(get_pokemon_instance(world,"m010_002", i), can_reach_east)
+
+    for to in ["m010_006", "m010_007", "m010_013", "m010_014" , "m010_015"]:
+        world.set_rule(get_connection(world, "m010_002", to), can_reach_east)
+
+    world.set_rule(get_connection(world, "m010_002", "m010_003"), gigaremos_east)
+
+    for to in ["m011_001", "m201_003","m038_012", "m038_016"]:
+        world.set_rule(get_connection(world, "npc_m010_002", to), False_())
+
+        """m010_002 east houses"""
+        # elekid possible by access rule
+    for from_, to in [("npc_m010_006", "m038_012"), ("npc_m010_006", "m038_016"), ("npc_m010_015", "m018_001"), ("npc_m010_015", "m010_003"), ("npc_m010_015", "m201_001")]:
+        world.set_rule(get_connection(world, from_, to), False_())
+
+    """m010_003 port"""
+
+    world.set_rule(
+        get_location(world, PREvent.RESCUE_PUELTOWN.event_name),
+        gigaremos_east  # could add needing to defeat toxicroak
+    )
+
+    # TODO figure out pokemon access and such
+
+    for to in ["m011_001", "m201_003"]:
+        world.set_rule(get_connection(world, "m010_003", to), False_())
+
+    for to in ["m018_001", "m010_003", "m201_001", "m029_001", "m033_001", "m201_004", "m029_007"]:
+        world.set_rule(get_connection(world, "npc_m010_003", to), False_())
+
+    """m014_003a"""
+    world.set_rule(get_connection(world, "m014_003a", "m014_001"), False_())
+
+
+    """After saving"""
+
+    for loc in [data.locations["QUEST_04"].label, get_quest_event(4)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(PREvent.RESCUE_PUELTOWN.event_name) & all_maps.can_destroy_target_type(27),
+        )
+
+
+
 
 def set_completion_condition(world) -> None:
 

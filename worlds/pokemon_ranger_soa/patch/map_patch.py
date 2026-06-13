@@ -1,7 +1,8 @@
 import logging
 import struct
 import zipfile
-from typing import TYPE_CHECKING
+from collections import defaultdict
+from typing import TYPE_CHECKING, Dict, Any
 
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
@@ -43,9 +44,9 @@ def write_patch(
 
 
 def patch_map(
-    rom: Rom, map_name: str, objects: list[int], npc: list[int], pokemon: list[int]
+    rom: Rom, map_name: str, data: Dict[int, Any]
 ) -> None:
-    if not objects and not pokemon and not npc:
+    if not data:
         return
 
     file_name = f"/data/field/map/{map_name}.map.dat.lz"
@@ -63,42 +64,65 @@ def patch_map(
     lyr_header, narc_lyr_b = lyr_b[:4], lyr_b[4:]
     narc_lyr = Narc.from_bytes(narc_lyr_b)
 
-    objects_index = 0
-    npc_index = 0
-    pokemon_index = 0
+    objects = data.get(0x04, [])
+    triggers = data.get(0x07, {})
+    npc = data.get(0x08, [])
+    pokemon = data.get(0x09, [])
 
-    logging.warning(f"Writing pokemon: {pokemon=}, {npc=}, {objects}")
+    layer_type_index = defaultdict(int)
+
+    logging.warning(f"Writing pokemon: {data.get(0x09, [])=}, {data.get(0x08, [])=}, {data.get(0x04, [])=}")
 
     for i, file_group in enumerate(narc_lyr.files):
         narc_layer_list = Narc.from_bytes(file_group)
 
         for j, layer_data in enumerate(narc_layer_list.files):
             layer_type = struct.unpack("<I", layer_data[:4])[0]
+            layer_data = bytearray(layer_data)
 
             if objects and layer_type == 0x04:
                 ...
-            elif npc and layer_type == 0x08:
-                layer_data = bytearray(layer_data)
-
-                offset = 0
+            if triggers and layer_type == 0x07:
+                offset = 8
                 entry_count = (len(layer_data) - 8) // 11
                 for _ in range(entry_count):
-                    struct.pack_into("<H", layer_data, offset, npc[npc_index])
-                    offset += 1
-                    npc_index += 1
-            elif pokemon and layer_type == 0x09:
-                logging.warning(f"Pokemon layer: {j}")
+                    index = layer_type_index[7]
+                    layer_type_index[7] += 1
+                    if index not in triggers:
+                        offset += 10
+                        continue
+                    entry = triggers.get(index, {})
+                    logging.warning(f"{map_name}, trigger {index}", entry)
 
-                layer_data = bytearray(layer_data)
-                offset = 0
-                entry_count = (len(layer_data) - 8) // 10
-                offset += 8 + 6
+                    if "x" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["x"])
+                    offset += 2
+                    if "y" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["y"])
+                    offset += 2
+                    if "width" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["width"])
+                    offset += 2
+                    if "height" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["height"])
+                    offset += 4
+
+            elif npc and layer_type == 0x08:
+                offset = 8 + 6  # ? not sure if that's the right one
+                entry_count = (len(layer_data) - 8) // 11
                 for _ in range(entry_count):
-                    struct.pack_into("<H", layer_data, offset, pokemon[pokemon_index])
+                    struct.pack_into("<H", layer_data, offset, npc[layer_type_index[8]])
+                    offset += 11
+                    layer_type_index[8] += 1
+            elif pokemon and layer_type == 0x09:
+                entry_count = (len(layer_data) - 8) // 10
+                offset = 8 + 6
+                for _ in range(entry_count):
+                    struct.pack_into("<H", layer_data, offset, pokemon[layer_type_index[9]])
                     offset += 10
 
-                    pokemon_index += 1
-                narc_layer_list.files[j] = layer_data
+                    layer_type_index[9] += 1
+            narc_layer_list.files[j] = layer_data
         narc_lyr.files[i] = narc_layer_list.to_bytes()
 
     narc_map.files[lyr_index] = lyr_header + narc_lyr.to_bytes()
@@ -114,6 +138,22 @@ def patch_map(
 def patch_scripts(
     rom: Rom,
 ): ...
+
+
+def add_map_base_patches(map_name: str, data: Dict[int, Any]) -> None:
+
+    """Mission 4, anti softlock if you enter the west of
+    pueltown through the east of pueltown clearing the center gigaremo
+    It would be better to patch the wall in m010_022 in the first place,
+    however that would require complex script changes.
+    """
+    if map_name == "m010_001":
+        data[0x07] = {
+            2: {
+                "y": 250,
+                "height": 64,
+            }
+        }
 
 
 def patch(
@@ -143,4 +183,11 @@ def patch(
 
         pokemon = list(struct.unpack_from(f"<{num_pokemon}H", patch_file, offset))
 
-        patch_map(rom, map_name, objects, npc, pokemon)
+        data = {
+            0x04: objects,
+            0x08: npc,
+            0x09: pokemon
+        }
+        add_map_base_patches(map_name, data)
+
+        patch_map(rom, map_name, data)

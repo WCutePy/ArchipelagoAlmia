@@ -156,6 +156,22 @@ class PokemonRSOA(World):
             30,  # bonsly
             136,  # carnivine
             212,  # abomasnow
+            # partners
+            26,  # pach
+            168,  # chimchar
+            206,  # piplup
+            52,  # turtwig
+            213,  # snorunt
+            161,  # machop
+            80,  # croagunk
+            246,  # hippopotas
+            165,  # mime jr.
+            82,  # kricketot
+            84,  # cranidos
+            220,  # misdreavus
+            251,  # gible
+            244,  # sneasel
+            181,  # shieldon
         }
 
         # self.blacklisted_captures = {

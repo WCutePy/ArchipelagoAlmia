@@ -180,14 +180,14 @@ class PatchMethods:
 
         with open(target, "wb") as f:
             f.write(rom.to_bytes())
-        if get_settings()["pokemon_ranger_soa_settings"].get(
-            "dump_patched_files", None
-        ):
-            with ZipFile(
-                target.replace(".nds", "_files_dump.zip"), "w", ZIP_DEFLATED, True, 9
-            ) as dump:
-                for path, data in files_dump.items():
-                    dump.writestr(path, data)
+        # if get_settings()["pokemon_ranger_soa_settings"].get(
+        #     "dump_patched_files", None
+        # ):
+        #     with ZipFile(
+        #         target.replace(".nds", "_files_dump.zip"), "w", ZIP_DEFLATED, True, 9
+        #     ) as dump:
+        #         for path, data in files_dump.items():
+        #             dump.writestr(path, data)
 
     @staticmethod
     def read_contents(
