@@ -657,6 +657,12 @@ def set_mission_4_rules(world: PokemonRSOA):
         gigaremos_east  # could add needing to defeat toxicroak
     )
 
+    for i in range(0, ):
+
+        if i in []:
+            continue
+        
+
     # TODO figure out pokemon access and such
 
     for to in ["m011_001", "m201_003"]:
@@ -669,7 +675,7 @@ def set_mission_4_rules(world: PokemonRSOA):
     world.set_rule(get_connection(world, "m014_003a", "m014_001"), False_())
 
 
-    """After saving"""
+    """After saving pueltown"""
 
     for loc in [data.locations["QUEST_04"].label, get_quest_event(4)]:
         world.set_rule(
@@ -685,7 +691,7 @@ def set_completion_condition(world) -> None:
     browser = world.options.capture_count_target.value
     browser = 20  # 30
     missions = world.options.mission_clear_target.value
-    quests = 0  # 5
+    quests = 6  # 5
 
     capture_check = []
     for i in world.included_browser_entries:

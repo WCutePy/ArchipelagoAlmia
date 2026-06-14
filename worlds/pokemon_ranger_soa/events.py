@@ -75,6 +75,7 @@ class InstanceEvent:
     browser_id: int
     one_time: bool = True
     randomize: bool = False
+    mandatory: bool = False
 
     name: str = ""
 
@@ -96,17 +97,17 @@ class PInstanceEvent(EventRegistry):
     """MAP_NAME, BROWSER_ID"""
 
     """Script based """
-    TUT_BIDOOF = InstanceEvent("m001_002", 4)  # quite sure these count for browser
-    TIM_BIDOOF = InstanceEvent("m001_001", 4)  # 2 bidoof that attack Tim when leaving school
+    TUT_BIDOOF = InstanceEvent("m001_002", 4, mandatory=True)  # quite sure these count for browser
+    TIM_BIDOOF = InstanceEvent("m001_001", 4, mandatory=True)  # 2 bidoof that attack Tim when leaving school
 
-    TANGROWTH = InstanceEvent("m001_003b", 36)  # m0 graduation
-    MILTANK = InstanceEvent("m004_001", 46)  # quest 1
-    BUDEW_4 = InstanceEvent("m009_002", 8)  # m3 jump out at burning log
+    TANGROWTH = InstanceEvent("m001_003b", 36, mandatory=True)  # m0 graduation
+    MILTANK = InstanceEvent("m004_001", 46, mandatory=True)  # quest 1
+    BUDEW_4 = InstanceEvent("m009_002", 8, mandatory=True)  # m3 jump out at burning log
 
-    RATATA_4 = InstanceEvent("m010_003", 67)  # m4 port
-    Toxicroak = InstanceEvent("m010_003", 81)
+    RATATA_4 = InstanceEvent("m010_003", 67, mandatory=True)  # m4 port
+    Toxicroak = InstanceEvent("m010_003", 81, mandatory=True)  # m4 port
 
-    WAILORD = InstanceEvent("m029_009", 238)
+    WAILORD = InstanceEvent("m029_009", 238, mandatory=True)
 
     """Partners"""
     MACHOP = InstanceEvent("m041_001", 161)

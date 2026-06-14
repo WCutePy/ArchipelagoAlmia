@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from ..rom import PokemonRSOAPatch
 
 
-def patch_script(
+def patch_script_in_place_singular_byte(
     rom: Rom,
     file_name: str,
     writes: list[tuple[int, int]],
@@ -26,6 +26,33 @@ def patch_script(
         struct.pack_into("<I", data, offset, instruction)
 
     rom.files[file_name] = bytes(data)
+
+
+def patch_script_add_doduo(rom: Rom, file_name: str, locations: list[int]):
+    data = bytearray(rom.files[file_name])
+
+    jumps = [
+        0x0208
+    ]
+
+    code_len = int.from_bytes(data[0:4], "little")
+    code_start = 0x20
+    code_end = code_start + code_len
+
+    for offset in range(4, 28, 4):
+        val = int.from_bytes(data[offset:offset + 4], "little")
+        if val == 0: continue
+        new_val = val + len(locations) * 2
+        struct.pack_into("<I", data, offset, new_val)
+
+
+    for offset in range(code_start, code_end, 4):
+        instruction = int.from_bytes(data[offset:offset + 4], "little")
+
+        if (instruction >> 24) != 8:
+            continue
+        print(f"{offset:08X}: {instruction:08X}")
+
 
 
 def patch(
@@ -146,13 +173,16 @@ def patch(
     for eventrect, writes in EVENTRECT_PATCHES.items():
         base_num = eventrect.strip("EventRect")[0:3]
         file_name = f"/data/Script/field/eventrect/er{base_num}/{eventrect}.fsb"
-        patch_script(rom, file_name, writes)
+        patch_script_in_place_singular_byte(rom, file_name, writes)
 
     for map_name, writes in FIELD_MAP_PATCHES.items():
         area = map_name.split("_")[0]
         file_name = f"/data/Script/field/map/{area}/{map_name}.fsb"
-        patch_script(rom, file_name, writes)
+        patch_script_in_place_singular_byte(rom, file_name, writes)
 
     for chapter, writes in CHAPTER_PATCHES.items():
         file_name = f"/data/Script/chapter/{chapter}.fsb"
-        patch_script(rom, file_name, writes)
+        patch_script_in_place_singular_byte(rom, file_name, writes)
+
+
+

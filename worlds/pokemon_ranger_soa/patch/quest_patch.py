@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from ..apnds.rom import Rom
 
-from .base_patch import patch_script
+from .base_patch import patch_script_in_place_singular_byte
 
 
 def write_patch(
