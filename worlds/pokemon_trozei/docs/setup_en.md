@@ -1,4 +1,4 @@
-# Pokémon Trozei/Link Setup Guide
+# Pokémon Trozei / Link Setup Guide
 
 ## Required Software
 
