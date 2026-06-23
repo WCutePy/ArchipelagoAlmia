@@ -26,10 +26,14 @@ RECEIVED_ITEMS_LOCATION = 0x021222D6  # Currently some address
                                       # for the players endless best score
 
 
+def stage_id_to_location_id(num: int) -> int:
+    return 1 + len(data.stages[0].location_names) * num
+
+
 class PokemonTrozeiCient(BizHawkClient):
-    game = "PokemonTrozei"
+    game = "Pokemon Trozei"
     system = "NDS"
-    patch_suffix = ".apptrozei"
+    patch_suffix = (".apptrozei", ".applink")
 
     ram_read_write_domain = "ARM9 System Bus"
     rom_read_only_domain = "ROM"
@@ -46,10 +50,15 @@ class PokemonTrozeiCient(BizHawkClient):
 
     in_stage: bool
 
-    def initialize_client(self):
+    def initialize_client(self, ctx: "BizHawkClientContext"):
         self.local_checked_locations = set()
         self.local_found_key_items = {}
         self.local_unlocked_stages = set()
+
+        for item in ctx.items_received:
+            item_id = item.item
+            if item_id < 100:
+                self.local_unlocked_stages.add(item_id - 1)
 
         self.goal_flag = None
 
@@ -77,7 +86,7 @@ class PokemonTrozeiCient(BizHawkClient):
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
 
-        self.initialize_client()
+        self.initialize_client(ctx)
 
         # await bizhawk.write(
         #     ctx.bizhawk_ctx,
@@ -174,31 +183,39 @@ class PokemonTrozeiCient(BizHawkClient):
                 is_unlocked = pair != 0b00
                 is_completed = pair == 0b11
 
-                # if is_unlocked and i not in self.local_unlocked_stages:
-                #     await self.write_stage_location(ctx, locations[byte:byte+2], byte, bit1, 0b00)
-                #     continue
+                if is_unlocked and i not in self.local_unlocked_stages:
+                    await self.write_stage_location(ctx, locations[byte:byte+2], byte, bit1, 0b00)
+                    continue
 
                 if is_completed:
-                    num = 1 + i * len(data.stages[0].location_names)
+                    num = stage_id_to_location_id(i)
                     local_checked_locations.add(num)
                     local_checked_locations.add(num + 1)
 
+            loc_8 = locations[8]
             loc_9 = locations[9]  # top left
             loc_10 = locations[10]  # top right and bottom left
             loc_11 = locations[11]  # bottom right
-            if 1 + len(data.stages[0].location_names) * 30 in local_checked_locations:
+            if stage_id_to_location_id(30) in ctx.checked_locations:
                 if not (loc_11 >> 1) & 1:
                     loc_11 |= 0b10  # access top right
                     loc_10 |= 0b11  # access top left and bottom right
                     loc_9 |= 0b1000  # access top right
-
-            if 1 + len(data.stages[0].location_names) * 32 in local_checked_locations:
+            if stage_id_to_location_id(32) in ctx.checked_locations:
                 if not loc_11 & 1:
                     loc_11 |= 0b01  # access bottom left
                     loc_10 |= 0b110000  # access bottom left and top left
                     loc_9 |= 0b1000000  # access bottom left
 
-            if loc_11 != locations[11]:
+
+            if 35 in self.local_unlocked_stages and \
+                    sum(stage_id_to_location_id(i) in ctx.checked_locations
+                        for i in range(30, 35)) >= ctx.slot_data["required_bosses"]:
+
+                if not (loc_8 & 0x80) and not (loc_9 & 0b1):
+                    loc_9 |= 0b1
+
+            if loc_11 != locations[11] or loc_9 != locations[9]:
                 await bizhawk.write(
                     ctx.bizhawk_ctx,
                     [
@@ -215,6 +232,9 @@ class PokemonTrozeiCient(BizHawkClient):
 
                 if local_checked_locations is not None:
                     await ctx.check_locations(local_checked_locations)
+
+            if stage_id_to_location_id(35) in local_checked_locations:
+                game_clear = True
 
             if not ctx.finished_game and game_clear:
                 ctx.finished_game = True
@@ -279,6 +299,8 @@ class PokemonTrozeiCient(BizHawkClient):
         while num_received_items < len(ctx.items_received):
             item = ctx.items_received[num_received_items]
             item_id = item.item
+
+            num_received_items += 1
             if item_id < 100:
                 stage_id = item_id - 1
                 byte = stage_id // 4
@@ -288,13 +310,14 @@ class PokemonTrozeiCient(BizHawkClient):
                 if stage_id * len(data.stages[0].location_names) + 1 in ctx.checked_locations:
                     write = 0b11
 
-                read_result = await bizhawk.read(
-                    ctx.bizhawk_ctx,
-                    [
-                        (STAGE_UNLOCK_LOCATION + byte, 2, self.ram_read_write_domain),
-                    ],
-                )
-                await self.write_stage_location(ctx, read_result[0], byte, bit1, write)
+                if stage_id != 35 or stage_id == 35 and write == 0b11:
+                    read_result = await bizhawk.read(
+                        ctx.bizhawk_ctx,
+                        [
+                            (STAGE_UNLOCK_LOCATION + byte, 2, self.ram_read_write_domain),
+                        ],
+                    )
+                    await self.write_stage_location(ctx, read_result[0], byte, bit1, write)
                 self.local_unlocked_stages.add(stage_id)
             elif item_id < 103:
                 read_result = await bizhawk.read(
@@ -318,7 +341,6 @@ class PokemonTrozeiCient(BizHawkClient):
                 )
             else:
                 continue
-            num_received_items += 1
 
         await bizhawk.write(
             ctx.bizhawk_ctx,

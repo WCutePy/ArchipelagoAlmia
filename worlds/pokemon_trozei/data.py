@@ -15,7 +15,7 @@ class AdventureStage:
     @property
     def location_names(self) -> list[str]:
         return [
-            f"{self.location_name} 1",
+            f"{self.location_name}",
             f"{self.location_name} 2"
         ]
 
@@ -26,7 +26,7 @@ class AdventureStage:
 
     @property
     def unlock_name(self) -> str:
-        return f"Unlock - {self.location_name}"
+        return f"Unlock - {self.name}"
 
 
 stages = [
@@ -74,7 +74,7 @@ stages = [
     AdventureStage("Phobos Mobile No. 3: Phobos Drill"),
     AdventureStage("Phobos Mobile No. 4: Phobos Sub"),
     AdventureStage("Phobos Mobile No. 5: Phobos Walker"),
-    AdventureStage("Phobos Secret Fort: Phonosphere Unlocked"),
+    AdventureStage("Phobos Secret Fort: Phobosphere"),
     #  EU 0x122bce
     # AdventureStage("Mr. Who's Den"),
 ]
@@ -82,6 +82,3 @@ stages = [
 
 def determine_stage_location_count():
     return 2
-
-
-print(stages[30])

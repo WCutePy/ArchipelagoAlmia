@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class PokemonTrozeiItem(Item):
-    game: str = "PokemonTrozei"
+    game: str = "Pokemon Trozei"
 
     def __init__(
         self,
@@ -32,6 +32,7 @@ def create_item_label_to_code_map():
     items["Coin x1"] = 100
     items["Coin x3"] = 101
     items["Coin x5"] = 102
+    items["Permanent hard mode"] = 110
 
     return items
 
@@ -40,12 +41,16 @@ def get_item_classification(item_code: int) -> ItemClassification:
     """
     Returns the item classification for a given AP item id (code)
     """
+    # if item_code in [31, 33]:
+    #     return ItemClassification.progression
     if item_code < 100:
-        return ItemClassification.progression_skip_balancing
+        return ItemClassification.progression
     if item_code < 102:
         return ItemClassification.filler
     if item_code == 102:
         return ItemClassification.useful
+    if item_code == 110:
+        return ItemClassification.trap
 
     return ItemClassification.filler
 
@@ -62,10 +67,10 @@ def create_item_with_correct_classification(
 def create_all_items(world: PokemonTrozei) -> None:
 
     itempool: List[Item] = []
-    precollected_stages = [0]
+    precollected_stages = [0, 1]
 
     # for i, stage in enumerate(data.stages):
-    for i in [0, 5, 1, 2, 6, 7, 30]:
+    for i in range(0, 36):
         stage = data.stages[i]
         new_item = world.create_item(stage.unlock_name)
         if i in precollected_stages:

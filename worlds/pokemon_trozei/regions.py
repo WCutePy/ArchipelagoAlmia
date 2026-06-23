@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class PokemonTrozeiLocation(Location):
-    game = "PokemonTrozei"
+    game = "Pokemon Trozei"
 
 
 def create_location_label_to_id_map():
@@ -42,15 +42,40 @@ def create_adventure_region(world: PokemonTrozei, regions: Dict[str, Region]) ->
     regions["Adventure"] = region
     regions[world.origin_region_name].connect(region)
 
-    map_1 = Region("Map 1", world.player, world.multiworld)
-    regions["Map 1"] = map_1
+    map_dist = [
+        ("Map 1", [
+            0, 1, 2, 3,  # laboratory
+            5, 6, 7, 12,  # storage
+            26,  # huge storage
+            30,  # boss
+        ]),
+        ("Map 2", [
+            8, 9, 10, 11, 13, 14,  # storage
+            25,  # huge storage
+            31, 32  # boss
+        ]),
+        ("Map 3", [  # top left
+            4,  # laboratory
+            19, 20, 21,  # storage
+            28, 29,  # huge storage
+            35,  # boss
+        ]),
+        ("Map 4", [  # bottom left
+            15, 16, 17, 18, 22, 23, 24,  # storage
+            27,  # huge storage
+            33, 34,  # boss
+        ]),
+    ]
 
-    region.connect(map_1)
+    for region_name, levels in map_dist:
+        region_map = Region(region_name, world.player, world.multiworld)
+        regions[region_name] = region_map
 
-    for i in [0, 5, 1, 2, 6, 7, 30]:
-        stage = data.stages[i]
-        for name in stage.get_location_names(data.determine_stage_location_count()):
-            loc = PokemonTrozeiLocation(
-                world.player, name, world.location_name_to_id[name], map_1
-            )
-            map_1.locations.append(loc)
+        region.connect(region_map, name=region_name)
+        for i in levels:
+            stage = data.stages[i]
+            for name in stage.get_location_names(data.determine_stage_location_count()):
+                loc = PokemonTrozeiLocation(
+                    world.player, name, world.location_name_to_id[name], region_map
+                )
+                region_map.locations.append(loc)

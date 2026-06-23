@@ -1,3 +1,4 @@
+import os
 from dataclasses import fields
 from typing import ClassVar, Any, Mapping
 
@@ -7,7 +8,7 @@ from Options import Option
 from worlds.AutoWorld import WebWorld, World
 
 from .options import PokemonTrozeiOptions, OPTION_GROUPS
-from . import regions, items, rules
+from . import regions, items, rules, rom
 from .client import PokemonTrozeiCient  # Unused, but required to register with BizHawkClient
 
 
@@ -32,21 +33,21 @@ class PokemonTrozeiWebWorld(WebWorld):
 
 
 class PokemonTrozeiSettings(settings.Group):
-    class PokemonTrozeiRomFile(settings.UserFilePath):
-        description = "Pokemon Trozei/Link ROM File"
-        copy_to = "Pokemon Troze/Link.nds"
+    class PokemonLinkRomFile(settings.UserFilePath):
+        description = "Pokemon Link ROM File"
+        copy_to = "Pokemon Link.nds"
         md5s = ["5af68afc469ee54adc3721d9d8913904"]
 
-    rom_file: PokemonTrozeiRomFile = PokemonTrozeiRomFile(
-        PokemonTrozeiRomFile.copy_to
+    link_rom_file: PokemonLinkRomFile = PokemonLinkRomFile(
+        PokemonLinkRomFile.copy_to
     )
 
 
 class PokemonTrozei(World):
-    game = "PokemonTrozei"
+    game = "Pokemon Trozei"
     web = PokemonTrozeiWebWorld()
 
-    settings_key = "pokemon_ranger_soa_settings"
+    settings_key = "pokemon_trozei_settings"
     settings: ClassVar[PokemonTrozeiSettings]
 
     options_dataclass = PokemonTrozeiOptions
@@ -120,9 +121,20 @@ class PokemonTrozei(World):
     def set_rules(self) -> None:
         rules.set_all_rules(self)
 
+    def generate_output(self, output_directory: str) -> None:
+        patch = rom.PokemonLinkProcedurePatch(player=self.player, player_name=self.player_name)
+        #  currently nothing is patched at all, however as most nds games use
+        #  patch files to open their games this streamlines and simplifies the process
+
+        out_file_name = self.multiworld.get_out_file_name_base(self.player)
+        patch.write(os.path.join(output_directory, f"{out_file_name}{patch.patch_file_ending}"))
+
+
     def fill_slot_data(self) -> Mapping[str, Any]:
         slot_data = self.options.as_dict(
-            "death_link"
+            "required_bosses",
+            # "hard_mode",
+            "death_link",
         )
 
         slot_data["seed"] = self.seed
