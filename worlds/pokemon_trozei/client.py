@@ -145,20 +145,21 @@ class PokemonTrozeiCient(BizHawkClient):
 
             in_stage = read_result[0][0]
             if in_stage == 0x00 and self.in_stage:
-                await bizhawk.write(
-                    ctx.bizhawk_ctx,
-                    [
-                        (0x020135C0, NOP_INSTRUCTION_BYTES, self.ram_read_write_domain)
-                    ]
-                )
+                # await bizhawk.write(
+                #     ctx.bizhawk_ctx,
+                #     [
+                #         (0x02056050, NOP_INSTRUCTION_BYTES, self.ram_read_write_domain),  # normal levels unlock
+                #         (0x02055F8C, NOP_INSTRUCTION_BYTES, self.ram_read_write_domain)   # boss stages unlock
+                #     ]
+                # )  # can likely be moved to rom patch
                 self.in_stage = False
             elif in_stage == 0x01 and not self.in_stage:
-                await bizhawk.write(
-                    ctx.bizhawk_ctx,
-                    [
-                        (0x020135C0, bytes.fromhex("002185E7"), self.ram_read_write_domain)
-                    ]
-                )
+            #     await bizhawk.write(
+            #         ctx.bizhawk_ctx,
+            #         [
+            #             (0x020135C0, bytes.fromhex("002185E7"), self.ram_read_write_domain)
+            #         ]
+            #     )
                 self.in_stage = True
 
             locations = read_result[1]
@@ -194,19 +195,6 @@ class PokemonTrozeiCient(BizHawkClient):
 
             loc_8 = locations[8]
             loc_9 = locations[9]  # top left
-            loc_10 = locations[10]  # top right and bottom left
-            loc_11 = locations[11]  # bottom right
-            if stage_id_to_location_id(30) in ctx.checked_locations:
-                if not (loc_11 >> 1) & 1:
-                    loc_11 |= 0b10  # access top right
-                    loc_10 |= 0b11  # access top left and bottom right
-                    loc_9 |= 0b1000  # access top right
-            if stage_id_to_location_id(32) in ctx.checked_locations:
-                if not loc_11 & 1:
-                    loc_11 |= 0b01  # access bottom left
-                    loc_10 |= 0b110000  # access bottom left and top left
-                    loc_9 |= 0b1000000  # access bottom left
-
 
             if 35 in self.local_unlocked_stages and \
                     sum(stage_id_to_location_id(i) in ctx.checked_locations
@@ -215,13 +203,13 @@ class PokemonTrozeiCient(BizHawkClient):
                 if not (loc_8 & 0x80) and not (loc_9 & 0b1):
                     loc_9 |= 0b1
 
-            if loc_11 != locations[11] or loc_9 != locations[9]:
+            if loc_9 != locations[9]:
                 await bizhawk.write(
                     ctx.bizhawk_ctx,
                     [
                         (
                             STAGE_UNLOCK_LOCATION + 9,
-                            bytes([loc_9, loc_10, loc_11]),
+                            bytes([loc_9]),
                             self.ram_read_write_domain,
                         )
                     ]

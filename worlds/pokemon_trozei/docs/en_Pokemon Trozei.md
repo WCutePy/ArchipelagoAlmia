@@ -1,7 +1,8 @@
 # Pokémon Trozei / Link
 
 **NOTE** currently only the European version under the name Pokémon Link is supported.
-Support for the USA and/or Japanese version requires verification of memory addresses.
+Support for the USA and/or Japanese version requires verification of necessary memory addresses.
+
 
 ## Where is the options page?
 

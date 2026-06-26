@@ -123,8 +123,8 @@ class PokemonTrozei(World):
 
     def generate_output(self, output_directory: str) -> None:
         patch = rom.PokemonLinkProcedurePatch(player=self.player, player_name=self.player_name)
-        #  currently nothing is patched at all, however as most nds games use
-        #  patch files to open their games this streamlines and simplifies the process
+
+        rom.write_tokens(self, patch)
 
         out_file_name = self.multiworld.get_out_file_name_base(self.player)
         patch.write(os.path.join(output_directory, f"{out_file_name}{patch.patch_file_ending}"))
