@@ -117,7 +117,13 @@ class PokemonTrozeiCient(BizHawkClient):
                 ctx.bizhawk_ctx,
                 (
                     (0x021222D5, bytes(buf), self.ram_read_write_domain),
-                )
+                    (
+                        0x02121e65,
+                        (0).to_bytes(),
+                        self.ram_read_write_domain
+                    ),
+                ),
+
             )
         return True
 
