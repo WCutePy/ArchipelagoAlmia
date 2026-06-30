@@ -94,7 +94,7 @@ class PokemonTrozei(World):
                 # with what was stored in slot data.
                 for f in fields(PokemonTrozeiOptions):
                     opt: Option | None = getattr(self.options, f.name, None)
-                    if opt is not None:
+                    if opt is not None and f.name in re_gen_slot_data:
                         setattr(
                             self.options, f.name, opt.from_any(re_gen_slot_data[f.name])
                         )
