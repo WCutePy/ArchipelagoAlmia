@@ -323,8 +323,6 @@ class PokemonTrozeiCient(BizHawkClient):
             self.game_over = False
             return
 
-        with open("test.txt", "a") as file:
-            file.write(f"{currently_dead=}, {game_over_byte=}, {self.game_over=}, {self.previous_death_link}, {ctx.last_death_link}\n")
         if currently_dead and not self.game_over:
             self.game_over = True
 
@@ -333,21 +331,31 @@ class PokemonTrozeiCient(BizHawkClient):
         elif not currently_dead:
             self.game_over = False
 
-        if self.previous_death_link != ctx.last_death_link:
-            self.previous_death_link = ctx.last_death_link
-            if self.ignore_next_death_link:
-                self.ignore_next_death_link = False
-            else:
-                await bizhawk.write(
-                    ctx.bizhawk_ctx,
-                    [
-                        (
-                            DEATHLINK_JUMP_LOC,
-                            DEATHLINK_JUMP,
-                            self.ram_read_write_domain,
-                        )
-                    ]
+        if self.previous_death_link == ctx.last_death_link:
+            return
+
+        self.previous_death_link = ctx.last_death_link
+        if self.ignore_next_death_link:
+            self.ignore_next_death_link = False
+            return
+
+        succeeded = await bizhawk.guarded_write(
+            ctx.bizhawk_ctx,
+            [
+                (
+                    DEATHLINK_JUMP_LOC,
+                    DEATHLINK_JUMP,
+                    self.ram_read_write_domain,
                 )
+            ],
+            [
+                (0x022101DC, read_result[0], self.ram_read_write_domain),
+                (0x0220A8AC, read_result[1], self.ram_read_write_domain),
+            ]
+        )
+        if not succeeded:
+            self.previous_death_link -= 1
+            return
 
 
 
