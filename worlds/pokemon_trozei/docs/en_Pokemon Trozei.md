@@ -24,6 +24,12 @@ As this game lacks traditional items, the main items are
 level unlocks. Each level has an unlock item.
 Besides this currently only filler coin items exist.
 
+## Death link
+
+Sending a death link is triggered by a game over in game
+Receiving a death link is buffered until actively linking,.
+Only one death link can be buffered at a time.
+
 ## What other changes are made to the game?
 
 Unlocking the top right and top left areas requires beating Phobos Mobile No. 1: Phobos Train.<br>

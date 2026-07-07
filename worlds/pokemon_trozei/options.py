@@ -33,7 +33,7 @@ class PokemonTrozeiDeathLink(DeathLink):
     __doc__ = (
         DeathLink.__doc__
         + "\n\n    In Pokemon Trozei, while in a stage in adventure mode, a game over is sent. "
-          "Currently not implemented"
+          "Game over sends a death link."
     )
 
 

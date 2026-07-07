@@ -36,6 +36,10 @@ def stage_id_to_location_id(num: int) -> int:
     return 1 + len(data.stages[0].location_names) * num
 
 
+def stage_id_to_unlock_item_id(num: int) -> int:
+    return num + 1
+
+
 class PokemonTrozeiCient(BizHawkClient):
     game = "Pokemon Trozei"
     system = "NDS"
@@ -61,11 +65,6 @@ class PokemonTrozeiCient(BizHawkClient):
         self.local_checked_locations = set()
         self.local_found_key_items = {}
         self.local_unlocked_stages = set()
-
-        for item in ctx.items_received:
-            item_id = item.item
-            if item_id < 100:
-                self.local_unlocked_stages.add(item_id - 1)
 
         self.goal_flag = None
 
@@ -109,10 +108,17 @@ class PokemonTrozeiCient(BizHawkClient):
 
         return True
 
+    def on_package(self, ctx, cmd, args):
+        if cmd == 'ReceivedItems':
+            if len(self.local_unlocked_stages) == 0:
+                for item in ctx.items_received:
+                    item_id = item.item
+                    if item_id < 100:
+                        self.local_unlocked_stages.add(item_id - 1)
+
     async def game_watcher(self, ctx: "BizHawkClientContext") -> None:
         if ctx.server is None or ctx.server.socket.closed or ctx.slot_data is None:
             return
-
 
         try:
             guards: Dict[str, Tuple[int, bytes, str]] = {}
@@ -125,40 +131,60 @@ class PokemonTrozeiCient(BizHawkClient):
 
                 await self.handle_death_link(ctx)
 
-            in_stage = None
+            endless_score = await bizhawk.read(
+                ctx.bizhawk_ctx,
+                (
+                    (0x021222D5, 5, self.ram_read_write_domain),
+                )
+            )
+            buf = bytearray(endless_score[0])
+            if not ((endless_score[0][3] >= 0xE0) and (endless_score[0][4] & 0x01) == 1):
+                buf[0] &= 0b111
+                buf[1] = 0x00
+                buf[2] = 0x00
+                buf[3] = 0xE0
+                buf[4] |= 0x01
+
+                await bizhawk.write(
+                    ctx.bizhawk_ctx,
+                    (
+                        (0x021222D5, bytes(buf), self.ram_read_write_domain),  # endless score
+                        (
+                            0x02121e65,
+                            (0).to_bytes(),
+                            self.ram_read_write_domain
+                        ),
+                    ),
+
+                )
+                num_receieved_items = 0
+            else:
+                num_receieved_items = int.from_bytes(endless_score[0][1:3], "little", signed=False)
+
+            if num_receieved_items < len(ctx.items_received):
+                await self.handle_received_items(ctx, guards, num_receieved_items)
+
 
             read_result = await bizhawk.read(
                 ctx.bizhawk_ctx,
                 [
                     (0x022101DC, 1, self.ram_read_write_domain),
                     (STAGE_UNLOCK_LOCATION, 12, self.ram_read_write_domain),
-                    (RECEIVED_ITEMS_LOCATION - 1, 5, self.ram_read_write_domain),
+                    # (RECEIVED_ITEMS_LOCATION - 1, 5, self.ram_read_write_domain),
                 ],
             )
 
             in_stage = read_result[0][0]
             if in_stage == 0x00 and self.in_stage:
-                # await bizhawk.write(
-                #     ctx.bizhawk_ctx,
-                #     [
-                #         (0x02056050, NOP_INSTRUCTION_BYTES, self.ram_read_write_domain),  # normal levels unlock
-                #         (0x02055F8C, NOP_INSTRUCTION_BYTES, self.ram_read_write_domain)   # boss stages unlock
-                #     ]
-                # )  # can likely be moved to rom patch
                 self.in_stage = False
             elif in_stage == 0x01 and not self.in_stage:
-            #     await bizhawk.write(
-            #         ctx.bizhawk_ctx,
-            #         [
-            #             (0x020135C0, bytes.fromhex("002185E7"), self.ram_read_write_domain)
-            #         ]
-            #     )
                 self.in_stage = True
 
             locations = read_result[1]
             game_clear = False
             local_checked_locations: Set[int] = set()
 
+            handle_manually = [35]
             for i, stage in enumerate(data.stages):
                 byte = i // 4
                 index = i % 4
@@ -177,10 +203,14 @@ class PokemonTrozeiCient(BizHawkClient):
                 is_unlocked = pair != 0b00
                 is_completed = pair == 0b11
 
-                #  If we want this, we need to check unlocked from the server state items.
-                # if is_unlocked and i not in self.local_unlocked_stages:
-                #     await self.write_stage_location(ctx, locations[byte:byte+2], byte, bit1, 0b00)
-                #     continue
+                if is_unlocked and i not in self.local_unlocked_stages:
+                    await self.write_stage_location(ctx, locations[byte:byte+2], byte, bit1, 0b00)
+                    continue
+                elif not is_unlocked and i in self.local_unlocked_stages and i not in handle_manually:
+                    to_write = 0b01
+                    if stage_id_to_location_id(i) in ctx.checked_locations:
+                        to_write = 0b11
+                    await self.write_stage_location(ctx, locations[byte:byte+2], byte, bit1, to_write)
 
                 if is_completed:
                     num = stage_id_to_location_id(i)
@@ -246,66 +276,30 @@ class PokemonTrozeiCient(BizHawkClient):
                     ]
                 )
 
-            endless_score = await bizhawk.read(
-                ctx.bizhawk_ctx,
-                (
-                    (0x021222D5, 5, self.ram_read_write_domain),
-                )
-            )
-
-            # TODO find a proper address...
-            buf = bytearray(endless_score[0])
-            if not ((read_result[2][3] >= 0xE0) and (read_result[2][4] & 0x01) == 1):
-                buf[0] &= 0b111
-                buf[1] = 0x00
-                buf[2] = 0x00
-                buf[3] = 0xE0
-                buf[4] |= 0x01
-
-                await bizhawk.write(
-                    ctx.bizhawk_ctx,
-                    (
-                        (0x021222D5, bytes(buf), self.ram_read_write_domain),
-                        (
-                            0x02121e65,
-                            (0).to_bytes(),
-                            self.ram_read_write_domain
-                        ),
-                    ),
-
-                )
-                num_receieved_items = 0
-            else:
-                num_receieved_items = int.from_bytes(read_result[2][1:3], "little", signed=False)
-
-            if num_receieved_items < len(ctx.items_received):
-                await self.handle_received_items(ctx, guards, num_receieved_items)
-
         except bizhawk.RequestFailedError:
             pass
 
 
-    async def handle_death_link(self, ctx: "BizHawkClientContext") -> None:
+    async def handle_death_link(self, ctx: "BizHawkClientContext", death_link_only: bool = False) -> None:
 
         read_result = await bizhawk.read(
             ctx.bizhawk_ctx,
             [
                 (0x022101DC, 1, self.ram_read_write_domain),
-                (0x0220A8AC, 3, self.ram_read_write_domain),
+                (0x0220A8AC, 4, self.ram_read_write_domain),
                 (DEATHLINK_JUMP_LOC, 4, self.ram_read_write_domain),
                 (0x0220A8B1, 1, self.ram_read_write_domain)
             ],
         )
 
         in_stage = read_result[0][0]
-        playing, start, countdown = read_result[1]
+        playing, start, countdown, complete = read_result[1]
         had_deathlink = read_result[2] == DEATHLINK_JUMP
 
         game_over_byte = read_result[3][0]
         currently_dead = game_over_byte == 0x01
 
         if had_deathlink:
-            self.game_over = True
             await bizhawk.write(
                 ctx.bizhawk_ctx,
                 [
@@ -316,20 +310,28 @@ class PokemonTrozeiCient(BizHawkClient):
                     )
                 ],
             )
-            if not currently_dead:
+            if self.game_over:
                 self.previous_death_link -= 1
+            self.game_over = True
+            if death_link_only:
+                return
 
-        if in_stage != 0x01 or (playing == 0x00 and start == 0x01):
+        if in_stage != 0x01:
+            self.game_over = False
+            return
+        if (playing == 0x00 and start == 0x01) or complete == 0x01 :
             self.game_over = False
             return
 
-        if currently_dead and not self.game_over:
+        if not currently_dead:
+            self.game_over = False
+        elif currently_dead and not self.game_over:
             self.game_over = True
 
             await ctx.send_death(f"{ctx.player_names[ctx.slot]} could not link fast enough!")
             self.ignore_next_death_link = True
-        elif not currently_dead:
-            self.game_over = False
+        elif currently_dead:
+            return
 
         if self.previous_death_link == ctx.last_death_link:
             return
@@ -356,7 +358,7 @@ class PokemonTrozeiCient(BizHawkClient):
         if not succeeded:
             self.previous_death_link -= 1
             return
-
+        await self.handle_death_link(ctx, death_link_only=True)
 
 
 
@@ -416,7 +418,7 @@ class PokemonTrozeiCient(BizHawkClient):
                 if stage_id * len(data.stages[0].location_names) + 1 in ctx.checked_locations:
                     write = 0b11
 
-                if stage_id != 35 or stage_id == 35 and write == 0b11:
+                if stage_id != 35:
                     read_result = await bizhawk.read(
                         ctx.bizhawk_ctx,
                         [
