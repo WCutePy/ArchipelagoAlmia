@@ -158,6 +158,7 @@ class PokemonRSOA(World):
             212,  # abomasnow
             # partners
             26,  # pach
+            23,  # starly
             168,  # chimchar
             206,  # piplup
             52,  # turtwig

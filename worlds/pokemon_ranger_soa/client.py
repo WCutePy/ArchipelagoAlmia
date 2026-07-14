@@ -199,6 +199,8 @@ class PokemonRangerSOA(BizHawkClient):
             partner_counts_as_party_slot = partner_pokemon[8]
             partner = int.from_bytes(partner_pokemon[0:2], "little")
 
+            # TODO reconsider this???
+            # just make a progressive partner
             if (
                 partner_counts_as_party_slot == 7
                 and partner not in self.allowed_partners

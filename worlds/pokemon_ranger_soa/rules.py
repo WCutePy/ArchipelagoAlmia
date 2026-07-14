@@ -148,6 +148,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
         2: set_mission_1_and_2_rules,
         3: set_mission_3_rules,
         4: set_mission_4_rules,
+        5: set_mission_5_rules,
     }
 
     up_to_mission = world.options.mission_clear_target.value
@@ -581,22 +582,26 @@ def set_mission_4_rules(world: PokemonRSOA):
     for from_ in ["m009_002", "m009_009"]:
         world.set_rule(get_connection(world, from_, "m009_001c"), False_())
 
-
     """m010"""
-    gigaremos_center = (all_maps.can_destroy_target("m010_001", 3)
-                        & all_maps.can_destroy_target("m010_001", 13))
+    gigaremos_center = all_maps.can_destroy_target(
+        "m010_001", 3
+    ) & all_maps.can_destroy_target("m010_001", 13)
     west_gate = all_maps.can_destroy_target("m010_022", 11)
     east_gate = all_maps.can_destroy_target("m010_002", 19)
 
     can_reach_west = gigaremos_center | west_gate | east_gate
-    gigaremos_west = (all_maps.can_destroy_target("m010_022", 4)
-                      & all_maps.can_destroy_target("m010_022", 9)
-                      & can_reach_west)
+    gigaremos_west = (
+        all_maps.can_destroy_target("m010_022", 4)
+        & all_maps.can_destroy_target("m010_022", 9)
+        & can_reach_west
+    )
 
     can_reach_east = gigaremos_west | east_gate
-    gigaremos_east = (all_maps.can_destroy_target("m010_002", 14)
-                      & all_maps.can_destroy_target("m010_002", 20)
-                      & can_reach_east)
+    gigaremos_east = (
+        all_maps.can_destroy_target("m010_002", 14)
+        & all_maps.can_destroy_target("m010_002", 20)
+        & can_reach_east
+    )
 
     if world.options.mission_clear_target.value > 4:
         gigaremos_west |= Has(get_mission_event(4))
@@ -604,22 +609,33 @@ def set_mission_4_rules(world: PokemonRSOA):
 
     """m010_001 center"""
     for i in range(0, 7):
-        world.set_rule(get_location(world, get_instance_capture("m010_001", i)), gigaremos_center | gigaremos_east)
+        world.set_rule(
+            get_location(world, get_instance_capture("m010_001", i)),
+            gigaremos_center | gigaremos_east,
+        )
 
-    world.set_rule(get_pokemon_instance(world, "m010_001", 6), gigaremos_west | can_reach_east)
+    world.set_rule(
+        get_pokemon_instance(world, "m010_001", 6), gigaremos_west | can_reach_east
+    )
 
-    world.set_rule(get_connection(world, "m010_001", "m010_022"),
-                   can_reach_west
-                   )
+    world.set_rule(get_connection(world, "m010_001", "m010_022"), can_reach_west)
 
-    for from_, to in [("m010_001", "m014_003b"), ("npc_m010_001", "m011_001"), ("npc_m010_001", "m201_003")]:
+    for from_, to in [
+        ("m010_001", "m014_003b"),
+        ("m010_004", "m010_023"),  # leads into DLC
+        ("npc_m010_001", "m011_001"),
+        ("npc_m010_001", "m201_003"),
+    ]:
         world.set_rule(get_connection(world, from_, to), False_())
     """m010_022 west"""
 
     for i in range(0, 9):
         if i == 6:
             continue
-        world.set_rule(get_location(world, get_instance_capture("m010_022", i)), gigaremos_west | gigaremos_east)
+        world.set_rule(
+            get_location(world, get_instance_capture("m010_022", i)),
+            gigaremos_west | gigaremos_east,
+        )
         world.set_rule(get_pokemon_instance(world, "m010_022", i), can_reach_west)
         # I believe one pokemon is missing at the start??? I don't see murkrow at all
 
@@ -631,59 +647,131 @@ def set_mission_4_rules(world: PokemonRSOA):
     for i in range(0, 10):
         if i == 3:
             continue
-        world.set_rule(get_location(world, get_instance_capture("m010_002", i)), gigaremos_east)
+        world.set_rule(
+            get_location(world, get_instance_capture("m010_002", i)), gigaremos_east
+        )
 
         if i == 9:
             continue
-        world.set_rule(get_pokemon_instance(world,"m010_002", i), can_reach_east)
+        world.set_rule(get_pokemon_instance(world, "m010_002", i), can_reach_east)
 
-    for to in ["m010_006", "m010_007", "m010_013", "m010_014" , "m010_015"]:
+    for to in ["m010_006", "m010_007", "m010_013", "m010_014", "m010_015"]:
         world.set_rule(get_connection(world, "m010_002", to), can_reach_east)
 
     world.set_rule(get_connection(world, "m010_002", "m010_003"), gigaremos_east)
 
-    for to in ["m011_001", "m201_003","m038_012", "m038_016"]:
+    for to in ["m011_001", "m201_003", "m038_012", "m038_016"]:
         world.set_rule(get_connection(world, "npc_m010_002", to), False_())
 
         """m010_002 east houses"""
         # elekid possible by access rule
-    for from_, to in [("npc_m010_006", "m038_012"), ("npc_m010_006", "m038_016"), ("npc_m010_015", "m018_001"), ("npc_m010_015", "m010_003"), ("npc_m010_015", "m201_001")]:
+    for from_, to in [
+        ("npc_m010_006", "m038_012"),
+        ("npc_m010_006", "m038_016"),
+        ("npc_m010_015", "m018_001"),
+        ("npc_m010_015", "m010_003"),
+        ("npc_m010_015", "m201_001"),
+    ]:
         world.set_rule(get_connection(world, from_, to), False_())
 
     """m010_003 port"""
 
     world.set_rule(
         get_location(world, PREvent.RESCUE_PUELTOWN.event_name),
-        gigaremos_east  # could add needing to defeat toxicroak
+        gigaremos_east,  # could add needing to defeat toxicroak
     )
 
-    for i in range(0, ):
-
-        if i in []:
+    for i in range(
+        15,
+    ):
+        if i in [4, 8, 11]:
             continue
-        
-
-    # TODO figure out pokemon access and such
+        if i in [14, 13, 12, 10, 9]:
+            world.set_rule(
+                get_location(world, get_instance_capture("m010_003", i)),
+                Has(PREvent.RESCUE_PUELTOWN.event_name),
+            )
+        else:
+            world.set_rule(
+                get_pokemon_instance(world, "m010_003", i),
+                Has(PREvent.RESCUE_PUELTOWN.event_name),
+            )
 
     for to in ["m011_001", "m201_003"]:
         world.set_rule(get_connection(world, "m010_003", to), False_())
 
-    for to in ["m018_001", "m010_003", "m201_001", "m029_001", "m033_001", "m201_004", "m029_007"]:
+    for to in [
+        "m010_003",
+        "m018_001",
+        "m201_001",
+        "m033_001",
+        "m201_004",
+        "m029_001",
+        "m029_007",
+    ]:
         world.set_rule(get_connection(world, "npc_m010_003", to), False_())
+
+    """m010_020 Sailors in"""
+    for to in [
+        "m029_001",
+        "m029_007",
+        "m201_001",
+        "m201_004",
+        "m018_001",
+        "m033_001",
+        "m201_003",
+        "m011_001",
+    ]:
+        world.set_rule(get_connection(world, "npc_m010_020", to), False_())
 
     """m014_003a"""
     world.set_rule(get_connection(world, "m014_003a", "m014_001"), False_())
-
 
     """After saving pueltown"""
 
     for loc in [data.locations["QUEST_04"].label, get_quest_event(4)]:
         world.set_rule(
             get_location(world, loc),
-            Has(PREvent.RESCUE_PUELTOWN.event_name) & all_maps.can_destroy_target_type(27),
+            Has(PREvent.RESCUE_PUELTOWN.event_name)
+            & all_maps.can_destroy_target_type(27),
+        )
+
+    for loc in [data.locations["MISSION_04"].label, get_mission_event(4)]:
+        world.set_rule(
+            get_location(world, loc), Has(PREvent.RESCUE_PUELTOWN.event_name)
         )
 
 
+def set_mission_5_rules(world: PokemonRSOA):
+    all_maps = MonSelect.full_map()
+
+    for loc in [data.locations["QUEST_02"].label, get_quest_event(2)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(4)) & all_maps.can_destroy_target("m005_001b", 0),
+        )
+
+    for loc in [data.locations["QUEST_35"].label, get_quest_event(35)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(4)),
+        )
+
+    for event in [
+        PInstanceEvent.KRICKETOT,
+        PInstanceEvent.CRANIDOS,
+        PInstanceEvent.WARTORTLE_WITH_CRANIDOS,
+    ]:
+        world.set_rule(
+            get_entrance(world, event.event_name),
+            Has(get_mission_event(4)),
+        )
+
+    """m011_001"""
+    world.set_rule(
+        get_connection(world, "m010_003", "m011_001"),
+        Has(get_mission_event(4)),
+    )
 
 
 def set_completion_condition(world) -> None:
@@ -691,7 +779,8 @@ def set_completion_condition(world) -> None:
     browser = world.options.capture_count_target.value
     browser = 20  # 30
     missions = world.options.mission_clear_target.value
-    quests = 6  # 5
+    mission = 4
+    quests = 7  # 7
 
     capture_check = []
     for i in world.included_browser_entries:

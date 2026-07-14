@@ -32,7 +32,7 @@ def write_patch(
             for i, spawn_data in map_data.POKEMON_SPAWN.items():
                 pokemon.append(spawn_data.SPECIES_ID)
 
-            for i, npc_data in map_data.NPC.items():
+            for i, npc_data in map_data.NPCS.items():
                 npc.append(npc_data.unk2)
         data = (
             struct.pack("<III", len(objects), len(npc), len(pokemon))
@@ -43,9 +43,7 @@ def write_patch(
         opened_zipfile.writestr(f"map/{map_name}.bin", data)
 
 
-def patch_map(
-    rom: Rom, map_name: str, data: Dict[int, Any]
-) -> None:
+def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
     if not data:
         return
 
@@ -71,7 +69,9 @@ def patch_map(
 
     layer_type_index = defaultdict(int)
 
-    logging.warning(f"Writing pokemon: {data.get(0x09, [])=}, {data.get(0x08, [])=}, {data.get(0x04, [])=}")
+    logging.warning(
+        f"Writing pokemon: {data.get(0x09, [])=}, {data.get(0x08, [])=}, {data.get(0x04, [])=}"
+    )
 
     for i, file_group in enumerate(narc_lyr.files):
         narc_layer_list = Narc.from_bytes(file_group)
@@ -118,7 +118,9 @@ def patch_map(
                 entry_count = (len(layer_data) - 8) // 10
                 offset = 8 + 6
                 for _ in range(entry_count):
-                    struct.pack_into("<H", layer_data, offset, pokemon[layer_type_index[9]])
+                    struct.pack_into(
+                        "<H", layer_data, offset, pokemon[layer_type_index[9]]
+                    )
                     offset += 10
 
                     layer_type_index[9] += 1
@@ -141,7 +143,6 @@ def patch_scripts(
 
 
 def add_map_base_patches(map_name: str, data: Dict[int, Any]) -> None:
-
     """Mission 4, anti softlock if you enter the west of
     pueltown through the east of pueltown clearing the center gigaremo
     It would be better to patch the wall in m010_022 in the first place,
@@ -183,11 +184,7 @@ def patch(
 
         pokemon = list(struct.unpack_from(f"<{num_pokemon}H", patch_file, offset))
 
-        data = {
-            0x04: objects,
-            0x08: npc,
-            0x09: pokemon
-        }
+        data = {0x04: objects, 0x08: npc, 0x09: pokemon}
         add_map_base_patches(map_name, data)
 
         patch_map(rom, map_name, data)

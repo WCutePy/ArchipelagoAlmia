@@ -161,7 +161,6 @@ class MonSelect:
         return True
 
     def event_mon_included(self, event: PInstanceEvent):
-
         return True
 
     def access_field_move(
@@ -288,6 +287,7 @@ class MonSelect:
             2: cls.goal_marine_cave,
             3: cls.goal_forest_fire,
             4: cls.goal_mission_4,
+            5: cls.goal_mission_5,
         }
 
         if cls.world.options.goal == Goal.option_mission_clear:
@@ -365,24 +365,51 @@ class MonSelect:
     def goal_mission_4(cls) -> MonSelect:
         base = cls.goal_forest_fire()
         base.include |= {
-            "m009_001b": [2, 3, 4, 8],
+            "m009_001b": [2, 3, 4, 8],  # rest is copied over
             "m009_008": [],
             "m009_010": [],
             "m009_011": [],
-            "m009_012": [0, 3],
+            "m009_012": [1, 2],
             "m010_001": [],  # center
             "m010_002": [],  # east
-            "m010_003": [],  # port
+            "m010_003": [
+                14,
+                13,
+                12,
+                10,
+                9,
+                ## after clearing
+                6,
+                2,
+                1,
+                3,
+                0,
+                5,
+                7,
+                # missing: 4, 8, 11, 15, 16, 17
+                # on completed save has: 11, 15
+            ],  # port
             "m010_007": [],
             "m010_016": [],
-            "m010_022": [],  # TODO figure out if murkrow
+            "m010_022": [],
         }
 
-        base.exclude |= {
-            "m010_002": [3],
-            "m010_022": [6]
-        }
+        base.exclude |= {"m010_002": [3], "m010_022": [6]}
+        base.event_mon += [
+            PInstanceEvent.RATATA_4,
+            PInstanceEvent.TOXICROAK,
+        ]
+        return base
 
+    @classmethod
+    def goal_mission_5(cls) -> MonSelect:
+        base = cls.goal_mission_4()
+
+        base.event_mon += [
+            PInstanceEvent.KRICKETOT,
+            PInstanceEvent.CRANIDOS,
+            PInstanceEvent.WARTORTLE_WITH_CRANIDOS,
+        ]
         return base
 
 

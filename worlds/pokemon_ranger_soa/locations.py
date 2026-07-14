@@ -91,7 +91,11 @@ def create_all_locations(
 
     max_mission = world.options.mission_clear_target.value
     permitted_quests = []
-    quests_table = {3: [1, 48], 4: [3, 11, 49, 4]}
+    quests_table = {
+        3: [1, 48],
+        4: [3, 11, 49, 4],
+        5: [2, 35],
+    }
     for i in range(0, max_mission + 1):
         permitted_quests += quests_table.get(i, [])
 
@@ -225,7 +229,7 @@ def create_pokemon_locations(
         14,
         13,
         22,
-        59  # combee quest
+        59,  # combee quest
     ]:  # TODO, don't do this like this. # HARDCODED BROWSER IDS
         one_each.pop(0)
         one_each.append(i)

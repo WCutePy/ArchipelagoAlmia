@@ -270,6 +270,8 @@ class NPCEntry:
     unk1: int
     unk2: int
     unk3: int
+    script_id: int = -1
+    NAME: str = "UNK"
     randomize: Optional[bool] = False
 
 
@@ -282,7 +284,7 @@ class MapData:
 
     TARGETS: dict[int, TargetEntry] = field(default_factory=dict)
     POKEMON_SPAWN: dict[int, PokemonSpawnEntry] = field(default_factory=dict)
-    NPC: dict[int, NPCEntry] = field(default_factory=dict)
+    NPCS: dict[int, NPCEntry] = field(default_factory=dict)
     EXITS: dict[str, list[str]] = field(default_factory=dict)
 
     modified: Optional[bool] = False
@@ -295,12 +297,10 @@ class MapData:
             for key, value in self.TARGETS.items()
         }
 
-        if self.NPC:
-            self.NPC = {
-                int(key): (
-                    value if isinstance(value, NPCEntry) else NPCEntry(**value)
-                )
-                for key, value in self.NPC.items()
+        if self.NPCS:
+            self.NPCS = {
+                int(key): (value if isinstance(value, NPCEntry) else NPCEntry(**value))
+                for key, value in self.NPCS.items()
             }
 
         self.POKEMON_SPAWN = {

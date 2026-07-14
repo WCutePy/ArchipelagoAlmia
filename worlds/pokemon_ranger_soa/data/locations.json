@@ -33,7 +33,7 @@
   },
   "MISSION_04": {
     "label": "Mission 04: Destroy the Strange Machines!",
-    "parent_region": "m041_001",
+    "parent_region": "m004_002",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -41,7 +41,7 @@
   },
   "MISSION_05": {
     "label": "Mission 05: Recover a Key from Sharpedo!",
-    "parent_region": "m041_001",
+    "parent_region": "m001_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -145,7 +145,7 @@
   },
   "QUEST_02": {
     "label": "Quest 02: Breeze Hill Sign Recovery",
-    "parent_region": "m041_001",
+    "parent_region": "m005_001b",
     "default_item": "Progressive Dark Defense",
     "addresses": "0x020B264E",
     "flag": 1,
@@ -161,7 +161,7 @@
   },
   "QUEST_04": {
     "label": "Quest 04: Clear the Crates!",
-    "parent_region": "m041_001",
+    "parent_region": "m009_012",
     "default_item": "Progressive Bug Defense",
     "addresses": "0x020B2650",
     "flag": 1,
@@ -409,7 +409,7 @@
   },
     "QUEST_35": {
     "label": "Quest 35: Please Save Cranidos",
-    "parent_region": "m041_001",
+    "parent_region": "m009_002",
     "default_item": "Partner Pokemon - Cranidos",
     "addresses": "0x020B266F",
     "flag": 1,

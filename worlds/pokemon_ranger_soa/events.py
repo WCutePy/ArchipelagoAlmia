@@ -97,16 +97,28 @@ class PInstanceEvent(EventRegistry):
     """MAP_NAME, BROWSER_ID"""
 
     """Script based """
-    TUT_BIDOOF = InstanceEvent("m001_002", 4, mandatory=True)  # quite sure these count for browser
-    TIM_BIDOOF = InstanceEvent("m001_001", 4, mandatory=True)  # 2 bidoof that attack Tim when leaving school
+    TUT_BIDOOF = InstanceEvent(
+        "m001_002", 4, mandatory=True
+    )  # quite sure these count for browser
+    SLAKOTH = InstanceEvent("m001_001", 32, mandatory=True)  # stolen stylers
+    TIM_BIDOOF = InstanceEvent(
+        "m001_001", 4, mandatory=True
+    )  # 2 bidoof that attack Tim when leaving school, fight only 1
 
     TANGROWTH = InstanceEvent("m001_003b", 36, mandatory=True)  # m0 graduation
     MILTANK = InstanceEvent("m004_001", 46, mandatory=True)  # quest 1
     BUDEW_4 = InstanceEvent("m009_002", 8, mandatory=True)  # m3 jump out at burning log
 
     RATATA_4 = InstanceEvent("m010_003", 67, mandatory=True)  # m4 port
-    Toxicroak = InstanceEvent("m010_003", 81, mandatory=True)  # m4 port
+    TOXICROAK = InstanceEvent("m010_003", 81, mandatory=True)  # m4 port
 
+    KRICKETOT = InstanceEvent("m008_006", 82, mandatory=True)  # before m5
+    CRANIDOS = InstanceEvent("m009_002", 84)
+    WARTORTLE_WITH_CRANIDOS = InstanceEvent("m009_002", 12)
+
+    #
+    #
+    #
     WAILORD = InstanceEvent("m029_009", 238, mandatory=True)
 
     """Partners"""
@@ -117,8 +129,6 @@ class PInstanceEvent(EventRegistry):
     CHIMCHAR = InstanceEvent("m041_001", 168)
     PIPLUP = InstanceEvent("m041_001", 206)
     STARLY = InstanceEvent("m041_001", 23)
-    KRICKETOT = InstanceEvent("m041_001", 82)
-    CRANIDOS = InstanceEvent("m041_001", 84)
     SHIELDON = InstanceEvent("m041_001", 181)
     PACHIRISU = InstanceEvent("m041_001", 26)
     MIME_JR = InstanceEvent("m041_001", 164)

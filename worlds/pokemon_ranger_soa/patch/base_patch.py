@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from ..rom import PokemonRSOAPatch
 
 
-def patch_script_in_place_singular_byte(
+def patch_script_in_place_four_bytes(
     rom: Rom,
     file_name: str,
     writes: list[tuple[int, int]],
@@ -31,28 +31,25 @@ def patch_script_in_place_singular_byte(
 def patch_script_add_doduo(rom: Rom, file_name: str, locations: list[int]):
     data = bytearray(rom.files[file_name])
 
-    jumps = [
-        0x0208
-    ]
+    jumps = [0x0208]
 
     code_len = int.from_bytes(data[0:4], "little")
     code_start = 0x20
     code_end = code_start + code_len
 
     for offset in range(4, 28, 4):
-        val = int.from_bytes(data[offset:offset + 4], "little")
-        if val == 0: continue
+        val = int.from_bytes(data[offset : offset + 4], "little")
+        if val == 0:
+            continue
         new_val = val + len(locations) * 2
         struct.pack_into("<I", data, offset, new_val)
 
-
     for offset in range(code_start, code_end, 4):
-        instruction = int.from_bytes(data[offset:offset + 4], "little")
+        instruction = int.from_bytes(data[offset : offset + 4], "little")
 
         if (instruction >> 24) != 8:
             continue
         print(f"{offset:08X}: {instruction:08X}")
-
 
 
 def patch(
@@ -64,9 +61,12 @@ def patch(
     slot_data = orjson.loads(prsoa_patch_instance.get_file("slot_data.json"))
     random_pokemon: bool = bool(slot_data["randomize_pokemon"])
 
+    code_patch(rom, world_package, prsoa_patch_instance, files_dump, slot_data)
+
     EVENTRECT_PATCHES = defaultdict(list)
     FIELD_MAP_PATCHES = defaultdict(list)
     CHAPTER_PATCHES = defaultdict(list)
+    QUEST_PATCHES = defaultdict(list)
 
     """School gate"""
     EVENTRECT_PATCHES |= {
@@ -169,20 +169,65 @@ def patch(
     """mission 4 anti-softlock"""
     """This code is placed in map_patch"""
 
+    """partner patches"""
+    randomize_partner_species = False
+    if randomize_partner_species:
+        """untested so far, as this might need other patches"""
+        kricketot = ...
+        CHAPTER_PATCHES["c029"] += [
+            # PUSH 175		; @3670
+            (3670, kricketot << 16 | 0x10),  # kricketot
+        ]
+        # will need to randomize: m008_006 NPC 12, NPC 8
+        # will need to edit a form to be a partner?
+        # will need to patch a lot of text
+
+    unlock_partner_as_items = True
+    if unlock_partner_as_items:
+
+        """Makes cranidos automatically leave"""
+        QUEST_PATCHES["q035"] += [
+            # PUSH 1		; @966 -> JMP loc_1177
+            (966, 0x00_D2_00_08)
+        ]
 
     for eventrect, writes in EVENTRECT_PATCHES.items():
         base_num = eventrect.strip("EventRect")[0:3]
         file_name = f"/data/Script/field/eventrect/er{base_num}/{eventrect}.fsb"
-        patch_script_in_place_singular_byte(rom, file_name, writes)
+        patch_script_in_place_four_bytes(rom, file_name, writes)
 
     for map_name, writes in FIELD_MAP_PATCHES.items():
         area = map_name.split("_")[0]
         file_name = f"/data/Script/field/map/{area}/{map_name}.fsb"
-        patch_script_in_place_singular_byte(rom, file_name, writes)
+        patch_script_in_place_four_bytes(rom, file_name, writes)
 
     for chapter, writes in CHAPTER_PATCHES.items():
         file_name = f"/data/Script/chapter/{chapter}.fsb"
-        patch_script_in_place_singular_byte(rom, file_name, writes)
+        patch_script_in_place_four_bytes(rom, file_name, writes)
+
+    for chapter, writes in QUEST_PATCHES.items():
+        file_name = f"/data/Script/quest/{chapter}.fsb"
+        patch_script_in_place_four_bytes(rom, file_name, writes)
 
 
+def code_patch(
+    rom: Rom,
+    world_package: str,
+    prsoa_patch_instance: "PokemonRSOAPatch",
+    files_dump: dict[str, bytes | bytearray],
+    slot_data,
+):
+    NOP_INSTRUCTION = 0xE3A00000
+    patches = []
 
+    # verify impact / coverage
+    patches.append(
+        (0x0327D0, NOP_INSTRUCTION),
+    )
+
+    data = bytearray(rom.arm9)
+
+    for offset, instruction in patches:
+        struct.pack_into("<I", data, offset, instruction)
+
+    rom.arm9 = bytes(data)
