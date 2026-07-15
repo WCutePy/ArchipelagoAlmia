@@ -169,6 +169,16 @@ def patch(
     """mission 4 anti-softlock"""
     """This code is placed in map_patch"""
 
+    """mission 5"""
+    """Allows leaving Puel Sea before completing mission 5.
+    a simple check is down to check if still in chapter 29, or not.
+    This check now always results in not being in chapter 29.
+    """
+    EVENTRECT_PATCHES["EventRect011011"] = [
+        #  PUSH 29		; @10  -> PUSH 0
+        (10, 0x00_00_00_10)
+    ]
+
     """partner patches"""
     randomize_partner_species = False
     if randomize_partner_species:
@@ -182,7 +192,7 @@ def patch(
         # will need to edit a form to be a partner?
         # will need to patch a lot of text
 
-    unlock_partner_as_items = True
+    unlock_partner_as_items = False
     if unlock_partner_as_items:
 
         """Makes cranidos automatically leave"""

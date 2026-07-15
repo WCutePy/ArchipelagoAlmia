@@ -67,10 +67,11 @@ def attach_pokemon_encounter(
         browser_name = get_instance_browser(instance_name)
         item_name = species.event_add_to_browser
         browser_loc = create_event_location(
-            world, browser_name,
+            world,
+            browser_name,
             pokemon_region,
             event_item_name=item_name,
-            place_locked=place_locked
+            place_locked=place_locked,
         )
         world.browser_before_capture.append(browser_loc)
 
@@ -78,11 +79,11 @@ def attach_pokemon_encounter(
         return pokemon_region
 
     if spawn_data.missable:
-        world.missable_captures.append(loc)
+        world.to_fill_capture_groups.missable.append(loc)
     elif spawn_data.one_time:
-        world.browser_captures.append(loc)
+        world.to_fill_capture_groups.browser.append(loc)
     else:
-        world.capture_captures.append(loc)
+        world.to_fill_capture_groups.capture.append(loc)
 
     return pokemon_region
 

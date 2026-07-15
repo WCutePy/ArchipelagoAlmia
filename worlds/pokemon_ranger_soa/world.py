@@ -1,7 +1,7 @@
 import copy
 import os
 from collections.abc import Mapping
-from dataclasses import fields, dataclass
+from dataclasses import fields, dataclass, field
 from typing import Any, Dict, List, Set, ClassVar
 
 import settings
@@ -55,6 +55,33 @@ class PokemonRangerSOASettings(settings.Group):
     )
 
 
+@dataclass
+class CaptureGroup:
+    locations: list[Location] = field(default_factory=list)
+    items: list[Item] = field(default_factory=list)
+
+    def append(self, other: Location | Item) -> None:
+        if isinstance(other, Location):
+            self.locations.append(other)
+        elif isinstance(other, Item):
+            self.items.append(other)
+        else:
+            raise ValueError(f"Expected a Location or Item, got {type(other).__name__}")
+
+    def __len__(self):
+        return len(self.locations)
+
+
+@dataclass
+class CaptureGroups:
+    missable: CaptureGroup = field(default_factory=CaptureGroup)
+    browser: CaptureGroup = field(default_factory=CaptureGroup)
+    capture: CaptureGroup = field(default_factory=CaptureGroup)
+
+    def __len__(self):
+        return len(self.missable) + len(self.browser) + len(self.capture)
+
+
 class PokemonRSOA(World):
     game = "PokemonRangerSOA"
     web = PokemonRangerSOAWebWorld()
@@ -71,13 +98,9 @@ class PokemonRSOA(World):
     origin_region_name = "Overworld"
 
     blacklisted_captures: Set[int]
+
+    to_fill_capture_groups: CaptureGroups
     included_browser_entries: Set[int]
-    missable_captures: List[Location]
-    missable_items: List[Item]
-    browser_captures: List[Location]
-    browser_items: List[Item]
-    capture_captures: List[Location]
-    capture_items: List[Item]
 
     exclude_field_moves: Set[str]
 
@@ -91,12 +114,7 @@ class PokemonRSOA(World):
         self.blacklisted_captures = set()
         self.included_browser_entries = set()
 
-        self.missable_captures = []
-        self.missable_items = []
-        self.browser_captures = []
-        self.browser_items = []
-        self.capture_captures = []
-        self.capture_items = []
+        self.to_fill_capture_groups = CaptureGroups()
         self.browser_before_capture = []
 
         self.exclude_field_moves = set()
@@ -192,13 +210,6 @@ class PokemonRSOA(World):
         items.create_all_items(self)
 
     def set_rules(self) -> None:
-        print(
-            "quick test:",
-            len(self.multiworld.get_unfilled_locations(self.player)),
-            len(self.multiworld.itempool),
-            len(self.capture_captures),
-            len(self.capture_items),
-        )
         rules.set_all_rules(self)
 
         if self.options.randomize_pokemon != RandomizePokemon.option_vanilla:

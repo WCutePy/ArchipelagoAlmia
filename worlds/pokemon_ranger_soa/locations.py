@@ -245,7 +245,7 @@ def create_pokemon_locations(
             None,
             world.player,
         )
-        world.capture_items.append(new_item)
+        world.to_fill_capture_groups.capture.append(new_item)
         already_used_ids.add(i)
 
     # TODO ensure all necessary field moves are inside the capture list *first*
@@ -277,7 +277,7 @@ def create_pokemon_locations(
             None,
             world.player,
         )
-        world.missable_items.append(new_item)
+        world.to_fill_capture_groups.missable.append(new_item)
 
 
 def add_field_move_events(world, pool, region):

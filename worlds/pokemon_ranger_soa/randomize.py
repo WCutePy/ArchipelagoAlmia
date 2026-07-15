@@ -24,20 +24,27 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     for item in my_progression_items:
         state.collect(item, True)
 
-    if len(world.capture_captures) != len(world.capture_items):
-        raise ValueError(f"{len(world.capture_captures)} != {len(world.capture_items)}")
+    if len(world.to_fill_capture_groups.capture) != len(
+        world.to_fill_capture_groups.capture.items
+    ):
+        raise ValueError(
+            f"{len(world.to_fill_capture_groups.capture)} != {len(world.to_fill_capture_groups.capture.items)}"
+        )
 
     fill_restrictive(
         world.multiworld,
         state,
-        locations=world.capture_captures,
-        item_pool=world.capture_items,
+        locations=world.to_fill_capture_groups.capture.locations,
+        item_pool=world.to_fill_capture_groups.capture.items,
         single_player_placement=True,
         swap=True,
         name="Randomize Pokémon",
     )
 
-    for loc, item in zip(world.missable_captures, world.missable_items):
+    for loc, item in zip(
+        world.to_fill_capture_groups.missable.locations,
+        world.to_fill_capture_groups.missable.items,
+    ):
         loc.item = item
 
     print("these are the important")
