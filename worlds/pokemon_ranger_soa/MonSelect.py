@@ -86,6 +86,12 @@ def sanitize_map_name(map_name: Union[str, int]) -> str:
     return map_name
 
 
+def is_ocean_party(map_name: str) -> bool:
+    if map_name[:4] in ["m011"]:
+        return True
+    return False
+
+
 @dataclass
 class MonSelect:
     world: ClassVar[Optional[PokemonRSOA]]
@@ -226,8 +232,7 @@ class MonSelect:
 
         if not self.include and not self.exclude:
             base = Has(field_move.event_can_use_field_move)
-            # if not on_self:
-            #     base &= Has(target)
+
             return base
 
         return has_field_move_item(self.world, field_move) & self.access_field_move(
@@ -254,8 +259,9 @@ class MonSelect:
         )
 
     def can_use_field_move(self, field_move: FieldMove) -> Rule:
+        return Has(field_move.event_can_use_field_move)
         if not self.include and not self.exclude:
-            return Has(field_move.event_can_use_field_move)
+            return ...
 
         return has_field_move_item(self.world, field_move) & self.access_field_move(
             field_move

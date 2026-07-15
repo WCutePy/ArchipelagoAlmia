@@ -23,7 +23,7 @@ from .events import (
 )
 from .locations import create_event_location
 from .options import RandomizePokemon
-from .MonSelect import MonSelect
+from .MonSelect import MonSelect, is_ocean_party
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -46,6 +46,8 @@ def attach_pokemon_encounter(
     ):
         place_locked = True
 
+    map_name = instance_name.split(".")[0]
+
     if spawn_data.missable:
         browser_name = get_instance_missable(instance_name)
         item_name = species.event_missable
@@ -54,7 +56,10 @@ def attach_pokemon_encounter(
         item_name = species.event_add_to_browser
     else:
         browser_name = get_instance_capture(instance_name)
-        item_name = species.event_can_capture
+        if is_ocean_party(map_name):
+            item_name = species.event_can_capture_ocean
+        else:
+            item_name = species.event_can_capture
     loc = create_event_location(
         world,
         browser_name,
@@ -73,7 +78,7 @@ def attach_pokemon_encounter(
             event_item_name=item_name,
             place_locked=place_locked,
         )
-        world.browser_before_capture.append(browser_loc)
+        world.browser_before_capture.append((loc, browser_loc))
 
     if place_locked:
         return pokemon_region
@@ -83,7 +88,10 @@ def attach_pokemon_encounter(
     elif spawn_data.one_time:
         world.to_fill_capture_groups.browser.append(loc)
     else:
-        world.to_fill_capture_groups.capture.append(loc)
+        if is_ocean_party(map_name):
+            world.to_fill_capture_groups.capture_ocean.append(loc)
+        else:
+            world.to_fill_capture_groups.capture.append(loc)
 
     return pokemon_region
 
@@ -181,6 +189,6 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions["Events"] = Region("Events", world.player, world.multiworld)
     regions["Overworld"].connect(regions["Events"], "Events region")
     for event in PREvent:
-        create_event_location(world, event.event_name, regions["Events"])
+        create_event_location(world, event.event_name, regions[event.map_name])
 
     return regions

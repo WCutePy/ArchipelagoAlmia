@@ -131,6 +131,10 @@ class FieldMove:
     def event_can_use_field_move(self):
         return f"EVENT_USE_FIELD-{self.category.name}-{self.level}"
 
+    @property
+    def event_can_use_field_move_ocean(self):
+        return f"EVENT_USE_FIELD_OCEAN-{self.category.name}-{self.level}"
+
     @classmethod
     def from_string(cls, string: str) -> "FieldMove":
         category_name, level_str = string.rsplit("_", 1)
@@ -186,6 +190,10 @@ class SpeciesData:
 
     @property
     def event_can_capture(self):
+        return f"EVENT_CAN_CAPTURE;{self.name}"
+
+    @property
+    def event_can_capture_ocean(self):
         return f"EVENT_CAN_CAPTURE;{self.name}"
 
     @property

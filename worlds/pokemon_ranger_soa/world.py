@@ -2,7 +2,7 @@ import copy
 import os
 from collections.abc import Mapping
 from dataclasses import fields, dataclass, field
-from typing import Any, Dict, List, Set, ClassVar
+from typing import Any, Dict, List, Set, ClassVar, Tuple
 
 import settings
 from BaseClasses import Tutorial, Location, Item, CollectionState, ItemClassification
@@ -77,9 +77,15 @@ class CaptureGroups:
     missable: CaptureGroup = field(default_factory=CaptureGroup)
     browser: CaptureGroup = field(default_factory=CaptureGroup)
     capture: CaptureGroup = field(default_factory=CaptureGroup)
+    capture_ocean: CaptureGroup = field(default_factory=CaptureGroup)
 
     def __len__(self):
-        return len(self.missable) + len(self.browser) + len(self.capture)
+        return (
+            len(self.missable)
+            + len(self.browser)
+            + len(self.capture)
+            + len(self.capture_ocean)
+        )
 
 
 class PokemonRSOA(World):
@@ -100,6 +106,7 @@ class PokemonRSOA(World):
     blacklisted_captures: Set[int]
 
     to_fill_capture_groups: CaptureGroups
+    browser_before_captures: List[Tuple[Location, Location]]
     included_browser_entries: Set[int]
 
     exclude_field_moves: Set[str]
@@ -107,6 +114,7 @@ class PokemonRSOA(World):
     modified_regions: Dict[str, MapData]
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
+    topology_present = True
 
     def __init__(self, multiworld, player):
         super(PokemonRSOA, self).__init__(multiworld, player)

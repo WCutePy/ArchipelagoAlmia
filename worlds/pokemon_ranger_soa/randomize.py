@@ -31,15 +31,19 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
             f"{len(world.to_fill_capture_groups.capture)} != {len(world.to_fill_capture_groups.capture.items)}"
         )
 
-    fill_restrictive(
-        world.multiworld,
-        state,
-        locations=world.to_fill_capture_groups.capture.locations,
-        item_pool=world.to_fill_capture_groups.capture.items,
-        single_player_placement=True,
-        swap=True,
-        name="Randomize Pokémon",
-    )
+    for party in [
+        world.to_fill_capture_groups.capture,
+        # world.to_fill_capture_groups.capture_ocean,
+    ]:
+        fill_restrictive(
+            world.multiworld,
+            state,
+            locations=party.locations,
+            item_pool=party.items,
+            single_player_placement=True,
+            swap=True,
+            name="Randomize Pokémon",
+        )
 
     for loc, item in zip(
         world.to_fill_capture_groups.missable.locations,
@@ -48,13 +52,12 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         loc.item = item
 
     print("these are the important")
-    for loc in world.browser_before_capture:
-        cap_loc_name = loc.name.replace("browser", "capture")
-        print(loc, cap_loc_name)
-        cap_loc = world.multiworld.get_location(cap_loc_name, world.player)
+    for cap_loc, browser_loc in world.browser_before_capture:
+        cap_loc = world.multiworld.get_location(cap_loc.name, world.player)
+
         item_name = cap_loc.item.name.replace("CAN_CAPTURE", "ADD_TO_BROWSER")
         assert "ADD_TO_BROWSER" in item_name
-        loc.item = PokemonRSOAItem(
+        browser_loc.item = PokemonRSOAItem(
             item_name,
             ItemClassification.progression_skip_balancing,
             None,

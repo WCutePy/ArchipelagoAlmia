@@ -86,11 +86,15 @@ def set_all_rules(world: PokemonRSOA) -> None:
     MonSelect.world = world
     full_map = MonSelect.get_rules_scope()
 
-    field_move_rules: Dict[FieldMove, Rule] = {}
+    field_move_rules: Dict[FieldMove, List[Rule]] = {}
     for i in world.included_browser_entries:
         pokemon = data.species[i]
 
-        base_rule = Has(pokemon.event_add_to_browser) | Has(pokemon.event_can_capture)
+        base_rule = (
+            Has(pokemon.event_add_to_browser)
+            | Has(pokemon.event_can_capture)
+            | Has(pokemon.event_can_capture_ocean)
+        )
         target_id = pokemon_to_target_id(pokemon.name.lower())
         if target_id is not None:
             target_rule = full_map.can_destroy_target_type(target_id)
@@ -107,29 +111,41 @@ def set_all_rules(world: PokemonRSOA) -> None:
             field_move = FieldMove(category=pokemon.field_move.category, level=j)
             current_rule = field_move_rules.get(field_move, None)
             if current_rule is None:
-                field_move_rules[field_move] = False_()
+                field_move_rules[field_move] = [False_(), False_()]
 
             if target_id is not None:
-                field_move_rules[field_move] |= (
+                field_move_rules[field_move][0] |= (
                     Has(pokemon.event_can_capture) & target_rule
+                )
+                field_move_rules[field_move][1] |= (
+                    Has(pokemon.event_can_capture_ocean) & target_rule
                 )
 
             else:
-                field_move_rules[field_move] |= Has(pokemon.event_can_capture)
+                field_move_rules[field_move][0] |= Has(pokemon.event_can_capture)
+                field_move_rules[field_move][1] |= Has(pokemon.event_can_capture_ocean)
 
     for field_move, pokemon_rules in field_move_rules.items():
-        field_move_rule = pokemon_rules & has_field_move_item(world, field_move)
+        field_move_rule = pokemon_rules[0] & has_field_move_item(world, field_move)
 
         try:
             field_move_location = get_location(
                 world, field_move.event_can_use_field_move
             )
+            world.set_rule(field_move_location, field_move_rule)
         except KeyError:
             logging.warning(
                 f"{field_move} is part of browser, but potentially not as capture"
             )
-            continue
-        world.set_rule(field_move_location, field_move_rule)
+
+        field_move_rule = pokemon_rules[1] & has_field_move_item(world, field_move)
+        try:
+            field_move_location = get_location(
+                world, field_move.event_can_use_field_move_ocean
+            )
+            world.set_rule(field_move_location, field_move_rule)
+        except KeyError:
+            logging.warning(f"{field_move} is not in ocean")
 
     # for region_name, region_data in world.modified_regions.items():
     #     if not full_map.region_included(region_name, region_data):
@@ -166,8 +182,7 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
 
     world.set_rule(
         get_pokemon_instance(world, "m001_002", 7),
-        full_map.can_destroy_target("m001_002", 3)
-        & full_map.can_destroy_target_type(pokemon_to_target_id("bonsly")),
+        full_map.can_destroy_target("m001_002", 3),
     )
 
     # for i in [6, 12]:
@@ -767,17 +782,17 @@ def set_mission_5_rules(world: PokemonRSOA):
             Has(get_mission_event(4)),
         )
 
-    """m011_001"""
-    world.set_rule(
-        get_connection(world, "m010_003", "m011_001"),
-        Has(get_mission_event(4)),
-    )
+    # """m011_001"""
+    # world.set_rule(
+    #     get_connection(world, "m010_003", "m011_001"),
+    #     Has(get_mission_event(4)),
+    # )
 
 
 def set_completion_condition(world) -> None:
 
     browser = world.options.capture_count_target.value
-    browser = 20  # 30
+    browser = 180  # 30
     missions = world.options.mission_clear_target.value
     mission = 4
     quests = 7  # 7

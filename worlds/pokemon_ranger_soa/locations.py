@@ -176,9 +176,6 @@ def create_pokemon_locations(
         add_field_move_events(world, possible_captures, field_move_region)
         return
 
-    missable_mons = 0
-    browser_mons = 0
-    capture_mons = 0
     already_used_ids: Set[int] = set()
     for loc in world.get_locations():
         if ".P." not in loc.name and "_P_" not in loc.name:
@@ -202,17 +199,10 @@ def create_pokemon_locations(
 
             continue
 
-        if "missable" in loc.name:
-            missable_mons += 1
-
-        if "browser" in loc.name:
-            browser_mons += 1
-
-        if "capture" in loc.name:
-            capture_mons += 1
-
-    print(browser_mons, capture_mons, already_used_ids)
-    # for event_loc in event_mons:     # TODO, but none are editable right now
+    missable_mons = len(world.to_fill_capture_groups.missable)
+    browser_mons = len(world.to_fill_capture_groups.browser)
+    capture_mons = len(world.to_fill_capture_groups.capture)
+    capture_ocean_mons = len(world.to_fill_capture_groups.capture_ocean)
 
     available_pool = [
         i
@@ -248,6 +238,22 @@ def create_pokemon_locations(
         world.to_fill_capture_groups.capture.append(new_item)
         already_used_ids.add(i)
 
+    ocean_captures = []
+    ocean_captures += world.random.choices(
+        available_pool, k=capture_ocean_mons - len(ocean_captures)
+    )
+
+    for i in ocean_captures:
+        mon = data.species[i]
+        new_item = PokemonRSOAItem(
+            mon.event_can_capture_ocean,
+            ItemClassification.progression_skip_balancing,
+            None,
+            world.player,
+        )
+        world.to_fill_capture_groups.capture_ocean.append(new_item)
+        already_used_ids.add(i)
+
     # TODO ensure all necessary field moves are inside the capture list *first*
 
     for i in already_used_ids:
@@ -264,7 +270,7 @@ def create_pokemon_locations(
     world.included_browser_entries |= already_used_ids
 
     field_move_region = regions["Overworld"]
-    add_field_move_events(world, one_each, field_move_region)
+    add_field_move_events(world, already_used_ids, field_move_region)
 
     missable_items = world.random.choices(
         list(world.included_browser_entries), k=missable_mons
@@ -294,3 +300,4 @@ def add_field_move_events(world, pool, region):
     field_moves = sorted(field_moves)
     for field_move in field_moves:
         create_event_location(world, field_move.event_can_use_field_move, region)
+        create_event_location(world, field_move.event_can_use_field_move_ocean, region)
