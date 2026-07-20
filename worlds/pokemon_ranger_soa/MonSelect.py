@@ -315,6 +315,7 @@ class MonSelect:
             3: cls.goal_forest_fire,
             4: cls.goal_mission_4,
             5: cls.goal_mission_5,
+            6: cls.goal_mission_6,
         }
 
         if cls.world.options.goal == Goal.option_mission_clear:
@@ -445,4 +446,13 @@ class MonSelect:
             PInstanceEvent.CRANIDOS,
             PInstanceEvent.WARTORTLE_WITH_CRANIDOS,
         ]
+        return base
+
+    @classmethod
+    def goal_mission_6(cls) -> MonSelect:
+        base = cls.goal_mission_5()
+
+        base.include |= {}
+
+        base.event_mon += []
         return base

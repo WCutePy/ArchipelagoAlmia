@@ -172,6 +172,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
         3: set_mission_3_rules,
         4: set_mission_4_rules,
         5: set_mission_5_rules,
+        6: set_mission_6_rules,
     }
 
     up_to_mission = world.options.mission_clear_target.value
@@ -852,6 +853,22 @@ def set_mission_5_rules(world: PokemonRSOA):
             get_location(world, loc),
             CanReachEntrance(get_pokemon_instance(world, "m011_005", 5).name),
         )
+
+
+def set_mission_6_rules(world: PokemonRSOA):
+
+    world.set_rule(
+        get_connection(world, "m010_001", "m014_003b"),
+        Has(get_mission_event(5)),
+    )
+
+    for to in ["m014_004", "m014_005"]:
+        world.set_rule(
+            get_connection(world, "m014_003b", to),
+            False_(),
+        )
+
+    """m014_001"""
 
 
 def set_completion_condition(world) -> None:

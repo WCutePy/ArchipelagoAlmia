@@ -14,3 +14,4 @@
 0x1B - 27 - After mission 3 back in ranger base, ranger rank 2 promotion
 0x1C - 28 - Mission 4
 0x1D - 29 - Post mission 4 complete, bring ollie
+0x1E - 30 - Post mission 5, lowered bridge
