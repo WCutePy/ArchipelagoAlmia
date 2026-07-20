@@ -11,13 +11,13 @@ from Options import Option
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData, SpeciesData
+from .data import data, MapData, SpeciesData, Party
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
 from .options import PokemonRSOAOptions, OPTION_GROUPS, RandomizePokemon
 from .MonSelect import MonSelect
-from .randomize import apply_randomized_pokemon
+from .randomize import apply_randomized_pokemon, early_place_random_restricted
 from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
 from Fill import FillError, fill_restrictive
 
@@ -79,13 +79,38 @@ class CaptureGroups:
     capture: CaptureGroup = field(default_factory=CaptureGroup)
     capture_ocean: CaptureGroup = field(default_factory=CaptureGroup)
 
+    browser_before_capture: List[Tuple[Location, Location]] = field(
+        default_factory=list
+    )
+    default_ids_used: Set = field(default_factory=set)
+    ocean_ids_used: Set = field(default_factory=set)
+
     def __len__(self):
         return (
             len(self.missable)
             + len(self.browser)
             + len(self.capture)
             + len(self.capture_ocean)
+            + len(self.browser_before_capture)
         )
+
+    def append_capture(self, other: Location | Item, party: Party):
+        if party == party.DEFAULT:
+            self.capture.append(other)
+        elif party == party.OCEAN:
+            self.capture_ocean.append(other)
+
+    @property
+    def get_ids_all(self) -> List[int]:
+        return sorted({*self.default_ids_used, *self.ocean_ids_used})
+
+    @property
+    def get_ids_default(self) -> List[int]:
+        return sorted(self.default_ids_used)
+
+    @property
+    def get_ids_ocean(self) -> List[int]:
+        return sorted(self.ocean_ids_used)
 
 
 class PokemonRSOA(World):
@@ -105,8 +130,7 @@ class PokemonRSOA(World):
 
     blacklisted_captures: Set[int]
 
-    to_fill_capture_groups: CaptureGroups
-    browser_before_captures: List[Tuple[Location, Location]]
+    capture_groups: CaptureGroups
     included_browser_entries: Set[int]
 
     exclude_field_moves: Set[str]
@@ -114,7 +138,7 @@ class PokemonRSOA(World):
     modified_regions: Dict[str, MapData]
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
-    topology_present = True
+    # topology_present = True
 
     def __init__(self, multiworld, player):
         super(PokemonRSOA, self).__init__(multiworld, player)
@@ -122,12 +146,19 @@ class PokemonRSOA(World):
         self.blacklisted_captures = set()
         self.included_browser_entries = set()
 
-        self.to_fill_capture_groups = CaptureGroups()
-        self.browser_before_capture = []
+        self.capture_groups = CaptureGroups()
 
         self.exclude_field_moves = set()
 
         self.modified_regions = copy.deepcopy(data.regions)
+        for map_name, map_indexes in MonSelect.randomize_false().include.items():
+            for i in map_indexes:
+                self.modified_regions[map_name].POKEMON_SPAWN[i].randomize = False
+        for map_name, map_indexes in MonSelect.browser_before_capture().include.items():
+            for i in map_indexes:
+                self.modified_regions[map_name].POKEMON_SPAWN[
+                    i
+                ].browser_before_capture = True
 
         self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
         MonSelect.world = self
@@ -207,6 +238,9 @@ class PokemonRSOA(World):
         #     if species.name not in possible_species
         # }
 
+        if self.options.randomize_pokemon != RandomizePokemon.option_vanilla:
+            early_place_random_restricted(self)
+
     def create_regions(self) -> None:
         all_regions = regions.create_and_connect_regions(self)
 
@@ -272,7 +306,7 @@ class PokemonRSOA(World):
 
         spoiler_handle.write("\nPokemon Statistics:\n")
         spoiler_handle.write(
-            f"  Unique Browser Captures: {len(self.included_browser_entries)}\n"
+            f"  Unique Browser Captures: {len(self.capture_groups.get_ids_all)}"
         )
         spoiler_handle.write(f"  Browser Instances: {browser_instances}\n")
         spoiler_handle.write(f"  Capture Instances: {capture_instances}\n")

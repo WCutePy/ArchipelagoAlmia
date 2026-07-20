@@ -11,6 +11,7 @@ from .data import (
     FieldMove,
     MapData,
     FieldMoveCategory,
+    Party,
 )
 from .events import (
     PInstanceEvent,
@@ -23,7 +24,7 @@ from .events import (
 )
 from .locations import create_event_location
 from .options import RandomizePokemon
-from .MonSelect import MonSelect, is_ocean_party
+from .MonSelect import MonSelect, get_party_type
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -47,6 +48,7 @@ def attach_pokemon_encounter(
         place_locked = True
 
     map_name = instance_name.split(".")[0]
+    party = get_party_type(map_name)
 
     if spawn_data.missable:
         browser_name = get_instance_missable(instance_name)
@@ -54,12 +56,17 @@ def attach_pokemon_encounter(
     elif spawn_data.one_time:
         browser_name = get_instance_browser(instance_name)
         item_name = species.event_add_to_browser
+        if place_locked:
+            world.capture_groups.default_ids_used.add(species.browser_id)
     else:
         browser_name = get_instance_capture(instance_name)
-        if is_ocean_party(map_name):
-            item_name = species.event_can_capture_ocean
-        else:
-            item_name = species.event_can_capture
+        item_name = species.event_can_capture(party)
+        if place_locked:
+            if party == Party.OCEAN:
+                world.capture_groups.ocean_ids_used.add(species.browser_id)
+            else:
+                world.capture_groups.default_ids_used.add(species.browser_id)
+
     loc = create_event_location(
         world,
         browser_name,
@@ -78,20 +85,17 @@ def attach_pokemon_encounter(
             event_item_name=item_name,
             place_locked=place_locked,
         )
-        world.browser_before_capture.append((loc, browser_loc))
+        world.capture_groups.browser_before_capture.append((loc, browser_loc))
 
     if place_locked:
         return pokemon_region
 
     if spawn_data.missable:
-        world.to_fill_capture_groups.missable.append(loc)
+        world.capture_groups.missable.append(loc)
     elif spawn_data.one_time:
-        world.to_fill_capture_groups.browser.append(loc)
+        world.capture_groups.browser.append(loc)
     else:
-        if is_ocean_party(map_name):
-            world.to_fill_capture_groups.capture_ocean.append(loc)
-        else:
-            world.to_fill_capture_groups.capture.append(loc)
+        world.capture_groups.append_capture(loc, party)
 
     return pokemon_region
 
@@ -109,7 +113,6 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     """Logic chain"""
     MonSelect.world = world
     full_map = MonSelect.get_rules_scope()
-    browser_before_captures = MonSelect.browser_before_capture()
 
     for region_name, region_data in world.modified_regions.items():
 
@@ -136,8 +139,6 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
             if not full_map.instance_included(region_name, i):
                 continue
-            if browser_before_captures.instance_included(region_name, i):
-                spawn_data.browser_before_capture = True
             pokemon_instance = get_instance_base(region_name, i)
             species = data.form_id_to_species[spawn_data.SPECIES_ID]
 
@@ -183,8 +184,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             regions[event.map_name],
         )
         regions[event.event_name] = p_region
-
-    field_move_region = regions["Overworld"]
+        world.capture_groups.default_ids_used.add(pokemon.browser_id)
 
     regions["Events"] = Region("Events", world.player, world.multiworld)
     regions["Overworld"].connect(regions["Events"], "Events region")

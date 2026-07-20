@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-from typing import Dict, TYPE_CHECKING, Optional
+from typing import Dict, TYPE_CHECKING, Optional, List, Tuple
 
 from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
@@ -12,6 +12,24 @@ if TYPE_CHECKING:
     from .world import PokemonRSOA
 
 
+def apply_place_on_random(
+    world: PokemonRSOA, options: Dict[str, List[int]], form_id: int
+) -> Tuple[str, int]:
+    options = [(key, value) for key, values in options.items() for value in values]
+    option = world.random.choice(options)
+    map_name, index = option
+    spawn = world.modified_regions[map_name].POKEMON_SPAWN[index]
+    spawn.set_form(form_id)
+    spawn.randomize = False
+    return option
+
+
+def early_place_random_restricted(world: PokemonRSOA) -> None:
+    """place surf in puel sea"""
+    options = {"m011_004": [1, 2, 3]}
+    apply_place_on_random(world, options, 0x06A)
+
+
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     my_progression_items = [
         item
@@ -20,39 +38,61 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         and item.classification & ItemClassification.progression
     ]
 
-    state = CollectionState(world.multiworld)
-    for item in my_progression_items:
-        state.collect(item, True)
-
-    if len(world.to_fill_capture_groups.capture) != len(
-        world.to_fill_capture_groups.capture.items
-    ):
+    if len(world.capture_groups.capture) != len(world.capture_groups.capture.items):
         raise ValueError(
-            f"{len(world.to_fill_capture_groups.capture)} != {len(world.to_fill_capture_groups.capture.items)}"
+            f"Default party: {len(world.capture_groups.capture)} != {len(world.capture_groups.capture.items)}"
         )
 
-    for party in [
-        world.to_fill_capture_groups.capture,
-        # world.to_fill_capture_groups.capture_ocean,
-    ]:
+    if len(world.capture_groups.capture_ocean) != len(
+        world.capture_groups.capture_ocean.items
+    ):
+        raise ValueError(
+            f"Ocean party: {len(world.capture_groups.capture_ocean)} != {len(world.capture_groups.capture_ocean.items)}"
+        )
+
+    party = world.capture_groups.capture
+
+    state_default = CollectionState(world.multiworld)
+    for item in my_progression_items:
+        state_default.collect(item, True)
+    fill_restrictive(
+        world.multiworld,
+        state_default,
+        locations=party.locations,
+        item_pool=party.items,
+        single_player_placement=True,
+        swap=True,
+        name="Randomize Pokémon - Default",
+    )
+
+    party = world.capture_groups.capture_ocean
+    if len(party) > 0:
+        state_ocean = CollectionState(world.multiworld)
+        for item in my_progression_items:
+            state_default.collect(item, True)
+        # for i in range():
+        #     for j in range():
+        #         try:
+        #             state_ocean
+        #         except:
+        #             pass
         fill_restrictive(
             world.multiworld,
-            state,
+            state_default,
             locations=party.locations,
             item_pool=party.items,
             single_player_placement=True,
             swap=True,
-            name="Randomize Pokémon",
+            name="Randomize Pokémon - Ocean",
         )
 
     for loc, item in zip(
-        world.to_fill_capture_groups.missable.locations,
-        world.to_fill_capture_groups.missable.items,
+        world.capture_groups.missable.locations,
+        world.capture_groups.missable.items,
     ):
         loc.item = item
 
-    print("these are the important")
-    for cap_loc, browser_loc in world.browser_before_capture:
+    for cap_loc, browser_loc in world.capture_groups.browser_before_capture:
         cap_loc = world.multiworld.get_location(cap_loc.name, world.player)
 
         item_name = cap_loc.item.name.replace("CAN_CAPTURE", "ADD_TO_BROWSER")
@@ -67,25 +107,29 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     name_to_mon: Dict[str, SpeciesData] = {}
     for i, mon in data.species.items():
         name_to_mon[mon.name] = mon
-    for loc in world.multiworld.get_locations(world.player):
-        if not (loc.name.startswith("m") and ".P." in loc.name):
-            continue
-        region_name, _, i = loc.name.split(".")
-        i = int(i.strip("_capturebrowsermissable"))
-        mon_name = loc.item.name.split(";")[1]
-        mon: SpeciesData = name_to_mon[mon_name]
+    try:
+        for loc in world.multiworld.get_locations(world.player):
+            if not (loc.name.startswith("m") and ".P." in loc.name):
+                continue
+            region_name, _, i = loc.name.split(".")
+            i = int(i.strip("_capturebrowsermissableocean"))
+            mon_name = loc.item.name.split(";")[1]
+            mon: SpeciesData = name_to_mon[mon_name]
 
-        region_data = world.modified_regions.get(region_name)
-        region_data.modified = True
+            region_data = world.modified_regions.get(region_name)
+            region_data.modified = True
 
-        if len(mon.form_ids) == 1:
-            species_id = mon.form_ids[0]
-        else:
-            species_id = world.random.choice(mon.form_ids)
+            if len(mon.form_ids) == 1:
+                species_id = mon.form_ids[0]
+            else:
+                species_id = world.random.choice(mon.form_ids)
 
-        region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
-        region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name
-
+            region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
+            region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name
+    except:
+        print("um wat")
+        print(loc, mon_name, loc.item)
+        raise
     apply_manually_fixed_pokemon(world)
 
 

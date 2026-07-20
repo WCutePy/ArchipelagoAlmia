@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from enum import StrEnum
 from typing import (
     TYPE_CHECKING,
     Dict,
@@ -34,6 +35,8 @@ from .data import (
     pokemon_to_target_id,
     FieldMoveCategory,
     MapData,
+    Party,
+    sanitize_map_name,
 )
 from .events import (
     PREvent,
@@ -78,18 +81,20 @@ mission 3
 """
 
 
-def sanitize_map_name(map_name: Union[str, int]) -> str:
-    if isinstance(map_name, int):
-        map_name = data.map_id_to_region_name[map_name]
-    elif map_name.lower().startswith("0x"):
-        map_name = data.map_id_to_region_name[int(map_name, 16)]
-    return map_name
-
-
-def is_ocean_party(map_name: str) -> bool:
+def get_party_type(map_name: str) -> Party:
     if map_name[:4] in ["m011"]:
-        return True
-    return False
+        return Party.OCEAN
+    return Party.DEFAULT
+
+
+def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
+    if world.options.field_move_item == FieldMoveItem.option_vanilla:
+        return True_()
+
+    return Has(
+        field_move.category.item_name,
+        1,
+    )
 
 
 @dataclass
@@ -230,18 +235,20 @@ class MonSelect:
             self.world.modified_regions[map_name].TARGETS[i].TARGET_ID
         ]
 
-        if not self.include and not self.exclude:
-            base = Has(field_move.event_can_use_field_move)
+        party: Party = get_party_type(map_name)
 
-            return base
+        base = Has(field_move.event_can_use_field_move_party(party))
+        return base
 
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
+        # if not self.include and not self.exclude:
+        #
+        #
+        # return has_field_move_item(self.world, field_move) & self.access_field_move(
+        #     field_move
+        # )
 
     def can_destroy_target_type(
-        self,
-        target_id: int,
+        self, target_id: int, party: Party = Party.DEFAULT
     ) -> Rule:
         """
         The int of the target
@@ -250,22 +257,25 @@ class MonSelect:
         any len >=1 iterable accounts only the specified members in the iterable
         """
         field_move: FieldMove = data.target_field_move_requirements[target_id]
+        return Has(field_move.event_can_use_field_move_party(party))
 
-        if not self.include and not self.exclude:
-            return Has(field_move.event_can_use_field_move)
+        # if not self.include and not self.exclude:
+        #     return Has(field_move.event_can_use_field_move)
+        #
+        # return has_field_move_item(self.world, field_move) & self.access_field_move(
+        #     field_move
+        # )
 
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
-
-    def can_use_field_move(self, field_move: FieldMove) -> Rule:
-        return Has(field_move.event_can_use_field_move)
-        if not self.include and not self.exclude:
-            return ...
-
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
+    def can_use_field_move(
+        self, field_move: FieldMove, party: Party = Party.DEFAULT
+    ) -> Rule:
+        return Has(field_move.event_can_use_field_move_party(party))
+        # if not self.include and not self.exclude:
+        #
+        #
+        # return has_field_move_item(self.world, field_move) & self.access_field_move(
+        #     field_move
+        # )
 
     @classmethod
     def full_map(cls) -> MonSelect:
@@ -278,9 +288,20 @@ class MonSelect:
                 "m006_001": [],
                 "m010_001": [],
                 "m010_002": [],
+                "m010_003": [
+                    14,
+                    13,
+                    12,
+                    10,
+                    9,
+                ],
                 "m010_022": [],
             }
         )
+
+    @classmethod
+    def randomize_false(cls) -> MonSelect:
+        return MonSelect(include={"m011_005": [5]})
 
     @classmethod
     def get_rules_scope(cls) -> MonSelect:
@@ -411,19 +432,17 @@ class MonSelect:
     def goal_mission_5(cls) -> MonSelect:
         base = cls.goal_mission_4()
 
+        base.include |= {
+            "m011_001": [],
+            "m011_002": [],
+            "m011_003": [],
+            "m011_004": [],
+            "m011_005": [5],
+        }
+
         base.event_mon += [
             PInstanceEvent.KRICKETOT,
             PInstanceEvent.CRANIDOS,
             PInstanceEvent.WARTORTLE_WITH_CRANIDOS,
         ]
         return base
-
-
-def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
-    if world.options.field_move_item == FieldMoveItem.option_vanilla:
-        return True_()
-
-    return Has(
-        field_move.category.item_name,
-        1,
-    )

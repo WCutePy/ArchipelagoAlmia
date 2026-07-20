@@ -41,7 +41,7 @@
   },
   "MISSION_05": {
     "label": "Mission 05: Recover a Key from Sharpedo!",
-    "parent_region": "m001_001",
+    "parent_region": "m011_005",
     "default_item": null,
     "addresses": null,
     "flag": null,

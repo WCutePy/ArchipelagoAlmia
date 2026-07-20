@@ -27,6 +27,7 @@ from rule_builder.rules import (
     False_,
     HasFromList,
     HasFromListUnique,
+    CanReachEntrance,
 )
 from .data import (
     data,
@@ -35,6 +36,7 @@ from .data import (
     LocationCategory,
     pokemon_to_target_id,
     FieldMoveCategory,
+    Party,
 )
 from .events import (
     PREvent,
@@ -87,18 +89,29 @@ def set_all_rules(world: PokemonRSOA) -> None:
     full_map = MonSelect.get_rules_scope()
 
     field_move_rules: Dict[FieldMove, List[Rule]] = {}
-    for i in world.included_browser_entries:
+    for i in world.capture_groups.get_ids_all:
         pokemon = data.species[i]
 
-        base_rule = (
-            Has(pokemon.event_add_to_browser)
-            | Has(pokemon.event_can_capture)
-            | Has(pokemon.event_can_capture_ocean)
-        )
         target_id = pokemon_to_target_id(pokemon.name.lower())
-        if target_id is not None:
-            target_rule = full_map.can_destroy_target_type(target_id)
-            base_rule &= target_rule
+
+        if target_id is None:
+            base_rule = (
+                Has(pokemon.event_add_to_browser)
+                | Has(pokemon.event_can_capture())
+                | Has(pokemon.event_can_capture(Party.OCEAN))
+            )
+        else:
+            base_rule = (
+                Has(pokemon.event_add_to_browser)
+                | (
+                    Has(pokemon.event_can_capture())
+                    & full_map.can_destroy_target_type(target_id)
+                )
+                | (
+                    Has(pokemon.event_can_capture(Party.OCEAN))
+                    & full_map.can_destroy_target_type(target_id, Party.OCEAN)
+                )
+            )
 
         world.set_rule(
             get_location(world, pokemon.location_capture_name),
@@ -114,38 +127,32 @@ def set_all_rules(world: PokemonRSOA) -> None:
                 field_move_rules[field_move] = [False_(), False_()]
 
             if target_id is not None:
-                field_move_rules[field_move][0] |= (
-                    Has(pokemon.event_can_capture) & target_rule
-                )
-                field_move_rules[field_move][1] |= (
-                    Has(pokemon.event_can_capture_ocean) & target_rule
-                )
+                field_move_rules[field_move][0] |= Has(
+                    pokemon.event_can_capture()
+                ) & full_map.can_destroy_target_type(target_id)
+                field_move_rules[field_move][1] |= Has(
+                    pokemon.event_can_capture(Party.OCEAN)
+                ) & full_map.can_destroy_target_type(target_id, Party.OCEAN)
 
             else:
-                field_move_rules[field_move][0] |= Has(pokemon.event_can_capture)
-                field_move_rules[field_move][1] |= Has(pokemon.event_can_capture_ocean)
+                field_move_rules[field_move][0] |= Has(pokemon.event_can_capture())
+                field_move_rules[field_move][1] |= Has(
+                    pokemon.event_can_capture(Party.OCEAN)
+                )
 
     for field_move, pokemon_rules in field_move_rules.items():
-        field_move_rule = pokemon_rules[0] & has_field_move_item(world, field_move)
+        for i, party in enumerate([Party.DEFAULT, Party.OCEAN]):
+            field_move_rule = pokemon_rules[i] & has_field_move_item(world, field_move)
 
-        try:
-            field_move_location = get_location(
-                world, field_move.event_can_use_field_move
-            )
-            world.set_rule(field_move_location, field_move_rule)
-        except KeyError:
-            logging.warning(
-                f"{field_move} is part of browser, but potentially not as capture"
-            )
-
-        field_move_rule = pokemon_rules[1] & has_field_move_item(world, field_move)
-        try:
-            field_move_location = get_location(
-                world, field_move.event_can_use_field_move_ocean
-            )
-            world.set_rule(field_move_location, field_move_rule)
-        except KeyError:
-            logging.warning(f"{field_move} is not in ocean")
+            try:
+                field_move_location = get_location(
+                    world, field_move.event_can_use_field_move_party(party)
+                )
+                world.set_rule(field_move_location, field_move_rule)
+            except KeyError:
+                logging.warning(
+                    f"{field_move} is part of browser, but potentially not as capture - {party}"
+                )
 
     # for region_name, region_data in world.modified_regions.items():
     #     if not full_map.region_included(region_name, region_data):
@@ -178,7 +185,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
-    full_map = MonSelect.full_map()
+    full_map = MonSelect.get_rules_scope()
 
     world.set_rule(
         get_pokemon_instance(world, "m001_002", 7),
@@ -340,29 +347,24 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 
     """Mission 2 - Investigate the Marine Cave!"""
     """Marine cave"""
-    marine_cave = MonSelect.full_map()
-    optional_marine = MonSelect.full_map()
+    full_map = MonSelect.get_rules_scope()
 
-    can_destroy_wooden_gate = marine_cave.can_destroy_target(
+    can_destroy_wooden_gate = full_map.can_destroy_target(
         "m006_001", 2
-    ) | marine_cave.can_destroy_target("m006_001", 3)
+    ) | full_map.can_destroy_target("m006_001", 3)
 
     world.set_rule(
         get_connection(world, "m006_001", "m006_002"), can_destroy_wooden_gate
     )
     world.set_rule(
         get_connection(world, "m006_001", "m006_003"),
-        can_destroy_wooden_gate & optional_marine.can_destroy_target("m006_001", 1),
-    )
-    world.set_rule(
-        get_pokemon_instance(world, "m006_003", 0),
-        optional_marine.can_destroy_target_type(pokemon_to_target_id("graveler")),
+        can_destroy_wooden_gate & full_map.can_destroy_target("m006_001", 1),
     )
 
     world.set_rule(
         get_location(world, get_instance_target("m006_001", 0)),
         can_destroy_wooden_gate
-        & marine_cave.can_destroy_target("m006_001", 0),  # red gigaremo
+        & full_map.can_destroy_target("m006_001", 0),  # red gigaremo
     )
 
     # The pokemon can be added to browser before destroying the machine
@@ -380,14 +382,9 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
             can_destroy_wooden_gate,
         )
 
-    for i in [5, 6]:
-        world.set_rule(
-            get_pokemon_instance(world, "m006_002", i),
-            optional_marine.can_destroy_target_type(pokemon_to_target_id("geodude")),
-        )
     world.set_rule(
         get_connection(world, "m006_002", "m006_004"),
-        optional_marine.can_destroy_target("m006_002", 0),  # rock crush 2
+        full_map.can_destroy_target("m006_002", 0),  # rock crush 2
     )  # optional when randomized pokémon
 
     mission_2 = data.locations["MISSION_02"].label
@@ -408,7 +405,7 @@ def set_mission_3_rules(world: PokemonRSOA):
         Has(get_mission_event(2)),
     )
 
-    all_maps = MonSelect.full_map()
+    all_maps = MonSelect.get_rules_scope()
 
     for loc in [data.locations["QUEST_48"].label, get_quest_event(48)]:
         world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
@@ -425,7 +422,7 @@ def set_mission_3_rules(world: PokemonRSOA):
 
     world.set_rule(
         get_location(world, PREvent.GIVE_HAPPINY_TO_MIMI.event_name),
-        Has(data.species[22].event_can_capture)
+        Has(data.species[22].event_can_capture())
         & CanReachRegion(world.modified_regions["m009_002"].HUMAN_NAME),
     )
 
@@ -510,14 +507,14 @@ def set_mission_3_rules(world: PokemonRSOA):
 
 
 def set_mission_4_rules(world: PokemonRSOA):
-    all_maps = MonSelect.full_map()
+    all_maps = MonSelect.get_rules_scope()
 
     """quests"""
 
     for loc in [data.locations["QUEST_03"].label, get_quest_event(3)]:
         world.set_rule(
             get_location(world, loc),
-            Has(get_mission_event(3)) & Has(data.species[59].event_can_capture),
+            Has(get_mission_event(3)) & Has(data.species[59].event_can_capture()),
         )
 
     """
@@ -758,7 +755,7 @@ def set_mission_4_rules(world: PokemonRSOA):
 
 
 def set_mission_5_rules(world: PokemonRSOA):
-    all_maps = MonSelect.full_map()
+    all_maps = MonSelect.get_rules_scope()
 
     for loc in [data.locations["QUEST_02"].label, get_quest_event(2)]:
         world.set_rule(
@@ -782,28 +779,105 @@ def set_mission_5_rules(world: PokemonRSOA):
             Has(get_mission_event(4)),
         )
 
-    # """m011_001"""
-    # world.set_rule(
-    #     get_connection(world, "m010_003", "m011_001"),
-    #     Has(get_mission_event(4)),
-    # )
+    """m011_001"""
+    world.set_rule(
+        get_connection(world, "m010_003", "m011_001"),
+        Has(get_mission_event(4)),
+    )
+
+    world.set_rule(get_connection(world, "m011_001", "m201_002"), False_())
+    world.set_rule(get_connection(world, "m011_001", "m201_003"), False_())
+
+    access_north_right = all_maps.can_destroy_target(
+        "m011_001",
+        0,
+    ) | all_maps.can_destroy_target("m011_001", 1)
+
+    world.set_rule(
+        get_connection(world, "m011_001", "m011_003"),
+        access_north_right,
+    )
+
+    for i in [6, 8]:
+        world.set_rule(
+            get_pokemon_instance(world, "m011_001", i),
+            access_north_right,
+        )
+    """m011_003"""
+    access_east_south = all_maps.can_destroy_target("m011_003", 0)
+    for i in [9, 10, 11]:
+        world.set_rule(
+            get_pokemon_instance(world, "m011_003", i),
+            access_east_south,
+        )
+
+    world.set_rule(
+        get_connection(world, "m011_003", "m011_002"),
+        access_east_south,
+    )
+
+    """m011_002"""
+    world.set_rule(
+        get_pokemon_instance(world, "m011_002", 8),
+        all_maps.can_destroy_target("m011_002", 0)
+        | all_maps.can_destroy_target("m011_002", 1),
+    )
+
+    access_south_right = access_north_right & access_east_south
+    # normal: 1, 8, 3, 0, 5
+    for i in [2, 4, 6, 7]:
+        world.set_rule(
+            get_pokemon_instance(world, "m011_002", i),
+            access_south_right,
+        )
+
+    world.set_rule(
+        get_connection(world, "m011_002", "m011_003"),
+        access_south_right,  # maybe change to the inward connection
+    )
+
+    swim = FieldMove(category=23, level=1)
+    world.set_rule(
+        get_connection(
+            world,
+            "m011_002",
+            "m011_004",
+        ),
+        access_south_right & all_maps.can_use_field_move(swim, party=Party.OCEAN),
+    )
+
+    """m011_005"""
+    for loc in [data.locations["MISSION_05"].label, get_mission_event(5)]:
+        world.set_rule(
+            get_location(world, loc),
+            CanReachEntrance(get_pokemon_instance(world, "m011_005", 5).name),
+        )
 
 
 def set_completion_condition(world) -> None:
 
-    browser = world.options.capture_count_target.value
+    # browser = world.options.capture_count_target.value
     browser = 180  # 30
+    browser = 100
     missions = world.options.mission_clear_target.value
-    mission = 4
+    # missions = 6
     quests = 7  # 7
+    # quests = 0
 
     capture_check = []
-    for i in world.included_browser_entries:
+    for i in world.capture_groups.get_ids_all:
         mon = data.species[i]
         capture_check.append(mon.event_add_to_browser)
-        capture_check.append(mon.event_can_capture)
+        capture_check.append(mon.event_can_capture())
 
-    has_captures = HasFromListUnique(*capture_check, count=browser)
+    ocean_check = []
+    for i in world.capture_groups.get_ids_ocean:
+        mon = data.species[i]
+        ocean_check.append(mon.event_can_capture(party=Party.OCEAN))
+
+    has_captures = HasFromListUnique(*capture_check, count=browser) & HasFromListUnique(
+        *ocean_check, count=len(ocean_check)
+    )
     has_missions = True_()
     count = 0
     for loc_name, loc_data in data.locations.items():
@@ -818,5 +892,6 @@ def set_completion_condition(world) -> None:
         *[get_quest_event(i) for i in range(1, 61)], count=quests
     )
     completion_condition = has_captures & has_missions & has_quests
-
+    # completion_condition = Has("EVENT_USE_FIELD-CUT-1")
+    # completion_condition = has_captures
     world.set_completion_rule(completion_condition)

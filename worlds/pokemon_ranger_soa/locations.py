@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Dict, Set, Optional
 
 from BaseClasses import ItemClassification, Location, Region, LocationProgressType
 
-from .data import data, LocationData, LocationCategory, SpeciesData, FieldMove
+from .data import data, LocationData, LocationCategory, SpeciesData, FieldMove, Party
 from .events import PInstanceEvent
 from .items import PokemonRSOAItem
 from .options import RandomizePokemon
@@ -143,66 +143,31 @@ def create_pokemon_locations(
 
     full_map = MonSelect.get_rules_scope()
     if world.options.randomize_pokemon == RandomizePokemon.option_vanilla:
-        possible_captures = set()
 
-        for region_name, region_data in world.modified_regions.items():
-            if not full_map.region_included(region_name, region_data):
-                continue
-            for i, mon_data in region_data.POKEMON_SPAWN.items():
-                if not full_map.instance_included(region_name, i):
-                    continue
-
-                if mon_data.missable:
-                    continue
-                pokemon = data.form_id_to_species[mon_data.SPECIES_ID]
-                if not mon_data.one_time:
-                    possible_captures.add(pokemon.browser_id)
-
-                if pokemon.browser_id in world.included_browser_entries:
-                    continue
-                """Does currently not support blacklisting"""
-                location_name = pokemon.location_capture_name
-                new_location = PokemonRSOALocation(
-                    world.player,
-                    location_name,
-                    world.location_name_to_id[location_name],
-                    region,
-                )
-                region.locations.append(new_location)
-
-                world.included_browser_entries.add(pokemon.browser_id)
+        for pokemon_id in world.capture_groups.get_ids_all:
+            pokemon = data.species[pokemon_id]
+            location_name = pokemon.location_capture_name
+            new_location = PokemonRSOALocation(
+                world.player,
+                location_name,
+                world.location_name_to_id[location_name],
+                region,
+            )
+            region.locations.append(new_location)
 
         field_move_region = regions["Overworld"]
-        add_field_move_events(world, possible_captures, field_move_region)
+        add_field_move_events(
+            world, world.capture_groups.get_ids_default, field_move_region
+        )
+        add_field_move_events(
+            world, world.capture_groups.get_ids_ocean, field_move_region
+        )
         return
 
-    already_used_ids: Set[int] = set()
-    for loc in world.get_locations():
-        if ".P." not in loc.name and "_P_" not in loc.name:
-            continue
-
-        if loc.locked:
-            if "EVENT_P_" in loc.name:
-                name = "_".join(loc.name.split("_")[2:-1])
-                value: PInstanceEvent = getattr(PInstanceEvent, name)
-                already_used_ids.add(value.browser_id)
-
-            elif loc.item is not None and "EVENT" in loc.item.name:
-                if "missable" in loc.item.name.lower():
-                    continue
-                m, _, i = loc.name.split(".")
-                i = i.lower().strip("_capturebowsmisbl")
-                b_id = data.form_id_to_species[
-                    world.modified_regions[m].POKEMON_SPAWN[int(i)].SPECIES_ID
-                ].browser_id
-                already_used_ids.add(b_id)
-
-            continue
-
-    missable_mons = len(world.to_fill_capture_groups.missable)
-    browser_mons = len(world.to_fill_capture_groups.browser)
-    capture_mons = len(world.to_fill_capture_groups.capture)
-    capture_ocean_mons = len(world.to_fill_capture_groups.capture_ocean)
+    missable_mons = len(world.capture_groups.missable)
+    browser_mons = len(world.capture_groups.browser)
+    capture_mons = len(world.capture_groups.capture)
+    capture_ocean_mons = len(world.capture_groups.capture_ocean)
 
     available_pool = [
         i
@@ -230,15 +195,15 @@ def create_pokemon_locations(
     for i in captures:
         mon = data.species[i]
         new_item = PokemonRSOAItem(
-            mon.event_can_capture,
+            mon.event_can_capture(),
             ItemClassification.progression_skip_balancing,
             None,
             world.player,
         )
-        world.to_fill_capture_groups.capture.append(new_item)
-        already_used_ids.add(i)
+        world.capture_groups.capture.append(new_item)
+        world.capture_groups.default_ids_used.add(i)
 
-    ocean_captures = []
+    ocean_captures = [91]
     ocean_captures += world.random.choices(
         available_pool, k=capture_ocean_mons - len(ocean_captures)
     )
@@ -246,17 +211,17 @@ def create_pokemon_locations(
     for i in ocean_captures:
         mon = data.species[i]
         new_item = PokemonRSOAItem(
-            mon.event_can_capture_ocean,
+            mon.event_can_capture(Party.OCEAN),
             ItemClassification.progression_skip_balancing,
             None,
             world.player,
         )
-        world.to_fill_capture_groups.capture_ocean.append(new_item)
-        already_used_ids.add(i)
+        world.capture_groups.capture_ocean.append(new_item)
+        world.capture_groups.ocean_ids_used.add(i)
 
     # TODO ensure all necessary field moves are inside the capture list *first*
 
-    for i in already_used_ids:
+    for i in world.capture_groups.get_ids_all:
         mon = data.species[i]
 
         location_name = mon.location_capture_name
@@ -267,13 +232,20 @@ def create_pokemon_locations(
             region,
         )
         region.locations.append(new_location)
-    world.included_browser_entries |= already_used_ids
 
     field_move_region = regions["Overworld"]
-    add_field_move_events(world, already_used_ids, field_move_region)
+    add_field_move_events(
+        world,
+        world.capture_groups.get_ids_default,
+        field_move_region,
+        party=Party.DEFAULT,
+    )
+    add_field_move_events(
+        world, world.capture_groups.get_ids_ocean, field_move_region, party=Party.OCEAN
+    )
 
     missable_items = world.random.choices(
-        list(world.included_browser_entries), k=missable_mons
+        world.capture_groups.get_ids_all, k=missable_mons
     )
     for i in missable_items:
         mon = data.species[i]
@@ -283,10 +255,10 @@ def create_pokemon_locations(
             None,
             world.player,
         )
-        world.to_fill_capture_groups.missable.append(new_item)
+        world.capture_groups.missable.append(new_item)
 
 
-def add_field_move_events(world, pool, region):
+def add_field_move_events(world, pool, region, party: Party = Party.DEFAULT):
     field_moves: Set[FieldMove] = set()
 
     for i in pool:
@@ -299,5 +271,6 @@ def add_field_move_events(world, pool, region):
 
     field_moves = sorted(field_moves)
     for field_move in field_moves:
-        create_event_location(world, field_move.event_can_use_field_move, region)
-        create_event_location(world, field_move.event_can_use_field_move_ocean, region)
+        create_event_location(
+            world, field_move.event_can_use_field_move_party(party), region
+        )

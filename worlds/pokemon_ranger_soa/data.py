@@ -108,6 +108,11 @@ class FieldMoveCategory(IntEnum):
         return f"Progressive {self.name.replace("_", " ").title()}"
 
 
+class Party(StrEnum):
+    DEFAULT = ""
+    OCEAN = "_OCEAN"
+
+
 @dataclass(frozen=True)
 class FieldMove:
     category: FieldMoveCategory
@@ -127,13 +132,8 @@ class FieldMove:
     def satisfies(self, required: "FieldMove") -> bool:
         return self.category == required.category and self.level >= required.level
 
-    @property
-    def event_can_use_field_move(self):
-        return f"EVENT_USE_FIELD-{self.category.name}-{self.level}"
-
-    @property
-    def event_can_use_field_move_ocean(self):
-        return f"EVENT_USE_FIELD_OCEAN-{self.category.name}-{self.level}"
+    def event_can_use_field_move_party(self, party: Party):
+        return f"EVENT_USE_FIELD{party.value}-{self.category.name}-{self.level}"
 
     @classmethod
     def from_string(cls, string: str) -> "FieldMove":
@@ -188,13 +188,8 @@ class SpeciesData:
     def event_add_to_browser(self):
         return f"EVENT_ADD_TO_BROWSER;{self.name}"
 
-    @property
-    def event_can_capture(self):
-        return f"EVENT_CAN_CAPTURE;{self.name}"
-
-    @property
-    def event_can_capture_ocean(self):
-        return f"EVENT_CAN_CAPTURE;{self.name}"
+    def event_can_capture(self, party: Party = Party.DEFAULT):
+        return f"EVENT_CAN_CAPTURE{party.value};{self.name}"
 
     @property
     def location_capture_rank_name(self):
@@ -263,7 +258,7 @@ class TargetEntry:
 
 @dataclass
 class PokemonSpawnEntry:
-    SPECIES_ID: int
+    SPECIES_ID: int  # form_id
     SPECIES_NAME: str
     SPAWN_FLAG: int
     missable: Optional[bool] = False
@@ -271,6 +266,10 @@ class PokemonSpawnEntry:
     randomize: Optional[bool] = True
     browser_before_capture: Optional[bool] = False
     rules: list[str] = field(default_factory=list)
+
+    def set_form(self, form_id: int):
+        self.SPECIES_ID = form_id
+        self.SPECIES_NAME = data.form_id_to_species[form_id].name
 
 
 @dataclass
@@ -375,6 +374,14 @@ def location_category_to_id(base_number: int, category: str):
     if category == LocationCategory.BROWSER_RANK:
         return base_number + 10000
     raise ValueError(category)
+
+
+def sanitize_map_name(map_name: Union[str, int]) -> str:
+    if isinstance(map_name, int):
+        map_name = data.map_id_to_region_name[map_name]
+    elif map_name.lower().startswith("0x"):
+        map_name = data.map_id_to_region_name[int(map_name, 16)]
+    return map_name
 
 
 def pokemon_to_target_id(name: str) -> Optional[int]:
