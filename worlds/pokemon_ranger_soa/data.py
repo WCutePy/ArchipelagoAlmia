@@ -136,8 +136,13 @@ class FieldMove:
         return f"EVENT_USE_FIELD{party.value}-{self.category.name}-{self.level}"
 
     @classmethod
+    def is_party(cls, string: str) -> Party:
+        party, category_name, level_str = string[15:].split("-")
+        return Party(party)
+
+    @classmethod
     def from_string(cls, string: str) -> "FieldMove":
-        category_name, level_str = string.rsplit("_", 1)
+        party, category_name, level_str = string[15:].split("-")
 
         try:
             category = FieldMoveCategory[category_name]

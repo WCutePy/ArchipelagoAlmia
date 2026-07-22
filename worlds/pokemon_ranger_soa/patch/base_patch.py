@@ -179,6 +179,13 @@ def patch(
         (10, 0x00_00_00_10)
     ]
 
+    """post mission 5"""
+    """Allows going back before going to the ranger union"""
+    EVENTRECT_PATCHES["EventRect014002"] = [
+        #  PUSH 30	; @10   -> PUSH 0
+        (10, 0x00_00_00_10)
+    ]
+
     """partner patches"""
     randomize_partner_species = False
     if randomize_partner_species:

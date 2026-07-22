@@ -5,7 +5,7 @@ from typing import Dict, TYPE_CHECKING, Optional, List, Tuple
 
 from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
-from .data import SpeciesData, data
+from .data import SpeciesData, data, FieldMove, Party
 from .items import PokemonRSOAItem
 
 if TYPE_CHECKING:
@@ -55,6 +55,14 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     state_default = CollectionState(world.multiworld)
     for item in my_progression_items:
         state_default.collect(item, True)
+
+    for loc in world.get_locations():
+        if "EVENT_USE_FIELD" not in loc.name:
+            continue
+        if FieldMove.is_party(loc.name) != Party.OCEAN:
+            continue
+        state_default.collect(loc.item, True)
+
     fill_restrictive(
         world.multiworld,
         state_default,
@@ -69,7 +77,7 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     if len(party) > 0:
         state_ocean = CollectionState(world.multiworld)
         for item in my_progression_items:
-            state_default.collect(item, True)
+            state_ocean.collect(item, True)
         # for i in range():
         #     for j in range():
         #         try:
@@ -78,7 +86,7 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         #             pass
         fill_restrictive(
             world.multiworld,
-            state_default,
+            state_ocean,
             locations=party.locations,
             item_pool=party.items,
             single_player_placement=True,

@@ -49,7 +49,7 @@
   },
   "MISSION_06": {
     "label": "Mission 06: Seek the Origin of the Quake!",
-    "parent_region": "m041_001",
+    "parent_region": "m011_005",
     "default_item": null,
     "addresses": null,
     "flag": null,

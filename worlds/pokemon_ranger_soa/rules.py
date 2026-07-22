@@ -86,6 +86,8 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
 
 def set_all_rules(world: PokemonRSOA) -> None:
     MonSelect.world = world
+
+    # print(world.multiworld.regions.)
     full_map = MonSelect.get_rules_scope()
 
     field_move_rules: Dict[FieldMove, List[Rule]] = {}
@@ -564,15 +566,7 @@ def set_mission_4_rules(world: PokemonRSOA):
     for i in [4, 5]:
         world.set_rule(get_pokemon_instance(world, "m009_008", i), fallen_tree)
 
-    world.set_rule(
-        get_pokemon_instance(world, "m009_008", 5),
-        fallen_tree
-        & all_maps.can_destroy_target_type(pokemon_to_target_id("torterra")),
-    )
-    world.set_rule(
-        get_pokemon_instance(world, "m009_008", 5),
-        all_maps.can_destroy_target_type(pokemon_to_target_id("bonsly")),
-    )
+    world.set_rule(get_pokemon_instance(world, "m009_008", 5), fallen_tree)
 
     # the others are free as well due to side route
 
@@ -848,15 +842,17 @@ def set_mission_5_rules(world: PokemonRSOA):
     )
 
     """m011_005"""
+
     for loc in [data.locations["MISSION_05"].label, get_mission_event(5)]:
         world.set_rule(
             get_location(world, loc),
+            # CanReachLocation(get_instance_capture("m011_005", 5)),
             CanReachEntrance(get_pokemon_instance(world, "m011_005", 5).name),
         )
 
 
 def set_mission_6_rules(world: PokemonRSOA):
-
+    all_maps = MonSelect.get_rules_scope()
     world.set_rule(
         get_connection(world, "m010_001", "m014_003b"),
         Has(get_mission_event(5)),
@@ -870,6 +866,84 @@ def set_mission_6_rules(world: PokemonRSOA):
 
     """m014_001"""
 
+    world.set_rule(
+        get_connection(world, "m014_001", "m021_001"),
+        False_(),
+    )
+
+    """m014_002"""
+    for to in ["m014_004", "m014_005"]:
+        world.set_rule(
+            get_connection(world, "m014_002", to),
+            False_(),
+        )
+
+    """m038_001"""
+    for to in ["m014_004", "m014_002", "m038_003", "m038_002"]:
+        world.set_rule(
+            get_connection(world, "m038_001", to),
+            False_(),
+        )
+    world.set_rule(
+        get_connection(world, "npc_m038_001", "m038_016"),
+        False_(),
+    )
+
+    """m014_001 -> m015_001 in logic after story triggers"""
+    """m015_001"""
+    for to in ["m014_004", "m014_005"]:
+        world.set_rule(
+            get_connection(world, "m015_001", to),
+            False_(),
+        )
+    for to in ["m015_001", "m016_003"]:
+        world.set_rule(
+            get_connection(world, "npc_m015_001", to),
+            False_(),
+        )
+
+    """m015_004"""
+    for to in ["m015_002", "m015_005", "m016_001"]:
+        world.set_rule(
+            get_connection(world, "m015_004", to),
+            False_(),
+        )
+
+    """m017 Ranger Union"""
+    world.set_rule(
+        get_connection(world, "m017_001", "m017_007"),
+        False_(),
+    )
+
+    for from_, to in [
+        ("m017_002", "m017_004"),
+        ("m017_002", "m017_003b"),
+        ("npc_m017_002", "m017_008"),
+        ("m017_004", "m017_003b"),
+        ("npc_m017_004", "m017_005"),
+        ("npc_m017_004", "m017_008"),
+        ("m017_005", "m017_003b"),
+        ("npc_m017_005", "m017_005"),
+        ("npc_m017_005", "m017_008"),
+        ("m017_006", "m017_003b"),
+        ("npc_m017_006", "m017_008"),
+        ("m017_007", "m017_003b"),
+        ("npc_m017_007", "m017_011"),
+        ("npc_m017_007", "m017_007"),
+        ("npc_m017_007", "m017_005"),
+        ("npc_m017_008", "m017_011"),
+        ("npc_m017_008", "m017_005"),
+        ("npc_m017_008", "m017_008"),
+    ]:
+        world.set_rule(
+            get_connection(world, from_, to),
+            False_(),
+        )
+
+    """cutscene"""
+    gigaremo_showcase = all_maps.can_destroy_target("m017_004", 0)
+    # can do next quests right after before ending the day
+
 
 def set_completion_condition(world) -> None:
 
@@ -877,7 +951,7 @@ def set_completion_condition(world) -> None:
     browser = 180  # 30
     browser = 100
     missions = world.options.mission_clear_target.value
-    # missions = 6
+    missions = 6
     quests = 7  # 7
     # quests = 0
 
