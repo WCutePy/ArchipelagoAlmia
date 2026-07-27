@@ -58,6 +58,12 @@ def patch(
     prsoa_patch_instance: "PokemonRSOAPatch",
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
+    """
+    Most patches are static in size, and are
+    meant to be executed before any patches
+    changing the size of script files.
+    """
+
     slot_data = orjson.loads(prsoa_patch_instance.get_file("slot_data.json"))
     random_pokemon: bool = bool(slot_data["randomize_pokemon"])
 
@@ -207,6 +213,57 @@ def patch(
             # PUSH 1		; @966 -> JMP loc_1177
             (966, 0x00_D2_00_08)
         ]
+
+    early_staraptor = True
+    if early_staraptor:
+        m003_st = [
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,  # 18,?? not same spot likely
+            21,
+            23,
+            24,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            33,
+            # 35, not same
+            36,
+            38,
+            39,
+            41,
+            43,
+        ]
+        for chapter in m003_st:
+            chapter = f"c{chapter:03}"
+            CHAPTER_PATCHES[chapter] += [
+                # m003
+                # PUSH 43		; @254  -> PUSH 0
+                (254, 0x00_00_00_10),
+                # m007
+                # PUSH 43		; @278  -> PUSH 0
+                (278, 0x00_00_00_10),
+                # m009
+                # PUSH 43		; @350  -> PUSH 0
+                (350, 0x00_00_00_10),
+                # m014
+                # PUSH 43		; @410  -> PUSH 0
+                (410, 0x00_00_00_10),
+                # m017
+                # PUSH 43		; @551  -> PUSH 0
+                (551, 0x00_00_00_10),
+                # m018
+                # PUSH 43		; @563  -> PUSH 0
+                (563, 0x00_00_00_10),
+            ]
 
     for eventrect, writes in EVENTRECT_PATCHES.items():
         base_num = eventrect.strip("EventRect")[0:3]

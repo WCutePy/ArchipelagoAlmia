@@ -107,6 +107,15 @@ class MonSelect:
     include_one_time: bool = False
     include_missable: bool = False
 
+    @staticmethod
+    def add_to(to: Dict[str, List], to_add: Dict[str, List]):
+        for key, values in to_add.items():
+            if key in to and not to[key]:
+                continue
+            elif not values:
+                to[key] = values
+            to.setdefault(key, []).extend(values)
+
     def region_included(
         self, region_name: str, region_data: Optional[MapData] = None
     ) -> bool:
@@ -303,7 +312,31 @@ class MonSelect:
 
     @classmethod
     def randomize_false(cls) -> MonSelect:
-        return MonSelect(include={"m011_005": [5]})
+        m = MonSelect(include={"m011_005": [5]})
+
+        STARAPTOR = {
+            "m003_001": [0],
+            "m007_001": [2],
+            "m009_004": [0],
+            "m009_012": [3],
+            "m014_001": [0],
+            "m017_001": [0],
+            "m018_001": [3],
+            "m021_001": [11],
+            "m021_002": [0],
+            "m022_002": [1],
+            "m025_001": [0],
+            "m027_001": [1],
+            "m027_002": [3],
+            "m027_005": [3],
+            "m030_002": [0],
+            "m034_001": [17],
+            "m035_001": [1],
+            "m041_002": [0],
+        }
+
+        m.add_to(m.include, STARAPTOR)
+        return m
 
     @classmethod
     def get_rules_scope(cls) -> MonSelect:
