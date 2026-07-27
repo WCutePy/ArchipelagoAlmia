@@ -103,11 +103,6 @@ def attach_pokemon_encounter(
 def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions: Dict[str, Region] = {}
 
-    form_species: Dict[int, SpeciesData] = {}
-    for browser_i, species_data in data.species.items():
-        for i in species_data.form_ids:
-            form_species[i] = species_data
-
     connections: List[Tuple[str, str, str]] = []
 
     """Logic chain"""
@@ -175,7 +170,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             pokemon,
             event.event_name,
             PokemonSpawnEntry(
-                SPECIES_ID=pokemon.form_ids[0],
+                SPECIES_ID=list(pokemon.forms.values())[0],
                 SPECIES_NAME=pokemon.name,
                 SPAWN_FLAG=-1,
                 one_time=event.one_time,

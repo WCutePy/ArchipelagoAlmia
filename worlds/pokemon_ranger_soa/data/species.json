@@ -4,20 +4,17 @@
         "label": "CHARMANDER",
         "browser_id": 137,
         "national_id": 4,
-        "form_ids": [
-            1
-        ],
-        "hex_form_ids": [
-            "1"
-        ],
+        "forms": {
+            "1": {
+                "hex_form_id": "1",
+                "friendship_gauge": 720
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 1
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            720
-        ],
         "browser_offset": 0,
         "browser_flag": 1,
         "browser_rank_offset": 0,
@@ -28,20 +25,17 @@
         "label": "CHARMELEON",
         "browser_id": 138,
         "national_id": 5,
-        "form_ids": [
-            2
-        ],
-        "hex_form_ids": [
-            "2"
-        ],
+        "forms": {
+            "2": {
+                "hex_form_id": "2",
+                "friendship_gauge": 2000
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 2
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            2000
-        ],
         "browser_offset": 0,
         "browser_flag": 3,
         "browser_rank_offset": 0,
@@ -52,20 +46,17 @@
         "label": "SQUIRTLE",
         "browser_id": 11,
         "national_id": 7,
-        "form_ids": [
-            3
-        ],
-        "hex_form_ids": [
-            "3"
-        ],
+        "forms": {
+            "3": {
+                "hex_form_id": "3",
+                "friendship_gauge": 77
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            77
-        ],
         "browser_offset": 0,
         "browser_flag": 7,
         "browser_rank_offset": 0,
@@ -76,20 +67,17 @@
         "label": "WARTORTLE",
         "browser_id": 12,
         "national_id": 8,
-        "form_ids": [
-            4
-        ],
-        "hex_form_ids": [
-            "4"
-        ],
+        "forms": {
+            "4": {
+                "hex_form_id": "4",
+                "friendship_gauge": 187
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            187
-        ],
         "browser_offset": 1,
         "browser_flag": 1,
         "browser_rank_offset": 1,
@@ -100,20 +88,17 @@
         "label": "BLASTOISE",
         "browser_id": 13,
         "national_id": 9,
-        "form_ids": [
-            5
-        ],
-        "hex_form_ids": [
-            "5"
-        ],
+        "forms": {
+            "5": {
+                "hex_form_id": "5",
+                "friendship_gauge": 850
+            }
+        },
         "field_move": {
             "category": 13,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            850
-        ],
         "browser_offset": 1,
         "browser_flag": 3,
         "browser_rank_offset": 1,
@@ -124,20 +109,17 @@
         "label": "WEEDLE",
         "browser_id": 57,
         "national_id": 13,
-        "form_ids": [
-            6
-        ],
-        "hex_form_ids": [
-            "6"
-        ],
+        "forms": {
+            "6": {
+                "hex_form_id": "6",
+                "friendship_gauge": 195
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            195
-        ],
         "browser_offset": 2,
         "browser_flag": 3,
         "browser_rank_offset": 2,
@@ -148,20 +130,17 @@
         "label": "BEEDRILL",
         "browser_id": 58,
         "national_id": 15,
-        "form_ids": [
-            7
-        ],
-        "hex_form_ids": [
-            "7"
-        ],
+        "forms": {
+            "7": {
+                "hex_form_id": "7",
+                "friendship_gauge": 225
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            225
-        ],
         "browser_offset": 2,
         "browser_flag": 7,
         "browser_rank_offset": 2,
@@ -172,20 +151,17 @@
         "label": "RATTATA",
         "browser_id": 67,
         "national_id": 19,
-        "form_ids": [
-            8
-        ],
-        "hex_form_ids": [
-            "8"
-        ],
+        "forms": {
+            "8": {
+                "hex_form_id": "8",
+                "friendship_gauge": 92
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            92
-        ],
         "browser_offset": 3,
         "browser_flag": 7,
         "browser_rank_offset": 3,
@@ -196,20 +172,17 @@
         "label": "RATICATE",
         "browser_id": 68,
         "national_id": 20,
-        "form_ids": [
-            9
-        ],
-        "hex_form_ids": [
-            "9"
-        ],
+        "forms": {
+            "9": {
+                "hex_form_id": "9",
+                "friendship_gauge": 720
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            720
-        ],
         "browser_offset": 4,
         "browser_flag": 1,
         "browser_rank_offset": 4,
@@ -220,20 +193,17 @@
         "label": "SPEAROW",
         "browser_id": 112,
         "national_id": 21,
-        "form_ids": [
-            10
-        ],
-        "hex_form_ids": [
-            "A"
-        ],
+        "forms": {
+            "10": {
+                "hex_form_id": "A",
+                "friendship_gauge": 320
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            320
-        ],
         "browser_offset": 4,
         "browser_flag": 3,
         "browser_rank_offset": 4,
@@ -244,23 +214,21 @@
         "label": "FEAROW",
         "browser_id": 113,
         "national_id": 22,
-        "form_ids": [
-            11,
-            275
-        ],
-        "hex_form_ids": [
-            "B",
-            "113"
-        ],
+        "forms": {
+            "11": {
+                "hex_form_id": "B",
+                "friendship_gauge": 2500
+            },
+            "275": {
+                "hex_form_id": "113",
+                "friendship_gauge": 6000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            2500,
-            6000
-        ],
         "browser_offset": 4,
         "browser_flag": 5,
         "browser_rank_offset": 4,
@@ -271,23 +239,21 @@
         "label": "PIKACHU",
         "browser_id": 2,
         "national_id": 25,
-        "form_ids": [
-            12,
-            309
-        ],
-        "hex_form_ids": [
-            "C",
-            "135"
-        ],
+        "forms": {
+            "12": {
+                "hex_form_id": "C",
+                "friendship_gauge": 645
+            },
+            "309": {
+                "hex_form_id": "135",
+                "friendship_gauge": 60
+            }
+        },
         "field_move": {
             "category": 9,
             "level": 3
         },
         "poke_assist": 4,
-        "friendship_gauge": [
-            645,
-            60
-        ],
         "browser_offset": 5,
         "browser_flag": 3,
         "browser_rank_offset": 5,
@@ -298,20 +264,17 @@
         "label": "RAICHU",
         "browser_id": 3,
         "national_id": 26,
-        "form_ids": [
-            13
-        ],
-        "hex_form_ids": [
-            "D"
-        ],
+        "forms": {
+            "13": {
+                "hex_form_id": "D",
+                "friendship_gauge": 1540
+            }
+        },
         "field_move": {
             "category": 9,
             "level": 4
         },
         "poke_assist": 4,
-        "friendship_gauge": [
-            1540
-        ],
         "browser_offset": 5,
         "browser_flag": 5,
         "browser_rank_offset": 5,
@@ -322,20 +285,17 @@
         "label": "SANDSHREW",
         "browser_id": 194,
         "national_id": 27,
-        "form_ids": [
-            14
-        ],
-        "hex_form_ids": [
-            "E"
-        ],
+        "forms": {
+            "14": {
+                "hex_form_id": "E",
+                "friendship_gauge": 1144
+            }
+        },
         "field_move": {
             "category": 8,
             "level": 1
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            1144
-        ],
         "browser_offset": 5,
         "browser_flag": 7,
         "browser_rank_offset": 5,
@@ -346,20 +306,17 @@
         "label": "SANDSLASH",
         "browser_id": 195,
         "national_id": 28,
-        "form_ids": [
-            15
-        ],
-        "hex_form_ids": [
-            "F"
-        ],
+        "forms": {
+            "15": {
+                "hex_form_id": "F",
+                "friendship_gauge": 3250
+            }
+        },
         "field_move": {
             "category": 8,
             "level": 1
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            3250
-        ],
         "browser_offset": 6,
         "browser_flag": 1,
         "browser_rank_offset": 6,
@@ -370,20 +327,17 @@
         "label": "VULPIX",
         "browser_id": 171,
         "national_id": 37,
-        "form_ids": [
-            16
-        ],
-        "hex_form_ids": [
-            "10"
-        ],
+        "forms": {
+            "16": {
+                "hex_form_id": "10",
+                "friendship_gauge": 946
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 1
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            946
-        ],
         "browser_offset": 8,
         "browser_flag": 3,
         "browser_rank_offset": 8,
@@ -394,20 +348,17 @@
         "label": "NINETALES",
         "browser_id": 172,
         "national_id": 38,
-        "form_ids": [
-            17
-        ],
-        "hex_form_ids": [
-            "11"
-        ],
+        "forms": {
+            "17": {
+                "hex_form_id": "11",
+                "friendship_gauge": 3920
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 4
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            3920
-        ],
         "browser_offset": 8,
         "browser_flag": 5,
         "browser_rank_offset": 8,
@@ -418,20 +369,17 @@
         "label": "JIGGLYPUFF",
         "browser_id": 203,
         "national_id": 39,
-        "form_ids": [
-            18
-        ],
-        "hex_form_ids": [
-            "12"
-        ],
+        "forms": {
+            "18": {
+                "hex_form_id": "12",
+                "friendship_gauge": 1302
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            1302
-        ],
         "browser_offset": 8,
         "browser_flag": 7,
         "browser_rank_offset": 8,
@@ -442,20 +390,17 @@
         "label": "WIGGLYTUFF",
         "browser_id": 204,
         "national_id": 40,
-        "form_ids": [
-            19
-        ],
-        "hex_form_ids": [
-            "13"
-        ],
+        "forms": {
+            "19": {
+                "hex_form_id": "13",
+                "friendship_gauge": 1750
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            1750
-        ],
         "browser_offset": 9,
         "browser_flag": 1,
         "browser_rank_offset": 9,
@@ -466,20 +411,17 @@
         "label": "ZUBAT",
         "browser_id": 14,
         "national_id": 41,
-        "form_ids": [
-            20
-        ],
-        "hex_form_ids": [
-            "14"
-        ],
+        "forms": {
+            "20": {
+                "hex_form_id": "14",
+                "friendship_gauge": 84
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            84
-        ],
         "browser_offset": 9,
         "browser_flag": 3,
         "browser_rank_offset": 9,
@@ -490,20 +432,17 @@
         "label": "GOLBAT",
         "browser_id": 15,
         "national_id": 42,
-        "form_ids": [
-            21
-        ],
-        "hex_form_ids": [
-            "15"
-        ],
+        "forms": {
+            "21": {
+                "hex_form_id": "15",
+                "friendship_gauge": 1240
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            1240
-        ],
         "browser_offset": 9,
         "browser_flag": 5,
         "browser_rank_offset": 9,
@@ -514,20 +453,17 @@
         "label": "ODDISH",
         "browser_id": 114,
         "national_id": 43,
-        "form_ids": [
-            22
-        ],
-        "hex_form_ids": [
-            "16"
-        ],
+        "forms": {
+            "22": {
+                "hex_form_id": "16",
+                "friendship_gauge": 312
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            312
-        ],
         "browser_offset": 9,
         "browser_flag": 7,
         "browser_rank_offset": 9,
@@ -538,20 +474,17 @@
         "label": "GLOOM",
         "browser_id": 115,
         "national_id": 44,
-        "form_ids": [
-            23
-        ],
-        "hex_form_ids": [
-            "17"
-        ],
+        "forms": {
+            "23": {
+                "hex_form_id": "17",
+                "friendship_gauge": 912
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            912
-        ],
         "browser_offset": 10,
         "browser_flag": 1,
         "browser_rank_offset": 10,
@@ -562,20 +495,17 @@
         "label": "VILEPLUME",
         "browser_id": 116,
         "national_id": 45,
-        "form_ids": [
-            24
-        ],
-        "hex_form_ids": [
-            "18"
-        ],
+        "forms": {
+            "24": {
+                "hex_form_id": "18",
+                "friendship_gauge": 2500
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            2500
-        ],
         "browser_offset": 10,
         "browser_flag": 3,
         "browser_rank_offset": 10,
@@ -586,20 +516,17 @@
         "label": "MANKEY",
         "browser_id": 126,
         "national_id": 56,
-        "form_ids": [
-            25
-        ],
-        "hex_form_ids": [
-            "19"
-        ],
+        "forms": {
+            "25": {
+                "hex_form_id": "19",
+                "friendship_gauge": 384
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            384
-        ],
         "browser_offset": 13,
         "browser_flag": 1,
         "browser_rank_offset": 13,
@@ -610,22 +537,21 @@
         "label": "PRIMEAPE",
         "browser_id": 127,
         "national_id": 57,
-        "form_ids": [
-            26,
-            272
-        ],
-        "hex_form_ids": [
-            "1A",
-            "110"
-        ],
+        "forms": {
+            "26": {
+                "hex_form_id": "1A",
+                "friendship_gauge": 3750
+            },
+            "272": {
+                "hex_form_id": "110",
+                "friendship_gauge": 3750
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            3750
-        ],
         "browser_offset": 13,
         "browser_flag": 3,
         "browser_rank_offset": 13,
@@ -636,20 +562,17 @@
         "label": "GROWLITHE",
         "browser_id": 65,
         "national_id": 58,
-        "form_ids": [
-            27
-        ],
-        "hex_form_ids": [
-            "1B"
-        ],
+        "forms": {
+            "27": {
+                "hex_form_id": "1B",
+                "friendship_gauge": 252
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 2
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            252
-        ],
         "browser_offset": 13,
         "browser_flag": 5,
         "browser_rank_offset": 13,
@@ -660,20 +583,17 @@
         "label": "ARCANINE",
         "browser_id": 66,
         "national_id": 59,
-        "form_ids": [
-            28
-        ],
-        "hex_form_ids": [
-            "1C"
-        ],
+        "forms": {
+            "28": {
+                "hex_form_id": "1C",
+                "friendship_gauge": 3150
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 4
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            3150
-        ],
         "browser_offset": 13,
         "browser_flag": 7,
         "browser_rank_offset": 13,
@@ -684,20 +604,17 @@
         "label": "ABRA",
         "browser_id": 183,
         "national_id": 63,
-        "form_ids": [
-            29
-        ],
-        "hex_form_ids": [
-            "1D"
-        ],
+        "forms": {
+            "29": {
+                "hex_form_id": "1D",
+                "friendship_gauge": 735
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            735
-        ],
         "browser_offset": 14,
         "browser_flag": 7,
         "browser_rank_offset": 14,
@@ -708,23 +625,21 @@
         "label": "ALAKAZAM",
         "browser_id": 184,
         "national_id": 65,
-        "form_ids": [
-            30,
-            265
-        ],
-        "hex_form_ids": [
-            "1E",
-            "109"
-        ],
+        "forms": {
+            "30": {
+                "hex_form_id": "1E",
+                "friendship_gauge": 3900
+            },
+            "265": {
+                "hex_form_id": "109",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 12,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            3900,
-            8000
-        ],
         "browser_offset": 15,
         "browser_flag": 3,
         "browser_rank_offset": 15,
@@ -735,20 +650,17 @@
         "label": "MACHOP",
         "browser_id": 161,
         "national_id": 66,
-        "form_ids": [
-            31
-        ],
-        "hex_form_ids": [
-            "1F"
-        ],
+        "forms": {
+            "31": {
+                "hex_form_id": "1F",
+                "friendship_gauge": 3500
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            3500
-        ],
         "browser_offset": 15,
         "browser_flag": 5,
         "browser_rank_offset": 15,
@@ -759,20 +671,17 @@
         "label": "MACHOKE",
         "browser_id": 162,
         "national_id": 67,
-        "form_ids": [
-            32
-        ],
-        "hex_form_ids": [
-            "20"
-        ],
+        "forms": {
+            "32": {
+                "hex_form_id": "20",
+                "friendship_gauge": 1161
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            1161
-        ],
         "browser_offset": 15,
         "browser_flag": 7,
         "browser_rank_offset": 15,
@@ -783,20 +692,17 @@
         "label": "MACHAMP",
         "browser_id": 163,
         "national_id": 68,
-        "form_ids": [
-            33
-        ],
-        "hex_form_ids": [
-            "21"
-        ],
+        "forms": {
+            "33": {
+                "hex_form_id": "21",
+                "friendship_gauge": 5250
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            5250
-        ],
         "browser_offset": 16,
         "browser_flag": 1,
         "browser_rank_offset": 16,
@@ -807,20 +713,17 @@
         "label": "VICTREEBEL",
         "browser_id": 242,
         "national_id": 71,
-        "form_ids": [
-            34
-        ],
-        "hex_form_ids": [
-            "22"
-        ],
+        "forms": {
+            "34": {
+                "hex_form_id": "22",
+                "friendship_gauge": 3600
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            3600
-        ],
         "browser_offset": 16,
         "browser_flag": 7,
         "browser_rank_offset": 16,
@@ -831,20 +734,17 @@
         "label": "TENTACRUEL",
         "browser_id": 234,
         "national_id": 73,
-        "form_ids": [
-            35
-        ],
-        "hex_form_ids": [
-            "23"
-        ],
+        "forms": {
+            "35": {
+                "hex_form_id": "23",
+                "friendship_gauge": 5130
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            5130
-        ],
         "browser_offset": 17,
         "browser_flag": 3,
         "browser_rank_offset": 17,
@@ -855,20 +755,17 @@
         "label": "GEODUDE",
         "browser_id": 41,
         "national_id": 74,
-        "form_ids": [
-            36
-        ],
-        "hex_form_ids": [
-            "24"
-        ],
+        "forms": {
+            "36": {
+                "hex_form_id": "24",
+                "friendship_gauge": 126
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            126
-        ],
         "browser_offset": 17,
         "browser_flag": 5,
         "browser_rank_offset": 17,
@@ -879,20 +776,17 @@
         "label": "GRAVELER",
         "browser_id": 42,
         "national_id": 75,
-        "form_ids": [
-            37
-        ],
-        "hex_form_ids": [
-            "25"
-        ],
+        "forms": {
+            "37": {
+                "hex_form_id": "25",
+                "friendship_gauge": 700
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            700
-        ],
         "browser_offset": 17,
         "browser_flag": 7,
         "browser_rank_offset": 17,
@@ -903,20 +797,17 @@
         "label": "GOLEM",
         "browser_id": 43,
         "national_id": 76,
-        "form_ids": [
-            38
-        ],
-        "hex_form_ids": [
-            "26"
-        ],
+        "forms": {
+            "38": {
+                "hex_form_id": "26",
+                "friendship_gauge": 4550
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            4550
-        ],
         "browser_offset": 18,
         "browser_flag": 1,
         "browser_rank_offset": 18,
@@ -927,20 +818,17 @@
         "label": "PONYTA",
         "browser_id": 176,
         "national_id": 77,
-        "form_ids": [
-            39
-        ],
-        "hex_form_ids": [
-            "27"
-        ],
+        "forms": {
+            "39": {
+                "hex_form_id": "27",
+                "friendship_gauge": 980
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 1
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            980
-        ],
         "browser_offset": 18,
         "browser_flag": 3,
         "browser_rank_offset": 18,
@@ -951,20 +839,17 @@
         "label": "RAPIDASH",
         "browser_id": 177,
         "national_id": 78,
-        "form_ids": [
-            40
-        ],
-        "hex_form_ids": [
-            "28"
-        ],
+        "forms": {
+            "40": {
+                "hex_form_id": "28",
+                "friendship_gauge": 1274
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 3
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            1274
-        ],
         "browser_offset": 18,
         "browser_flag": 5,
         "browser_rank_offset": 18,
@@ -975,20 +860,17 @@
         "label": "MAGNEMITE",
         "browser_id": 62,
         "national_id": 81,
-        "form_ids": [
-            41
-        ],
-        "hex_form_ids": [
-            "29"
-        ],
+        "forms": {
+            "41": {
+                "hex_form_id": "29",
+                "friendship_gauge": 180
+            }
+        },
         "field_move": {
             "category": 9,
             "level": 2
         },
         "poke_assist": 4,
-        "friendship_gauge": [
-            180
-        ],
         "browser_offset": 19,
         "browser_flag": 3,
         "browser_rank_offset": 19,
@@ -999,20 +881,17 @@
         "label": "MAGNETON",
         "browser_id": 63,
         "national_id": 82,
-        "form_ids": [
-            42
-        ],
-        "hex_form_ids": [
-            "2A"
-        ],
+        "forms": {
+            "42": {
+                "hex_form_id": "2A",
+                "friendship_gauge": 1900
+            }
+        },
         "field_move": {
             "category": 9,
             "level": 5
         },
         "poke_assist": 4,
-        "friendship_gauge": [
-            1900
-        ],
         "browser_offset": 19,
         "browser_flag": 5,
         "browser_rank_offset": 19,
@@ -1023,20 +902,17 @@
         "label": "DODUO",
         "browser_id": 134,
         "national_id": 84,
-        "form_ids": [
-            43
-        ],
-        "hex_form_ids": [
-            "2B"
-        ],
+        "forms": {
+            "43": {
+                "hex_form_id": "2B",
+                "friendship_gauge": 330
+            }
+        },
         "field_move": {
             "category": 10,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            330
-        ],
         "browser_offset": 20,
         "browser_flag": 1,
         "browser_rank_offset": 20,
@@ -1047,20 +923,17 @@
         "label": "DODRIO",
         "browser_id": 135,
         "national_id": 85,
-        "form_ids": [
-            44
-        ],
-        "hex_form_ids": [
-            "2C"
-        ],
+        "forms": {
+            "44": {
+                "hex_form_id": "2C",
+                "friendship_gauge": 1750
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            1750
-        ],
         "browser_offset": 20,
         "browser_flag": 3,
         "browser_rank_offset": 20,
@@ -1071,20 +944,17 @@
         "label": "MUK",
         "browser_id": 152,
         "national_id": 89,
-        "form_ids": [
-            45
-        ],
-        "hex_form_ids": [
-            "2D"
-        ],
+        "forms": {
+            "45": {
+                "hex_form_id": "2D",
+                "friendship_gauge": 1800
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            1800
-        ],
         "browser_offset": 21,
         "browser_flag": 3,
         "browser_rank_offset": 21,
@@ -1095,20 +965,17 @@
         "label": "GASTLY",
         "browser_id": 17,
         "national_id": 92,
-        "form_ids": [
-            46
-        ],
-        "hex_form_ids": [
-            "2E"
-        ],
+        "forms": {
+            "46": {
+                "hex_form_id": "2E",
+                "friendship_gauge": 40
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 1
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            40
-        ],
         "browser_offset": 22,
         "browser_flag": 1,
         "browser_rank_offset": 22,
@@ -1119,20 +986,17 @@
         "label": "HAUNTER",
         "browser_id": 18,
         "national_id": 93,
-        "form_ids": [
-            47
-        ],
-        "hex_form_ids": [
-            "2F"
-        ],
+        "forms": {
+            "47": {
+                "hex_form_id": "2F",
+                "friendship_gauge": 1400
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 2
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            1400
-        ],
         "browser_offset": 22,
         "browser_flag": 3,
         "browser_rank_offset": 22,
@@ -1143,23 +1007,21 @@
         "label": "GENGAR",
         "browser_id": 19,
         "national_id": 94,
-        "form_ids": [
-            48,
-            274
-        ],
-        "hex_form_ids": [
-            "30",
-            "112"
-        ],
+        "forms": {
+            "48": {
+                "hex_form_id": "30",
+                "friendship_gauge": 5200
+            },
+            "274": {
+                "hex_form_id": "112",
+                "friendship_gauge": 7000
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 3
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            5200,
-            7000
-        ],
         "browser_offset": 22,
         "browser_flag": 5,
         "browser_rank_offset": 22,
@@ -1170,20 +1032,17 @@
         "label": "DROWZEE",
         "browser_id": 166,
         "national_id": 96,
-        "form_ids": [
-            49
-        ],
-        "hex_form_ids": [
-            "31"
-        ],
+        "forms": {
+            "49": {
+                "hex_form_id": "31",
+                "friendship_gauge": 817
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            817
-        ],
         "browser_offset": 23,
         "browser_flag": 1,
         "browser_rank_offset": 23,
@@ -1194,20 +1053,17 @@
         "label": "HYPNO",
         "browser_id": 167,
         "national_id": 97,
-        "form_ids": [
-            50
-        ],
-        "hex_form_ids": [
-            "32"
-        ],
+        "forms": {
+            "50": {
+                "hex_form_id": "32",
+                "friendship_gauge": 1300
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 2
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            1300
-        ],
         "browser_offset": 23,
         "browser_flag": 3,
         "browser_rank_offset": 23,
@@ -1218,20 +1074,17 @@
         "label": "VOLTORB",
         "browser_id": 76,
         "national_id": 100,
-        "form_ids": [
-            51
-        ],
-        "hex_form_ids": [
-            "33"
-        ],
+        "forms": {
+            "51": {
+                "hex_form_id": "33",
+                "friendship_gauge": 252
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 2
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            252
-        ],
         "browser_offset": 24,
         "browser_flag": 1,
         "browser_rank_offset": 24,
@@ -1242,20 +1095,17 @@
         "label": "ELECTRODE",
         "browser_id": 77,
         "national_id": 101,
-        "form_ids": [
-            52
-        ],
-        "hex_form_ids": [
-            "34"
-        ],
+        "forms": {
+            "52": {
+                "hex_form_id": "34",
+                "friendship_gauge": 5000
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 3
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            5000
-        ],
         "browser_offset": 24,
         "browser_flag": 3,
         "browser_rank_offset": 24,
@@ -1266,20 +1116,17 @@
         "label": "KOFFING",
         "browser_id": 187,
         "national_id": 109,
-        "form_ids": [
-            53
-        ],
-        "hex_form_ids": [
-            "35"
-        ],
+        "forms": {
+            "53": {
+                "hex_form_id": "35",
+                "friendship_gauge": 980
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            980
-        ],
         "browser_offset": 26,
         "browser_flag": 3,
         "browser_rank_offset": 26,
@@ -1290,20 +1137,17 @@
         "label": "WEEZING",
         "browser_id": 188,
         "national_id": 110,
-        "form_ids": [
-            54
-        ],
-        "hex_form_ids": [
-            "36"
-        ],
+        "forms": {
+            "54": {
+                "hex_form_id": "36",
+                "friendship_gauge": 1750
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            1750
-        ],
         "browser_offset": 26,
         "browser_flag": 5,
         "browser_rank_offset": 26,
@@ -1314,20 +1158,17 @@
         "label": "RHYHORN",
         "browser_id": 149,
         "national_id": 111,
-        "form_ids": [
-            55
-        ],
-        "hex_form_ids": [
-            "37"
-        ],
+        "forms": {
+            "55": {
+                "hex_form_id": "37",
+                "friendship_gauge": 1140
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            1140
-        ],
         "browser_offset": 26,
         "browser_flag": 7,
         "browser_rank_offset": 26,
@@ -1338,20 +1179,17 @@
         "label": "RHYDON",
         "browser_id": 150,
         "national_id": 112,
-        "form_ids": [
-            56
-        ],
-        "hex_form_ids": [
-            "38"
-        ],
+        "forms": {
+            "56": {
+                "hex_form_id": "38",
+                "friendship_gauge": 4800
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 3
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            4800
-        ],
         "browser_offset": 27,
         "browser_flag": 1,
         "browser_rank_offset": 27,
@@ -1362,23 +1200,21 @@
         "label": "KANGASKHAN",
         "browser_id": 146,
         "national_id": 115,
-        "form_ids": [
-            57,
-            277
-        ],
-        "hex_form_ids": [
-            "39",
-            "115"
-        ],
+        "forms": {
+            "57": {
+                "hex_form_id": "39",
+                "friendship_gauge": 1292
+            },
+            "277": {
+                "hex_form_id": "115",
+                "friendship_gauge": 13000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            1292,
-            13000
-        ],
         "browser_offset": 27,
         "browser_flag": 7,
         "browser_rank_offset": 27,
@@ -1389,20 +1225,17 @@
         "label": "HORSEA",
         "browser_id": 229,
         "national_id": 116,
-        "form_ids": [
-            58
-        ],
-        "hex_form_ids": [
-            "3A"
-        ],
+        "forms": {
+            "58": {
+                "hex_form_id": "3A",
+                "friendship_gauge": 2090
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            2090
-        ],
         "browser_offset": 28,
         "browser_flag": 1,
         "browser_rank_offset": 28,
@@ -1413,20 +1246,17 @@
         "label": "SEADRA",
         "browser_id": 230,
         "national_id": 117,
-        "form_ids": [
-            59
-        ],
-        "hex_form_ids": [
-            "3B"
-        ],
+        "forms": {
+            "59": {
+                "hex_form_id": "3B",
+                "friendship_gauge": 2375
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 3
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            2375
-        ],
         "browser_offset": 28,
         "browser_flag": 3,
         "browser_rank_offset": 28,
@@ -1437,20 +1267,17 @@
         "label": "STARYU",
         "browser_id": 94,
         "national_id": 120,
-        "form_ids": [
-            60
-        ],
-        "hex_form_ids": [
-            "3C"
-        ],
+        "forms": {
+            "60": {
+                "hex_form_id": "3C",
+                "friendship_gauge": 288
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            288
-        ],
         "browser_offset": 29,
         "browser_flag": 1,
         "browser_rank_offset": 29,
@@ -1461,20 +1288,17 @@
         "label": "STARMIE",
         "browser_id": 95,
         "national_id": 121,
-        "form_ids": [
-            61
-        ],
-        "hex_form_ids": [
-            "3D"
-        ],
+        "forms": {
+            "61": {
+                "hex_form_id": "3D",
+                "friendship_gauge": 2375
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            2375
-        ],
         "browser_offset": 29,
         "browser_flag": 3,
         "browser_rank_offset": 29,
@@ -1485,20 +1309,17 @@
         "label": "MR. MIME",
         "browser_id": 165,
         "national_id": 122,
-        "form_ids": [
-            62
-        ],
-        "hex_form_ids": [
-            "3E"
-        ],
+        "forms": {
+            "62": {
+                "hex_form_id": "3E",
+                "friendship_gauge": 2520
+            }
+        },
         "field_move": {
             "category": 12,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            2520
-        ],
         "browser_offset": 29,
         "browser_flag": 5,
         "browser_rank_offset": 29,
@@ -1509,20 +1330,17 @@
         "label": "SCYTHER",
         "browser_id": 216,
         "national_id": 123,
-        "form_ids": [
-            63
-        ],
-        "hex_form_ids": [
-            "3F"
-        ],
+        "forms": {
+            "63": {
+                "hex_form_id": "3F",
+                "friendship_gauge": 1680
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            1680
-        ],
         "browser_offset": 29,
         "browser_flag": 7,
         "browser_rank_offset": 29,
@@ -1533,20 +1351,17 @@
         "label": "JYNX",
         "browser_id": 210,
         "national_id": 124,
-        "form_ids": [
-            64
-        ],
-        "hex_form_ids": [
-            "40"
-        ],
+        "forms": {
+            "64": {
+                "hex_form_id": "40",
+                "friendship_gauge": 1680
+            }
+        },
         "field_move": {
             "category": 12,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            1680
-        ],
         "browser_offset": 30,
         "browser_flag": 1,
         "browser_rank_offset": 30,
@@ -1557,20 +1372,17 @@
         "label": "ELECTABUZZ",
         "browser_id": 71,
         "national_id": 125,
-        "form_ids": [
-            65
-        ],
-        "hex_form_ids": [
-            "41"
-        ],
+        "forms": {
+            "65": {
+                "hex_form_id": "41",
+                "friendship_gauge": 2070
+            }
+        },
         "field_move": {
             "category": 15,
             "level": 1
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            2070
-        ],
         "browser_offset": 30,
         "browser_flag": 3,
         "browser_rank_offset": 30,
@@ -1581,20 +1393,17 @@
         "label": "MAGMAR",
         "browser_id": 74,
         "national_id": 126,
-        "form_ids": [
-            66
-        ],
-        "hex_form_ids": [
-            "42"
-        ],
+        "forms": {
+            "66": {
+                "hex_form_id": "42",
+                "friendship_gauge": 1140
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 2
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            1140
-        ],
         "browser_offset": 30,
         "browser_flag": 5,
         "browser_rank_offset": 30,
@@ -1605,20 +1414,17 @@
         "label": "PINSIR",
         "browser_id": 123,
         "national_id": 127,
-        "form_ids": [
-            67
-        ],
-        "hex_form_ids": [
-            "43"
-        ],
+        "forms": {
+            "67": {
+                "hex_form_id": "43",
+                "friendship_gauge": 1500
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            1500
-        ],
         "browser_offset": 30,
         "browser_flag": 7,
         "browser_rank_offset": 30,
@@ -1629,20 +1435,17 @@
         "label": "TAUROS",
         "browser_id": 179,
         "national_id": 128,
-        "form_ids": [
-            68
-        ],
-        "hex_form_ids": [
-            "44"
-        ],
+        "forms": {
+            "68": {
+                "hex_form_id": "44",
+                "friendship_gauge": 800
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            800
-        ],
         "browser_offset": 31,
         "browser_flag": 1,
         "browser_rank_offset": 31,
@@ -1653,23 +1456,21 @@
         "label": "EEVEE",
         "browser_id": 97,
         "national_id": 133,
-        "form_ids": [
-            69,
-            281
-        ],
-        "hex_form_ids": [
-            "45",
-            "119"
-        ],
+        "forms": {
+            "69": {
+                "hex_form_id": "45",
+                "friendship_gauge": 210
+            },
+            "281": {
+                "hex_form_id": "119",
+                "friendship_gauge": 7000
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            210,
-            7000
-        ],
         "browser_offset": 32,
         "browser_flag": 3,
         "browser_rank_offset": 32,
@@ -1680,23 +1481,21 @@
         "label": "VAPOREON",
         "browser_id": 98,
         "national_id": 134,
-        "form_ids": [
-            70,
-            283
-        ],
-        "hex_form_ids": [
-            "46",
-            "11B"
-        ],
+        "forms": {
+            "70": {
+                "hex_form_id": "46",
+                "friendship_gauge": 2900
+            },
+            "283": {
+                "hex_form_id": "11B",
+                "friendship_gauge": 8500
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 3
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            2900,
-            8500
-        ],
         "browser_offset": 32,
         "browser_flag": 5,
         "browser_rank_offset": 32,
@@ -1707,23 +1506,21 @@
         "label": "JOLTEON",
         "browser_id": 99,
         "national_id": 135,
-        "form_ids": [
-            71,
-            284
-        ],
-        "hex_form_ids": [
-            "47",
-            "11C"
-        ],
+        "forms": {
+            "71": {
+                "hex_form_id": "47",
+                "friendship_gauge": 3780
+            },
+            "284": {
+                "hex_form_id": "11C",
+                "friendship_gauge": 8500
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 3
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            3780,
-            8500
-        ],
         "browser_offset": 32,
         "browser_flag": 7,
         "browser_rank_offset": 32,
@@ -1734,23 +1531,21 @@
         "label": "FLAREON",
         "browser_id": 100,
         "national_id": 136,
-        "form_ids": [
-            72,
-            282
-        ],
-        "hex_form_ids": [
-            "48",
-            "11A"
-        ],
+        "forms": {
+            "72": {
+                "hex_form_id": "48",
+                "friendship_gauge": 1920
+            },
+            "282": {
+                "hex_form_id": "11A",
+                "friendship_gauge": 8500
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 3
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            1920,
-            8500
-        ],
         "browser_offset": 33,
         "browser_flag": 1,
         "browser_rank_offset": 33,
@@ -1761,20 +1556,17 @@
         "label": "OMANYTE",
         "browser_id": 235,
         "national_id": 138,
-        "form_ids": [
-            73
-        ],
-        "hex_form_ids": [
-            "49"
-        ],
+        "forms": {
+            "73": {
+                "hex_form_id": "49",
+                "friendship_gauge": 2185
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            2185
-        ],
         "browser_offset": 33,
         "browser_flag": 5,
         "browser_rank_offset": 33,
@@ -1785,20 +1577,17 @@
         "label": "OMASTAR",
         "browser_id": 236,
         "national_id": 139,
-        "form_ids": [
-            74
-        ],
-        "hex_form_ids": [
-            "4A"
-        ],
+        "forms": {
+            "74": {
+                "hex_form_id": "4A",
+                "friendship_gauge": 6300
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 3
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            6300
-        ],
         "browser_offset": 33,
         "browser_flag": 7,
         "browser_rank_offset": 33,
@@ -1809,20 +1598,17 @@
         "label": "DRATINI",
         "browser_id": 218,
         "national_id": 147,
-        "form_ids": [
-            75
-        ],
-        "hex_form_ids": [
-            "4B"
-        ],
+        "forms": {
+            "75": {
+                "hex_form_id": "4B",
+                "friendship_gauge": 1610
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            1610
-        ],
         "browser_offset": 35,
         "browser_flag": 7,
         "browser_rank_offset": 35,
@@ -1833,20 +1619,17 @@
         "label": "SPINARAK",
         "browser_id": 155,
         "national_id": 167,
-        "form_ids": [
-            76
-        ],
-        "hex_form_ids": [
-            "4C"
-        ],
+        "forms": {
+            "76": {
+                "hex_form_id": "4C",
+                "friendship_gauge": 903
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            903
-        ],
         "browser_offset": 40,
         "browser_flag": 7,
         "browser_rank_offset": 40,
@@ -1857,23 +1640,21 @@
         "label": "ARIADOS",
         "browser_id": 156,
         "national_id": 168,
-        "form_ids": [
-            77,
-            289
-        ],
-        "hex_form_ids": [
-            "4D",
-            "121"
-        ],
+        "forms": {
+            "77": {
+                "hex_form_id": "4D",
+                "friendship_gauge": 3510
+            },
+            "289": {
+                "hex_form_id": "121",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 3
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            3510,
-            8000
-        ],
         "browser_offset": 41,
         "browser_flag": 1,
         "browser_rank_offset": 41,
@@ -1884,23 +1665,21 @@
         "label": "CROBAT",
         "browser_id": 16,
         "national_id": 169,
-        "form_ids": [
-            78,
-            263
-        ],
-        "hex_form_ids": [
-            "4E",
-            "107"
-        ],
+        "forms": {
+            "78": {
+                "hex_form_id": "4E",
+                "friendship_gauge": 3750
+            },
+            "263": {
+                "hex_form_id": "107",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            3750,
-            8000
-        ],
         "browser_offset": 41,
         "browser_flag": 3,
         "browser_rank_offset": 41,
@@ -1911,20 +1690,17 @@
         "label": "CHINCHOU",
         "browser_id": 88,
         "national_id": 170,
-        "form_ids": [
-            79
-        ],
-        "hex_form_ids": [
-            "4F"
-        ],
+        "forms": {
+            "79": {
+                "hex_form_id": "4F",
+                "friendship_gauge": 260
+            }
+        },
         "field_move": {
             "category": 9,
             "level": 2
         },
         "poke_assist": 4,
-        "friendship_gauge": [
-            260
-        ],
         "browser_offset": 41,
         "browser_flag": 5,
         "browser_rank_offset": 41,
@@ -1935,20 +1711,17 @@
         "label": "LANTURN",
         "browser_id": 89,
         "national_id": 171,
-        "form_ids": [
-            80
-        ],
-        "hex_form_ids": [
-            "50"
-        ],
+        "forms": {
+            "80": {
+                "hex_form_id": "50",
+                "friendship_gauge": 1900
+            }
+        },
         "field_move": {
             "category": 9,
             "level": 4
         },
         "poke_assist": 4,
-        "friendship_gauge": [
-            1900
-        ],
         "browser_offset": 41,
         "browser_flag": 7,
         "browser_rank_offset": 41,
@@ -1959,22 +1732,21 @@
         "label": "PICHU",
         "browser_id": 1,
         "national_id": 172,
-        "form_ids": [
-            81,
-            302
-        ],
-        "hex_form_ids": [
-            "51",
-            "12E"
-        ],
+        "forms": {
+            "81": {
+                "hex_form_id": "51",
+                "friendship_gauge": 66
+            },
+            "302": {
+                "hex_form_id": "12E",
+                "friendship_gauge": 66
+            }
+        },
         "field_move": {
             "category": 9,
             "level": 1
         },
         "poke_assist": 4,
-        "friendship_gauge": [
-            66
-        ],
         "browser_offset": 42,
         "browser_flag": 1,
         "browser_rank_offset": 42,
@@ -1985,20 +1757,17 @@
         "label": "MAREEP",
         "browser_id": 105,
         "national_id": 179,
-        "form_ids": [
-            82
-        ],
-        "hex_form_ids": [
-            "52"
-        ],
+        "forms": {
+            "82": {
+                "hex_form_id": "52",
+                "friendship_gauge": 860
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 1
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            860
-        ],
         "browser_offset": 43,
         "browser_flag": 7,
         "browser_rank_offset": 43,
@@ -2009,20 +1778,17 @@
         "label": "FLAAFFY",
         "browser_id": 106,
         "national_id": 180,
-        "form_ids": [
-            83
-        ],
-        "hex_form_ids": [
-            "53"
-        ],
+        "forms": {
+            "83": {
+                "hex_form_id": "53",
+                "friendship_gauge": 1274
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 2
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            1274
-        ],
         "browser_offset": 44,
         "browser_flag": 1,
         "browser_rank_offset": 44,
@@ -2033,20 +1799,17 @@
         "label": "AMPHAROS",
         "browser_id": 107,
         "national_id": 181,
-        "form_ids": [
-            84
-        ],
-        "hex_form_ids": [
-            "54"
-        ],
+        "forms": {
+            "84": {
+                "hex_form_id": "54",
+                "friendship_gauge": 3900
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 3
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            3900
-        ],
         "browser_offset": 44,
         "browser_flag": 3,
         "browser_rank_offset": 44,
@@ -2057,23 +1820,21 @@
         "label": "BELLOSSOM",
         "browser_id": 117,
         "national_id": 182,
-        "form_ids": [
-            85,
-            270
-        ],
-        "hex_form_ids": [
-            "55",
-            "10E"
-        ],
+        "forms": {
+            "85": {
+                "hex_form_id": "55",
+                "friendship_gauge": 2600
+            },
+            "270": {
+                "hex_form_id": "10E",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            2600,
-            8000
-        ],
         "browser_offset": 44,
         "browser_flag": 5,
         "browser_rank_offset": 44,
@@ -2084,20 +1845,17 @@
         "label": "SUDOWOODO",
         "browser_id": 31,
         "national_id": 185,
-        "form_ids": [
-            86
-        ],
-        "hex_form_ids": [
-            "56"
-        ],
+        "forms": {
+            "86": {
+                "hex_form_id": "56",
+                "friendship_gauge": 1176
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            1176
-        ],
         "browser_offset": 45,
         "browser_flag": 3,
         "browser_rank_offset": 45,
@@ -2108,20 +1866,17 @@
         "label": "AIPOM",
         "browser_id": 108,
         "national_id": 190,
-        "form_ids": [
-            87
-        ],
-        "hex_form_ids": [
-            "57"
-        ],
+        "forms": {
+            "87": {
+                "hex_form_id": "57",
+                "friendship_gauge": 281
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            281
-        ],
         "browser_offset": 46,
         "browser_flag": 5,
         "browser_rank_offset": 46,
@@ -2132,20 +1887,17 @@
         "label": "YANMA",
         "browser_id": 118,
         "national_id": 193,
-        "form_ids": [
-            88
-        ],
-        "hex_form_ids": [
-            "58"
-        ],
+        "forms": {
+            "88": {
+                "hex_form_id": "58",
+                "friendship_gauge": 300
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            300
-        ],
         "browser_offset": 47,
         "browser_flag": 3,
         "browser_rank_offset": 47,
@@ -2156,23 +1908,21 @@
         "label": "ESPEON",
         "browser_id": 101,
         "national_id": 196,
-        "form_ids": [
-            89,
-            285
-        ],
-        "hex_form_ids": [
-            "59",
-            "11D"
-        ],
+        "forms": {
+            "89": {
+                "hex_form_id": "59",
+                "friendship_gauge": 3250
+            },
+            "285": {
+                "hex_form_id": "11D",
+                "friendship_gauge": 8500
+            }
+        },
         "field_move": {
             "category": 12,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            3250,
-            8500
-        ],
         "browser_offset": 48,
         "browser_flag": 1,
         "browser_rank_offset": 48,
@@ -2183,23 +1933,21 @@
         "label": "UMBREON",
         "browser_id": 102,
         "national_id": 197,
-        "form_ids": [
-            90,
-            286
-        ],
-        "hex_form_ids": [
-            "5A",
-            "11E"
-        ],
+        "forms": {
+            "90": {
+                "hex_form_id": "5A",
+                "friendship_gauge": 2900
+            },
+            "286": {
+                "hex_form_id": "11E",
+                "friendship_gauge": 18000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            2900,
-            18000
-        ],
         "browser_offset": 48,
         "browser_flag": 3,
         "browser_rank_offset": 48,
@@ -2210,20 +1958,17 @@
         "label": "MURKROW",
         "browser_id": 185,
         "national_id": 198,
-        "form_ids": [
-            91
-        ],
-        "hex_form_ids": [
-            "5B"
-        ],
+        "forms": {
+            "91": {
+                "hex_form_id": "5B",
+                "friendship_gauge": 1488
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            1488
-        ],
         "browser_offset": 48,
         "browser_flag": 5,
         "browser_rank_offset": 48,
@@ -2234,20 +1979,17 @@
         "label": "MISDREAVUS",
         "browser_id": 220,
         "national_id": 200,
-        "form_ids": [
-            92
-        ],
-        "hex_form_ids": [
-            "5C"
-        ],
+        "forms": {
+            "92": {
+                "hex_form_id": "5C",
+                "friendship_gauge": 3400
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            3400
-        ],
         "browser_offset": 49,
         "browser_flag": 1,
         "browser_rank_offset": 49,
@@ -2258,20 +2000,17 @@
         "label": "GIRAFARIG",
         "browser_id": 178,
         "national_id": 203,
-        "form_ids": [
-            93
-        ],
-        "hex_form_ids": [
-            "5D"
-        ],
+        "forms": {
+            "93": {
+                "hex_form_id": "5D",
+                "friendship_gauge": 860
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            860
-        ],
         "browser_offset": 49,
         "browser_flag": 7,
         "browser_rank_offset": 49,
@@ -2282,20 +2021,17 @@
         "label": "PINECO",
         "browser_id": 110,
         "national_id": 204,
-        "form_ids": [
-            94
-        ],
-        "hex_form_ids": [
-            "5E"
-        ],
+        "forms": {
+            "94": {
+                "hex_form_id": "5E",
+                "friendship_gauge": 338
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            338
-        ],
         "browser_offset": 50,
         "browser_flag": 1,
         "browser_rank_offset": 50,
@@ -2306,20 +2042,17 @@
         "label": "FORRETRESS",
         "browser_id": 111,
         "national_id": 205,
-        "form_ids": [
-            95
-        ],
-        "hex_form_ids": [
-            "5F"
-        ],
+        "forms": {
+            "95": {
+                "hex_form_id": "5F",
+                "friendship_gauge": 1716
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            1716
-        ],
         "browser_offset": 50,
         "browser_flag": 3,
         "browser_rank_offset": 50,
@@ -2330,20 +2063,17 @@
         "label": "GLIGAR",
         "browser_id": 128,
         "national_id": 207,
-        "form_ids": [
-            96
-        ],
-        "hex_form_ids": [
-            "60"
-        ],
+        "forms": {
+            "96": {
+                "hex_form_id": "60",
+                "friendship_gauge": 448
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            448
-        ],
         "browser_offset": 50,
         "browser_flag": 7,
         "browser_rank_offset": 50,
@@ -2354,20 +2084,17 @@
         "label": "QWILFISH",
         "browser_id": 92,
         "national_id": 211,
-        "form_ids": [
-            97
-        ],
-        "hex_form_ids": [
-            "61"
-        ],
+        "forms": {
+            "97": {
+                "hex_form_id": "61",
+                "friendship_gauge": 450
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            450
-        ],
         "browser_offset": 51,
         "browser_flag": 7,
         "browser_rank_offset": 51,
@@ -2378,20 +2105,17 @@
         "label": "SCIZOR",
         "browser_id": 217,
         "national_id": 212,
-        "form_ids": [
-            98
-        ],
-        "hex_form_ids": [
-            "62"
-        ],
+        "forms": {
+            "98": {
+                "hex_form_id": "62",
+                "friendship_gauge": 4050
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 4
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            4050
-        ],
         "browser_offset": 52,
         "browser_flag": 1,
         "browser_rank_offset": 52,
@@ -2402,20 +2126,17 @@
         "label": "SNEASEL",
         "browser_id": 244,
         "national_id": 215,
-        "form_ids": [
-            99
-        ],
-        "hex_form_ids": [
-            "63"
-        ],
+        "forms": {
+            "99": {
+                "hex_form_id": "63",
+                "friendship_gauge": 1960
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            1960
-        ],
         "browser_offset": 52,
         "browser_flag": 7,
         "browser_rank_offset": 52,
@@ -2426,20 +2147,17 @@
         "label": "SLUGMA",
         "browser_id": 140,
         "national_id": 218,
-        "form_ids": [
-            100
-        ],
-        "hex_form_ids": [
-            "64"
-        ],
+        "forms": {
+            "100": {
+                "hex_form_id": "64",
+                "friendship_gauge": 792
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 1
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            792
-        ],
         "browser_offset": 53,
         "browser_flag": 5,
         "browser_rank_offset": 53,
@@ -2450,20 +2168,17 @@
         "label": "MAGCARGO",
         "browser_id": 141,
         "national_id": 219,
-        "form_ids": [
-            101
-        ],
-        "hex_form_ids": [
-            "65"
-        ],
+        "forms": {
+            "101": {
+                "hex_form_id": "65",
+                "friendship_gauge": 1140
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 2
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            1140
-        ],
         "browser_offset": 53,
         "browser_flag": 7,
         "browser_rank_offset": 53,
@@ -2474,20 +2189,17 @@
         "label": "SWINUB",
         "browser_id": 200,
         "national_id": 220,
-        "form_ids": [
-            102
-        ],
-        "hex_form_ids": [
-            "66"
-        ],
+        "forms": {
+            "102": {
+                "hex_form_id": "66",
+                "friendship_gauge": 1364
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            1364
-        ],
         "browser_offset": 54,
         "browser_flag": 1,
         "browser_rank_offset": 54,
@@ -2498,20 +2210,17 @@
         "label": "PILOSWINE",
         "browser_id": 201,
         "national_id": 221,
-        "form_ids": [
-            103
-        ],
-        "hex_form_ids": [
-            "67"
-        ],
+        "forms": {
+            "103": {
+                "hex_form_id": "67",
+                "friendship_gauge": 4030
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 3
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            4030
-        ],
         "browser_offset": 54,
         "browser_flag": 3,
         "browser_rank_offset": 54,
@@ -2522,20 +2231,17 @@
         "label": "CORSOLA",
         "browser_id": 93,
         "national_id": 222,
-        "form_ids": [
-            104
-        ],
-        "hex_form_ids": [
-            "68"
-        ],
+        "forms": {
+            "104": {
+                "hex_form_id": "68",
+                "friendship_gauge": 500
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            500
-        ],
         "browser_offset": 54,
         "browser_flag": 5,
         "browser_rank_offset": 54,
@@ -2546,20 +2252,17 @@
         "label": "DELIBIRD",
         "browser_id": 209,
         "national_id": 225,
-        "form_ids": [
-            105
-        ],
-        "hex_form_ids": [
-            "69"
-        ],
+        "forms": {
+            "105": {
+                "hex_form_id": "69",
+                "friendship_gauge": 1584
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            1584
-        ],
         "browser_offset": 55,
         "browser_flag": 3,
         "browser_rank_offset": 55,
@@ -2570,20 +2273,17 @@
         "label": "MANTINE",
         "browser_id": 91,
         "national_id": 226,
-        "form_ids": [
-            106
-        ],
-        "hex_form_ids": [
-            "6A"
-        ],
+        "forms": {
+            "106": {
+                "hex_form_id": "6A",
+                "friendship_gauge": 300
+            }
+        },
         "field_move": {
             "category": 23,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            300
-        ],
         "browser_offset": 55,
         "browser_flag": 5,
         "browser_rank_offset": 55,
@@ -2594,20 +2294,17 @@
         "label": "SKARMORY",
         "browser_id": 189,
         "national_id": 227,
-        "form_ids": [
-            107
-        ],
-        "hex_form_ids": [
-            "6B"
-        ],
+        "forms": {
+            "107": {
+                "hex_form_id": "6B",
+                "friendship_gauge": 1715
+            }
+        },
         "field_move": {
             "category": 14,
             "level": 1
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            1715
-        ],
         "browser_offset": 55,
         "browser_flag": 7,
         "browser_rank_offset": 55,
@@ -2618,20 +2315,17 @@
         "label": "HOUNDOUR",
         "browser_id": 153,
         "national_id": 228,
-        "form_ids": [
-            108
-        ],
-        "hex_form_ids": [
-            "6C"
-        ],
+        "forms": {
+            "108": {
+                "hex_form_id": "6C",
+                "friendship_gauge": 946
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            946
-        ],
         "browser_offset": 56,
         "browser_flag": 1,
         "browser_rank_offset": 56,
@@ -2642,23 +2336,21 @@
         "label": "HOUNDOOM",
         "browser_id": 154,
         "national_id": 229,
-        "form_ids": [
-            109,
-            292
-        ],
-        "hex_form_ids": [
-            "6D",
-            "124"
-        ],
+        "forms": {
+            "109": {
+                "hex_form_id": "6D",
+                "friendship_gauge": 2112
+            },
+            "292": {
+                "hex_form_id": "124",
+                "friendship_gauge": 9500
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 2
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            2112,
-            9500
-        ],
         "browser_offset": 56,
         "browser_flag": 3,
         "browser_rank_offset": 56,
@@ -2669,20 +2361,17 @@
         "label": "TYROGUE",
         "browser_id": 61,
         "national_id": 236,
-        "form_ids": [
-            110
-        ],
-        "hex_form_ids": [
-            "6E"
-        ],
+        "forms": {
+            "110": {
+                "hex_form_id": "6E",
+                "friendship_gauge": 231
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            231
-        ],
         "browser_offset": 58,
         "browser_flag": 1,
         "browser_rank_offset": 58,
@@ -2693,20 +2382,17 @@
         "label": "ELEKID",
         "browser_id": 70,
         "national_id": 239,
-        "form_ids": [
-            111
-        ],
-        "hex_form_ids": [
-            "6F"
-        ],
+        "forms": {
+            "111": {
+                "hex_form_id": "6F",
+                "friendship_gauge": 231
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 2
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            231
-        ],
         "browser_offset": 58,
         "browser_flag": 7,
         "browser_rank_offset": 58,
@@ -2717,20 +2403,17 @@
         "label": "MAGBY",
         "browser_id": 73,
         "national_id": 240,
-        "form_ids": [
-            112
-        ],
-        "hex_form_ids": [
-            "70"
-        ],
+        "forms": {
+            "112": {
+                "hex_form_id": "70",
+                "friendship_gauge": 231
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 1
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            231
-        ],
         "browser_offset": 59,
         "browser_flag": 1,
         "browser_rank_offset": 59,
@@ -2741,20 +2424,17 @@
         "label": "MILTANK",
         "browser_id": 46,
         "national_id": 241,
-        "form_ids": [
-            113
-        ],
-        "hex_form_ids": [
-            "71"
-        ],
+        "forms": {
+            "113": {
+                "hex_form_id": "71",
+                "friendship_gauge": 294
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            294
-        ],
         "browser_offset": 59,
         "browser_flag": 3,
         "browser_rank_offset": 59,
@@ -2765,20 +2445,17 @@
         "label": "LARVITAR",
         "browser_id": 120,
         "national_id": 246,
-        "form_ids": [
-            114
-        ],
-        "hex_form_ids": [
-            "72"
-        ],
+        "forms": {
+            "114": {
+                "hex_form_id": "72",
+                "friendship_gauge": 416
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            416
-        ],
         "browser_offset": 60,
         "browser_flag": 5,
         "browser_rank_offset": 60,
@@ -2789,20 +2466,17 @@
         "label": "PUPITAR",
         "browser_id": 121,
         "national_id": 247,
-        "form_ids": [
-            115
-        ],
-        "hex_form_ids": [
-            "73"
-        ],
+        "forms": {
+            "115": {
+                "hex_form_id": "73",
+                "friendship_gauge": 1300
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            1300
-        ],
         "browser_offset": 60,
         "browser_flag": 7,
         "browser_rank_offset": 60,
@@ -2813,23 +2487,21 @@
         "label": "TYRANITAR",
         "browser_id": 122,
         "national_id": 248,
-        "form_ids": [
-            116,
-            279
-        ],
-        "hex_form_ids": [
-            "74",
-            "117"
-        ],
+        "forms": {
+            "116": {
+                "hex_form_id": "74",
+                "friendship_gauge": 8750
+            },
+            "279": {
+                "hex_form_id": "117",
+                "friendship_gauge": 15000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            8750,
-            15000
-        ],
         "browser_offset": 61,
         "browser_flag": 1,
         "browser_rank_offset": 61,
@@ -2840,20 +2512,17 @@
         "label": "SCEPTILE",
         "browser_id": 243,
         "national_id": 254,
-        "form_ids": [
-            117
-        ],
-        "hex_form_ids": [
-            "75"
-        ],
+        "forms": {
+            "117": {
+                "hex_form_id": "75",
+                "friendship_gauge": 2730
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            2730
-        ],
         "browser_offset": 62,
         "browser_flag": 5,
         "browser_rank_offset": 62,
@@ -2864,23 +2533,21 @@
         "label": "BLAZIKEN",
         "browser_id": 255,
         "national_id": 257,
-        "form_ids": [
-            118,
-            273
-        ],
-        "hex_form_ids": [
-            "76",
-            "111"
-        ],
+        "forms": {
+            "118": {
+                "hex_form_id": "76",
+                "friendship_gauge": 3750
+            },
+            "273": {
+                "hex_form_id": "111",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 3
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            3750,
-            8000
-        ],
         "browser_offset": 63,
         "browser_flag": 3,
         "browser_rank_offset": 63,
@@ -2891,20 +2558,17 @@
         "label": "SEEDOT",
         "browser_id": 33,
         "national_id": 273,
-        "form_ids": [
-            119
-        ],
-        "hex_form_ids": [
-            "77"
-        ],
+        "forms": {
+            "119": {
+                "hex_form_id": "77",
+                "friendship_gauge": 180
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            180
-        ],
         "browser_offset": 67,
         "browser_flag": 3,
         "browser_rank_offset": 67,
@@ -2915,20 +2579,17 @@
         "label": "NUZLEAF",
         "browser_id": 34,
         "national_id": 274,
-        "form_ids": [
-            120
-        ],
-        "hex_form_ids": [
-            "78"
-        ],
+        "forms": {
+            "120": {
+                "hex_form_id": "78",
+                "friendship_gauge": 1127
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            1127
-        ],
         "browser_offset": 67,
         "browser_flag": 5,
         "browser_rank_offset": 67,
@@ -2939,23 +2600,21 @@
         "label": "SHIFTRY",
         "browser_id": 35,
         "national_id": 275,
-        "form_ids": [
-            121,
-            261
-        ],
-        "hex_form_ids": [
-            "79",
-            "105"
-        ],
+        "forms": {
+            "121": {
+                "hex_form_id": "79",
+                "friendship_gauge": 4800
+            },
+            "261": {
+                "hex_form_id": "105",
+                "friendship_gauge": 10000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            4800,
-            10000
-        ],
         "browser_offset": 67,
         "browser_flag": 7,
         "browser_rank_offset": 67,
@@ -2966,20 +2625,17 @@
         "label": "TAILLOW",
         "browser_id": 6,
         "national_id": 276,
-        "form_ids": [
-            122
-        ],
-        "hex_form_ids": [
-            "7A"
-        ],
+        "forms": {
+            "122": {
+                "hex_form_id": "7A",
+                "friendship_gauge": 56
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            56
-        ],
         "browser_offset": 68,
         "browser_flag": 1,
         "browser_rank_offset": 68,
@@ -2990,23 +2646,21 @@
         "label": "SWELLOW",
         "browser_id": 7,
         "national_id": 277,
-        "form_ids": [
-            123,
-            276
-        ],
-        "hex_form_ids": [
-            "7B",
-            "114"
-        ],
+        "forms": {
+            "123": {
+                "hex_form_id": "7B",
+                "friendship_gauge": 600
+            },
+            "276": {
+                "hex_form_id": "114",
+                "friendship_gauge": 7000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            600,
-            7000
-        ],
         "browser_offset": 68,
         "browser_flag": 3,
         "browser_rank_offset": 68,
@@ -3017,20 +2671,17 @@
         "label": "WINGULL",
         "browser_id": 78,
         "national_id": 278,
-        "form_ids": [
-            124
-        ],
-        "hex_form_ids": [
-            "7C"
-        ],
+        "forms": {
+            "124": {
+                "hex_form_id": "7C",
+                "friendship_gauge": 252
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            252
-        ],
         "browser_offset": 68,
         "browser_flag": 5,
         "browser_rank_offset": 68,
@@ -3041,20 +2692,17 @@
         "label": "PELIPPER",
         "browser_id": 79,
         "national_id": 279,
-        "form_ids": [
-            125
-        ],
-        "hex_form_ids": [
-            "7D"
-        ],
+        "forms": {
+            "125": {
+                "hex_form_id": "7D",
+                "friendship_gauge": 1920
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 3
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            1920
-        ],
         "browser_offset": 68,
         "browser_flag": 7,
         "browser_rank_offset": 68,
@@ -3065,20 +2713,17 @@
         "label": "RALTS",
         "browser_id": 157,
         "national_id": 280,
-        "form_ids": [
-            126
-        ],
-        "hex_form_ids": [
-            "7E"
-        ],
+        "forms": {
+            "126": {
+                "hex_form_id": "7E",
+                "friendship_gauge": 774
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            774
-        ],
         "browser_offset": 69,
         "browser_flag": 1,
         "browser_rank_offset": 69,
@@ -3089,20 +2734,17 @@
         "label": "KIRLIA",
         "browser_id": 158,
         "national_id": 281,
-        "form_ids": [
-            127
-        ],
-        "hex_form_ids": [
-            "7F"
-        ],
+        "forms": {
+            "127": {
+                "hex_form_id": "7F",
+                "friendship_gauge": 1200
+            }
+        },
         "field_move": {
             "category": 12,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            1200
-        ],
         "browser_offset": 69,
         "browser_flag": 3,
         "browser_rank_offset": 69,
@@ -3113,23 +2755,21 @@
         "label": "GARDEVOIR",
         "browser_id": 159,
         "national_id": 282,
-        "form_ids": [
-            128,
-            260
-        ],
-        "hex_form_ids": [
-            "80",
-            "104"
-        ],
+        "forms": {
+            "128": {
+                "hex_form_id": "80",
+                "friendship_gauge": 3900
+            },
+            "260": {
+                "hex_form_id": "104",
+                "friendship_gauge": 12000
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 3
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            3900,
-            12000
-        ],
         "browser_offset": 69,
         "browser_flag": 5,
         "browser_rank_offset": 69,
@@ -3140,20 +2780,17 @@
         "label": "SLAKOTH",
         "browser_id": 32,
         "national_id": 287,
-        "form_ids": [
-            129
-        ],
-        "hex_form_ids": [
-            "81"
-        ],
+        "forms": {
+            "129": {
+                "hex_form_id": "81",
+                "friendship_gauge": 88
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            88
-        ],
         "browser_offset": 70,
         "browser_flag": 7,
         "browser_rank_offset": 70,
@@ -3164,20 +2801,17 @@
         "label": "NINJASK",
         "browser_id": 180,
         "national_id": 291,
-        "form_ids": [
-            130
-        ],
-        "hex_form_ids": [
-            "82"
-        ],
+        "forms": {
+            "130": {
+                "hex_form_id": "82",
+                "friendship_gauge": 490
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            490
-        ],
         "browser_offset": 71,
         "browser_flag": 7,
         "browser_rank_offset": 71,
@@ -3188,20 +2822,17 @@
         "label": "MAKUHITA",
         "browser_id": 28,
         "national_id": 296,
-        "form_ids": [
-            131
-        ],
-        "hex_form_ids": [
-            "83"
-        ],
+        "forms": {
+            "131": {
+                "hex_form_id": "83",
+                "friendship_gauge": 989
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            989
-        ],
         "browser_offset": 73,
         "browser_flag": 1,
         "browser_rank_offset": 73,
@@ -3212,20 +2843,17 @@
         "label": "HARIYAMA",
         "browser_id": 29,
         "national_id": 297,
-        "form_ids": [
-            132
-        ],
-        "hex_form_ids": [
-            "84"
-        ],
+        "forms": {
+            "132": {
+                "hex_form_id": "84",
+                "friendship_gauge": 2320
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            2320
-        ],
         "browser_offset": 73,
         "browser_flag": 3,
         "browser_rank_offset": 73,
@@ -3236,20 +2864,17 @@
         "label": "NOSEPASS",
         "browser_id": 44,
         "national_id": 299,
-        "form_ids": [
-            133
-        ],
-        "hex_form_ids": [
-            "85"
-        ],
+        "forms": {
+            "133": {
+                "hex_form_id": "85",
+                "friendship_gauge": 252
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            252
-        ],
         "browser_offset": 73,
         "browser_flag": 7,
         "browser_rank_offset": 73,
@@ -3260,20 +2885,17 @@
         "label": "SABLEYE",
         "browser_id": 193,
         "national_id": 302,
-        "form_ids": [
-            134
-        ],
-        "hex_form_ids": [
-            "86"
-        ],
+        "forms": {
+            "134": {
+                "hex_form_id": "86",
+                "friendship_gauge": 1334
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            1334
-        ],
         "browser_offset": 74,
         "browser_flag": 5,
         "browser_rank_offset": 74,
@@ -3284,20 +2906,17 @@
         "label": "MAWILE",
         "browser_id": 130,
         "national_id": 303,
-        "form_ids": [
-            135
-        ],
-        "hex_form_ids": [
-            "87"
-        ],
+        "forms": {
+            "135": {
+                "hex_form_id": "87",
+                "friendship_gauge": 480
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            480
-        ],
         "browser_offset": 74,
         "browser_flag": 7,
         "browser_rank_offset": 74,
@@ -3308,20 +2927,17 @@
         "label": "ARON",
         "browser_id": 131,
         "national_id": 304,
-        "form_ids": [
-            136
-        ],
-        "hex_form_ids": [
-            "88"
-        ],
+        "forms": {
+            "136": {
+                "hex_form_id": "88",
+                "friendship_gauge": 416
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            416
-        ],
         "browser_offset": 75,
         "browser_flag": 1,
         "browser_rank_offset": 75,
@@ -3332,20 +2948,17 @@
         "label": "LAIRON",
         "browser_id": 132,
         "national_id": 305,
-        "form_ids": [
-            137
-        ],
-        "hex_form_ids": [
-            "89"
-        ],
+        "forms": {
+            "137": {
+                "hex_form_id": "89",
+                "friendship_gauge": 1710
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            1710
-        ],
         "browser_offset": 75,
         "browser_flag": 3,
         "browser_rank_offset": 75,
@@ -3356,23 +2969,21 @@
         "label": "AGGRON",
         "browser_id": 133,
         "national_id": 306,
-        "form_ids": [
-            138,
-            278
-        ],
-        "hex_form_ids": [
-            "8A",
-            "116"
-        ],
+        "forms": {
+            "138": {
+                "hex_form_id": "8A",
+                "friendship_gauge": 7200
+            },
+            "278": {
+                "hex_form_id": "116",
+                "friendship_gauge": 14000
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 4
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            7200,
-            14000
-        ],
         "browser_offset": 75,
         "browser_flag": 5,
         "browser_rank_offset": 75,
@@ -3383,20 +2994,17 @@
         "label": "ROSELIA",
         "browser_id": 9,
         "national_id": 315,
-        "form_ids": [
-            139
-        ],
-        "hex_form_ids": [
-            "8B"
-        ],
+        "forms": {
+            "139": {
+                "hex_form_id": "8B",
+                "friendship_gauge": 228
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            228
-        ],
         "browser_offset": 77,
         "browser_flag": 7,
         "browser_rank_offset": 77,
@@ -3407,20 +3015,17 @@
         "label": "NUMEL",
         "browser_id": 124,
         "national_id": 322,
-        "form_ids": [
-            140
-        ],
-        "hex_form_ids": [
-            "8C"
-        ],
+        "forms": {
+            "140": {
+                "hex_form_id": "8C",
+                "friendship_gauge": 448
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 1
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            448
-        ],
         "browser_offset": 79,
         "browser_flag": 5,
         "browser_rank_offset": 79,
@@ -3431,20 +3036,17 @@
         "label": "CAMERUPT",
         "browser_id": 125,
         "national_id": 323,
-        "form_ids": [
-            141
-        ],
-        "hex_form_ids": [
-            "8D"
-        ],
+        "forms": {
+            "141": {
+                "hex_form_id": "8D",
+                "friendship_gauge": 3720
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 3
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            3720
-        ],
         "browser_offset": 79,
         "browser_flag": 7,
         "browser_rank_offset": 79,
@@ -3455,20 +3057,17 @@
         "label": "TORKOAL",
         "browser_id": 224,
         "national_id": 324,
-        "form_ids": [
-            142
-        ],
-        "hex_form_ids": [
-            "8E"
-        ],
+        "forms": {
+            "142": {
+                "hex_form_id": "8E",
+                "friendship_gauge": 1600
+            }
+        },
         "field_move": {
             "category": 22,
             "level": 1
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            1600
-        ],
         "browser_offset": 80,
         "browser_flag": 1,
         "browser_rank_offset": 80,
@@ -3479,20 +3078,17 @@
         "label": "CACNEA",
         "browser_id": 239,
         "national_id": 331,
-        "form_ids": [
-            143
-        ],
-        "hex_form_ids": [
-            "8F"
-        ],
+        "forms": {
+            "143": {
+                "hex_form_id": "8F",
+                "friendship_gauge": 2400
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            2400
-        ],
         "browser_offset": 81,
         "browser_flag": 7,
         "browser_rank_offset": 81,
@@ -3503,23 +3099,21 @@
         "label": "CACTURNE",
         "browser_id": 240,
         "national_id": 332,
-        "form_ids": [
-            144,
-            290
-        ],
-        "hex_form_ids": [
-            "90",
-            "122"
-        ],
+        "forms": {
+            "144": {
+                "hex_form_id": "90",
+                "friendship_gauge": 3125
+            },
+            "290": {
+                "hex_form_id": "122",
+                "friendship_gauge": 9000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            3125,
-            9000
-        ],
         "browser_offset": 82,
         "browser_flag": 1,
         "browser_rank_offset": 82,
@@ -3530,20 +3124,17 @@
         "label": "ALTARIA",
         "browser_id": 260,
         "national_id": 334,
-        "form_ids": [
-            145
-        ],
-        "hex_form_ids": [
-            "91"
-        ],
+        "forms": {
+            "145": {
+                "hex_form_id": "91",
+                "friendship_gauge": 7000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            7000
-        ],
         "browser_offset": 82,
         "browser_flag": 5,
         "browser_rank_offset": 82,
@@ -3554,22 +3145,21 @@
         "label": "CLAYDOL",
         "browser_id": 250,
         "national_id": 344,
-        "form_ids": [
-            146,
-            271
-        ],
-        "hex_form_ids": [
-            "92",
-            "10F"
-        ],
+        "forms": {
+            "146": {
+                "hex_form_id": "92",
+                "friendship_gauge": 3380
+            },
+            "271": {
+                "hex_form_id": "10F",
+                "friendship_gauge": 3380
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            3380
-        ],
         "browser_offset": 85,
         "browser_flag": 1,
         "browser_rank_offset": 85,
@@ -3580,20 +3170,17 @@
         "label": "SHUPPET",
         "browser_id": 147,
         "national_id": 353,
-        "form_ids": [
-            147
-        ],
-        "hex_form_ids": [
-            "93"
-        ],
+        "forms": {
+            "147": {
+                "hex_form_id": "93",
+                "friendship_gauge": 648
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 1
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            648
-        ],
         "browser_offset": 87,
         "browser_flag": 3,
         "browser_rank_offset": 87,
@@ -3604,23 +3191,21 @@
         "label": "BANETTE",
         "browser_id": 148,
         "national_id": 354,
-        "form_ids": [
-            148,
-            291
-        ],
-        "hex_form_ids": [
-            "94",
-            "123"
-        ],
+        "forms": {
+            "148": {
+                "hex_form_id": "94",
+                "friendship_gauge": 3120
+            },
+            "291": {
+                "hex_form_id": "123",
+                "friendship_gauge": 8500
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 2
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            3120,
-            8500
-        ],
         "browser_offset": 87,
         "browser_flag": 5,
         "browser_rank_offset": 87,
@@ -3631,22 +3216,21 @@
         "label": "DUSKULL",
         "browser_id": 190,
         "national_id": 355,
-        "form_ids": [
-            149,
-            239
-        ],
-        "hex_form_ids": [
-            "95",
-            "EF"
-        ],
+        "forms": {
+            "149": {
+                "hex_form_id": "95",
+                "friendship_gauge": 1196
+            },
+            "239": {
+                "hex_form_id": "EF",
+                "friendship_gauge": 1196
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 1
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            1196
-        ],
         "browser_offset": 87,
         "browser_flag": 7,
         "browser_rank_offset": 87,
@@ -3657,20 +3241,17 @@
         "label": "DUSCLOPS",
         "browser_id": 191,
         "national_id": 356,
-        "form_ids": [
-            150
-        ],
-        "hex_form_ids": [
-            "96"
-        ],
+        "forms": {
+            "150": {
+                "hex_form_id": "96",
+                "friendship_gauge": 2835
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 3
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            2835
-        ],
         "browser_offset": 88,
         "browser_flag": 1,
         "browser_rank_offset": 88,
@@ -3681,23 +3262,21 @@
         "label": "ABSOL",
         "browser_id": 256,
         "national_id": 359,
-        "form_ids": [
-            151,
-            268
-        ],
-        "hex_form_ids": [
-            "97",
-            "10C"
-        ],
+        "forms": {
+            "151": {
+                "hex_form_id": "97",
+                "friendship_gauge": 4500
+            },
+            "268": {
+                "hex_form_id": "10C",
+                "friendship_gauge": 10000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 4
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            4500,
-            10000
-        ],
         "browser_offset": 88,
         "browser_flag": 7,
         "browser_rank_offset": 88,
@@ -3708,20 +3287,17 @@
         "label": "SNORUNT",
         "browser_id": 213,
         "national_id": 361,
-        "form_ids": [
-            152
-        ],
-        "hex_form_ids": [
-            "98"
-        ],
+        "forms": {
+            "152": {
+                "hex_form_id": "98",
+                "friendship_gauge": 1680
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            1680
-        ],
         "browser_offset": 89,
         "browser_flag": 3,
         "browser_rank_offset": 89,
@@ -3732,20 +3308,17 @@
         "label": "GLALIE",
         "browser_id": 214,
         "national_id": 362,
-        "form_ids": [
-            153
-        ],
-        "hex_form_ids": [
-            "99"
-        ],
+        "forms": {
+            "153": {
+                "hex_form_id": "99",
+                "friendship_gauge": 2030
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            2030
-        ],
         "browser_offset": 89,
         "browser_flag": 5,
         "browser_rank_offset": 89,
@@ -3756,20 +3329,17 @@
         "label": "SPHEAL",
         "browser_id": 197,
         "national_id": 363,
-        "form_ids": [
-            154
-        ],
-        "hex_form_ids": [
-            "9A"
-        ],
+        "forms": {
+            "154": {
+                "hex_form_id": "9A",
+                "friendship_gauge": 1364
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            1364
-        ],
         "browser_offset": 89,
         "browser_flag": 7,
         "browser_rank_offset": 89,
@@ -3780,20 +3350,17 @@
         "label": "SEALEO",
         "browser_id": 198,
         "national_id": 364,
-        "form_ids": [
-            155
-        ],
-        "hex_form_ids": [
-            "9B"
-        ],
+        "forms": {
+            "155": {
+                "hex_form_id": "9B",
+                "friendship_gauge": 1612
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            1612
-        ],
         "browser_offset": 90,
         "browser_flag": 1,
         "browser_rank_offset": 90,
@@ -3804,20 +3371,17 @@
         "label": "WALREIN",
         "browser_id": 199,
         "national_id": 365,
-        "form_ids": [
-            156
-        ],
-        "hex_form_ids": [
-            "9C"
-        ],
+        "forms": {
+            "156": {
+                "hex_form_id": "9C",
+                "friendship_gauge": 4200
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            4200
-        ],
         "browser_offset": 90,
         "browser_flag": 3,
         "browser_rank_offset": 90,
@@ -3828,20 +3392,17 @@
         "label": "HUNTAIL",
         "browser_id": 232,
         "national_id": 367,
-        "form_ids": [
-            157
-        ],
-        "hex_form_ids": [
-            "9D"
-        ],
+        "forms": {
+            "157": {
+                "hex_form_id": "9D",
+                "friendship_gauge": 2300
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            2300
-        ],
         "browser_offset": 90,
         "browser_flag": 7,
         "browser_rank_offset": 90,
@@ -3852,20 +3413,17 @@
         "label": "GOREBYSS",
         "browser_id": 233,
         "national_id": 368,
-        "form_ids": [
-            158
-        ],
-        "hex_form_ids": [
-            "9E"
-        ],
+        "forms": {
+            "158": {
+                "hex_form_id": "9E",
+                "friendship_gauge": 2400
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            2400
-        ],
         "browser_offset": 91,
         "browser_flag": 1,
         "browser_rank_offset": 91,
@@ -3876,20 +3434,17 @@
         "label": "BAGON",
         "browser_id": 225,
         "national_id": 371,
-        "form_ids": [
-            159
-        ],
-        "hex_form_ids": [
-            "9F"
-        ],
+        "forms": {
+            "159": {
+                "hex_form_id": "9F",
+                "friendship_gauge": 1840
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            1840
-        ],
         "browser_offset": 91,
         "browser_flag": 7,
         "browser_rank_offset": 91,
@@ -3900,20 +3455,17 @@
         "label": "SHELGON",
         "browser_id": 226,
         "national_id": 372,
-        "form_ids": [
-            160
-        ],
-        "hex_form_ids": [
-            "A0"
-        ],
+        "forms": {
+            "160": {
+                "hex_form_id": "A0",
+                "friendship_gauge": 2160
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            2160
-        ],
         "browser_offset": 92,
         "browser_flag": 1,
         "browser_rank_offset": 92,
@@ -3924,20 +3476,17 @@
         "label": "TURTWIG",
         "browser_id": 52,
         "national_id": 387,
-        "form_ids": [
-            161
-        ],
-        "hex_form_ids": [
-            "A1"
-        ],
+        "forms": {
+            "161": {
+                "hex_form_id": "A1",
+                "friendship_gauge": 1075
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            1075
-        ],
         "browser_offset": 95,
         "browser_flag": 7,
         "browser_rank_offset": 95,
@@ -3948,20 +3497,17 @@
         "label": "GROTLE",
         "browser_id": 53,
         "national_id": 388,
-        "form_ids": [
-            162
-        ],
-        "hex_form_ids": [
-            "A2"
-        ],
+        "forms": {
+            "162": {
+                "hex_form_id": "A2",
+                "friendship_gauge": 750
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            750
-        ],
         "browser_offset": 96,
         "browser_flag": 1,
         "browser_rank_offset": 96,
@@ -3972,23 +3518,21 @@
         "label": "TORTERRA",
         "browser_id": 54,
         "national_id": 389,
-        "form_ids": [
-            163,
-            296
-        ],
-        "hex_form_ids": [
-            "A3",
-            "128"
-        ],
+        "forms": {
+            "163": {
+                "hex_form_id": "A3",
+                "friendship_gauge": 6500
+            },
+            "296": {
+                "hex_form_id": "128",
+                "friendship_gauge": 25000
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 4
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            6500,
-            25000
-        ],
         "browser_offset": 96,
         "browser_flag": 3,
         "browser_rank_offset": 96,
@@ -3999,20 +3543,17 @@
         "label": "CHIMCHAR",
         "browser_id": 168,
         "national_id": 390,
-        "form_ids": [
-            164
-        ],
-        "hex_form_ids": [
-            "A4"
-        ],
+        "forms": {
+            "164": {
+                "hex_form_id": "A4",
+                "friendship_gauge": 1300
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            1300
-        ],
         "browser_offset": 96,
         "browser_flag": 5,
         "browser_rank_offset": 96,
@@ -4023,20 +3564,17 @@
         "label": "MONFERNO",
         "browser_id": 169,
         "national_id": 391,
-        "form_ids": [
-            165
-        ],
-        "hex_form_ids": [
-            "A5"
-        ],
+        "forms": {
+            "165": {
+                "hex_form_id": "A5",
+                "friendship_gauge": 1700
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 2
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            1700
-        ],
         "browser_offset": 96,
         "browser_flag": 7,
         "browser_rank_offset": 96,
@@ -4047,23 +3585,21 @@
         "label": "INFERNAPE",
         "browser_id": 170,
         "national_id": 392,
-        "form_ids": [
-            166,
-            298
-        ],
-        "hex_form_ids": [
-            "A6",
-            "12A"
-        ],
+        "forms": {
+            "166": {
+                "hex_form_id": "A6",
+                "friendship_gauge": 8000
+            },
+            "298": {
+                "hex_form_id": "12A",
+                "friendship_gauge": 21000
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 3
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            8000,
-            21000
-        ],
         "browser_offset": 97,
         "browser_flag": 1,
         "browser_rank_offset": 97,
@@ -4074,20 +3610,17 @@
         "label": "PIPLUP",
         "browser_id": 206,
         "national_id": 393,
-        "form_ids": [
-            167
-        ],
-        "hex_form_ids": [
-            "A7"
-        ],
+        "forms": {
+            "167": {
+                "hex_form_id": "A7",
+                "friendship_gauge": 1750
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            1750
-        ],
         "browser_offset": 97,
         "browser_flag": 3,
         "browser_rank_offset": 97,
@@ -4098,20 +3631,17 @@
         "label": "PRINPLUP",
         "browser_id": 207,
         "national_id": 394,
-        "form_ids": [
-            168
-        ],
-        "hex_form_ids": [
-            "A8"
-        ],
+        "forms": {
+            "168": {
+                "hex_form_id": "A8",
+                "friendship_gauge": 1488
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            1488
-        ],
         "browser_offset": 97,
         "browser_flag": 5,
         "browser_rank_offset": 97,
@@ -4122,23 +3652,21 @@
         "label": "EMPOLEON",
         "browser_id": 208,
         "national_id": 395,
-        "form_ids": [
-            169,
-            297
-        ],
-        "hex_form_ids": [
-            "A9",
-            "129"
-        ],
+        "forms": {
+            "169": {
+                "hex_form_id": "A9",
+                "friendship_gauge": 1350
+            },
+            "297": {
+                "hex_form_id": "129",
+                "friendship_gauge": 23000
+            }
+        },
         "field_move": {
             "category": 21,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            1350,
-            23000
-        ],
         "browser_offset": 97,
         "browser_flag": 7,
         "browser_rank_offset": 97,
@@ -4149,23 +3677,21 @@
         "label": "STARLY",
         "browser_id": 23,
         "national_id": 396,
-        "form_ids": [
-            170,
-            257
-        ],
-        "hex_form_ids": [
-            "AA",
-            "101"
-        ],
+        "forms": {
+            "170": {
+                "hex_form_id": "AA",
+                "friendship_gauge": 170
+            },
+            "257": {
+                "hex_form_id": "101",
+                "friendship_gauge": 4500
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            170,
-            4500
-        ],
         "browser_offset": 98,
         "browser_flag": 1,
         "browser_rank_offset": 98,
@@ -4176,20 +3702,17 @@
         "label": "STARAVIA",
         "browser_id": 24,
         "national_id": 397,
-        "form_ids": [
-            171
-        ],
-        "hex_form_ids": [
-            "AB"
-        ],
+        "forms": {
+            "171": {
+                "hex_form_id": "AB",
+                "friendship_gauge": 480
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            480
-        ],
         "browser_offset": 98,
         "browser_flag": 3,
         "browser_rank_offset": 98,
@@ -4200,20 +3723,17 @@
         "label": "STARAPTOR",
         "browser_id": 25,
         "national_id": 398,
-        "form_ids": [
-            172
-        ],
-        "hex_form_ids": [
-            "AC"
-        ],
+        "forms": {
+            "172": {
+                "hex_form_id": "AC",
+                "friendship_gauge": 777
+            }
+        },
         "field_move": {
             "category": 11,
             "level": 1
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            777
-        ],
         "browser_offset": 98,
         "browser_flag": 5,
         "browser_rank_offset": 98,
@@ -4224,25 +3744,25 @@
         "label": "BIDOOF",
         "browser_id": 4,
         "national_id": 399,
-        "form_ids": [
-            173,
-            301,
-            310
-        ],
-        "hex_form_ids": [
-            "AD",
-            "12D",
-            "136"
-        ],
+        "forms": {
+            "173": {
+                "hex_form_id": "AD",
+                "friendship_gauge": 0
+            },
+            "301": {
+                "hex_form_id": "12D",
+                "friendship_gauge": 66
+            },
+            "310": {
+                "hex_form_id": "136",
+                "friendship_gauge": 198
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            66,
-            198
-        ],
         "browser_offset": 98,
         "browser_flag": 7,
         "browser_rank_offset": 98,
@@ -4253,34 +3773,45 @@
         "label": "BIBAREL",
         "browser_id": 5,
         "national_id": 400,
-        "form_ids": [
-            174,
-            300,
-            303,
-            304,
-            305,
-            306,
-            307,
-            308
-        ],
-        "hex_form_ids": [
-            "AE",
-            "12C",
-            "12F",
-            "130",
-            "131",
-            "132",
-            "133",
-            "134"
-        ],
+        "forms": {
+            "174": {
+                "hex_form_id": "AE",
+                "friendship_gauge": 480
+            },
+            "300": {
+                "hex_form_id": "12C",
+                "friendship_gauge": 480
+            },
+            "303": {
+                "hex_form_id": "12F",
+                "friendship_gauge": 480
+            },
+            "304": {
+                "hex_form_id": "130",
+                "friendship_gauge": 480
+            },
+            "305": {
+                "hex_form_id": "131",
+                "friendship_gauge": 480
+            },
+            "306": {
+                "hex_form_id": "132",
+                "friendship_gauge": 480
+            },
+            "307": {
+                "hex_form_id": "133",
+                "friendship_gauge": 480
+            },
+            "308": {
+                "hex_form_id": "134",
+                "friendship_gauge": 480
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            480
-        ],
         "browser_offset": 99,
         "browser_flag": 1,
         "browser_rank_offset": 99,
@@ -4291,20 +3822,17 @@
         "label": "KRICKETOT",
         "browser_id": 82,
         "national_id": 401,
-        "form_ids": [
-            175
-        ],
-        "hex_form_ids": [
-            "AF"
-        ],
+        "forms": {
+            "175": {
+                "hex_form_id": "AF",
+                "friendship_gauge": 420
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            420
-        ],
         "browser_offset": 99,
         "browser_flag": 3,
         "browser_rank_offset": 99,
@@ -4315,20 +3843,17 @@
         "label": "KRICKETUNE",
         "browser_id": 83,
         "national_id": 402,
-        "form_ids": [
-            176
-        ],
-        "hex_form_ids": [
-            "B0"
-        ],
+        "forms": {
+            "176": {
+                "hex_form_id": "B0",
+                "friendship_gauge": 1650
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            1650
-        ],
         "browser_offset": 99,
         "browser_flag": 5,
         "browser_rank_offset": 99,
@@ -4339,20 +3864,17 @@
         "label": "SHINX",
         "browser_id": 49,
         "national_id": 403,
-        "form_ids": [
-            177
-        ],
-        "hex_form_ids": [
-            "B1"
-        ],
+        "forms": {
+            "177": {
+                "hex_form_id": "B1",
+                "friendship_gauge": 140
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 1
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            140
-        ],
         "browser_offset": 99,
         "browser_flag": 7,
         "browser_rank_offset": 99,
@@ -4363,20 +3885,17 @@
         "label": "LUXIO",
         "browser_id": 50,
         "national_id": 404,
-        "form_ids": [
-            178
-        ],
-        "hex_form_ids": [
-            "B2"
-        ],
+        "forms": {
+            "178": {
+                "hex_form_id": "B2",
+                "friendship_gauge": 1978
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 2
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            1978
-        ],
         "browser_offset": 100,
         "browser_flag": 1,
         "browser_rank_offset": 100,
@@ -4387,20 +3906,17 @@
         "label": "LUXRAY",
         "browser_id": 51,
         "national_id": 405,
-        "form_ids": [
-            179
-        ],
-        "hex_form_ids": [
-            "B3"
-        ],
+        "forms": {
+            "179": {
+                "hex_form_id": "B3",
+                "friendship_gauge": 6090
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 3
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            6090
-        ],
         "browser_offset": 100,
         "browser_flag": 3,
         "browser_rank_offset": 100,
@@ -4411,20 +3927,17 @@
         "label": "BUDEW",
         "browser_id": 8,
         "national_id": 406,
-        "form_ids": [
-            180
-        ],
-        "hex_form_ids": [
-            "B4"
-        ],
+        "forms": {
+            "180": {
+                "hex_form_id": "B4",
+                "friendship_gauge": 66
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            66
-        ],
         "browser_offset": 100,
         "browser_flag": 5,
         "browser_rank_offset": 100,
@@ -4435,21 +3948,17 @@
         "label": "ROSERADE",
         "browser_id": 10,
         "national_id": 407,
-        "form_ids": [
-            181
-        ],
-        "hex_form_ids": [
-            "B5"
-        ],
+        "forms": {
+            "181": {
+                "hex_form_id": "B5",
+                "friendship_gauge": 6000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            [],
-            6000
-        ],
         "browser_offset": 100,
         "browser_flag": 7,
         "browser_rank_offset": 100,
@@ -4460,20 +3969,17 @@
         "label": "CRANIDOS",
         "browser_id": 84,
         "national_id": 408,
-        "form_ids": [
-            182
-        ],
-        "hex_form_ids": [
-            "B6"
-        ],
+        "forms": {
+            "182": {
+                "hex_form_id": "B6",
+                "friendship_gauge": 420
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            420
-        ],
         "browser_offset": 101,
         "browser_flag": 1,
         "browser_rank_offset": 101,
@@ -4484,20 +3990,17 @@
         "label": "SHIELDON",
         "browser_id": 181,
         "national_id": 410,
-        "form_ids": [
-            183
-        ],
-        "hex_form_ids": [
-            "B7"
-        ],
+        "forms": {
+            "183": {
+                "hex_form_id": "B7",
+                "friendship_gauge": 640
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            640
-        ],
         "browser_offset": 101,
         "browser_flag": 5,
         "browser_rank_offset": 101,
@@ -4508,20 +4011,17 @@
         "label": "BASTIODON",
         "browser_id": 182,
         "national_id": 411,
-        "form_ids": [
-            184
-        ],
-        "hex_form_ids": [
-            "B8"
-        ],
+        "forms": {
+            "184": {
+                "hex_form_id": "B8",
+                "friendship_gauge": 4000
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 3
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            4000
-        ],
         "browser_offset": 101,
         "browser_flag": 7,
         "browser_rank_offset": 101,
@@ -4532,20 +4032,17 @@
         "label": "MOTHIM",
         "browser_id": 241,
         "national_id": 414,
-        "form_ids": [
-            185
-        ],
-        "hex_form_ids": [
-            "B9"
-        ],
+        "forms": {
+            "185": {
+                "hex_form_id": "B9",
+                "friendship_gauge": 2500
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            2500
-        ],
         "browser_offset": 102,
         "browser_flag": 5,
         "browser_rank_offset": 102,
@@ -4556,20 +4053,17 @@
         "label": "COMBEE",
         "browser_id": 59,
         "national_id": 415,
-        "form_ids": [
-            186
-        ],
-        "hex_form_ids": [
-            "BA"
-        ],
+        "forms": {
+            "186": {
+                "hex_form_id": "BA",
+                "friendship_gauge": 140
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            140
-        ],
         "browser_offset": 102,
         "browser_flag": 7,
         "browser_rank_offset": 102,
@@ -4580,20 +4074,17 @@
         "label": "VESPIQUEN",
         "browser_id": 60,
         "national_id": 416,
-        "form_ids": [
-            187
-        ],
-        "hex_form_ids": [
-            "BB"
-        ],
+        "forms": {
+            "187": {
+                "hex_form_id": "BB",
+                "friendship_gauge": 1560
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            1560
-        ],
         "browser_offset": 103,
         "browser_flag": 1,
         "browser_rank_offset": 103,
@@ -4604,23 +4095,21 @@
         "label": "PACHIRISU",
         "browser_id": 26,
         "national_id": 417,
-        "form_ids": [
-            188,
-            258
-        ],
-        "hex_form_ids": [
-            "BC",
-            "102"
-        ],
+        "forms": {
+            "188": {
+                "hex_form_id": "BC",
+                "friendship_gauge": 170
+            },
+            "258": {
+                "hex_form_id": "102",
+                "friendship_gauge": 5000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            170,
-            5000
-        ],
         "browser_offset": 103,
         "browser_flag": 3,
         "browser_rank_offset": 103,
@@ -4631,20 +4120,17 @@
         "label": "BUIZEL",
         "browser_id": 55,
         "national_id": 418,
-        "form_ids": [
-            189
-        ],
-        "hex_form_ids": [
-            "BD"
-        ],
+        "forms": {
+            "189": {
+                "hex_form_id": "BD",
+                "friendship_gauge": 135
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            135
-        ],
         "browser_offset": 103,
         "browser_flag": 5,
         "browser_rank_offset": 103,
@@ -4655,20 +4141,17 @@
         "label": "FLOATZEL",
         "browser_id": 56,
         "national_id": 419,
-        "form_ids": [
-            190
-        ],
-        "hex_form_ids": [
-            "BE"
-        ],
+        "forms": {
+            "190": {
+                "hex_form_id": "BE",
+                "friendship_gauge": 1000
+            }
+        },
         "field_move": {
             "category": 21,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            1000
-        ],
         "browser_offset": 103,
         "browser_flag": 7,
         "browser_rank_offset": 103,
@@ -4679,20 +4162,17 @@
         "label": "CHERUBI",
         "browser_id": 47,
         "national_id": 420,
-        "form_ids": [
-            191
-        ],
-        "hex_form_ids": [
-            "BF"
-        ],
+        "forms": {
+            "191": {
+                "hex_form_id": "BF",
+                "friendship_gauge": 185
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            185
-        ],
         "browser_offset": 104,
         "browser_flag": 1,
         "browser_rank_offset": 104,
@@ -4703,20 +4183,17 @@
         "label": "CHERRIM",
         "browser_id": 48,
         "national_id": 421,
-        "form_ids": [
-            192
-        ],
-        "hex_form_ids": [
-            "C0"
-        ],
+        "forms": {
+            "192": {
+                "hex_form_id": "C0",
+                "friendship_gauge": 1161
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            1161
-        ],
         "browser_offset": 104,
         "browser_flag": 3,
         "browser_rank_offset": 104,
@@ -4727,20 +4204,17 @@
         "label": "SHELLOS",
         "browser_id": 37,
         "national_id": 422,
-        "form_ids": [
-            193
-        ],
-        "hex_form_ids": [
-            "C1"
-        ],
+        "forms": {
+            "193": {
+                "hex_form_id": "C1",
+                "friendship_gauge": 105
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            105
-        ],
         "browser_offset": 104,
         "browser_flag": 5,
         "browser_rank_offset": 104,
@@ -4751,20 +4225,17 @@
         "label": "GASTRODON",
         "browser_id": 38,
         "national_id": 423,
-        "form_ids": [
-            194
-        ],
-        "hex_form_ids": [
-            "C2"
-        ],
+        "forms": {
+            "194": {
+                "hex_form_id": "C2",
+                "friendship_gauge": 560
+            }
+        },
         "field_move": {
             "category": 6,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            560
-        ],
         "browser_offset": 104,
         "browser_flag": 7,
         "browser_rank_offset": 104,
@@ -4775,20 +4246,17 @@
         "label": "AMBIPOM",
         "browser_id": 109,
         "national_id": 424,
-        "form_ids": [
-            195
-        ],
-        "hex_form_ids": [
-            "C3"
-        ],
+        "forms": {
+            "195": {
+                "hex_form_id": "C3",
+                "friendship_gauge": 1350
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            1350
-        ],
         "browser_offset": 105,
         "browser_flag": 1,
         "browser_rank_offset": 105,
@@ -4799,20 +4267,17 @@
         "label": "DRIFLOON",
         "browser_id": 142,
         "national_id": 425,
-        "form_ids": [
-            196
-        ],
-        "hex_form_ids": [
-            "C4"
-        ],
+        "forms": {
+            "196": {
+                "hex_form_id": "C4",
+                "friendship_gauge": 500
+            }
+        },
         "field_move": {
             "category": 16,
             "level": 1
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            500
-        ],
         "browser_offset": 105,
         "browser_flag": 3,
         "browser_rank_offset": 105,
@@ -4823,23 +4288,21 @@
         "label": "DRIFBLIM",
         "browser_id": 143,
         "national_id": 426,
-        "form_ids": [
-            197,
-            267
-        ],
-        "hex_form_ids": [
-            "C5",
-            "10B"
-        ],
+        "forms": {
+            "197": {
+                "hex_form_id": "C5",
+                "friendship_gauge": 800
+            },
+            "267": {
+                "hex_form_id": "10B",
+                "friendship_gauge": 10000
+            }
+        },
         "field_move": {
             "category": 17,
             "level": 1
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            800,
-            10000
-        ],
         "browser_offset": 105,
         "browser_flag": 5,
         "browser_rank_offset": 105,
@@ -4850,20 +4313,17 @@
         "label": "BUNEARY",
         "browser_id": 20,
         "national_id": 427,
-        "form_ids": [
-            198
-        ],
-        "hex_form_ids": [
-            "C6"
-        ],
+        "forms": {
+            "198": {
+                "hex_form_id": "C6",
+                "friendship_gauge": 71
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            71
-        ],
         "browser_offset": 105,
         "browser_flag": 7,
         "browser_rank_offset": 105,
@@ -4874,20 +4334,17 @@
         "label": "LOPUNNY",
         "browser_id": 21,
         "national_id": 428,
-        "form_ids": [
-            199
-        ],
-        "hex_form_ids": [
-            "C7"
-        ],
+        "forms": {
+            "199": {
+                "hex_form_id": "C7",
+                "friendship_gauge": 1716
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            1716
-        ],
         "browser_offset": 106,
         "browser_flag": 1,
         "browser_rank_offset": 106,
@@ -4898,20 +4355,17 @@
         "label": "MISMAGIUS",
         "browser_id": 221,
         "national_id": 429,
-        "form_ids": [
-            200
-        ],
-        "hex_form_ids": [
-            "C8"
-        ],
+        "forms": {
+            "200": {
+                "hex_form_id": "C8",
+                "friendship_gauge": 3220
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 3
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            3220
-        ],
         "browser_offset": 106,
         "browser_flag": 3,
         "browser_rank_offset": 106,
@@ -4922,23 +4376,21 @@
         "label": "HONCHKROW",
         "browser_id": 186,
         "national_id": 430,
-        "form_ids": [
-            201,
-            262
-        ],
-        "hex_form_ids": [
-            "C9",
-            "106"
-        ],
+        "forms": {
+            "201": {
+                "hex_form_id": "C9",
+                "friendship_gauge": 3000
+            },
+            "262": {
+                "hex_form_id": "106",
+                "friendship_gauge": 8500
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            3000,
-            8500
-        ],
         "browser_offset": 106,
         "browser_flag": 5,
         "browser_rank_offset": 106,
@@ -4949,20 +4401,17 @@
         "label": "GLAMEOW",
         "browser_id": 39,
         "national_id": 431,
-        "form_ids": [
-            202
-        ],
-        "hex_form_ids": [
-            "CA"
-        ],
+        "forms": {
+            "202": {
+                "hex_form_id": "CA",
+                "friendship_gauge": 112
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            112
-        ],
         "browser_offset": 106,
         "browser_flag": 7,
         "browser_rank_offset": 106,
@@ -4973,20 +4422,17 @@
         "label": "PURUGLY",
         "browser_id": 40,
         "national_id": 432,
-        "form_ids": [
-            203
-        ],
-        "hex_form_ids": [
-            "CB"
-        ],
+        "forms": {
+            "203": {
+                "hex_form_id": "CB",
+                "friendship_gauge": 2300
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            2300
-        ],
         "browser_offset": 107,
         "browser_flag": 1,
         "browser_rank_offset": 107,
@@ -4997,20 +4443,17 @@
         "label": "CHINGLING",
         "browser_id": 205,
         "national_id": 433,
-        "form_ids": [
-            204
-        ],
-        "hex_form_ids": [
-            "CC"
-        ],
+        "forms": {
+            "204": {
+                "hex_form_id": "CC",
+                "friendship_gauge": 2100
+            }
+        },
         "field_move": {
             "category": 12,
             "level": 1
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            2100
-        ],
         "browser_offset": 107,
         "browser_flag": 3,
         "browser_rank_offset": 107,
@@ -5021,20 +4464,17 @@
         "label": "STUNKY",
         "browser_id": 144,
         "national_id": 434,
-        "form_ids": [
-            205
-        ],
-        "hex_form_ids": [
-            "CD"
-        ],
+        "forms": {
+            "205": {
+                "hex_form_id": "CD",
+                "friendship_gauge": 648
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            648
-        ],
         "browser_offset": 107,
         "browser_flag": 5,
         "browser_rank_offset": 107,
@@ -5045,20 +4485,17 @@
         "label": "SKUNTANK",
         "browser_id": 145,
         "national_id": 435,
-        "form_ids": [
-            206
-        ],
-        "hex_form_ids": [
-            "CE"
-        ],
+        "forms": {
+            "206": {
+                "hex_form_id": "CE",
+                "friendship_gauge": 3380
+            }
+        },
         "field_move": {
             "category": 18,
             "level": 1
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            3380
-        ],
         "browser_offset": 107,
         "browser_flag": 7,
         "browser_rank_offset": 107,
@@ -5069,20 +4506,17 @@
         "label": "BRONZOR",
         "browser_id": 248,
         "national_id": 436,
-        "form_ids": [
-            207
-        ],
-        "hex_form_ids": [
-            "CF"
-        ],
+        "forms": {
+            "207": {
+                "hex_form_id": "CF",
+                "friendship_gauge": 2990
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            2990
-        ],
         "browser_offset": 108,
         "browser_flag": 1,
         "browser_rank_offset": 108,
@@ -5093,22 +4527,21 @@
         "label": "BRONZONG",
         "browser_id": 249,
         "national_id": 437,
-        "form_ids": [
-            208,
-            264
-        ],
-        "hex_form_ids": [
-            "D0",
-            "108"
-        ],
+        "forms": {
+            "208": {
+                "hex_form_id": "D0",
+                "friendship_gauge": 3900
+            },
+            "264": {
+                "hex_form_id": "108",
+                "friendship_gauge": 3900
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            3900
-        ],
         "browser_offset": 108,
         "browser_flag": 3,
         "browser_rank_offset": 108,
@@ -5119,20 +4552,17 @@
         "label": "BONSLY",
         "browser_id": 30,
         "national_id": 438,
-        "form_ids": [
-            209
-        ],
-        "hex_form_ids": [
-            "D1"
-        ],
+        "forms": {
+            "209": {
+                "hex_form_id": "D1",
+                "friendship_gauge": 84
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            84
-        ],
         "browser_offset": 108,
         "browser_flag": 5,
         "browser_rank_offset": 108,
@@ -5143,20 +4573,17 @@
         "label": "MIME JR.",
         "browser_id": 164,
         "national_id": 439,
-        "form_ids": [
-            210
-        ],
-        "hex_form_ids": [
-            "D2"
-        ],
+        "forms": {
+            "210": {
+                "hex_form_id": "D2",
+                "friendship_gauge": 1204
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            1204
-        ],
         "browser_offset": 108,
         "browser_flag": 7,
         "browser_rank_offset": 108,
@@ -5167,20 +4594,17 @@
         "label": "HAPPINY",
         "browser_id": 22,
         "national_id": 440,
-        "form_ids": [
-            211
-        ],
-        "hex_form_ids": [
-            "D3"
-        ],
+        "forms": {
+            "211": {
+                "hex_form_id": "D3",
+                "friendship_gauge": 100
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            100
-        ],
         "browser_offset": 109,
         "browser_flag": 1,
         "browser_rank_offset": 109,
@@ -5191,20 +4615,17 @@
         "label": "CHATOT",
         "browser_id": 69,
         "national_id": 441,
-        "form_ids": [
-            212
-        ],
-        "hex_form_ids": [
-            "D4"
-        ],
+        "forms": {
+            "212": {
+                "hex_form_id": "D4",
+                "friendship_gauge": 210
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 1
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            210
-        ],
         "browser_offset": 109,
         "browser_flag": 3,
         "browser_rank_offset": 109,
@@ -5215,20 +4636,17 @@
         "label": "GIBLE",
         "browser_id": 251,
         "national_id": 443,
-        "form_ids": [
-            213
-        ],
-        "hex_form_ids": [
-            "D5"
-        ],
+        "forms": {
+            "213": {
+                "hex_form_id": "D5",
+                "friendship_gauge": 3000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            3000
-        ],
         "browser_offset": 109,
         "browser_flag": 7,
         "browser_rank_offset": 109,
@@ -5239,23 +4657,21 @@
         "label": "GABITE",
         "browser_id": 252,
         "national_id": 444,
-        "form_ids": [
-            214,
-            266
-        ],
-        "hex_form_ids": [
-            "D6",
-            "10A"
-        ],
+        "forms": {
+            "214": {
+                "hex_form_id": "D6",
+                "friendship_gauge": 2600
+            },
+            "266": {
+                "hex_form_id": "10A",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            2600,
-            8000
-        ],
         "browser_offset": 110,
         "browser_flag": 1,
         "browser_rank_offset": 110,
@@ -5266,23 +4682,21 @@
         "label": "MUNCHLAX",
         "browser_id": 27,
         "national_id": 446,
-        "form_ids": [
-            215,
-            259
-        ],
-        "hex_form_ids": [
-            "D7",
-            "103"
-        ],
+        "forms": {
+            "215": {
+                "hex_form_id": "D7",
+                "friendship_gauge": 180
+            },
+            "259": {
+                "hex_form_id": "103",
+                "friendship_gauge": 5000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            180,
-            5000
-        ],
         "browser_offset": 110,
         "browser_flag": 5,
         "browser_rank_offset": 110,
@@ -5293,24 +4707,25 @@
         "label": "RIOLU",
         "browser_id": 222,
         "national_id": 447,
-        "form_ids": [
-            216,
-            240,
-            299
-        ],
-        "hex_form_ids": [
-            "D8",
-            "F0",
-            "12B"
-        ],
+        "forms": {
+            "216": {
+                "hex_form_id": "D8",
+                "friendship_gauge": 1750
+            },
+            "240": {
+                "hex_form_id": "F0",
+                "friendship_gauge": 1750
+            },
+            "299": {
+                "hex_form_id": "12B",
+                "friendship_gauge": 1750
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            1750
-        ],
         "browser_offset": 110,
         "browser_flag": 7,
         "browser_rank_offset": 110,
@@ -5321,20 +4736,17 @@
         "label": "HIPPOPOTAS",
         "browser_id": 246,
         "national_id": 449,
-        "form_ids": [
-            217
-        ],
-        "hex_form_ids": [
-            "D9"
-        ],
+        "forms": {
+            "217": {
+                "hex_form_id": "D9",
+                "friendship_gauge": 3200
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            3200
-        ],
         "browser_offset": 111,
         "browser_flag": 3,
         "browser_rank_offset": 111,
@@ -5345,20 +4757,17 @@
         "label": "HIPPOWDON",
         "browser_id": 247,
         "national_id": 450,
-        "form_ids": [
-            218
-        ],
-        "hex_form_ids": [
-            "DA"
-        ],
+        "forms": {
+            "218": {
+                "hex_form_id": "DA",
+                "friendship_gauge": 9000
+            }
+        },
         "field_move": {
             "category": 19,
             "level": 1
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            9000
-        ],
         "browser_offset": 111,
         "browser_flag": 5,
         "browser_rank_offset": 111,
@@ -5369,20 +4778,17 @@
         "label": "SKORUPI",
         "browser_id": 173,
         "national_id": 451,
-        "form_ids": [
-            219
-        ],
-        "hex_form_ids": [
-            "DB"
-        ],
+        "forms": {
+            "219": {
+                "hex_form_id": "DB",
+                "friendship_gauge": 2875
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            2875
-        ],
         "browser_offset": 111,
         "browser_flag": 7,
         "browser_rank_offset": 111,
@@ -5393,20 +4799,17 @@
         "label": "CROAGUNK",
         "browser_id": 80,
         "national_id": 453,
-        "form_ids": [
-            220
-        ],
-        "hex_form_ids": [
-            "DC"
-        ],
+        "forms": {
+            "220": {
+                "hex_form_id": "DC",
+                "friendship_gauge": 640
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            640
-        ],
         "browser_offset": 112,
         "browser_flag": 3,
         "browser_rank_offset": 112,
@@ -5417,23 +4820,21 @@
         "label": "TOXICROAK",
         "browser_id": 81,
         "national_id": 454,
-        "form_ids": [
-            221,
-            243
-        ],
-        "hex_form_ids": [
-            "DD",
-            "F3"
-        ],
+        "forms": {
+            "221": {
+                "hex_form_id": "DD",
+                "friendship_gauge": 1440
+            },
+            "243": {
+                "hex_form_id": "F3",
+                "friendship_gauge": 24000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            1440,
-            24000
-        ],
         "browser_offset": 112,
         "browser_flag": 5,
         "browser_rank_offset": 112,
@@ -5444,20 +4845,17 @@
         "label": "CARNIVINE",
         "browser_id": 136,
         "national_id": 455,
-        "form_ids": [
-            222
-        ],
-        "hex_form_ids": [
-            "DE"
-        ],
+        "forms": {
+            "222": {
+                "hex_form_id": "DE",
+                "friendship_gauge": 680
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            680
-        ],
         "browser_offset": 112,
         "browser_flag": 7,
         "browser_rank_offset": 112,
@@ -5468,20 +4866,17 @@
         "label": "FINNEON",
         "browser_id": 86,
         "national_id": 456,
-        "form_ids": [
-            223
-        ],
-        "hex_form_ids": [
-            "DF"
-        ],
+        "forms": {
+            "223": {
+                "hex_form_id": "DF",
+                "friendship_gauge": 240
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            240
-        ],
         "browser_offset": 113,
         "browser_flag": 1,
         "browser_rank_offset": 113,
@@ -5492,20 +4887,17 @@
         "label": "LUMINEON",
         "browser_id": 87,
         "national_id": 457,
-        "form_ids": [
-            224
-        ],
-        "hex_form_ids": [
-            "E0"
-        ],
+        "forms": {
+            "224": {
+                "hex_form_id": "E0",
+                "friendship_gauge": 910
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            910
-        ],
         "browser_offset": 113,
         "browser_flag": 3,
         "browser_rank_offset": 113,
@@ -5516,20 +4908,17 @@
         "label": "MANTYKE",
         "browser_id": 90,
         "national_id": 458,
-        "form_ids": [
-            225
-        ],
-        "hex_form_ids": [
-            "E1"
-        ],
+        "forms": {
+            "225": {
+                "hex_form_id": "E1",
+                "friendship_gauge": 312
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 1
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            312
-        ],
         "browser_offset": 113,
         "browser_flag": 5,
         "browser_rank_offset": 113,
@@ -5540,20 +4929,17 @@
         "label": "SNOVER",
         "browser_id": 211,
         "national_id": 459,
-        "form_ids": [
-            226
-        ],
-        "hex_form_ids": [
-            "E2"
-        ],
+        "forms": {
+            "226": {
+                "hex_form_id": "E2",
+                "friendship_gauge": 2460
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            2460
-        ],
         "browser_offset": 113,
         "browser_flag": 7,
         "browser_rank_offset": 113,
@@ -5564,23 +4950,21 @@
         "label": "ABOMASNOW",
         "browser_id": 212,
         "national_id": 460,
-        "form_ids": [
-            227,
-            269
-        ],
-        "hex_form_ids": [
-            "E3",
-            "10D"
-        ],
+        "forms": {
+            "227": {
+                "hex_form_id": "E3",
+                "friendship_gauge": 3960
+            },
+            "269": {
+                "hex_form_id": "10D",
+                "friendship_gauge": 14000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            3960,
-            14000
-        ],
         "browser_offset": 114,
         "browser_flag": 1,
         "browser_rank_offset": 114,
@@ -5591,23 +4975,21 @@
         "label": "WEAVILE",
         "browser_id": 245,
         "national_id": 461,
-        "form_ids": [
-            228,
-            256
-        ],
-        "hex_form_ids": [
-            "E4",
-            "100"
-        ],
+        "forms": {
+            "228": {
+                "hex_form_id": "E4",
+                "friendship_gauge": 9000
+            },
+            "256": {
+                "hex_form_id": "100",
+                "friendship_gauge": 12000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 4
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            9000,
-            12000
-        ],
         "browser_offset": 114,
         "browser_flag": 3,
         "browser_rank_offset": 114,
@@ -5618,20 +5000,17 @@
         "label": "LICKILICKY",
         "browser_id": 175,
         "national_id": 463,
-        "form_ids": [
-            229
-        ],
-        "hex_form_ids": [
-            "E5"
-        ],
+        "forms": {
+            "229": {
+                "hex_form_id": "E5",
+                "friendship_gauge": 1720
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            1720
-        ],
         "browser_offset": 114,
         "browser_flag": 7,
         "browser_rank_offset": 114,
@@ -5642,23 +5021,21 @@
         "label": "TANGROWTH",
         "browser_id": 36,
         "national_id": 465,
-        "form_ids": [
-            230,
-            280
-        ],
-        "hex_form_ids": [
-            "E6",
-            "118"
-        ],
+        "forms": {
+            "230": {
+                "hex_form_id": "E6",
+                "friendship_gauge": 350
+            },
+            "280": {
+                "hex_form_id": "118",
+                "friendship_gauge": 20000
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            350,
-            20000
-        ],
         "browser_offset": 115,
         "browser_flag": 3,
         "browser_rank_offset": 115,
@@ -5669,20 +5046,17 @@
         "label": "TOGEKISS",
         "browser_id": 261,
         "national_id": 468,
-        "form_ids": [
-            231
-        ],
-        "hex_form_ids": [
-            "E7"
-        ],
+        "forms": {
+            "231": {
+                "hex_form_id": "E7",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            8000
-        ],
         "browser_offset": 116,
         "browser_flag": 1,
         "browser_rank_offset": 116,
@@ -5693,23 +5067,21 @@
         "label": "LEAFEON",
         "browser_id": 103,
         "national_id": 470,
-        "form_ids": [
-            232,
-            287
-        ],
-        "hex_form_ids": [
-            "E8",
-            "11F"
-        ],
+        "forms": {
+            "232": {
+                "hex_form_id": "E8",
+                "friendship_gauge": 8500
+            },
+            "287": {
+                "hex_form_id": "11F",
+                "friendship_gauge": 18000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 3
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            8500,
-            18000
-        ],
         "browser_offset": 116,
         "browser_flag": 5,
         "browser_rank_offset": 116,
@@ -5720,23 +5092,21 @@
         "label": "GLACEON",
         "browser_id": 104,
         "national_id": 471,
-        "form_ids": [
-            233,
-            288
-        ],
-        "hex_form_ids": [
-            "E9",
-            "120"
-        ],
+        "forms": {
+            "233": {
+                "hex_form_id": "E9",
+                "friendship_gauge": 7900
+            },
+            "288": {
+                "hex_form_id": "120",
+                "friendship_gauge": 18000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            7900,
-            18000
-        ],
         "browser_offset": 116,
         "browser_flag": 7,
         "browser_rank_offset": 116,
@@ -5747,20 +5117,17 @@
         "label": "PORYGON-Z",
         "browser_id": 262,
         "national_id": 474,
-        "form_ids": [
-            234
-        ],
-        "hex_form_ids": [
-            "EA"
-        ],
+        "forms": {
+            "234": {
+                "hex_form_id": "EA",
+                "friendship_gauge": 8200
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            8200
-        ],
         "browser_offset": 117,
         "browser_flag": 5,
         "browser_rank_offset": 117,
@@ -5771,20 +5138,17 @@
         "label": "PROBOPASS",
         "browser_id": 45,
         "national_id": 476,
-        "form_ids": [
-            235
-        ],
-        "hex_form_ids": [
-            "EB"
-        ],
+        "forms": {
+            "235": {
+                "hex_form_id": "EB",
+                "friendship_gauge": 5500
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            5500
-        ],
         "browser_offset": 118,
         "browser_flag": 1,
         "browser_rank_offset": 118,
@@ -5795,22 +5159,21 @@
         "label": "SHARPEDO",
         "browser_id": 96,
         "national_id": 319,
-        "form_ids": [
-            237,
-            406
-        ],
-        "hex_form_ids": [
-            "ED",
-            "196"
-        ],
+        "forms": {
+            "237": {
+                "hex_form_id": "ED",
+                "friendship_gauge": 910
+            },
+            "406": {
+                "hex_form_id": "196",
+                "friendship_gauge": 910
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            910
-        ],
         "browser_offset": 78,
         "browser_flag": 7,
         "browser_rank_offset": 78,
@@ -5821,20 +5184,17 @@
         "label": "WAILMER",
         "browser_id": 237,
         "national_id": 320,
-        "form_ids": [
-            238
-        ],
-        "hex_form_ids": [
-            "EE"
-        ],
+        "forms": {
+            "238": {
+                "hex_form_id": "EE",
+                "friendship_gauge": 8000
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 2
         },
         "poke_assist": 5,
-        "friendship_gauge": [
-            8000
-        ],
         "browser_offset": 79,
         "browser_flag": 1,
         "browser_rank_offset": 79,
@@ -5845,27 +5205,29 @@
         "label": "LUCARIO",
         "browser_id": 223,
         "national_id": 448,
-        "form_ids": [
-            241,
-            245,
-            412,
-            429
-        ],
-        "hex_form_ids": [
-            "F1",
-            "F5",
-            "19C",
-            "1AD"
-        ],
+        "forms": {
+            "241": {
+                "hex_form_id": "F1",
+                "friendship_gauge": 9000
+            },
+            "245": {
+                "hex_form_id": "F5",
+                "friendship_gauge": 9000
+            },
+            "412": {
+                "hex_form_id": "19C",
+                "friendship_gauge": 32000
+            },
+            "429": {
+                "hex_form_id": "1AD",
+                "friendship_gauge": 32000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            9000,
-            32000
-        ],
         "browser_offset": 111,
         "browser_flag": 1,
         "browser_rank_offset": 111,
@@ -5876,18 +5238,17 @@
         "label": "WAILORD",
         "browser_id": 238,
         "national_id": 321,
-        "form_ids": [
-            242
-        ],
-        "hex_form_ids": [
-            "F2"
-        ],
+        "forms": {
+            "242": {
+                "hex_form_id": "F2",
+                "friendship_gauge": 100
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 5,
-        "friendship_gauge": [],
         "browser_offset": 79,
         "browser_flag": 3,
         "browser_rank_offset": null,
@@ -5898,23 +5259,21 @@
         "label": "SPIRITOMB",
         "browser_id": 196,
         "national_id": 442,
-        "form_ids": [
-            244,
-            410
-        ],
-        "hex_form_ids": [
-            "F4",
-            "19A"
-        ],
+        "forms": {
+            "244": {
+                "hex_form_id": "F4",
+                "friendship_gauge": 8700
+            },
+            "410": {
+                "hex_form_id": "19A",
+                "friendship_gauge": 30000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            8700,
-            30000
-        ],
         "browser_offset": 109,
         "browser_flag": 5,
         "browser_rank_offset": 109,
@@ -5925,25 +5284,25 @@
         "label": "HEATRAN",
         "browser_id": 228,
         "national_id": 485,
-        "form_ids": [
-            246,
-            424,
-            430
-        ],
-        "hex_form_ids": [
-            "F6",
-            "1A8",
-            "1AE"
-        ],
+        "forms": {
+            "246": {
+                "hex_form_id": "F6",
+                "friendship_gauge": 12800
+            },
+            "424": {
+                "hex_form_id": "1A8",
+                "friendship_gauge": 34000
+            },
+            "430": {
+                "hex_form_id": "1AE",
+                "friendship_gauge": 34000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            12800,
-            34000
-        ],
         "browser_offset": 120,
         "browser_flag": 3,
         "browser_rank_offset": 120,
@@ -5954,25 +5313,25 @@
         "label": "CRESSELIA",
         "browser_id": 254,
         "national_id": 488,
-        "form_ids": [
-            247,
-            426,
-            431
-        ],
-        "hex_form_ids": [
-            "F7",
-            "1AA",
-            "1AF"
-        ],
+        "forms": {
+            "247": {
+                "hex_form_id": "F7",
+                "friendship_gauge": 19600
+            },
+            "426": {
+                "hex_form_id": "1AA",
+                "friendship_gauge": 36000
+            },
+            "431": {
+                "hex_form_id": "1AF",
+                "friendship_gauge": 36000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 15,
-        "friendship_gauge": [
-            19600,
-            36000
-        ],
         "browser_offset": 121,
         "browser_flag": 1,
         "browser_rank_offset": 121,
@@ -5983,23 +5342,21 @@
         "label": "YANMEGA",
         "browser_id": 119,
         "national_id": 469,
-        "form_ids": [
-            248,
-            418
-        ],
-        "hex_form_ids": [
-            "F8",
-            "1A2"
-        ],
+        "forms": {
+            "248": {
+                "hex_form_id": "F8",
+                "friendship_gauge": 4500
+            },
+            "418": {
+                "hex_form_id": "1A2",
+                "friendship_gauge": 16000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 8,
-        "friendship_gauge": [
-            4500,
-            16000
-        ],
         "browser_offset": 116,
         "browser_flag": 3,
         "browser_rank_offset": 116,
@@ -6010,23 +5367,21 @@
         "label": "GLISCOR",
         "browser_id": 129,
         "national_id": 472,
-        "form_ids": [
-            249,
-            419
-        ],
-        "hex_form_ids": [
-            "F9",
-            "1A3"
-        ],
+        "forms": {
+            "249": {
+                "hex_form_id": "F9",
+                "friendship_gauge": 16100
+            },
+            "419": {
+                "hex_form_id": "1A3",
+                "friendship_gauge": 16000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            16100,
-            16000
-        ],
         "browser_offset": 117,
         "browser_flag": 1,
         "browser_rank_offset": 117,
@@ -6037,23 +5392,21 @@
         "label": "MAMOSWINE",
         "browser_id": 202,
         "national_id": 473,
-        "form_ids": [
-            250,
-            420
-        ],
-        "hex_form_ids": [
-            "FA",
-            "1A4"
-        ],
+        "forms": {
+            "250": {
+                "hex_form_id": "FA",
+                "friendship_gauge": 9000
+            },
+            "420": {
+                "hex_form_id": "1A4",
+                "friendship_gauge": 20000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            9000,
-            20000
-        ],
         "browser_offset": 117,
         "browser_flag": 3,
         "browser_rank_offset": 117,
@@ -6064,26 +5417,25 @@
         "label": "RHYPERIOR",
         "browser_id": 151,
         "national_id": 464,
-        "form_ids": [
-            251,
-            415,
-            439
-        ],
-        "hex_form_ids": [
-            "FB",
-            "19F",
-            "1B7"
-        ],
+        "forms": {
+            "251": {
+                "hex_form_id": "FB",
+                "friendship_gauge": 17000
+            },
+            "415": {
+                "hex_form_id": "19F",
+                "friendship_gauge": 6500
+            },
+            "439": {
+                "hex_form_id": "1B7",
+                "friendship_gauge": 20000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 11,
-        "friendship_gauge": [
-            17000,
-            6500,
-            20000
-        ],
         "browser_offset": 115,
         "browser_flag": 1,
         "browser_rank_offset": 115,
@@ -6094,23 +5446,21 @@
         "label": "FLYGON",
         "browser_id": 259,
         "national_id": 330,
-        "form_ids": [
-            252,
-            407
-        ],
-        "hex_form_ids": [
-            "FC",
-            "197"
-        ],
+        "forms": {
+            "252": {
+                "hex_form_id": "FC",
+                "friendship_gauge": 14000
+            },
+            "407": {
+                "hex_form_id": "197",
+                "friendship_gauge": 30000
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 4
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            14000,
-            30000
-        ],
         "browser_offset": 81,
         "browser_flag": 5,
         "browser_rank_offset": 81,
@@ -6121,23 +5471,21 @@
         "label": "SALAMENCE",
         "browser_id": 227,
         "national_id": 373,
-        "form_ids": [
-            253,
-            408
-        ],
-        "hex_form_ids": [
-            "FD",
-            "198"
-        ],
+        "forms": {
+            "253": {
+                "hex_form_id": "FD",
+                "friendship_gauge": 16500
+            },
+            "408": {
+                "hex_form_id": "198",
+                "friendship_gauge": 35000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            16500,
-            35000
-        ],
         "browser_offset": 92,
         "browser_flag": 3,
         "browser_rank_offset": 92,
@@ -6148,23 +5496,21 @@
         "label": "CHARIZARD",
         "browser_id": 139,
         "national_id": 6,
-        "form_ids": [
-            254,
-            401
-        ],
-        "hex_form_ids": [
-            "FE",
-            "191"
-        ],
+        "forms": {
+            "254": {
+                "hex_form_id": "FE",
+                "friendship_gauge": 15000
+            },
+            "401": {
+                "hex_form_id": "191",
+                "friendship_gauge": 40000
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 4
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            15000,
-            40000
-        ],
         "browser_offset": 0,
         "browser_flag": 5,
         "browser_rank_offset": 0,
@@ -6175,23 +5521,21 @@
         "label": "DRAPION",
         "browser_id": 174,
         "national_id": 452,
-        "form_ids": [
-            255,
-            413
-        ],
-        "hex_form_ids": [
-            "FF",
-            "19D"
-        ],
+        "forms": {
+            "255": {
+                "hex_form_id": "FF",
+                "friendship_gauge": 7800
+            },
+            "413": {
+                "hex_form_id": "19D",
+                "friendship_gauge": 22000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 13,
-        "friendship_gauge": [
-            7800,
-            22000
-        ],
         "browser_offset": 112,
         "browser_flag": 1,
         "browser_rank_offset": 112,
@@ -6202,23 +5546,21 @@
         "label": "GARCHOMP",
         "browser_id": 253,
         "national_id": 445,
-        "form_ids": [
-            293,
-            411
-        ],
-        "hex_form_ids": [
-            "125",
-            "19B"
-        ],
+        "forms": {
+            "293": {
+                "hex_form_id": "125",
+                "friendship_gauge": 10000
+            },
+            "411": {
+                "hex_form_id": "19B",
+                "friendship_gauge": 13000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 5
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            10000,
-            13000
-        ],
         "browser_offset": 110,
         "browser_flag": 3,
         "browser_rank_offset": 110,
@@ -6229,26 +5571,25 @@
         "label": "MAGMORTAR",
         "browser_id": 75,
         "national_id": 467,
-        "form_ids": [
-            294,
-            417,
-            440
-        ],
-        "hex_form_ids": [
-            "126",
-            "1A1",
-            "1B8"
-        ],
+        "forms": {
+            "294": {
+                "hex_form_id": "126",
+                "friendship_gauge": 15300
+            },
+            "417": {
+                "hex_form_id": "1A1",
+                "friendship_gauge": 6200
+            },
+            "440": {
+                "hex_form_id": "1B8",
+                "friendship_gauge": 24000
+            }
+        },
         "field_move": {
             "category": 7,
             "level": 5
         },
         "poke_assist": 9,
-        "friendship_gauge": [
-            15300,
-            6200,
-            24000
-        ],
         "browser_offset": 115,
         "browser_flag": 7,
         "browser_rank_offset": 115,
@@ -6259,23 +5600,21 @@
         "label": "ELECTIVIRE",
         "browser_id": 72,
         "national_id": 466,
-        "form_ids": [
-            295,
-            416
-        ],
-        "hex_form_ids": [
-            "127",
-            "1A0"
-        ],
+        "forms": {
+            "295": {
+                "hex_form_id": "127",
+                "friendship_gauge": 13050
+            },
+            "416": {
+                "hex_form_id": "1A0",
+                "friendship_gauge": 25000
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 3
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            13050,
-            25000
-        ],
         "browser_offset": 115,
         "browser_flag": 5,
         "browser_rank_offset": 115,
@@ -6286,20 +5625,17 @@
         "label": "AERODACTYL",
         "browser_id": 258,
         "national_id": 142,
-        "form_ids": [
-            402
-        ],
-        "hex_form_ids": [
-            "192"
-        ],
+        "forms": {
+            "402": {
+                "hex_form_id": "192",
+                "friendship_gauge": 10000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 2,
-        "friendship_gauge": [
-            10000
-        ],
         "browser_offset": 34,
         "browser_flag": 5,
         "browser_rank_offset": 34,
@@ -6310,20 +5646,17 @@
         "label": "DRAGONAIR",
         "browser_id": 219,
         "national_id": 148,
-        "form_ids": [
-            403
-        ],
-        "hex_form_ids": [
-            "193"
-        ],
+        "forms": {
+            "403": {
+                "hex_form_id": "193",
+                "friendship_gauge": 6250
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 3
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            6250
-        ],
         "browser_offset": 36,
         "browser_flag": 1,
         "browser_rank_offset": 36,
@@ -6334,20 +5667,17 @@
         "label": "KINGDRA",
         "browser_id": 231,
         "national_id": 230,
-        "form_ids": [
-            404
-        ],
-        "hex_form_ids": [
-            "194"
-        ],
+        "forms": {
+            "404": {
+                "hex_form_id": "194",
+                "friendship_gauge": 10000
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 18,
-        "friendship_gauge": [
-            10000
-        ],
         "browser_offset": 56,
         "browser_flag": 5,
         "browser_rank_offset": 56,
@@ -6358,20 +5688,17 @@
         "label": "CELEBI",
         "browser_id": 263,
         "national_id": 251,
-        "form_ids": [
-            405
-        ],
-        "hex_form_ids": [
-            "195"
-        ],
+        "forms": {
+            "405": {
+                "hex_form_id": "195",
+                "friendship_gauge": 12000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 1,
-        "friendship_gauge": [
-            12000
-        ],
         "browser_offset": 61,
         "browser_flag": 7,
         "browser_rank_offset": 61,
@@ -6382,20 +5709,17 @@
         "label": "RAMPARDOS",
         "browser_id": 85,
         "national_id": 409,
-        "form_ids": [
-            409
-        ],
-        "hex_form_ids": [
-            "199"
-        ],
+        "forms": {
+            "409": {
+                "hex_form_id": "199",
+                "friendship_gauge": 3200
+            }
+        },
         "field_move": {
             "category": 4,
             "level": 5
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            3200
-        ],
         "browser_offset": 101,
         "browser_flag": 3,
         "browser_rank_offset": 101,
@@ -6406,20 +5730,17 @@
         "label": "MAGNEZONE",
         "browser_id": 64,
         "national_id": 462,
-        "form_ids": [
-            414
-        ],
-        "hex_form_ids": [
-            "19E"
-        ],
+        "forms": {
+            "414": {
+                "hex_form_id": "19E",
+                "friendship_gauge": 14000
+            }
+        },
         "field_move": {
             "category": 5,
             "level": 3
         },
         "poke_assist": 7,
-        "friendship_gauge": [
-            14000
-        ],
         "browser_offset": 114,
         "browser_flag": 5,
         "browser_rank_offset": 114,
@@ -6430,23 +5751,21 @@
         "label": "GALLADE",
         "browser_id": 160,
         "national_id": 475,
-        "form_ids": [
-            421,
-            438
-        ],
-        "hex_form_ids": [
-            "1A5",
-            "1B6"
-        ],
+        "forms": {
+            "421": {
+                "hex_form_id": "1A5",
+                "friendship_gauge": 11900
+            },
+            "438": {
+                "hex_form_id": "1B6",
+                "friendship_gauge": 5800
+            }
+        },
         "field_move": {
             "category": 1,
             "level": 5
         },
         "poke_assist": 10,
-        "friendship_gauge": [
-            11900,
-            5800
-        ],
         "browser_offset": 117,
         "browser_flag": 7,
         "browser_rank_offset": 117,
@@ -6457,20 +5776,17 @@
         "label": "DUSKNOIR",
         "browser_id": 192,
         "national_id": 477,
-        "form_ids": [
-            422
-        ],
-        "hex_form_ids": [
-            "1A6"
-        ],
+        "forms": {
+            "422": {
+                "hex_form_id": "1A6",
+                "friendship_gauge": 18000
+            }
+        },
         "field_move": {
             "category": 3,
             "level": 3
         },
         "poke_assist": 14,
-        "friendship_gauge": [
-            18000
-        ],
         "browser_offset": 118,
         "browser_flag": 3,
         "browser_rank_offset": 118,
@@ -6481,20 +5797,17 @@
         "label": "FROSLASS",
         "browser_id": 215,
         "national_id": 478,
-        "form_ids": [
-            423
-        ],
-        "hex_form_ids": [
-            "1A7"
-        ],
+        "forms": {
+            "423": {
+                "hex_form_id": "1A7",
+                "friendship_gauge": 7500
+            }
+        },
         "field_move": {
             "category": 2,
             "level": 4
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            7500
-        ],
         "browser_offset": 118,
         "browser_flag": 5,
         "browser_rank_offset": 118,
@@ -6505,20 +5818,17 @@
         "label": "REGIGIGAS",
         "browser_id": 267,
         "national_id": 486,
-        "form_ids": [
-            425
-        ],
-        "hex_form_ids": [
-            "1A9"
-        ],
+        "forms": {
+            "425": {
+                "hex_form_id": "1A9",
+                "friendship_gauge": 36000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 3,
-        "friendship_gauge": [
-            36000
-        ],
         "browser_offset": 120,
         "browser_flag": 5,
         "browser_rank_offset": 120,
@@ -6529,22 +5839,21 @@
         "label": "DARKRAI",
         "browser_id": 257,
         "national_id": 491,
-        "form_ids": [
-            427,
-            428
-        ],
-        "hex_form_ids": [
-            "1AB",
-            "1AC"
-        ],
+        "forms": {
+            "427": {
+                "hex_form_id": "1AB",
+                "friendship_gauge": 24000
+            },
+            "428": {
+                "hex_form_id": "1AC",
+                "friendship_gauge": 24000
+            }
+        },
         "field_move": {
             "category": 24,
             "level": 1
         },
         "poke_assist": 16,
-        "friendship_gauge": [
-            24000
-        ],
         "browser_offset": 121,
         "browser_flag": 7,
         "browser_rank_offset": 121,
@@ -6555,20 +5864,17 @@
         "label": "REGIROCK",
         "browser_id": 264,
         "national_id": 377,
-        "form_ids": [
-            432
-        ],
-        "hex_form_ids": [
-            "1B0"
-        ],
+        "forms": {
+            "432": {
+                "hex_form_id": "1B0",
+                "friendship_gauge": 25000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 6,
-        "friendship_gauge": [
-            25000
-        ],
         "browser_offset": 93,
         "browser_flag": 3,
         "browser_rank_offset": 93,
@@ -6579,20 +5885,17 @@
         "label": "REGICE",
         "browser_id": 265,
         "national_id": 378,
-        "form_ids": [
-            433
-        ],
-        "hex_form_ids": [
-            "1B1"
-        ],
+        "forms": {
+            "433": {
+                "hex_form_id": "1B1",
+                "friendship_gauge": 25000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 17,
-        "friendship_gauge": [
-            25000
-        ],
         "browser_offset": 93,
         "browser_flag": 5,
         "browser_rank_offset": 93,
@@ -6603,20 +5906,17 @@
         "label": "REGISTEEL",
         "browser_id": 266,
         "national_id": 379,
-        "form_ids": [
-            434
-        ],
-        "hex_form_ids": [
-            "1B2"
-        ],
+        "forms": {
+            "434": {
+                "hex_form_id": "1B2",
+                "friendship_gauge": 25000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 12,
-        "friendship_gauge": [
-            25000
-        ],
         "browser_offset": 93,
         "browser_flag": 7,
         "browser_rank_offset": 93,
@@ -6627,22 +5927,25 @@
         "label": "DIALGA",
         "browser_id": 435,
         "national_id": 483,
-        "form_ids": [
-            435,
-            441,
-            442
-        ],
-        "hex_form_ids": [
-            "1B3",
-            "1B9",
-            "1BA"
-        ],
+        "forms": {
+            "435": {
+                "hex_form_id": "1B3",
+                "friendship_gauge": 36000
+            },
+            "441": {
+                "hex_form_id": "1B9",
+                "friendship_gauge": 36000
+            },
+            "442": {
+                "hex_form_id": "1BA",
+                "friendship_gauge": 36000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 18,
-        "friendship_gauge": [],
         "browser_offset": 119,
         "browser_flag": 7,
         "browser_rank_offset": 119,
@@ -6653,18 +5956,17 @@
         "label": "PALKIA",
         "browser_id": 436,
         "national_id": 484,
-        "form_ids": [
-            436
-        ],
-        "hex_form_ids": [
-            "1B4"
-        ],
+        "forms": {
+            "436": {
+                "hex_form_id": "1B4",
+                "friendship_gauge": 36000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 18,
-        "friendship_gauge": [],
         "browser_offset": 120,
         "browser_flag": 1,
         "browser_rank_offset": 120,
@@ -6675,18 +5977,17 @@
         "label": "SHAYMIN",
         "browser_id": 437,
         "national_id": 492,
-        "form_ids": [
-            437
-        ],
-        "hex_form_ids": [
-            "1B5"
-        ],
+        "forms": {
+            "437": {
+                "hex_form_id": "1B5",
+                "friendship_gauge": 36000
+            }
+        },
         "field_move": {
             "category": 0,
             "level": 0
         },
         "poke_assist": 1,
-        "friendship_gauge": [],
         "browser_offset": 122,
         "browser_flag": 1,
         "browser_rank_offset": 122,

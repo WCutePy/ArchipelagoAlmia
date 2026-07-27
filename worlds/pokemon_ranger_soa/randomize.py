@@ -127,10 +127,10 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
             region_data = world.modified_regions.get(region_name)
             region_data.modified = True
 
-            if len(mon.form_ids) == 1:
-                species_id = mon.form_ids[0]
+            if len(mon.forms) == 1:
+                species_id = list(mon.forms.keys())[0]
             else:
-                species_id = world.random.choice(mon.form_ids)
+                species_id = world.random.choice(list(mon.forms.keys()))
 
             region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
             region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name

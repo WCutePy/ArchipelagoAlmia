@@ -158,18 +158,22 @@ class FieldMove:
 
 
 @dataclass
+class FormData:
+    hex_form_id: str
+    friendship_gauge: int
+
+
+@dataclass
 class SpeciesData:
     name: str
     label: str
 
     browser_id: int
     national_id: int
-    form_ids: List[int]
-    hex_form_ids: List[str]
+    forms: Dict[int, FormData]
 
     field_move: FieldMove
     poke_assist: PokeAssistCategory
-    friendship_gauge: tuple[int]
 
     browser_offset: int
     browser_flag: int
@@ -180,6 +184,11 @@ class SpeciesData:
     def __post_init__(self):
         if isinstance(self.field_move, dict):
             self.field_move = FieldMove(**self.field_move)
+
+        self.forms = {
+            int(form_id): (form if isinstance(form, FormData) else FormData(**form))
+            for form_id, form in self.forms.items()
+        }
 
     @property
     def location_capture_name(self):
@@ -416,7 +425,7 @@ def _init():
     for species_data in extracted_species:
         species = SpeciesData(**species_data)
         data.species[species.browser_id] = species
-        for form in species.form_ids:
+        for form in species.forms.keys():
             data.form_id_to_species[form] = species
 
     extracted_items: List[Dict] = load_json_data("items.json")
