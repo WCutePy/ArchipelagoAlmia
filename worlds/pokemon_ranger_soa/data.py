@@ -194,15 +194,15 @@ class SpeciesData:
     def location_capture_name(self):
         return f"CAPTURE_{self.name}"
 
-    @property
-    def event_missable(self):
+    def event_missable(self, form: Optional[int] = None):
         return f"EVENT_MISSABLE;{self.name}"
 
-    @property
-    def event_add_to_browser(self):
+    def event_add_to_browser(self, form: Optional[int] = None):
         return f"EVENT_ADD_TO_BROWSER;{self.name}"
 
-    def event_can_capture(self, party: Party = Party.DEFAULT):
+    def event_can_capture(
+        self, party: Party = Party.DEFAULT, form: Optional[int] = None
+    ):
         return f"EVENT_CAN_CAPTURE{party.value};{self.name}"
 
     @property

@@ -98,13 +98,13 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
         if target_id is None:
             base_rule = (
-                Has(pokemon.event_add_to_browser)
+                Has(pokemon.event_add_to_browser())
                 | Has(pokemon.event_can_capture())
                 | Has(pokemon.event_can_capture(Party.OCEAN))
             )
         else:
             base_rule = (
-                Has(pokemon.event_add_to_browser)
+                Has(pokemon.event_add_to_browser())
                 | (
                     Has(pokemon.event_can_capture())
                     & full_map.can_destroy_target_type(target_id)
@@ -958,7 +958,7 @@ def set_completion_condition(world) -> None:
     capture_check = []
     for i in world.capture_groups.get_ids_all:
         mon = data.species[i]
-        capture_check.append(mon.event_add_to_browser)
+        capture_check.append(mon.event_add_to_browser())
         capture_check.append(mon.event_can_capture())
 
     ocean_check = []

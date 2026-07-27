@@ -250,7 +250,7 @@ def create_pokemon_locations(
     for i in missable_items:
         mon = data.species[i]
         new_item = PokemonRSOAItem(
-            mon.event_missable,
+            mon.event_missable(),
             ItemClassification.filler,
             None,
             world.player,

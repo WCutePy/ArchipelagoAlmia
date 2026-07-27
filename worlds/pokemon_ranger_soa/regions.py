@@ -32,13 +32,13 @@ if TYPE_CHECKING:
 
 def attach_pokemon_encounter(
     world: PokemonRSOA,
-    species: SpeciesData,
     instance_name: str,
     spawn_data: PokemonSpawnEntry,
     connect_to: Region,
 ) -> Region:
     pokemon_region = Region(instance_name, world.player, world.multiworld)
     connect_to.connect(pokemon_region, instance_name)
+    species: SpeciesData = data.form_id_to_species[spawn_data.SPECIES_ID]
 
     place_locked = False
     if (
@@ -52,10 +52,10 @@ def attach_pokemon_encounter(
 
     if spawn_data.missable:
         browser_name = get_instance_missable(instance_name)
-        item_name = species.event_missable
+        item_name = species.event_missable()
     elif spawn_data.one_time:
         browser_name = get_instance_browser(instance_name)
-        item_name = species.event_add_to_browser
+        item_name = species.event_add_to_browser()
         if place_locked:
             world.capture_groups.default_ids_used.add(species.browser_id)
     else:
@@ -77,7 +77,7 @@ def attach_pokemon_encounter(
 
     if spawn_data.browser_before_capture:
         browser_name = get_instance_browser(instance_name)
-        item_name = species.event_add_to_browser
+        item_name = species.event_add_to_browser()
         browser_loc = create_event_location(
             world,
             browser_name,
@@ -135,10 +135,9 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             if not full_map.instance_included(region_name, i):
                 continue
             pokemon_instance = get_instance_base(region_name, i)
-            species = data.form_id_to_species[spawn_data.SPECIES_ID]
 
             p_region = attach_pokemon_encounter(
-                world, species, pokemon_instance, spawn_data, new_region
+                world, pokemon_instance, spawn_data, new_region
             )
             regions[pokemon_instance] = p_region
 
@@ -167,10 +166,9 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
 
         p_region = attach_pokemon_encounter(
             world,
-            pokemon,
             event.event_name,
             PokemonSpawnEntry(
-                SPECIES_ID=list(pokemon.forms.values())[0],
+                SPECIES_ID=list(pokemon.forms.keys())[0],
                 SPECIES_NAME=pokemon.name,
                 SPAWN_FLAG=-1,
                 one_time=event.one_time,
