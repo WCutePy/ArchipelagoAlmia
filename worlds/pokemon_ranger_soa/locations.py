@@ -95,9 +95,7 @@ def create_all_locations(
         3: [1, 48],
         4: [3, 11, 49, 4],
         5: [2, 35],
-        6: [
-            50,
-        ],
+        6: [5, 8, 50],
     }
     for i in range(0, max_mission + 1):
         permitted_quests += quests_table.get(i, [])
@@ -181,27 +179,52 @@ def create_pokemon_locations(
     one_count = min(len(available_pool), capture_mons)
     one_each = world.random.sample(available_pool, one_count)
 
-    for i in [
+    normal_include = [
         17,
         4,
         14,
         13,
         22,
         59,  # combee quest
-    ]:  # TODO, don't do this like this. # HARDCODED BROWSER IDS
+        [97, 69],  # eevee quest
+    ]
+
+    ocean_captures = [
+        86,  # finneon for crush 1
+        207,  # prinplup for cut 2
+        91,  # mantine to swim
+    ]
+
+    add_to = world.random.choices([0, 1], weights=[capture_mons, capture_ocean_mons])[0]
+    [normal_include, ocean_captures][add_to].append(
+        87,  # lumineon
+    )
+
+    for i in normal_include:  # TODO, don't do this like this. # HARDCODED BROWSER IDS
         one_each.pop(0)
         one_each.append(i)
 
     dupe_captures = world.random.choices(available_pool, k=capture_mons - one_count)
     captures = one_each + dupe_captures
 
+    if capture_ocean_mons == 0:
+        ocean_captures.clear()
+    ocean_captures += world.random.choices(
+        available_pool, k=capture_ocean_mons - len(ocean_captures)
+    )
+
     for i in captures:
-        mon = data.species[i]
-        choices = list(mon.forms.keys())
-        if len(choices) == 1:
-            form = choices[0]
+        if isinstance(i, list):
+            i, form = i
+            mon = data.species[i]
         else:
-            form = world.random.choice(choices)
+            mon = data.species[i]
+            choices = list(mon.forms.keys())
+            if len(choices) == 1:
+                form = choices[0]
+            else:
+                form = world.random.choice(choices)
+
         new_item = PokemonRSOAItem(
             mon.event_can_capture(form=form),
             ItemClassification.progression_skip_balancing,
@@ -210,17 +233,6 @@ def create_pokemon_locations(
         )
         world.capture_groups.capture.append(new_item)
         world.capture_groups.default_ids_used.add(i)
-
-    ocean_captures = [
-        86,  # finneon for crush 1
-        207,  # prinplup for cut 2
-        91,  # mantine to swim
-    ]
-    if capture_ocean_mons == 0:
-        ocean_captures.clear()
-    ocean_captures += world.random.choices(
-        available_pool, k=capture_ocean_mons - len(ocean_captures)
-    )
 
     for i in ocean_captures:
         mon = data.species[i]

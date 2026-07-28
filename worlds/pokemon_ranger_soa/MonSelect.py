@@ -497,8 +497,11 @@ class MonSelect:
         base.include |= {
             "m015_001": [],
             "m015_004": [],
+            "m017_004": [],  # for target event
             "m017_006": [],
         }
+        base.include["m011_005"] = []  # all are now available
+        base.include["m010_003"] += [11]  # quest eevee
 
         base.exclude |= {"m015_001": [0, 1], "m015_004": [7]}
 

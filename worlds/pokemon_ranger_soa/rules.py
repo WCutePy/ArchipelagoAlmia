@@ -461,6 +461,7 @@ def set_mission_3_rules(world: PokemonRSOA):
     world.set_rule(
         get_location(world, PREvent.GIVE_HAPPINY_TO_MIMI.event_name),
         Has(data.species[22].event_can_capture(form=211))
+        & CanReachLocation(data.species[22].location_capture_name)
         & CanReachRegion(world.modified_regions["m009_002"].HUMAN_NAME),
     )
 
@@ -552,7 +553,9 @@ def set_mission_4_rules(world: PokemonRSOA):
     for loc in [data.locations["QUEST_03"].label, get_quest_event(3)]:
         world.set_rule(
             get_location(world, loc),
-            Has(get_mission_event(3)) & Has(data.species[59].event_can_capture()),
+            Has(get_mission_event(3))
+            & Has(data.species[59].event_can_capture())
+            & CanReachLocation(data.species[59].location_capture_name),
         )
 
     """
@@ -893,6 +896,11 @@ def set_mission_6_rules(world: PokemonRSOA):
         Has(get_mission_event(5)),
     )
 
+    for i in [0, 1, 3, 4, 6]:
+        world.set_rule(
+            get_pokemon_instance(world, "m011_005", i), Has(get_mission_event(5))
+        )
+
     for to in ["m014_004", "m014_005"]:
         world.set_rule(
             get_connection(world, "m014_003b", to),
@@ -982,8 +990,31 @@ def set_mission_6_rules(world: PokemonRSOA):
     for loc in [data.locations["QUEST_50"].label, get_quest_event(50)]:
         world.set_rule(
             get_location(world, loc),
-            Has(get_mission_event(4)),
+            gigaremo_showcase,
         )
+
+    world.set_rule(get_pokemon_instance(world, "m010_003", 11), gigaremo_showcase)
+    for loc in [data.locations["QUEST_08"].label, get_quest_event(8)]:
+        world.set_rule(
+            get_location(world, loc),
+            gigaremo_showcase
+            & (
+                Has(data.species[97].event_can_capture(form=69))
+                # | Has(data.species[97].event_can_capture(form=281))
+            )
+            & CanReachLocation(data.species[97].location_capture_name),
+        )
+    #  TODO fix that it can take either eevee, or force the correct form to always
+    #  be present, somehow it seems like the seeds I use always pull the correct form somehow.
+
+    world.set_rule(get_pokemon_instance(world, "m011_005", 2), gigaremo_showcase)
+    for loc in [data.locations["QUEST_05"].label, get_quest_event(5)]:
+        world.set_rule(
+            get_location(world, loc),
+            gigaremo_showcase
+            & CanReachLocation(data.species[87].location_capture_name),
+        )
+    #  presumbly this is enough, need a bit more testing.
 
 
 def set_completion_condition(world) -> None:
@@ -993,8 +1024,8 @@ def set_completion_condition(world) -> None:
     browser = 0
     missions = world.options.mission_clear_target.value
     # missions = 6
-    # quests = 7  # 7
-    quests = 0
+    quests = 11  # 7
+    # quests = 0
 
     capture_check = []
     for i in world.capture_groups.get_ids_all:
