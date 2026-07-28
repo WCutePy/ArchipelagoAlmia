@@ -528,8 +528,8 @@
     "category": "quest"
   },
     "QUEST_50": {
-    "label": "Quest 50: Go Task To My Mom",
-    "parent_region": "m041_001",
+    "label": "Quest 50: Go Talk To My Mom",
+    "parent_region": "m010_002",
     "default_item": "Progressive Flying Defense",
     "addresses": "0x020B267F",
     "flag": 1,

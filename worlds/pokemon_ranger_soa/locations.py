@@ -95,6 +95,9 @@ def create_all_locations(
         3: [1, 48],
         4: [3, 11, 49, 4],
         5: [2, 35],
+        6: [
+            50,
+        ],
     }
     for i in range(0, max_mission + 1):
         permitted_quests += quests_table.get(i, [])
@@ -210,6 +213,7 @@ def create_pokemon_locations(
 
     ocean_captures = [
         86,  # finneon for crush 1
+        207,  # prinplup for cut 2
         91,  # mantine to swim
     ]
     if capture_ocean_mons == 0:

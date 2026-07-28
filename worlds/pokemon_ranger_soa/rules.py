@@ -402,9 +402,7 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     )
 
     world.set_rule(
-        get_location(world, get_instance_target("m006_001", 0)),
-        can_destroy_wooden_gate
-        & full_map.can_destroy_target("m006_001", 0),  # red gigaremo
+        get_location(world, get_instance_target("m006_001", 0)), can_destroy_wooden_gate
     )
 
     # The pokemon can be added to browser before destroying the machine
@@ -412,7 +410,7 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     for i in range(7):
         world.set_rule(
             get_location(world, get_instance_capture("m006_001", i)),
-            Has(get_instance_target("m006_001", 0)),
+            full_map.can_destroy_target("m006_001", 0),
         )  # only 2 zubats at first, after mission 2 complete the rest
 
         if i in [5, 6]:
@@ -429,11 +427,11 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 
     mission_2 = data.locations["MISSION_02"].label
     world.set_rule(
-        get_location(world, mission_2), Has(get_instance_target("m006_001", 0))
+        get_location(world, mission_2), full_map.can_destroy_target("m006_001", 0)
     )
     world.set_rule(
         get_location(world, get_mission_event(2)),
-        Has(get_instance_target("m006_001", 0)),
+        full_map.can_destroy_target("m006_001", 0),
     )
 
 
@@ -980,6 +978,12 @@ def set_mission_6_rules(world: PokemonRSOA):
     """cutscene"""
     gigaremo_showcase = all_maps.can_destroy_target("m017_004", 0)
     # can do next quests right after before ending the day
+
+    for loc in [data.locations["QUEST_50"].label, get_quest_event(50)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(4)),
+        )
 
 
 def set_completion_condition(world) -> None:

@@ -247,9 +247,11 @@ class MonSelect:
 
         party: Party = get_party_type(map_name)
 
-        base = Has(field_move.event_can_use_field_move_party(party)) & CanReachRegion(
-            data.regions[map_name].HUMAN_NAME
-        )
+        base = Has(field_move.event_can_use_field_move_party(party)) & Has(target)
+
+        # CanReachRegion(
+        #             data.regions[map_name].HUMAN_NAME
+        #         )
         return base
 
         # if not self.include and not self.exclude:
