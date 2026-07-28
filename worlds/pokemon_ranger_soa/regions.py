@@ -52,15 +52,15 @@ def attach_pokemon_encounter(
 
     if spawn_data.missable:
         browser_name = get_instance_missable(instance_name)
-        item_name = species.event_missable()
+        item_name = species.event_missable(form=spawn_data.SPECIES_ID)
     elif spawn_data.one_time:
         browser_name = get_instance_browser(instance_name)
-        item_name = species.event_add_to_browser()
+        item_name = species.event_add_to_browser(form=spawn_data.SPECIES_ID)
         if place_locked:
             world.capture_groups.default_ids_used.add(species.browser_id)
     else:
         browser_name = get_instance_capture(instance_name)
-        item_name = species.event_can_capture(party)
+        item_name = species.event_can_capture(party=party, form=spawn_data.SPECIES_ID)
         if place_locked:
             if party == Party.OCEAN:
                 world.capture_groups.ocean_ids_used.add(species.browser_id)
@@ -77,7 +77,7 @@ def attach_pokemon_encounter(
 
     if spawn_data.browser_before_capture:
         browser_name = get_instance_browser(instance_name)
-        item_name = species.event_add_to_browser()
+        item_name = species.event_add_to_browser(form=spawn_data.SPECIES_ID)
         browser_loc = create_event_location(
             world,
             browser_name,
@@ -182,6 +182,8 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions["Events"] = Region("Events", world.player, world.multiworld)
     regions["Overworld"].connect(regions["Events"], "Events region")
     for event in PREvent:
+        if event not in full_map.events:
+            continue
         create_event_location(world, event.event_name, regions[event.map_name])
 
     return regions

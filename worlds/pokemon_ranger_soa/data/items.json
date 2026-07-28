@@ -247,7 +247,8 @@
         "classification": 10,
         "item_categories": [
             "styler_upgrade",
-            "progressive"
+            "progressive",
+            "power_level"
         ],
         "bit_offset": 44,
         "copies": 2

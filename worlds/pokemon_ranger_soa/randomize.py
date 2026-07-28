@@ -46,6 +46,8 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     if len(world.capture_groups.capture_ocean) != len(
         world.capture_groups.capture_ocean.items
     ):
+        print(world.capture_groups.capture_ocean.locations)
+        print(world.capture_groups.capture_ocean.items)
         raise ValueError(
             f"Ocean party: {len(world.capture_groups.capture_ocean)} != {len(world.capture_groups.capture_ocean.items)}"
         )
@@ -53,6 +55,7 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     party = world.capture_groups.capture
 
     state_default = CollectionState(world.multiworld)
+    state_default.prog_items[world.player]["fill_restrictive"] = 1
     for item in my_progression_items:
         state_default.collect(item, True)
 
@@ -76,6 +79,7 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     party = world.capture_groups.capture_ocean
     if len(party) > 0:
         state_ocean = CollectionState(world.multiworld)
+        state_ocean.prog_items[world.player]["fill_restrictive"] = 1
         for item in my_progression_items:
             state_ocean.collect(item, True)
         # for i in range():
@@ -121,16 +125,13 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
                 continue
             region_name, _, i = loc.name.split(".")
             i = int(i.strip("_capturebrowsermissableocean"))
-            mon_name = loc.item.name.split(";")[1]
+            _, mon_name, mon_id = loc.item.name.split(";")
             mon: SpeciesData = name_to_mon[mon_name]
 
             region_data = world.modified_regions.get(region_name)
             region_data.modified = True
 
-            if len(mon.forms) == 1:
-                species_id = list(mon.forms.keys())[0]
-            else:
-                species_id = world.random.choice(list(mon.forms.keys()))
+            species_id = int(mon_id)
 
             region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
             region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name

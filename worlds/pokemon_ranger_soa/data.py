@@ -194,16 +194,35 @@ class SpeciesData:
     def location_capture_name(self):
         return f"CAPTURE_{self.name}"
 
-    def event_missable(self, form: Optional[int] = None):
-        return f"EVENT_MISSABLE;{self.name}"
+    def event_missable(self, form: int = ""):
+        if form == "":
+            if len(self.forms) == 1:
+                form = next(iter(self.forms.keys()))
+            else:
+                raise ValueError(
+                    f"It's mandatory to specify a form when multiple forms exist for: {self}"
+                )
+        return f"EVENT_MISSABLE;{self.name};{form:03}"
 
-    def event_add_to_browser(self, form: Optional[int] = None):
-        return f"EVENT_ADD_TO_BROWSER;{self.name}"
+    def event_add_to_browser(self, form: int = ""):
+        if form == "":
+            if len(self.forms) == 1:
+                form = next(iter(self.forms.keys()))
+            else:
+                raise ValueError(
+                    f"It's mandatory to specify a form when multiple forms exist for: {self}"
+                )
+        return f"EVENT_ADD_TO_BROWSER;{self.name};{form:03}"
 
-    def event_can_capture(
-        self, party: Party = Party.DEFAULT, form: Optional[int] = None
-    ):
-        return f"EVENT_CAN_CAPTURE{party.value};{self.name}"
+    def event_can_capture(self, party: Party = Party.DEFAULT, form: int = ""):
+        if form == "":
+            if len(self.forms) == 1:
+                form = next(iter(self.forms.keys()))
+            else:
+                raise ValueError(
+                    f"It's mandatory to specify a form when multiple forms exist for: {self}"
+                )
+        return f"EVENT_CAN_CAPTURE{party.value};{self.name};{form:03}"
 
     @property
     def location_capture_rank_name(self):
@@ -219,6 +238,7 @@ class ItemCategory(StrEnum):
     EVENT = auto()
     PARTNER = auto()
     FIELD_MOVE = auto()
+    POWER_LEVEL = auto()
 
 
 class AddressesGroup(NamedTuple):

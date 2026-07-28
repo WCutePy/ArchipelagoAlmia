@@ -194,8 +194,13 @@ def create_pokemon_locations(
 
     for i in captures:
         mon = data.species[i]
+        choices = list(mon.forms.keys())
+        if len(choices) == 1:
+            form = choices[0]
+        else:
+            form = world.random.choice(choices)
         new_item = PokemonRSOAItem(
-            mon.event_can_capture(),
+            mon.event_can_capture(form=form),
             ItemClassification.progression_skip_balancing,
             None,
             world.player,
@@ -203,15 +208,25 @@ def create_pokemon_locations(
         world.capture_groups.capture.append(new_item)
         world.capture_groups.default_ids_used.add(i)
 
-    ocean_captures = [91]
+    ocean_captures = [
+        86,  # finneon for crush 1
+        91,  # mantine to swim
+    ]
+    if capture_ocean_mons == 0:
+        ocean_captures.clear()
     ocean_captures += world.random.choices(
         available_pool, k=capture_ocean_mons - len(ocean_captures)
     )
 
     for i in ocean_captures:
         mon = data.species[i]
+        choices = list(mon.forms.keys())
+        if len(choices) == 1:
+            form = choices[0]
+        else:
+            form = world.random.choice(choices)
         new_item = PokemonRSOAItem(
-            mon.event_can_capture(Party.OCEAN),
+            mon.event_can_capture(Party.OCEAN, form=form),
             ItemClassification.progression_skip_balancing,
             None,
             world.player,
@@ -249,8 +264,13 @@ def create_pokemon_locations(
     )
     for i in missable_items:
         mon = data.species[i]
+        choices = list(mon.forms.keys())
+        if len(choices) == 1:
+            form = choices[0]
+        else:
+            form = world.random.choice(choices)
         new_item = PokemonRSOAItem(
-            mon.event_missable(),
+            mon.event_missable(form=form),
             ItemClassification.filler,
             None,
             world.player,

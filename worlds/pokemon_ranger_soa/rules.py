@@ -28,6 +28,8 @@ from rule_builder.rules import (
     HasFromList,
     HasFromListUnique,
     CanReachEntrance,
+    Or,
+    And,
 )
 from .data import (
     data,
@@ -91,29 +93,48 @@ def set_all_rules(world: PokemonRSOA) -> None:
     full_map = MonSelect.get_rules_scope()
 
     field_move_rules: Dict[FieldMove, List[Rule]] = {}
+
     for i in world.capture_groups.get_ids_all:
         pokemon = data.species[i]
 
         target_id = pokemon_to_target_id(pokemon.name.lower())
 
         if target_id is None:
-            base_rule = (
-                Has(pokemon.event_add_to_browser())
-                | Has(pokemon.event_can_capture())
-                | Has(pokemon.event_can_capture(Party.OCEAN))
-            )
+            form_rules = []
+            for form_id, form in pokemon.forms.items():
+                form_rules.append(
+                    Has("power_level", count=form.friendship_gauge)
+                    & (
+                        Has(pokemon.event_add_to_browser(form=form_id))
+                        | Has(pokemon.event_can_capture(form=form_id))
+                        | Has(
+                            pokemon.event_can_capture(party=Party.OCEAN, form=form_id)
+                        )
+                    )
+                )
+            base_rule = Or(*form_rules)
         else:
-            base_rule = (
-                Has(pokemon.event_add_to_browser())
-                | (
-                    Has(pokemon.event_can_capture())
-                    & full_map.can_destroy_target_type(target_id)
+            form_rules = []
+            for form_id, form in pokemon.forms.items():
+                form_rules.append(
+                    Has("power_level", count=form.friendship_gauge)
+                    & (
+                        Has(pokemon.event_add_to_browser(form=form_id))
+                        | (
+                            Has(pokemon.event_can_capture(form=form_id))
+                            & full_map.can_destroy_target_type(target_id)
+                        )
+                        | (
+                            Has(
+                                pokemon.event_can_capture(
+                                    party=Party.OCEAN, form=form_id
+                                )
+                            )
+                            & full_map.can_destroy_target_type(target_id, Party.OCEAN)
+                        )
+                    )
                 )
-                | (
-                    Has(pokemon.event_can_capture(Party.OCEAN))
-                    & full_map.can_destroy_target_type(target_id, Party.OCEAN)
-                )
-            )
+            base_rule = Or(*form_rules)
 
         world.set_rule(
             get_location(world, pokemon.location_capture_name),
@@ -129,18 +150,34 @@ def set_all_rules(world: PokemonRSOA) -> None:
                 field_move_rules[field_move] = [False_(), False_()]
 
             if target_id is not None:
-                field_move_rules[field_move][0] |= Has(
-                    pokemon.event_can_capture()
-                ) & full_map.can_destroy_target_type(target_id)
-                field_move_rules[field_move][1] |= Has(
-                    pokemon.event_can_capture(Party.OCEAN)
-                ) & full_map.can_destroy_target_type(target_id, Party.OCEAN)
+                normal_destroy = full_map.can_destroy_target_type(target_id)
+                ocean_destroy = full_map.can_destroy_target_type(target_id, Party.OCEAN)
+
+                field_move_rules[field_move][0] |= normal_destroy & Or(
+                    *[
+                        Has("power_level", count=form.friendship_gauge)
+                        & Has(pokemon.event_can_capture(form=form_id))
+                        for form_id, form in pokemon.forms.items()
+                    ]
+                )
+
+                field_move_rules[field_move][1] |= ocean_destroy & Or(
+                    *[
+                        Has("power_level", count=form.friendship_gauge)
+                        & Has(pokemon.event_can_capture(Party.OCEAN, form=form_id))
+                        for form_id, form in pokemon.forms.items()
+                    ]
+                )
 
             else:
-                field_move_rules[field_move][0] |= Has(pokemon.event_can_capture())
-                field_move_rules[field_move][1] |= Has(
-                    pokemon.event_can_capture(Party.OCEAN)
-                )
+                for form_id, form in pokemon.forms.items():
+                    field_move_rules[field_move][0] |= Has(
+                        "power_level", count=form.friendship_gauge
+                    ) & Has(pokemon.event_can_capture(form=form_id))
+
+                    field_move_rules[field_move][1] |= Has(
+                        "power_level", count=form.friendship_gauge
+                    ) & Has(pokemon.event_can_capture(Party.OCEAN, form=form_id))
 
     for field_move, pokemon_rules in field_move_rules.items():
         for i, party in enumerate([Party.DEFAULT, Party.OCEAN]):
@@ -425,7 +462,7 @@ def set_mission_3_rules(world: PokemonRSOA):
 
     world.set_rule(
         get_location(world, PREvent.GIVE_HAPPINY_TO_MIMI.event_name),
-        Has(data.species[22].event_can_capture())
+        Has(data.species[22].event_can_capture(form=211))
         & CanReachRegion(world.modified_regions["m009_002"].HUMAN_NAME),
     )
 
@@ -947,28 +984,37 @@ def set_mission_6_rules(world: PokemonRSOA):
 
 def set_completion_condition(world) -> None:
 
-    # browser = world.options.capture_count_target.value
-    browser = 180  # 30
-    browser = 100
+    # # browser = world.options.capture_count_target.value
+    # browser = 180  # 30
+    browser = 0
     missions = world.options.mission_clear_target.value
-    missions = 6
-    quests = 7  # 7
-    # quests = 0
+    # missions = 6
+    # quests = 7  # 7
+    quests = 0
 
     capture_check = []
     for i in world.capture_groups.get_ids_all:
         mon = data.species[i]
-        capture_check.append(mon.event_add_to_browser())
-        capture_check.append(mon.event_can_capture())
+        for form_id in mon.forms.keys():
+            capture_check.append(mon.event_add_to_browser(form=form_id))
+            capture_check.append(mon.event_can_capture(form=form_id))
 
     ocean_check = []
     for i in world.capture_groups.get_ids_ocean:
         mon = data.species[i]
-        ocean_check.append(mon.event_can_capture(party=Party.OCEAN))
+        rules = []
+        for form_id in mon.forms.keys():
+            rules.append(
+                Has(
+                    mon.event_can_capture(
+                        party=Party.OCEAN,
+                        form=form_id,
+                    )
+                )
+            )
+        ocean_check.append(Or(*rules))
 
-    has_captures = HasFromListUnique(*capture_check, count=browser) & HasFromListUnique(
-        *ocean_check, count=len(ocean_check)
-    )
+    has_captures = HasFromListUnique(*capture_check, count=browser) & And(*ocean_check)
     has_missions = True_()
     count = 0
     for loc_name, loc_data in data.locations.items():

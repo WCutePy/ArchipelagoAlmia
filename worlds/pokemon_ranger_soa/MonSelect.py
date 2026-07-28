@@ -103,6 +103,7 @@ class MonSelect:
     include: Dict[str, List] = field(default_factory=dict)
     exclude: Dict[str, List] = field(default_factory=dict)
     event_mon: List[PInstanceEvent] = field(default_factory=list)
+    events: List[PREvent] = field(default_factory=list)
 
     include_one_time: bool = False
     include_missable: bool = False
@@ -392,7 +393,9 @@ class MonSelect:
                 PInstanceEvent.TUT_BIDOOF,
                 PInstanceEvent.TIM_BIDOOF,
                 PInstanceEvent.TANGROWTH,
+                PInstanceEvent.SLAKOTH,
             ],
+            events=[PREvent.SCHOOL_COMPLETE_NIGHT, PREvent.SCHOOL_COLLECT_STYLERS],
         )
 
     @classmethod
@@ -422,6 +425,7 @@ class MonSelect:
         base.exclude |= {"m009_009": [2, 3]}
 
         base.event_mon += [PInstanceEvent.MILTANK, PInstanceEvent.BUDEW_4]
+        base.events += [PREvent.GIVE_HAPPINY_TO_MIMI]
         return base
 
     @classmethod
@@ -462,6 +466,7 @@ class MonSelect:
             PInstanceEvent.RATATA_4,
             PInstanceEvent.TOXICROAK,
         ]
+        base.events += [PREvent.RESCUE_PUELTOWN]
         return base
 
     @classmethod

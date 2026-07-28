@@ -11,10 +11,11 @@ from Options import Option
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData, SpeciesData, Party
+from .data import data, MapData, SpeciesData, Party, ItemCategory
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
+from .items import PokemonRSOAItem
 from .options import PokemonRSOAOptions, OPTION_GROUPS, RandomizePokemon
 from .MonSelect import MonSelect
 from .randomize import apply_randomized_pokemon, early_place_random_restricted
@@ -283,6 +284,8 @@ class PokemonRSOA(World):
             with open("mapdata_modified_dump.json", "w", encoding="utf-8") as f:
                 json.dump(dump, f, indent=2)
 
+            self.multiworld.state.prog_items[self.player]["power_level"] = 99999
+
             # for map_name in ["m001_002", "m001_011", "m002_001", "m003_001"]:
             #
             #     map_data: MapData = self.modified_regions[map_name]
@@ -290,6 +293,10 @@ class PokemonRSOA(World):
             #         if key == 5 and map_name == "m001_011":
             #             continue
             #         map_data.POKEMON_SPAWN[key].SPECIES_ID = 0xAD
+
+    def pre_fill(self) -> None:
+        ...
+        # self.multiworld.state.prog_items[self.player]["power_level"] = 999999
 
     def write_spoiler(self, spoiler_handle) -> None:
         browser_instances = sum(
@@ -368,3 +375,48 @@ class PokemonRSOA(World):
         # This is a helper function for UT that, when just returning its input, tells UT to start a fake generation
         # using that slot data.
         return slot_data
+
+    mission_affinities = {
+        -1: 150,
+        0: 250,
+        1: 600,
+        2: 900,
+        3: 1500,
+        4: 1500,
+        5: 3200,
+        6: 1000000,
+        100: 1000000,
+    }
+
+    def collect(self, state: CollectionState, item: PokemonRSOAItem) -> bool:
+        change = super().collect(state, item)
+        if change:
+            if ItemCategory.POWER_LEVEL in item.tags:
+                state.prog_items[self.player]["power_level"] += 1
+            if "fill_restrictive" in state.prog_items[self.player]:
+                if "COMPLETE_MISSION" in item.name:
+                    mission = int(item.name.strip("COMPLETE_MISSION"))
+                    if mission == self.options.mission_clear_target.value:
+                        mission = 100
+                    state.prog_items[self.player]["power_level"] = (
+                        self.mission_affinities[mission]
+                    )
+            else:
+                state.prog_items[self.player]["power_level"] = self.mission_affinities[
+                    100
+                ]
+
+        return change
+
+    def remove(self, state: CollectionState, item: PokemonRSOAItem) -> bool:
+        change = super().remove(state, item)
+        if change:
+            if ItemCategory.POWER_LEVEL in item.tags:
+                state.prog_items[self.player]["power_level"] -= 1
+            if "fill_restrictive" in state.prog_items[self.player]:
+                if "COMPLETE_MISSION" in item.name:
+                    mission = int(item.name.strip("COMPLETE_MISSION")) - 1
+                    state.prog_items[self.player]["power_level"] = (
+                        self.mission_affinities[mission]
+                    )
+        return change
