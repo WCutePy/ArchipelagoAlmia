@@ -52,6 +52,9 @@ def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
     if not data:
         return
 
+    #  TODO remove
+    return
+
     file_name = f"/data/field/map/{map_name}.map.dat.lz"
 
     narc_map_b = rom.files[file_name]

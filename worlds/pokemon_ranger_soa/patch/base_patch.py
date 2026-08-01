@@ -71,6 +71,7 @@ def patch(
     code_patch(rom, world_package, prsoa_patch_instance, files_dump, slot_data)
 
     EVENTRECT_PATCHES = defaultdict(list)
+    AREA_PATCHES = defaultdict(list)
     FIELD_MAP_PATCHES = defaultdict(list)
     CHAPTER_PATCHES = defaultdict(list)
     QUEST_PATCHES = defaultdict(list)
@@ -193,6 +194,18 @@ def patch(
         (10, 0x00_00_00_10)
     ]
 
+    """mission 6"""
+    """Prevents a softlock due to using Crush 4 and destroying the boulder, 
+    and going to the east without completing mission 6 first
+    Changes were the player is thrown by the trampoline plant
+    """
+    AREA_PATCHES[16] += [
+        #  PUSH 256		; @98
+        (98, 0x01_10_00_10),
+        #  PUSH 30720		; @99
+        (99, 0x4F38_00_10),
+    ]
+
     """partner patches"""
     randomize_partner_species = False
     if randomize_partner_species:
@@ -299,6 +312,10 @@ def patch(
     for eventrect, writes in EVENTRECT_PATCHES.items():
         base_num = eventrect.strip("EventRect")[0:3]
         file_name = f"/data/Script/field/eventrect/er{base_num}/{eventrect}.fsb"
+        patch_script_in_place_four_bytes(rom, file_name, writes)
+
+    for area_num, writes in AREA_PATCHES.items():
+        file_name = f"/data/Script/area/m{area_num:03}.fsb"
         patch_script_in_place_four_bytes(rom, file_name, writes)
 
     for map_name, writes in FIELD_MAP_PATCHES.items():
