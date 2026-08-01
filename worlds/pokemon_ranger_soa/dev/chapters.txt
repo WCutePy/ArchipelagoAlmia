@@ -16,3 +16,5 @@
 0x1D - 29 - Post mission 4 complete, bring ollie
 0x1E - 30 - Post mission 5 lowered bridge
 0x1F - 31 - Entered Ranger Union
+0x20 - 32 - Day transition after gigaremo showcase
+0x21 - 33 - Mission 6

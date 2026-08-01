@@ -1,8 +1,10 @@
+import dataclasses
 import logging
 import struct
 import zipfile
 from collections import defaultdict
-from typing import TYPE_CHECKING, Dict, Any
+from typing import TYPE_CHECKING, Dict, Any, List, Optional
+from dataclasses import dataclass
 
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
@@ -29,6 +31,9 @@ def write_patch(
             prsoa_patch_instance.world.options.randomize_pokemon
             != RandomizePokemon.option_vanilla
         ):
+            for i, object_data in map_data.TARGETS.items():
+                objects.append(object_data.TARGET_ID)
+
             for i, spawn_data in map_data.POKEMON_SPAWN.items():
                 pokemon.append(spawn_data.SPECIES_ID)
 
@@ -81,7 +86,14 @@ def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
             layer_data = bytearray(layer_data)
 
             if objects and layer_type == 0x04:
-                ...
+                offset = 8 + 6  # ? not sure if that's the right one
+                entry_count = (len(layer_data) - 8) // 12
+                for _ in range(entry_count):
+                    struct.pack_into(
+                        "<H", layer_data, offset, objects[layer_type_index[4]]
+                    )
+                    offset += 12
+                    layer_type_index[4] += 1
             if triggers and layer_type == 0x07:
                 offset = 8
                 entry_count = (len(layer_data) - 8) // 11
@@ -157,6 +169,41 @@ def add_map_base_patches(map_name: str, data: Dict[int, Any]) -> None:
         }
 
 
+@dataclass
+class CompactMapData:
+    objects: List[int]
+    npcs: List[int]
+    pokemon: List[int]
+
+    @classmethod
+    def from_bytes(cls, data: bytes) -> Optional["CompactMapData"]:
+        (
+            num_objects,
+            num_npc,
+            num_pokemon,
+        ) = struct.unpack_from("<III", data, 0)
+        if num_objects + num_npc + num_pokemon == 0:
+            return None
+        offset = 12
+        objects = list(struct.unpack_from(f"<{num_objects}H", data, offset))
+        offset += num_objects * 2
+
+        npcs = list(struct.unpack_from(f"<{num_npc}H", data, offset))
+        offset += num_npc * 2
+
+        pokemon = list(struct.unpack_from(f"<{num_pokemon}H", data, offset))
+
+        return CompactMapData(objects, npcs, pokemon)
+
+    @classmethod
+    def from_map_name(
+        cls, prsoa_patch_instance: "PokemonRSOAPatch", map_name: str
+    ) -> "CompactMapData":
+        file_name = f"map/{map_name}.bin"
+        patch_file = prsoa_patch_instance.get_file(file_name)
+        return cls.from_bytes(patch_file)
+
+
 def patch(
     rom: Rom,
     world_package: str,
@@ -169,22 +216,9 @@ def patch(
             continue
         patch_file = prsoa_patch_instance.get_file(file_name)
         map_name = file_name[4:-4]
+        map_data = CompactMapData.from_bytes(patch_file)
 
-        (
-            num_objects,
-            num_npc,
-            num_pokemon,
-        ) = struct.unpack_from("<III", patch_file, 0)
-        offset = 12
-        objects = list(struct.unpack_from(f"<{num_objects}H", patch_file, offset))
-        offset += num_objects * 2
-
-        npc = list(struct.unpack_from(f"<{num_npc}H", patch_file, offset))
-        offset += num_npc * 2
-
-        pokemon = list(struct.unpack_from(f"<{num_pokemon}H", patch_file, offset))
-
-        data = {0x04: objects, 0x08: npc, 0x09: pokemon}
+        data = {0x04: map_data.objects, 0x08: map_data.npcs, 0x09: map_data.pokemon}
         add_map_base_patches(map_name, data)
 
         patch_map(rom, map_name, data)

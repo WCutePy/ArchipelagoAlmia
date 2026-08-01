@@ -315,6 +315,10 @@ class NPCEntry:
     NAME: str = "UNK"
     randomize: Optional[bool] = False
 
+    def set_form(self, form_id: int):
+        self.unk2 = form_id
+        self.NAME = data.form_id_to_species[form_id].name
+
 
 @dataclass
 class MapData:

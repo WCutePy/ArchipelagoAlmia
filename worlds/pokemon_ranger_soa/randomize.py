@@ -21,6 +21,7 @@ def apply_place_on_random(
     spawn = world.modified_regions[map_name].POKEMON_SPAWN[index]
     spawn.set_form(form_id)
     spawn.randomize = False
+    world.modified_regions[map_name].modified = True
     return option
 
 
@@ -28,6 +29,11 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     """place surf in puel sea"""
     options = {"m011_004": [1, 2, 3]}
     apply_place_on_random(world, options, 0x06A)
+
+    #  replace with some helper func
+    world.modified_regions["m010_003"].NPCS[0].set_form(
+        128,
+    )
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
@@ -167,6 +173,14 @@ def copy_over_map_pokemon(
         to_map.POKEMON_SPAWN[j].SPECIES_NAME = mon_data.SPECIES_NAME
 
 
+def copy_over_spawn_to_npc(
+    world: PokemonRSOA, from_map: str, from_i: int, to_map: str, to_i: int
+) -> None:
+    mon_data = world.modified_regions[from_map].POKEMON_SPAWN[from_i]
+    world.modified_regions[to_map].NPCS[to_i].unk2 = mon_data.SPECIES_ID
+    world.modified_regions[to_map].NPCS[to_i].NAME = mon_data.SPECIES_NAME
+
+
 def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
 
     m009_001a_to_m009_001b = {
@@ -179,4 +193,7 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     }
     copy_over_map_pokemon(world, "m009_001a", "m009_001b", m009_001a_to_m009_001b)
 
+    # #  rampardos
+    # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 0)
+    # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
     return

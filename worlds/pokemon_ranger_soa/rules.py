@@ -212,6 +212,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
         4: set_mission_4_rules,
         5: set_mission_5_rules,
         6: set_mission_6_rules,
+        7: set_mission_7_rules,
     }
 
     up_to_mission = world.options.mission_clear_target.value
@@ -946,7 +947,7 @@ def set_mission_6_rules(world: PokemonRSOA):
         )
 
     """m015_004"""
-    for to in ["m015_002", "m015_005", "m016_001"]:
+    for to in ["m015_002", "m015_005"]:
         world.set_rule(
             get_connection(world, "m015_004", to),
             False_(),
@@ -1004,8 +1005,7 @@ def set_mission_6_rules(world: PokemonRSOA):
             )
             & CanReachLocation(data.species[97].location_capture_name),
         )
-    #  TODO fix that it can take either eevee, or force the correct form to always
-    #  be present, somehow it seems like the seeds I use always pull the correct form somehow.
+    #  TODO fix that it can take either eevee, currently a 69 eevee is forced in specifically.
 
     world.set_rule(get_pokemon_instance(world, "m011_005", 2), gigaremo_showcase)
     for loc in [data.locations["QUEST_05"].label, get_quest_event(5)]:
@@ -1015,6 +1015,77 @@ def set_mission_6_rules(world: PokemonRSOA):
             & CanReachLocation(data.species[87].location_capture_name),
         )
     #  presumbly this is enough, need a bit more testing.
+
+    """m016_001  mission 6"""
+
+    world.set_rule(
+        get_connection(world, "m015_004", "m016_001"),
+        gigaremo_showcase,
+    )
+
+    walk_cliffs = all_maps.can_destroy_target("m016_001", 2) | Has(get_mission_event(6))
+
+    for i in [0, 1, 2]:
+        world.set_rule(
+            get_pokemon_instance(world, "m016_001", i),
+            walk_cliffs,
+        )
+
+    """m016_004"""
+    #  so this really would best be split up into two regions and the two connections here
+    #  if I ever get to changing the way maps are stored in this game.
+
+    world.set_rule(get_connection(world, "m016_004", "m016_002"), walk_cliffs)
+    world.set_rule(get_connection(world, "m016_004", "m016_003"), walk_cliffs)
+
+    """m016_003"""
+    #  basically can just catch everything by being able to walk the cliffs, even
+    #  though the same field move is required one or more times, since these can't simply
+    #  be randomized normally
+
+    """m016_002"""
+
+    for i in range(14):
+        if i == 2:
+            continue
+        world.set_rule(
+            get_location(world, get_instance_capture("m016_002", i)),
+            all_maps.can_destroy_target("m016_002", 0)
+            & all_maps.can_destroy_target("m016_002", 7),
+        )
+
+    for loc in [data.locations["MISSION_06"].label, get_mission_event(6)]:
+        world.set_rule(
+            get_location(world, loc),
+            all_maps.can_destroy_target("m016_001", 2)
+            | all_maps.can_destroy_target("m016_001", 3),
+        )
+
+    for i in range(5):
+        world.set_rule(get_location(world, loc), Has(get_mission_event(6)))
+        #  technically some / multiple can be gotten earlier but idc atm
+        #  stil accessible before the *actual* mission complete so included
+
+
+def set_mission_7_rules(world: PokemonRSOA):
+
+    for map_name, i in [
+        ("m015_001", 0),
+        ("m015_001", 1),
+        ("m010_003", 15),
+        ("m009_012", 0),
+    ]:
+        world.set_rule(
+            get_pokemon_instance(world, map_name, i), Has(get_mission_event(6))
+        )
+
+    for loc in [data.locations["QUEST_09"].label, get_quest_event(9)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(6))
+            & Has(data.species[114].event_can_capture(form=22))
+            & CanReachLocation(data.species[114].location_capture_name),
+        )
 
 
 def set_completion_condition(world) -> None:

@@ -116,6 +116,8 @@ class PInstanceEvent(EventRegistry):
     CRANIDOS = InstanceEvent("m009_002", 84)
     WARTORTLE_WITH_CRANIDOS = InstanceEvent("m009_002", 12)
 
+    RAMPARDOS = InstanceEvent("m016_002", 2, mandatory=True)
+
     #
     #
     #

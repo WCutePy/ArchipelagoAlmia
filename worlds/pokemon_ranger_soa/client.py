@@ -87,6 +87,8 @@ class PokemonRangerSOA(BizHawkClient):
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
 
+        #  TODO put in some validation pleeeeease
+
         self.initialize_client()
 
         return True

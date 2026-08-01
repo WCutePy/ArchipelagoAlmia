@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from orjson import orjson
 
+from .map_patch import CompactMapData
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
 
@@ -265,6 +266,36 @@ def patch(
                 (563, 0x00_00_00_10),
             ]
 
+    if random_pokemon:
+        ...
+        # m010_003 = CompactMapData.from_map_name(prsoa_patch_instance, "m010_003")
+        # toxicroak = m010_003.npcs[0]
+        # CHAPTER_PATCHES["c028"] += [
+        #     # PUSH 221		; @6557
+        #     (6557, toxicroak << 16 | 0x10),
+        # ]
+
+        # """rampardos event"""
+        # This one does not work right now and requires more work
+        # m016_004 = CompactMapData.from_map_name(prsoa_patch_instance, "m016_004")
+        # # rampardos = m016_004.pokemon[2]
+        # rampardos = 230
+        # rampardos_browser_id = 159 - 1  # gardevoir
+        # CHAPTER_PATCHES["c033"] += [
+        #     # # PUSH 409		; @3356 maybe
+        #     # (3356, rampardos << 16 | 0x10),
+        #     #  PUSH 409	; @3411
+        #     (3411, rampardos << 16 | 0x10),
+        #     # # PUSH 409		; @3967  maybe
+        #     # (3967, rampardos << 16 | 0x10),
+        #     ## based on a hunch, unknown what it does, maybe sound or something
+        #     #  PUSH 84	; @4464
+        #     # (4464, rampardos_browser_id << 16 | 0x10),
+        #     # (4630, rampardos_browser_id << 16 | 0x10),
+        #     # (4919, rampardos_browser_id << 16 | 0x10),
+        #     # (5030, rampardos_browser_id << 16 | 0x10),
+        # ]
+
     for eventrect, writes in EVENTRECT_PATCHES.items():
         base_num = eventrect.strip("EventRect")[0:3]
         file_name = f"/data/Script/field/eventrect/er{base_num}/{eventrect}.fsb"
@@ -294,10 +325,13 @@ def code_patch(
     NOP_INSTRUCTION = 0xE3A00000
     patches = []
 
+    """a patch that prevents partner being set to caught"""
+    # This bugs out the tribune quest do to not having one of the three partners unlocked
+    # therefore softlocking the game infinitely
     # verify impact / coverage
-    patches.append(
-        (0x0327D0, NOP_INSTRUCTION),
-    )
+    # patches.append(
+    #     (0x0327D0, NOP_INSTRUCTION),
+    # )
 
     data = bytearray(rom.arm9)
 

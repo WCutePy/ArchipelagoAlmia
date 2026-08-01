@@ -310,12 +310,18 @@ class MonSelect:
                     9,
                 ],
                 "m010_022": [],
+                "m016_002": [],
             }
         )
 
     @classmethod
     def randomize_false(cls) -> MonSelect:
-        m = MonSelect(include={"m011_005": [5]})
+        m = MonSelect(
+            include={
+                "m011_005": [5],
+                "m016_004": [2],
+            },
+        )
 
         STARAPTOR = {
             "m003_001": [0],
@@ -339,6 +345,13 @@ class MonSelect:
         }
 
         m.add_to(m.include, STARAPTOR)
+
+        DODUO = {
+            "m009_012": [0],
+            "m010_003": [15],
+            "m015_001": [0, 1],
+        }
+        m.add_to(m.include, DODUO)
         return m
 
     @classmethod
@@ -497,13 +510,31 @@ class MonSelect:
         base.include |= {
             "m015_001": [],
             "m015_004": [],
+            "m016": [],  # FOR NOW
             "m017_004": [],  # for target event
             "m017_006": [],
         }
         base.include["m011_005"] = []  # all are now available
         base.include["m010_003"] += [11]  # quest eevee
 
-        base.exclude |= {"m015_001": [0, 1], "m015_004": [7]}
+        base.exclude |= {
+            "m015_001": [0, 1],  # doduo
+            "m015_004": [7],  # floatzel
+            "m016_003": [0],  # aerodactyl
+            "m016_002": [2],  # cherrim, could not find that one
+            "m016_004": [2],  # rampardos only becomes accessible later.
+        }
 
         base.event_mon += []
+        return base
+
+    @classmethod
+    def goal_mission_7(cls) -> MonSelect:
+        base = cls.goal_mission_6()
+
+        # doduo
+        base.include["m009_012"].append(0)
+        base.include["m010_003"].append(15)
+        del base.exclude["m015_001"]  # doduo
+
         return base
