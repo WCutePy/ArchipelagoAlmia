@@ -1043,10 +1043,10 @@ def set_mission_6_rules(world: PokemonRSOA):
     #  though the same field move is required one or more times, since these can't simply
     #  be randomized normally
 
-    """m016_002"""
+    """m016_004"""
 
     for i in range(14):
-        if i == 2:
+        if i == 2:  # idk where you are
             continue
         world.set_rule(
             get_location(world, get_instance_capture("m016_002", i)),
@@ -1054,15 +1054,26 @@ def set_mission_6_rules(world: PokemonRSOA):
             & all_maps.can_destroy_target("m016_002", 7),
         )
 
+    can_access_mission_complete = all_maps.can_destroy_target(
+        "m016_001", 2
+    ) | all_maps.can_destroy_target("m016_001", 3)
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.RAMPARDOS),
+        can_access_mission_complete,
+    )
     for loc in [data.locations["MISSION_06"].label, get_mission_event(6)]:
         world.set_rule(
             get_location(world, loc),
-            all_maps.can_destroy_target("m016_001", 2)
-            | all_maps.can_destroy_target("m016_001", 3),
+            can_access_mission_complete,
         )
 
     for i in range(5):
-        world.set_rule(get_location(world, loc), Has(get_mission_event(6)))
+        if i == 2:
+            continue
+        world.set_rule(
+            get_pokemon_instance(world, "m016_004", i), Has(get_mission_event(6))
+        )
         #  technically some / multiple can be gotten earlier but idc atm
         #  stil accessible before the *actual* mission complete so included
 
@@ -1079,12 +1090,42 @@ def set_mission_7_rules(world: PokemonRSOA):
             get_pokemon_instance(world, map_name, i), Has(get_mission_event(6))
         )
 
+    for loc in [data.locations["QUEST_06"].label, get_quest_event(6)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(6))
+            & Has(data.species[44].event_can_capture(form=133))
+            & CanReachLocation(data.species[44].location_capture_name),
+        )
+
+    world.set_rule(
+        get_pokemon_instance(world, "m009_009", 2), Has(get_mission_event(6))
+    )
+    for loc in [data.locations["QUEST_07"].label, get_quest_event(7)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(6))
+            & Has(data.species[109].event_can_capture(form=195))
+            & CanReachLocation(data.species[109].location_capture_name),
+        )
+
     for loc in [data.locations["QUEST_09"].label, get_quest_event(9)]:
         world.set_rule(
             get_location(world, loc),
             Has(get_mission_event(6))
             & Has(data.species[114].event_can_capture(form=22))
             & CanReachLocation(data.species[114].location_capture_name),
+        )
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.TURTWIG),
+        Has(get_mission_event(6)),
+    )
+    for loc in [data.locations["QUEST_45"].label, get_quest_event(45)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(6))
+            & CanReachLocation(data.species[52].location_capture_name),
         )
 
 
@@ -1095,7 +1136,7 @@ def set_completion_condition(world) -> None:
     browser = 0
     missions = world.options.mission_clear_target.value
     # missions = 6
-    quests = 11  # 7
+    quests = 16  # 7
     # quests = 0
 
     capture_check = []

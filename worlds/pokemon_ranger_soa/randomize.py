@@ -31,9 +31,10 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     apply_place_on_random(world, options, 0x06A)
 
     #  replace with some helper func
-    world.modified_regions["m010_003"].NPCS[0].set_form(
-        128,
-    )
+    #  this was a test for replacing croagunk!!!
+    # world.modified_regions["m010_003"].NPCS[0].set_form(
+    #     128,
+    # )
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:

@@ -96,6 +96,7 @@ def create_all_locations(
         4: [3, 11, 49, 4],
         5: [2, 35],
         6: [5, 8, 50],
+        7: [6, 7, 9, 45],
     }
     for i in range(0, max_mission + 1):
         permitted_quests += quests_table.get(i, [])
@@ -187,6 +188,9 @@ def create_pokemon_locations(
         22,
         59,  # combee quest
         [97, 69],  # eevee quest
+        114,  # oddish quest
+        109,  # ambipom
+        44,  # nosepass
     ]
 
     ocean_captures = [
@@ -275,9 +279,12 @@ def create_pokemon_locations(
         world, world.capture_groups.get_ids_ocean, field_move_region, party=Party.OCEAN
     )
 
-    missable_items = world.random.choices(
-        world.capture_groups.get_ids_all, k=missable_mons
-    )
+    missable_options = [
+        i
+        for i in world.capture_groups.get_ids_all
+        if i not in world.blacklisted_captures
+    ]
+    missable_items = world.random.choices(missable_options, k=missable_mons)
     for i in missable_items:
         mon = data.species[i]
         choices = list(mon.forms.keys())

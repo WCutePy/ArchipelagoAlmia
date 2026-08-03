@@ -7,15 +7,16 @@
 
 To allow backtracking throughout the game multiple scripts have been patched to remove temporary blocks
 
-| What                     | When                            | Missions               |
-|--------------------------|---------------------------------|------------------------|
-| School gate              | Post graduation before ...      | 0-X                    |
-| Vientown -> School Road  | ...                             | chapter 23, chapter 26 |
-| Vientown -> Chicole Path | ...                             | chap 23, chap 26       |
-| Vientown -> Nabiki Beach | ...                             | chap 26                |                   |
-| Vien Forest -> Vien Town | Forest Fire                     | 3-X                    |
-| Puel Sea -> Pueltown     | Retrieve bridge key             | 5                      |
-| Altru Park -> Pueltown   | Before visiting Ranger Union HQ | after 5                |
+| What                               | When                            | Missions               |
+|------------------------------------|---------------------------------|------------------------|
+| School gate                        | Post graduation before ...      | 0-X                    |
+| Vientown -> School Road            | ...                             | chapter 23, chapter 26 |
+| Vientown -> Chicole Path           | ...                             | chap 23, chap 26       |
+| Vientown -> Nabiki Beach           | ...                             | chap 26                |                   |
+| Vien Forest -> Vien Town           | Forest Fire                     | 3-X                    |
+| Puel Sea -> Pueltown               | Retrieve bridge key             | 5                      |
+| Altru Park -> Pueltown             | Before visiting Ranger Union HQ | after 5                |
+| Union Road west -> Union Road east | Before                          | 6
 
 
 ### Fixes
@@ -28,3 +29,8 @@ These are fixes to the game to allow pokemon randomization to function as one wo
 | Patched that any Blastoise can be used to put out the forest fire                                                                                                 | Mission 3 |
 | Extended the event trigger of being pushed back by the Elekid wall in Pueltown-center, it now extends to behind it to prevent getting softlocked in Pueltown-west | Mission 4 |
 
+
+### Known bugs
+
+|What| Where|
+|Certain maps have bugged sprites| Vien forest, Pueltown port |

@@ -49,7 +49,7 @@
   },
   "MISSION_06": {
     "label": "Mission 06: Seek the Origin of the Quake!",
-    "parent_region": "m011_005",
+    "parent_region": "m016_004",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -57,7 +57,7 @@
   },
   "MISSION_07": {
     "label": "Mission 07: Teach at Ranger School!",
-    "parent_region": "m041_001",
+    "parent_region": "m016_004",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -177,7 +177,7 @@
   },
   "QUEST_06": {
     "label": "Quest 06: Nosepass! Must Have Nosepass!",
-    "parent_region": "m041_001",
+    "parent_region": "m010_022",
     "default_item": "Progressive Ground Defense",
     "addresses": "0x020B2652",
     "flag": 1,
@@ -185,7 +185,7 @@
   },
   "QUEST_07": {
     "label": "Quest 07: Who Ate My Lunch!?",
-    "parent_region": "m041_001",
+    "parent_region": "m009_001b",
     "default_item": "Progressive Power Plus",
     "addresses": "0x020B2653",
     "flag": 1,
@@ -201,7 +201,7 @@
   },
   "QUEST_09": {
     "label": "Quest 09: Oddish Research",
-    "parent_region": "m041_001",
+    "parent_region": "m014_003b",
     "default_item": "Progressive Fire Defense",
     "addresses": "0x020B2655",
     "flag": 1,
@@ -489,7 +489,7 @@
   },
     "QUEST_45": {
     "label": "Quest 45: Please Save Turtwig",
-    "parent_region": "m041_001",
+    "parent_region": "m008_001",
     "default_item": "Partner Pokemon - Turtwig",
     "addresses": "0x020B267A",
     "flag": 1,

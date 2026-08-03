@@ -116,7 +116,9 @@ class PInstanceEvent(EventRegistry):
     CRANIDOS = InstanceEvent("m009_002", 84)
     WARTORTLE_WITH_CRANIDOS = InstanceEvent("m009_002", 12)
 
-    RAMPARDOS = InstanceEvent("m016_002", 2, mandatory=True)
+    RAMPARDOS = InstanceEvent("m016_004", 2, mandatory=True)
+
+    TURTWIG = InstanceEvent("m004_007", 52)
 
     #
     #
@@ -127,7 +129,6 @@ class PInstanceEvent(EventRegistry):
     MACHOP = InstanceEvent("m041_001", 161)
     MISDREAVUS = InstanceEvent("m041_001", 220)
     SNEASEL = InstanceEvent("m041_001", 244)
-    TURTWIG = InstanceEvent("m041_001", 52)
     CHIMCHAR = InstanceEvent("m041_001", 168)
     PIPLUP = InstanceEvent("m041_001", 206)
     STARLY = InstanceEvent("m041_001", 23)

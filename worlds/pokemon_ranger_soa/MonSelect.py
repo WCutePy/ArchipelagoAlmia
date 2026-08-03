@@ -318,8 +318,12 @@ class MonSelect:
     def randomize_false(cls) -> MonSelect:
         m = MonSelect(
             include={
-                "m011_005": [5],
-                "m016_004": [2],
+                "m001_006": [],  # make it so these are random just more appropriate in the future (pichu)
+                "m006_001": [
+                    5
+                ],  # zubat can be randomized when randomizing the event encounter attached
+                "m011_005": [5],  # sharpedo
+                "m016_004": [2],  # rampardos (could be random already techn)
             },
         )
 
@@ -347,9 +351,15 @@ class MonSelect:
         m.add_to(m.include, STARAPTOR)
 
         DODUO = {
+            "m001_001": [2],
+            "m003_001": [3],
+            "m007_001": [0],
             "m009_012": [0],
             "m010_003": [15],
             "m015_001": [0, 1],
+            "m017_001": [1],
+            "m021_001": [9],
+            "m035_001": [3],
         }
         m.add_to(m.include, DODUO)
         return m
@@ -367,6 +377,7 @@ class MonSelect:
             4: cls.goal_mission_4,
             5: cls.goal_mission_5,
             6: cls.goal_mission_6,
+            7: cls.goal_mission_7,
         }
 
         if cls.world.options.goal == Goal.option_mission_clear:
@@ -532,7 +543,12 @@ class MonSelect:
     def goal_mission_7(cls) -> MonSelect:
         base = cls.goal_mission_6()
 
+        base.exclude["m009_009"].remove(2)  # ambipom
+
         # doduo
+        del base.exclude["m001_001"]  # doduo
+        base.exclude["m003_001"].remove(3)
+        base.exclude["m007_001"].remove(0)
         base.include["m009_012"].append(0)
         base.include["m010_003"].append(15)
         del base.exclude["m015_001"]  # doduo

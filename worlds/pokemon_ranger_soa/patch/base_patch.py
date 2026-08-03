@@ -182,19 +182,25 @@ def patch(
     a simple check is down to check if still in chapter 29, or not.
     This check now always results in not being in chapter 29.
     """
-    EVENTRECT_PATCHES["EventRect011011"] = [
+    EVENTRECT_PATCHES["EventRect011011"] += [
         #  PUSH 29		; @10  -> PUSH 0
         (10, 0x00_00_00_10)
     ]
 
     """post mission 5"""
     """Allows going back before going to the ranger union"""
-    EVENTRECT_PATCHES["EventRect014002"] = [
+    EVENTRECT_PATCHES["EventRect014002"] += [
         #  PUSH 30	; @10   -> PUSH 0
         (10, 0x00_00_00_10)
     ]
 
     """mission 6"""
+    """Enables backtracking before completing mission 6"""
+    EVENTRECT_PATCHES["EventRect015102"] += [
+        #  PUSH 33		; @12
+        (12, 0x00_00_00_10)
+    ]
+
     """Prevents a softlock due to using Crush 4 and destroying the boulder, 
     and going to the east without completing mission 6 first
     Changes were the player is thrown by the trampoline plant
