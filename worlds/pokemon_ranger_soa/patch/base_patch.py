@@ -368,4 +368,31 @@ def code_patch(
     for offset, instruction in patches:
         struct.pack_into("<I", data, offset, instruction)
 
+    partners = [i for i in range(17)] + [222]
+    offset = 0x02034F9C - 0x02000000
+    ARM_INSTRUCTION_BYTES = [
+        "0214A0E3",  # 02034F9C: mov   r1, #0x02000000
+        "0d1981e3",  # 02034FA0: orr   r1, r1, #0x34000
+        "0f1c81e3",  # 02034fa8: orr   r1,r1,#0xf00
+        "D81081E3",  # 02034FA4: orr   r1, r1, #0xd8        (r1 = 0x02034FD8)
+        "0020A0E3",  # 02034FA8: mov   r2, #0x0
+        "B030D1E1",  # 02034FAC: ldrh  r3, [r1, #0]
+        "021081E2",  # 02034FB0: add   r1, r1, #0x2
+        "030050E1",  # 02034FB4: cmp   r0, r3
+        "0100A003",  # 02034FB8: moveq r0, #0x1
+        "1EFF2F01",  # 02034FBC: bxeq  lr
+        "012082E2",  # 02034FC0: add   r2, r2, #0x1
+        "120052E3",  # 02034FC4: cmp   r2, #0x12
+        "F7FFFF1A",  # 02034FC8: bne   0x02034FAC
+        "0000A0E3",  # 02034FCC: mov   r0, #0x0
+        "1EFF2FE1",  # 02034FD0: bx    lr
+    ]
+    code_bytes = bytes.fromhex("".join(ARM_INSTRUCTION_BYTES))
+
+    table_bytes = struct.pack("<18H", *partners)
+
+    is_partner_patch = code_bytes + table_bytes
+
+    data[offset : offset + len(is_partner_patch)] = is_partner_patch
+
     rom.arm9 = bytes(data)

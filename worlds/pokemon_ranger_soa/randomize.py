@@ -63,11 +63,11 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     world.random.shuffle(partners)
 
     starters[1] = 222
-    # starly, pachirichu, munchlax = [ for i in starters]
+    starly, pachirichu, munchlax = [i for i in starters]
     #
-    # place_npc(world, ("m005_003", 2), starly)
-    # place_npc(world, ("m005_003", 3), pachirichu)
-    # place_npc(world, ("m005_003", 4), munchlax)
+    place_npc(world, ("m005_003", 2), starly)
+    place_npc(world, ("m005_003", 3), pachirichu)
+    place_npc(world, ("m005_003", 4), munchlax)
 
     world.modified_starters = starters
 

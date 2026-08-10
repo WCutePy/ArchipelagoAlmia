@@ -216,7 +216,7 @@ def patch(
         patch_file = prsoa_patch_instance.get_file(file_name)
         map_name = file_name[4:-4]
 
-        if map_name != "m003_001":
+        if map_name != "m005_003":
             continue
 
         map_data = CompactMapData.from_bytes(patch_file)
