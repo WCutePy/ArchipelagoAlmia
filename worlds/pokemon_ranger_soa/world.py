@@ -16,9 +16,18 @@ from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
 from .items import PokemonRSOAItem
-from .options import PokemonRSOAOptions, OPTION_GROUPS, RandomizePokemon
+from .options import (
+    PokemonRSOAOptions,
+    OPTION_GROUPS,
+    RandomizePokemon,
+    RandomizePartners,
+)
 from .MonSelect import MonSelect
-from .randomize import apply_randomized_pokemon, early_place_random_restricted
+from .randomize import (
+    apply_randomized_pokemon,
+    early_place_random_restricted,
+    early_place_random_partners,
+)
 from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
 from Fill import FillError, fill_restrictive
 
@@ -137,6 +146,7 @@ class PokemonRSOA(World):
     exclude_field_moves: Set[str]
 
     modified_regions: Dict[str, MapData]
+    modified_species: Dict[int, SpeciesData]  # browser id - SpeciesData
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
     # topology_present = True
@@ -152,6 +162,9 @@ class PokemonRSOA(World):
         self.exclude_field_moves = set()
 
         self.modified_regions = copy.deepcopy(data.regions)
+        for map_name, map_indexes in MonSelect.missable().include.items():
+            for i in map_indexes:
+                self.modified_regions[map_name].POKEMON_SPAWN[i].missable = True
         for map_name, map_indexes in MonSelect.randomize_false().include.items():
             for i in map_indexes:
                 self.modified_regions[map_name].POKEMON_SPAWN[i].randomize = False
@@ -160,6 +173,7 @@ class PokemonRSOA(World):
                 self.modified_regions[map_name].POKEMON_SPAWN[
                     i
                 ].browser_before_capture = True
+        self.modified_species = copy.deepcopy(data.species)
 
         self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
         MonSelect.world = self
@@ -168,6 +182,7 @@ class PokemonRSOA(World):
         return "Woah. This is worthless!"
 
     def generate_early(self) -> None:
+        self.options.verify()
 
         ut_active = False
         # Check whether this is a fake generation performed by UT.
@@ -225,7 +240,7 @@ class PokemonRSOA(World):
             161,  # machop
             80,  # croagunk
             246,  # hippopotas
-            165,  # mime jr.
+            164,  # mime jr.
             82,  # kricketot
             84,  # cranidos
             220,  # misdreavus
@@ -239,6 +254,9 @@ class PokemonRSOA(World):
         #     for browser_number, species in data.species.items()
         #     if species.name not in possible_species
         # }
+
+        if self.options.randomize_partners != RandomizePartners.option_vanilla:
+            early_place_random_partners(self)
 
         if self.options.randomize_pokemon != RandomizePokemon.option_vanilla:
             early_place_random_restricted(self)

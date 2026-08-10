@@ -947,6 +947,8 @@ def set_mission_6_rules(world: PokemonRSOA):
         )
 
     """m015_004"""
+    #  TODO not all pokemon here are in logic for it all!!!
+    #  make them missable for this rule scope??? (not know cuz eh)
     for to in ["m015_002", "m015_005"]:
         world.set_rule(
             get_connection(world, "m015_004", to),
@@ -1059,7 +1061,7 @@ def set_mission_6_rules(world: PokemonRSOA):
     ) | all_maps.can_destroy_target("m016_001", 3)
 
     world.set_rule(
-        get_entrance(world, PInstanceEvent.RAMPARDOS),
+        get_entrance(world, PInstanceEvent.RAMPARDOS.event_name),
         can_access_mission_complete,
     )
     for loc in [data.locations["MISSION_06"].label, get_mission_event(6)]:
@@ -1068,6 +1070,7 @@ def set_mission_6_rules(world: PokemonRSOA):
             can_access_mission_complete,
         )
 
+    #  TODO fix this (but works for now)
     for i in range(5):
         if i == 2:
             continue
@@ -1118,7 +1121,7 @@ def set_mission_7_rules(world: PokemonRSOA):
         )
 
     world.set_rule(
-        get_entrance(world, PInstanceEvent.TURTWIG),
+        get_entrance(world, PInstanceEvent.TURTWIG.event_name),
         Has(get_mission_event(6)),
     )
     for loc in [data.locations["QUEST_45"].label, get_quest_event(45)]:
@@ -1136,8 +1139,8 @@ def set_completion_condition(world) -> None:
     browser = 0
     missions = world.options.mission_clear_target.value
     # missions = 6
-    quests = 16  # 7
-    # quests = 0
+    # quests = 16  # 7
+    quests = 0
 
     capture_check = []
     for i in world.capture_groups.get_ids_all:

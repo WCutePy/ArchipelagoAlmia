@@ -7,6 +7,7 @@ from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
 from .data import SpeciesData, data, FieldMove, Party
 from .items import PokemonRSOAItem
+from .options import RandomizePartners, partner_blacklist
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -23,6 +24,55 @@ def apply_place_on_random(
     spawn.randomize = False
     world.modified_regions[map_name].modified = True
     return option
+
+
+def place_npc(world: PokemonRSOA, place: Tuple[str, int], form_id: int):
+    map_name, index = place
+    npc = world.modified_regions[map_name].NPCS[index]
+    npc.set_form(form_id)
+    world.modified_regions[map_name].modified = True
+
+
+def early_place_random_partners(world: PokemonRSOA) -> None:
+    name_to_id = {species.name.lower(): i for i, species in data.species.items()}
+    starters = [
+        name_to_id[name.lower()] for name in world.options.partner_starters.value
+    ]
+    partners = [name_to_id[name.lower()] for name in world.options.partners.value]
+
+    all_random = world.options.randomize_partners == RandomizePartners.option_all_random
+    starters_only = (
+        world.options.randomize_partners == RandomizePartners.option_starter_only
+    )
+
+    #  change the blacklist source!!
+    allowed_partners = [
+        i for i in [*range(1, 267), 435, 436, 437] if i not in partner_blacklist
+    ]
+    if len(partners) + len(starters) < 18:
+        partners += world.random.choices(
+            allowed_partners, k=18 - len(partners) - len(starters)
+        )
+    if len(starters) < 3:
+        choices = world.random.sample(partners, k=3 - len(starters))
+        for c in choices:
+            partners.remove(c)
+        starters += choices
+
+    world.random.shuffle(starters)
+    world.random.shuffle(partners)
+
+    starters[1] = 222
+    # starly, pachirichu, munchlax = [ for i in starters]
+    #
+    # place_npc(world, ("m005_003", 2), starly)
+    # place_npc(world, ("m005_003", 3), pachirichu)
+    # place_npc(world, ("m005_003", 4), munchlax)
+
+    world.modified_starters = starters
+
+    if starters_only:
+        return
 
 
 def early_place_random_restricted(world: PokemonRSOA) -> None:
@@ -197,4 +247,8 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     # #  rampardos
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 0)
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
+
+    spawn = world.modified_regions["m003_001"].POKEMON_SPAWN[1]
+    spawn.set_form(161)
+
     return

@@ -34,11 +34,12 @@ def write_patch(
             for i, object_data in map_data.TARGETS.items():
                 objects.append(object_data.TARGET_ID)
 
+            for i, npc_data in map_data.NPCS.items():
+                npc.append(npc_data.unk2)
+
             for i, spawn_data in map_data.POKEMON_SPAWN.items():
                 pokemon.append(spawn_data.SPECIES_ID)
 
-            for i, npc_data in map_data.NPCS.items():
-                npc.append(npc_data.unk2)
         data = (
             struct.pack("<III", len(objects), len(npc), len(pokemon))
             + struct.pack(f"<{len(objects)}H", *objects)
@@ -89,11 +90,11 @@ def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
             layer_data = bytearray(layer_data)
 
             if objects and layer_type == 0x04:
-                offset = 8 + 6  # ? not sure if that's the right one
+                offset = 8  # ? not sure if that's the right one
                 entry_count = (len(layer_data) - 8) // 12
                 for _ in range(entry_count):
                     struct.pack_into(
-                        "<H", layer_data, offset, objects[layer_type_index[4]]
+                        "<H", layer_data, offset + 6, objects[layer_type_index[4]]
                     )
                     offset += 12
                     layer_type_index[4] += 1
@@ -150,11 +151,6 @@ def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
 
     logging.warning(f"Map has been edited: {narc_map_b != narc_map_rec_b}")
     logging.warning(f"Patched map: {map_name}")
-
-
-def patch_scripts(
-    rom: Rom,
-): ...
 
 
 def add_map_base_patches(map_name: str, data: Dict[int, Any]) -> None:
@@ -219,6 +215,10 @@ def patch(
             continue
         patch_file = prsoa_patch_instance.get_file(file_name)
         map_name = file_name[4:-4]
+
+        if map_name != "m003_001":
+            continue
+
         map_data = CompactMapData.from_bytes(patch_file)
 
         data = {0x04: map_data.objects, 0x08: map_data.npcs, 0x09: map_data.pokemon}

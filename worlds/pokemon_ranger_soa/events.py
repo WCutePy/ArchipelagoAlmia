@@ -116,9 +116,11 @@ class PInstanceEvent(EventRegistry):
     CRANIDOS = InstanceEvent("m009_002", 84)
     WARTORTLE_WITH_CRANIDOS = InstanceEvent("m009_002", 12)
 
-    RAMPARDOS = InstanceEvent("m016_004", 2, mandatory=True)
+    RAMPARDOS = InstanceEvent(
+        "m016_004", 2, mandatory=True
+    )  # could be removed kinda, the capture
 
-    TURTWIG = InstanceEvent("m004_007", 52)
+    TURTWIG = InstanceEvent("m004_007", 52)  # after m6
 
     #
     #

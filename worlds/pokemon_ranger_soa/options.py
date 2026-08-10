@@ -1,6 +1,18 @@
 from dataclasses import dataclass
 
-from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, DeathLink
+from BaseClasses import PlandoOptions
+from Options import (
+    Choice,
+    OptionGroup,
+    PerGameCommonOptions,
+    Range,
+    Toggle,
+    DeathLink,
+    OptionList,
+    OptionError,
+)
+from .data import data
+from ..AutoWorld import World
 
 
 class Goal(Choice):
@@ -280,6 +292,74 @@ class RandomizePokemon(Choice):
     default = option_full_random
 
 
+class RandomizePartners(Choice):
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_all_random = 1
+    option_starter_only = 2
+    default = option_all_random
+
+
+partner_blacklist = {
+    238,  # wailord
+}
+
+
+class PartnerStarters(OptionList):
+    auto_display_name = True
+
+    valid_keys_casefold = True
+    valid_keys = [
+        data.name for i, data in data.species.items() if i not in partner_blacklist
+    ]
+
+    def verify(
+        self, world: type[World], player_name: str, plando_options: PlandoOptions
+    ) -> None:
+        super().verify(world, player_name, plando_options)
+
+        errors = []
+
+        if len(self.value) > 3:
+            errors.append(
+                f"A maximum of 3 starters can be listed. {len(self.value)} have been given."
+            )
+
+        if len(errors) != 0:
+            errors = [
+                f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
+            ] + errors
+            raise OptionError("\n".join(errors))
+
+
+class Partners(OptionList):
+    auto_display_name = True
+
+    valid_keys_casefold = True
+    valid_keys = [
+        data.name for i, data in data.species.items() if i not in partner_blacklist
+    ]
+
+    def verify(
+        self, world: type[World], player_name: str, plando_options: PlandoOptions
+    ) -> None:
+        super().verify(world, player_name, plando_options)
+
+        errors = []
+
+        if len(self.value) > 18:
+            errors.append(
+                f"A maximum of 18 starters can be set. {len(self.value)} have been given."
+            )
+
+        if len(errors) != 0:
+            errors = [
+                f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
+            ] + errors
+            raise OptionError("\n".join(errors))
+
+
 class RandomizeTargetFieldMove(Choice):
     auto_display_name = True
 
@@ -316,7 +396,24 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     field_move_levels: FieldMoveLevelItem
 
     randomize_pokemon: RandomizePokemon
+    randomize_partners: RandomizePartners
+    partner_starters: PartnerStarters
+    partners: Partners
     randomize_target_field_move: RandomizeTargetFieldMove
+
+    def verify(self):
+        errors = []
+
+        if len(self.partners.value) > (18 - len(self.partner_starters.value)):
+            errors.append(
+                f"{len(self.partner_starters.value)} starter partners have been specified. A maximum of {18 - len(self.partner_starters.value)} can be set"
+            )
+
+        if len(errors) != 0:
+            errors = [
+                f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
+            ] + errors
+            raise OptionError("\n".join(errors))
 
 
 OPTION_GROUPS = [
@@ -333,5 +430,12 @@ OPTION_GROUPS = [
     ),
     OptionGroup("Level up", [LevelUpType, LevelUpCount, LevelUpIncrement]),
     OptionGroup("Rank up", [RankUpType, RankUpItemCount, RankUpIncrement]),
-    OptionGroup("Randomization", [RandomizePokemon, RandomizeTargetFieldMove]),
+    OptionGroup(
+        "Randomization",
+        [
+            RandomizePokemon,
+            RandomizeTargetFieldMove,
+        ],
+    ),
+    OptionGroup("Partners", [RandomizePartners, PartnerStarters, Partners]),
 ]

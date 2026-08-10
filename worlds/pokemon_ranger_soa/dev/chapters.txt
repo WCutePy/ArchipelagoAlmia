@@ -18,3 +18,5 @@
 0x1F - 31 - Entered Ranger Union
 0x20 - 32 - Day transition after gigaremo showcase
 0x21 - 33 - Mission 6
+0x22 - 34 - Post mission 6 next day screen
+0x24 - 36 - Mission 7

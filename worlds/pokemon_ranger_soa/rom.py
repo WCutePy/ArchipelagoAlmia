@@ -62,13 +62,17 @@ class PatchMethods:
 
     @staticmethod
     def write_contents(patch: PokemonRSOAPatch, opened_zipfile: ZipFile) -> None:
-        from .patch import map_patch
+        from .patch import map_patch, species_patch
 
         procedures: list[str] = ["base_patch", "quest_patch"]
 
         if patch.world.options.randomize_pokemon != RandomizePokemon.option_vanilla:
             procedures.append("map_patch")
             map_patch.write_patch(patch, opened_zipfile)
+
+        if patch.world.options.randomize_partners != RandomizePokemon.option_vanilla:
+            procedures.append("species_patch")
+            species_patch.write_patch(patch, opened_zipfile)
 
         opened_zipfile.writestr("procedures.txt", "\n".join(procedures))
         opened_zipfile.writestr(
@@ -97,7 +101,7 @@ class PatchMethods:
         logging.warning(f"Starting rom patching")
 
         from .apnds import rom as apnds_rom
-        from .patch import base_patch, map_patch, quest_patch
+        from .patch import base_patch, map_patch, quest_patch, species_patch
 
         patch_procedures: dict[
             str,
@@ -114,6 +118,7 @@ class PatchMethods:
             "base_patch": base_patch.patch,
             "map_patch": map_patch.patch,
             "quest_patch": quest_patch.patch,
+            "species_patch": species_patch.patch,
         }
 
         files_dump: dict[str, bytes | bytearray] = {}

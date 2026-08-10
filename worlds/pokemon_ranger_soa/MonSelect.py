@@ -296,6 +296,12 @@ class MonSelect:
         return MonSelect()
 
     @classmethod
+    def missable(cls) -> MonSelect:
+        m = MonSelect(include={})
+
+        return m
+
+    @classmethod
     def browser_before_capture(cls) -> MonSelect:
         return MonSelect(
             include={
@@ -536,7 +542,7 @@ class MonSelect:
             "m016_004": [2],  # rampardos only becomes accessible later.
         }
 
-        base.event_mon += []
+        base.event_mon += [PInstanceEvent.RAMPARDOS]
         return base
 
     @classmethod
@@ -552,5 +558,7 @@ class MonSelect:
         base.include["m009_012"].append(0)
         base.include["m010_003"].append(15)
         del base.exclude["m015_001"]  # doduo
+
+        base.event_mon += [PInstanceEvent.TURTWIG]
 
         return base

@@ -213,6 +213,7 @@ def patch(
     ]
 
     """partner patches"""
+
     randomize_partner_species = False
     if randomize_partner_species:
         """untested so far, as this might need other patches"""
@@ -232,6 +233,12 @@ def patch(
         QUEST_PATCHES["q035"] += [
             # PUSH 1		; @966 -> JMP loc_1177
             (966, 0x00_D2_00_08)
+        ]
+
+        # TODO UNTESTED (nobody has time for that)
+        QUEST_PATCHES["q045"] += [
+            # PUSH 1		; @987 -> JMP loc_1197
+            (987, 0x00_D1_00_08)
         ]
 
     early_staraptor = True
