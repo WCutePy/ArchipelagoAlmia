@@ -2,3 +2,7 @@
 py Launcher.py "Build APWorlds" -- "PokemonRangerSOA"
 
 py -m pytest -n auto --ignore=test/worlds --ignore-glob='worlds/**'
+
+
+search print message with specific id
+PUSH\s+34[^\n]*\n[^\n]*\n\s*SYSCALL\s+2,\s*24,\s*4

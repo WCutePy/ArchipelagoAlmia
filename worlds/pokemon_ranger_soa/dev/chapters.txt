@@ -1,0 +1,22 @@
+
+
+
+0x0D - 13 - One day internship
+0x0E - 14 - Letter n about graduation
+0x0F - 15 - Graduation day
+0x14 - 20 - Post graduation letter
+0x15 - 21 - First day as ranger, mission 1
+0x10 - 22 - Mission 1 completed backroom card
+0x11 - 23 - Mission 2 marine cave
+0x12 - 24 - Mission 2 clear, quest 1
+0x13 - 25 - M2,M3 next day screen
+0x1A - 26 - Mission 3: Forest fire
+0x1B - 27 - After mission 3 back in ranger base, ranger rank 2 promotion
+0x1C - 28 - Mission 4
+0x1D - 29 - Post mission 4 complete, bring ollie
+0x1E - 30 - Post mission 5 lowered bridge
+0x1F - 31 - Entered Ranger Union
+0x20 - 32 - Day transition after gigaremo showcase
+0x21 - 33 - Mission 6
+0x22 - 34 - Post mission 6 next day screen
+0x24 - 36 - Mission 7

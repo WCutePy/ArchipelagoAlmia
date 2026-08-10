@@ -1,7 +1,10 @@
+import dataclasses
 import logging
 import struct
 import zipfile
-from typing import TYPE_CHECKING
+from collections import defaultdict
+from typing import TYPE_CHECKING, Dict, Any, List, Optional
+from dataclasses import dataclass
 
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
@@ -17,6 +20,8 @@ def write_patch(
 ) -> None:
 
     for map_name, map_data in prsoa_patch_instance.world.modified_regions.items():
+        if not map_data.modified:
+            continue
         objects = []
 
         npc = []
@@ -26,6 +31,12 @@ def write_patch(
             prsoa_patch_instance.world.options.randomize_pokemon
             != RandomizePokemon.option_vanilla
         ):
+            for i, object_data in map_data.TARGETS.items():
+                objects.append(object_data.TARGET_ID)
+
+            for i, npc_data in map_data.NPCS.items():
+                npc.append(npc_data.unk2)
+
             for i, spawn_data in map_data.POKEMON_SPAWN.items():
                 pokemon.append(spawn_data.SPECIES_ID)
 
@@ -38,12 +49,12 @@ def write_patch(
         opened_zipfile.writestr(f"map/{map_name}.bin", data)
 
 
-def patch_map(
-    rom: Rom, map_name: str, objects: list[int], npc: list[int], pokemon: list[int]
-) -> None:
-    if not objects and not pokemon and not npc:
+def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
+    if not data:
         return
 
+    # #  TODO remove
+    # return
 
     file_name = f"/data/field/map/{map_name}.map.dat.lz"
 
@@ -60,12 +71,15 @@ def patch_map(
     lyr_header, narc_lyr_b = lyr_b[:4], lyr_b[4:]
     narc_lyr = Narc.from_bytes(narc_lyr_b)
 
-    objects_index = 0
-    npc_index = 0
-    pokemon_index = 0
+    objects = data.get(0x04, [])
+    triggers = data.get(0x07, {})
+    npc = data.get(0x08, [])
+    pokemon = data.get(0x09, [])
+
+    layer_type_index = defaultdict(int)
 
     logging.warning(
-        f"Writing pokemon: {pokemon=}, {npc=}, {objects}"
+        f"Writing pokemon: {data.get(0x09, [])=}, {data.get(0x08, [])=}, {data.get(0x04, [])=}"
     )
 
     for i, file_group in enumerate(narc_lyr.files):
@@ -73,28 +87,60 @@ def patch_map(
 
         for j, layer_data in enumerate(narc_layer_list.files):
             layer_type = struct.unpack("<I", layer_data[:4])[0]
-
-
+            layer_data = bytearray(layer_data)
 
             if objects and layer_type == 0x04:
-                ...
-            elif npc and layer_type == 0x08:
-                ...
-            elif pokemon and layer_type == 0x09:
-                logging.warning(
-                    f"Pokemon layer: {j}"
-                )
-
-                layer_data = bytearray(layer_data)
-                offset = 0
-                entry_count = (len(layer_data) - 8) // 10
-                offset += 8 + 6
+                offset = 8  # ? not sure if that's the right one
+                entry_count = (len(layer_data) - 8) // 12
                 for _ in range(entry_count):
-                    struct.pack_into("<H", layer_data, offset, pokemon[pokemon_index])
+                    struct.pack_into(
+                        "<H", layer_data, offset + 6, objects[layer_type_index[4]]
+                    )
+                    offset += 12
+                    layer_type_index[4] += 1
+            if triggers and layer_type == 0x07:
+                offset = 8
+                entry_count = (len(layer_data) - 8) // 11
+                for _ in range(entry_count):
+                    index = layer_type_index[7]
+                    layer_type_index[7] += 1
+                    if index not in triggers:
+                        offset += 10
+                        continue
+                    entry = triggers.get(index, {})
+                    logging.warning(f"{map_name}, trigger {index}", entry)
+
+                    if "x" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["x"])
+                    offset += 2
+                    if "y" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["y"])
+                    offset += 2
+                    if "width" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["width"])
+                    offset += 2
+                    if "height" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["height"])
+                    offset += 4
+
+            elif npc and layer_type == 0x08:
+                offset = 8 + 6  # ? not sure if that's the right one
+                entry_count = (len(layer_data) - 8) // 11
+                for _ in range(entry_count):
+                    struct.pack_into("<H", layer_data, offset, npc[layer_type_index[8]])
+                    offset += 11
+                    layer_type_index[8] += 1
+            elif pokemon and layer_type == 0x09:
+                entry_count = (len(layer_data) - 8) // 10
+                offset = 8 + 6
+                for _ in range(entry_count):
+                    struct.pack_into(
+                        "<H", layer_data, offset, pokemon[layer_type_index[9]]
+                    )
                     offset += 10
 
-                    pokemon_index += 1
-                narc_layer_list.files[j] = layer_data
+                    layer_type_index[9] += 1
+            narc_layer_list.files[j] = layer_data
         narc_lyr.files[i] = narc_layer_list.to_bytes()
 
     narc_map.files[lyr_index] = lyr_header + narc_lyr.to_bytes()
@@ -103,17 +149,58 @@ def patch_map(
     narc_map_rec_b = compress(narc_map_rec)
     rom.files[file_name] = narc_map_rec_b
 
-    logging.warning(
-        f"Map has been edited: {narc_map_b != narc_map_rec_b}"
-    )
-    logging.warning(
-        f"Patched map: {map_name}"
-    )
+    logging.warning(f"Map has been edited: {narc_map_b != narc_map_rec_b}")
+    logging.warning(f"Patched map: {map_name}")
 
 
-def patch_scripts(    rom: Rom,
-):
-    ...
+def add_map_base_patches(map_name: str, data: Dict[int, Any]) -> None:
+    """Mission 4, anti softlock if you enter the west of
+    pueltown through the east of pueltown clearing the center gigaremo
+    It would be better to patch the wall in m010_022 in the first place,
+    however that would require complex script changes.
+    """
+    if map_name == "m010_001":
+        data[0x07] = {
+            2: {
+                "y": 250,
+                "height": 64,
+            }
+        }
+
+
+@dataclass
+class CompactMapData:
+    objects: List[int]
+    npcs: List[int]
+    pokemon: List[int]
+
+    @classmethod
+    def from_bytes(cls, data: bytes) -> Optional["CompactMapData"]:
+        (
+            num_objects,
+            num_npc,
+            num_pokemon,
+        ) = struct.unpack_from("<III", data, 0)
+        if num_objects + num_npc + num_pokemon == 0:
+            return None
+        offset = 12
+        objects = list(struct.unpack_from(f"<{num_objects}H", data, offset))
+        offset += num_objects * 2
+
+        npcs = list(struct.unpack_from(f"<{num_npc}H", data, offset))
+        offset += num_npc * 2
+
+        pokemon = list(struct.unpack_from(f"<{num_pokemon}H", data, offset))
+
+        return CompactMapData(objects, npcs, pokemon)
+
+    @classmethod
+    def from_map_name(
+        cls, prsoa_patch_instance: "PokemonRSOAPatch", map_name: str
+    ) -> "CompactMapData":
+        file_name = f"map/{map_name}.bin"
+        patch_file = prsoa_patch_instance.get_file(file_name)
+        return cls.from_bytes(patch_file)
 
 
 def patch(
@@ -123,29 +210,18 @@ def patch(
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
 
-    limit_patch_count_debug = 0
     for file_name, file_data in prsoa_patch_instance.files.items():
-        limit_patch_count_debug += 1
-        if limit_patch_count_debug >= 20:
-            return  # TODO remove
         if not file_name.startswith("map/m"):
             continue
         patch_file = prsoa_patch_instance.get_file(file_name)
         map_name = file_name[4:-4]
 
-        (
-            num_objects,
-            num_npc,
-            num_pokemon,
-        ) = struct.unpack_from("<III", patch_file, 0)
-        offset = 12
-        objects = list(struct.unpack_from(f"<{num_objects}H", patch_file, offset))
-        offset += num_objects * 2
+        if map_name != "m003_001":
+            continue
 
-        npc = list(struct.unpack_from(f"<{num_npc}H", patch_file, offset))
-        offset += num_npc * 2
+        map_data = CompactMapData.from_bytes(patch_file)
 
-        pokemon = list(struct.unpack_from(f"<{num_pokemon}H", patch_file, offset))
+        data = {0x04: map_data.objects, 0x08: map_data.npcs, 0x09: map_data.pokemon}
+        add_map_base_patches(map_name, data)
 
-        patch_map(rom, map_name, objects, npc, pokemon)
-
+        patch_map(rom, map_name, data)

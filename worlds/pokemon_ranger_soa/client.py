@@ -81,11 +81,20 @@ class PokemonRangerSOA(BizHawkClient):
         self.allowed_partners = set()
 
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
+        header = await bizhawk.read(ctx.bizhawk_ctx, ((0x00000000, 0x10, "ROM"),))
+
+        raw = bytes(header[0])
+        if not raw.startswith(b"POKE RANGER2YP2E"):
+            return False
 
         ctx.game = self.game
         ctx.items_handling = 0b001
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
+
+        raw = bytes(header[0])
+        if not raw.startswith(b"POKEMONLINK"):
+            return False
 
         self.initialize_client()
 
@@ -199,6 +208,8 @@ class PokemonRangerSOA(BizHawkClient):
             partner_counts_as_party_slot = partner_pokemon[8]
             partner = int.from_bytes(partner_pokemon[0:2], "little")
 
+            # TODO reconsider this???
+            # just make a progressive partner
             if (
                 partner_counts_as_party_slot == 7
                 and partner not in self.allowed_partners

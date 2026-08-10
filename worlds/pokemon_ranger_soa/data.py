@@ -108,6 +108,11 @@ class FieldMoveCategory(IntEnum):
         return f"Progressive {self.name.replace("_", " ").title()}"
 
 
+class Party(StrEnum):
+    DEFAULT = ""
+    OCEAN = "_OCEAN"
+
+
 @dataclass(frozen=True)
 class FieldMove:
     category: FieldMoveCategory
@@ -127,13 +132,17 @@ class FieldMove:
     def satisfies(self, required: "FieldMove") -> bool:
         return self.category == required.category and self.level >= required.level
 
-    @property
-    def event_can_use_field_move(self):
-        return f"EVENT_USE_FIELD-{self.category.name}-{self.level}"
+    def event_can_use_field_move_party(self, party: Party):
+        return f"EVENT_USE_FIELD{party.value}-{self.category.name}-{self.level}"
+
+    @classmethod
+    def is_party(cls, string: str) -> Party:
+        party, category_name, level_str = string[15:].split("-")
+        return Party(party)
 
     @classmethod
     def from_string(cls, string: str) -> "FieldMove":
-        category_name, level_str = string.rsplit("_", 1)
+        party, category_name, level_str = string[15:].split("-")
 
         try:
             category = FieldMoveCategory[category_name]
@@ -149,18 +158,22 @@ class FieldMove:
 
 
 @dataclass
+class FormData:
+    hex_form_id: str
+    friendship_gauge: int
+
+
+@dataclass
 class SpeciesData:
     name: str
     label: str
 
     browser_id: int
     national_id: int
-    form_ids: List[int]
-    hex_form_ids: List[str]
+    forms: Dict[int, FormData]
 
     field_move: FieldMove
     poke_assist: PokeAssistCategory
-    friendship_gauge: tuple[int]
 
     browser_offset: int
     browser_flag: int
@@ -172,17 +185,44 @@ class SpeciesData:
         if isinstance(self.field_move, dict):
             self.field_move = FieldMove(**self.field_move)
 
+        self.forms = {
+            int(form_id): (form if isinstance(form, FormData) else FormData(**form))
+            for form_id, form in self.forms.items()
+        }
+
     @property
     def location_capture_name(self):
         return f"CAPTURE_{self.name}"
 
-    @property
-    def event_add_to_browser(self):
-        return f"EVENT_ADD_TO_BROWSER_{self.name}"
+    def event_missable(self, form: int = ""):
+        if form == "":
+            if len(self.forms) == 1:
+                form = next(iter(self.forms.keys()))
+            else:
+                raise ValueError(
+                    f"It's mandatory to specify a form when multiple forms exist for: {self}"
+                )
+        return f"EVENT_MISSABLE;{self.name};{form:03}"
 
-    @property
-    def event_can_capture(self):
-        return f"EVENT_CAN_CAPTURE_{self.name}"
+    def event_add_to_browser(self, form: int = ""):
+        if form == "":
+            if len(self.forms) == 1:
+                form = next(iter(self.forms.keys()))
+            else:
+                raise ValueError(
+                    f"It's mandatory to specify a form when multiple forms exist for: {self}"
+                )
+        return f"EVENT_ADD_TO_BROWSER;{self.name};{form:03}"
+
+    def event_can_capture(self, party: Party = Party.DEFAULT, form: int = ""):
+        if form == "":
+            if len(self.forms) == 1:
+                form = next(iter(self.forms.keys()))
+            else:
+                raise ValueError(
+                    f"It's mandatory to specify a form when multiple forms exist for: {self}"
+                )
+        return f"EVENT_CAN_CAPTURE{party.value};{self.name};{form:03}"
 
     @property
     def location_capture_rank_name(self):
@@ -198,6 +238,7 @@ class ItemCategory(StrEnum):
     EVENT = auto()
     PARTNER = auto()
     FIELD_MOVE = auto()
+    POWER_LEVEL = auto()
 
 
 class AddressesGroup(NamedTuple):
@@ -224,7 +265,7 @@ class AddressesGroup(NamedTuple):
         )
 
 
-@dataclass
+@dataclass()
 class ItemData:
     label: str
     item_id: int
@@ -251,12 +292,32 @@ class TargetEntry:
 
 @dataclass
 class PokemonSpawnEntry:
-    SPECIES_ID: int
+    SPECIES_ID: int  # form_id
     SPECIES_NAME: str
     SPAWN_FLAG: int
     missable: Optional[bool] = False
     one_time: Optional[bool] = False
+    randomize: Optional[bool] = True
+    browser_before_capture: Optional[bool] = False
     rules: list[str] = field(default_factory=list)
+
+    def set_form(self, form_id: int):
+        self.SPECIES_ID = form_id
+        self.SPECIES_NAME = data.form_id_to_species[form_id].name
+
+
+@dataclass
+class NPCEntry:
+    unk1: int
+    unk2: int
+    unk3: int
+    script_id: int = -1
+    NAME: str = "UNK"
+    randomize: Optional[bool] = False
+
+    def set_form(self, form_id: int):
+        self.unk2 = form_id
+        self.NAME = data.form_id_to_species[form_id].name
 
 
 @dataclass
@@ -268,7 +329,10 @@ class MapData:
 
     TARGETS: dict[int, TargetEntry] = field(default_factory=dict)
     POKEMON_SPAWN: dict[int, PokemonSpawnEntry] = field(default_factory=dict)
+    NPCS: dict[int, NPCEntry] = field(default_factory=dict)
     EXITS: dict[str, list[str]] = field(default_factory=dict)
+
+    modified: Optional[bool] = False
 
     def __post_init__(self):
         self.TARGETS = {
@@ -277,6 +341,12 @@ class MapData:
             )
             for key, value in self.TARGETS.items()
         }
+
+        if self.NPCS:
+            self.NPCS = {
+                int(key): (value if isinstance(value, NPCEntry) else NPCEntry(**value))
+                for key, value in self.NPCS.items()
+            }
 
         self.POKEMON_SPAWN = {
             int(key): (
@@ -344,6 +414,14 @@ def location_category_to_id(base_number: int, category: str):
     raise ValueError(category)
 
 
+def sanitize_map_name(map_name: Union[str, int]) -> str:
+    if isinstance(map_name, int):
+        map_name = data.map_id_to_region_name[map_name]
+    elif map_name.lower().startswith("0x"):
+        map_name = data.map_id_to_region_name[int(map_name, 16)]
+    return map_name
+
+
 def pokemon_to_target_id(name: str) -> Optional[int]:
     name = name.lower()
     mapping = {
@@ -361,7 +439,7 @@ def pokemon_to_target_id(name: str) -> Optional[int]:
         "carnivine": 0xC,
         "abomasnow": 0xD,
     }
-    return mapping.get(name)
+    return mapping.get(name, None)
 
 
 def _init():
@@ -371,7 +449,7 @@ def _init():
     for species_data in extracted_species:
         species = SpeciesData(**species_data)
         data.species[species.browser_id] = species
-        for form in species.form_ids:
+        for form in species.forms.keys():
             data.form_id_to_species[form] = species
 
     extracted_items: List[Dict] = load_json_data("items.json")

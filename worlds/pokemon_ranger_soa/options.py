@@ -1,6 +1,18 @@
 from dataclasses import dataclass
 
-from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, DeathLink
+from BaseClasses import PlandoOptions
+from Options import (
+    Choice,
+    OptionGroup,
+    PerGameCommonOptions,
+    Range,
+    Toggle,
+    DeathLink,
+    OptionList,
+    OptionError,
+)
+from .data import data
+from ..AutoWorld import World
 
 
 class Goal(Choice):
@@ -20,14 +32,14 @@ class Goal(Choice):
 
 class MissionClearTarget(Choice):
     """
-    When mission clear is set as goal, this is the mission
-    required to be beaten to complete the game.
+    When mission clear is set as goal, this is the
+    mission/story section required to be
+    beaten to complete the game.
     """
 
     display_name = "Missing clear target"
 
-    option_rookie_soothe_the_pokemon_on_the_beach = 0
-    option_deliver_vien_tribune = 1
+    option_graduate_school = 0
     option_investigate_the_marine_cave = 2
     option_fight_the_forest_fire = 3
     option_destroy_the_strange_machines = 4
@@ -44,7 +56,7 @@ class MissionClearTarget(Choice):
     option_protect_ranger_union_hq = 15
     option_execute_operation_brighton = 16
 
-    default = option_deliver_vien_tribune
+    default = option_investigate_the_marine_cave
 
 
 class QuestClearTarget(Range):
@@ -280,6 +292,74 @@ class RandomizePokemon(Choice):
     default = option_full_random
 
 
+class RandomizePartners(Choice):
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_all_random = 1
+    option_starter_only = 2
+    default = option_all_random
+
+
+partner_blacklist = {
+    238,  # wailord
+}
+
+
+class PartnerStarters(OptionList):
+    auto_display_name = True
+
+    valid_keys_casefold = True
+    valid_keys = [
+        data.name for i, data in data.species.items() if i not in partner_blacklist
+    ]
+
+    def verify(
+        self, world: type[World], player_name: str, plando_options: PlandoOptions
+    ) -> None:
+        super().verify(world, player_name, plando_options)
+
+        errors = []
+
+        if len(self.value) > 3:
+            errors.append(
+                f"A maximum of 3 starters can be listed. {len(self.value)} have been given."
+            )
+
+        if len(errors) != 0:
+            errors = [
+                f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
+            ] + errors
+            raise OptionError("\n".join(errors))
+
+
+class Partners(OptionList):
+    auto_display_name = True
+
+    valid_keys_casefold = True
+    valid_keys = [
+        data.name for i, data in data.species.items() if i not in partner_blacklist
+    ]
+
+    def verify(
+        self, world: type[World], player_name: str, plando_options: PlandoOptions
+    ) -> None:
+        super().verify(world, player_name, plando_options)
+
+        errors = []
+
+        if len(self.value) > 18:
+            errors.append(
+                f"A maximum of 18 starters can be set. {len(self.value)} have been given."
+            )
+
+        if len(errors) != 0:
+            errors = [
+                f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
+            ] + errors
+            raise OptionError("\n".join(errors))
+
+
 class RandomizeTargetFieldMove(Choice):
     auto_display_name = True
 
@@ -316,7 +396,24 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     field_move_levels: FieldMoveLevelItem
 
     randomize_pokemon: RandomizePokemon
+    randomize_partners: RandomizePartners
+    partner_starters: PartnerStarters
+    partners: Partners
     randomize_target_field_move: RandomizeTargetFieldMove
+
+    def verify(self):
+        errors = []
+
+        if len(self.partners.value) > (18 - len(self.partner_starters.value)):
+            errors.append(
+                f"{len(self.partner_starters.value)} starter partners have been specified. A maximum of {18 - len(self.partner_starters.value)} can be set"
+            )
+
+        if len(errors) != 0:
+            errors = [
+                f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
+            ] + errors
+            raise OptionError("\n".join(errors))
 
 
 OPTION_GROUPS = [
@@ -333,5 +430,12 @@ OPTION_GROUPS = [
     ),
     OptionGroup("Level up", [LevelUpType, LevelUpCount, LevelUpIncrement]),
     OptionGroup("Rank up", [RankUpType, RankUpItemCount, RankUpIncrement]),
-    OptionGroup("Randomization", [RandomizePokemon, RandomizeTargetFieldMove]),
+    OptionGroup(
+        "Randomization",
+        [
+            RandomizePokemon,
+            RandomizeTargetFieldMove,
+        ],
+    ),
+    OptionGroup("Partners", [RandomizePartners, PartnerStarters, Partners]),
 ]

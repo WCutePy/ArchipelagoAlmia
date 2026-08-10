@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
@@ -64,50 +65,93 @@ class PREvent(PRSOAEvent):
     SCHOOL_COLLECT_STYLERS = "m001_003a"
     SCHOOL_COMPLETE_NIGHT = "m001_011"
 
+    GIVE_HAPPINY_TO_MIMI = "m009_002"
+    RESCUE_PUELTOWN = "m010_003"
 
-class PInstanceEvent(PRSOAEvent):
-    """MAP_NAME, BROWSER_ID"""
 
-    """Script based """
-    TANGROWTH = ("m001_003b", 36)  # m0 graduation
-    MILTANK = ("m004_001", 46)  # quest 1
-    BUDEW_4 = ("m009_002", 8)  # m3 jump out at burning log
+@dataclass(slots=True)
+class InstanceEvent:
+    map_name: str
+    browser_id: int
+    one_time: bool = True
+    randomize: bool = False
+    mandatory: bool = False
 
-    WAILORD = ("m029_009", 238)
-
-    """Partners"""
-    MACHOP = ("m041_001", 161)
-    MISDREAVUS = ("m041_001", 220)
-    SNEASEL = ("m041_001", 244)
-    TURTWIG = ("m041_001", 52)
-    CHIMCHAR = ("m041_001", 168)
-    PIPLUP = ("m041_001", 206)
-    STARLY = ("m041_001", 23)
-    KRICKETOT = ("m041_001", 82)
-    CRANIDOS = ("m041_001", 84)
-    SHIELDON = ("m041_001", 181)
-    PACHIRISU = ("m041_001", 26)
-    MIME_JR = ("m041_001", 164)
-    GIBLE = ("m041_001", 251)
-    MUNCHLAX = ("m041_001", 27)
-    HIPPOPOTAS = ("m041_001", 246)
-    CROAGUNK = ("m041_001", 80)
-    SNOVER = ("m041_001", 211)
-
-    """DLC?"""
-    DARKRAI = ("m041_001", 257, False)
-    REGIGIGAS = ("m036_019", 267)
-    DIALGA = ("m041_001", 435)
-    PALKIA = ("m041_001", 436)
-    SHAYMIN = ("m041_001", 437)
-
-    def __new__(cls, map_name: str, browser_id: int, one_time: Optional[bool] = True):
-        obj = object.__new__(cls)
-        obj.map_name = map_name
-        obj.browser_id = browser_id
-        obj.one_time = one_time
-        return obj
+    name: str = ""
 
     @property
     def event_name(self) -> str:
         return f"EVENT_P_{self.name}"
+
+
+class EventRegistry:
+    def __init_subclass__(cls):
+        super().__init_subclass__()
+
+        for attr_name, value in vars(cls).items():
+            if isinstance(value, InstanceEvent) and not value.name:
+                value.name = attr_name
+
+
+class PInstanceEvent(EventRegistry):
+    """MAP_NAME, BROWSER_ID"""
+
+    """Script based """
+    TUT_BIDOOF = InstanceEvent(
+        "m001_002", 4, mandatory=True
+    )  # quite sure these count for browser
+    SLAKOTH = InstanceEvent("m001_001", 32, mandatory=True)  # stolen stylers
+    TIM_BIDOOF = InstanceEvent(
+        "m001_001", 4, mandatory=True
+    )  # 2 bidoof that attack Tim when leaving school, fight only 1
+
+    TANGROWTH = InstanceEvent("m001_003b", 36, mandatory=True)  # m0 graduation
+    MILTANK = InstanceEvent("m004_001", 46, mandatory=True)  # quest 1
+    BUDEW_4 = InstanceEvent("m009_002", 8, mandatory=True)  # m3 jump out at burning log
+
+    RATATA_4 = InstanceEvent("m010_003", 67, mandatory=True)  # m4 port
+    TOXICROAK = InstanceEvent("m010_003", 81, mandatory=True)  # m4 port
+
+    KRICKETOT = InstanceEvent("m008_006", 82, mandatory=True)  # before m5
+    CRANIDOS = InstanceEvent("m009_002", 84)
+    WARTORTLE_WITH_CRANIDOS = InstanceEvent("m009_002", 12)
+
+    RAMPARDOS = InstanceEvent(
+        "m016_004", 2, mandatory=True
+    )  # could be removed kinda, the capture
+
+    TURTWIG = InstanceEvent("m004_007", 52)  # after m6
+
+    #
+    #
+    #
+    WAILORD = InstanceEvent("m029_009", 238, mandatory=True)
+
+    """Partners"""
+    MACHOP = InstanceEvent("m041_001", 161)
+    MISDREAVUS = InstanceEvent("m041_001", 220)
+    SNEASEL = InstanceEvent("m041_001", 244)
+    CHIMCHAR = InstanceEvent("m041_001", 168)
+    PIPLUP = InstanceEvent("m041_001", 206)
+    STARLY = InstanceEvent("m041_001", 23)
+    SHIELDON = InstanceEvent("m041_001", 181)
+    PACHIRISU = InstanceEvent("m041_001", 26)
+    MIME_JR = InstanceEvent("m041_001", 164)
+    GIBLE = InstanceEvent("m041_001", 251)
+    MUNCHLAX = InstanceEvent("m041_001", 27)
+    HIPPOPOTAS = InstanceEvent("m041_001", 246)
+    CROAGUNK = InstanceEvent("m041_001", 80)
+    SNOVER = InstanceEvent("m041_001", 211)
+
+    """DLC?"""
+    DARKRAI = InstanceEvent("m041_001", 257, False)
+    REGIGIGAS = InstanceEvent("m036_019", 267)
+    DIALGA = InstanceEvent("m041_001", 435)
+    PALKIA = InstanceEvent("m041_001", 436)
+    SHAYMIN = InstanceEvent("m041_001", 437)
+
+    @classmethod
+    def events(cls):
+        for name, event in vars(PInstanceEvent).items():
+            if isinstance(event, InstanceEvent):
+                yield event

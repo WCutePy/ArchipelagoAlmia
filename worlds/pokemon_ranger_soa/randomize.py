@@ -1,257 +1,254 @@
 from __future__ import annotations
 
-from typing import (
-    TYPE_CHECKING,
-    Dict,
-    Union,
-    Optional,
-    List,
-    TypeAlias,
-    Iterable,
-    Sized,
-    ClassVar, Any,
-)
-from collections import defaultdict
-from dataclasses import field, dataclass
-from rule_builder.rules import (
-    Has,
-    Rule,
-    HasAllCounts,
-    True_,
-    CanReachLocation,
-    CanReachRegion,
-    False_,
-    HasFromList,
-    HasFromListUnique,
-)
 
-from .data import (
-    data,
-    ItemCategory,
-    FieldMove,
-    LocationCategory,
-    pokemon_to_target_id,
-    FieldMoveCategory,
-)
-from .events import (
-    PREvent,
-    get_instance_base,
-    get_instance_capture,
-    get_instance_target,
-    get_loading_zone_name,
-    get_instance_browser,
-    PInstanceEvent,
-    get_mission_event,
-    get_quest_event,
-    get_instance_missable,
-)
-from .options import FieldMoveItem
-from .regions import exclude_map
+from typing import Dict, TYPE_CHECKING, Optional, List, Tuple
+
+from BaseClasses import ItemClassification, CollectionState
+from Fill import fill_restrictive
+from .data import SpeciesData, data, FieldMove, Party
+from .items import PokemonRSOAItem
+from .options import RandomizePartners, partner_blacklist
+
 if TYPE_CHECKING:
     from .world import PokemonRSOA
 
-"""
-TODO, create randomizer functions,
-for now a non exhaustive list of potential script moved/spawned pokémon.
 
-school tutorial:
- - running bidoof (might not be on the map)
- - 4 ghastly basement (on map!
- - slakoth from tree (likely on map)
- - tangrowth during graduation (not on map)
-
-nabiki beach
- - starter partners
-
-mission 2 marine cave
- - entrance zubat attacking you (on map)
- - circle running (on map)
-
-quest 1
- - milktank
-
-mission 3
- - 4 budew that jump out
- - maybe happiny related
-"""
-
-def sanitize_map_name(map_name: Union[str, int]) -> str:
-    if isinstance(map_name, int):
-        map_name = data.map_id_to_region_name[map_name]
-    elif map_name.lower().startswith("0x"):
-        map_name = data.map_id_to_region_name[int(map_name, 16)]
-    return map_name
+def apply_place_on_random(
+    world: PokemonRSOA, options: Dict[str, List[int]], form_id: int
+) -> Tuple[str, int]:
+    options = [(key, value) for key, values in options.items() for value in values]
+    option = world.random.choice(options)
+    map_name, index = option
+    spawn = world.modified_regions[map_name].POKEMON_SPAWN[index]
+    spawn.set_form(form_id)
+    spawn.randomize = False
+    world.modified_regions[map_name].modified = True
+    return option
 
 
-@dataclass
-class MonSelect:
-    world: ClassVar[Optional[PokemonRSOA]]
-    include: Dict[str, List] = field(default_factory=dict)
-    exclude: Dict[str, List] = field(default_factory=dict)
-    include_one_time: bool = False
-    include_missable: bool = False
-
-    def access_field_move(
-        self,
-        field_move: FieldMove,
-    ) -> Rule:
-        pokemon_rules = False_()
-        for region_name, region_data in self.world.modified_regions.items():
-            region_name = region_name.lower()
-
-            if exclude_map(self.world, region_name, region_data):
-                continue
-
-            if self.exclude and (
-                len(self.exclude.get(region_name, [1])) == 0
-                or any(
-                    region_name.startswith(e.lower())
-                    for e in self.exclude
-                    if "_" not in e and not self.exclude.get(region_name, [])
-                )
-            ):
-                continue
-            exclude_region = self.exclude.get(region_name, [])
-            include_region: bool = next(
-                (
-                    self.include[i]
-                    for i in self.include
-                    if region_name.startswith(i.lower())
-                ),
-                False,
-            )
-            if self.include and include_region is False:
-                continue
-            include_region: Sized
-
-            for i, spawn_data in region_data.POKEMON_SPAWN.items():
-
-                if self.exclude and i in exclude_region:
-                    continue
-                if self.include and len(include_region) > 0 and i not in include_region:
-                    continue
-
-                if not self.include_missable and spawn_data.missable:
-                    continue
-                if not self.include_one_time and spawn_data.one_time:
-                    continue
-
-                species = data.form_id_to_species[spawn_data.SPECIES_ID]
-                if species.field_move.satisfies(field_move):
-                    if self.include_missable and spawn_data.missable:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_missable(region_name, i)
-                        )
-                    elif self.include_one_time:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_browser(region_name, i)
-                        )
-                    else:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_capture(region_name, i)
-                        )
-
-        return pokemon_rules
-
-    def can_destroy_target(
-        self,
-        map_name: Union[str, int],
-        i: int,
-        on_self: bool = False,
-    ) -> Rule:
-        """
-        TODO, reconsider if it's necessary to have a field move restriction to target events
-        and instead handle it here fully, for now leaving as is, some minor duplication of
-        logic is here right now, as being able to use field move item is inhernt from
-        Has(target)
-
-        MUST be exhausted directly, as include and exclude are expected to be expanded over
-        its use
-        """
-        map_name = sanitize_map_name(map_name)
-        target = get_instance_target(map_name, i)
-
-        field_move = data.target_field_move_requirements[
-            self.world.modified_regions[map_name].TARGETS[i].TARGET_ID
-        ]
-
-        if not self.include and not self.exclude:
-            base = Has(field_move.event_can_use_field_move)
-            if not on_self:
-                base &= Has(target)
-
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
-
-    def can_destroy_target_type(
-        self,
-        target_id: int,
-    ) -> Rule:
-        """
-        The int of the target
-
-        any len 0 iterable in MonSelect evaluates to the whole map.
-        any len >=1 iterable accounts only the specified members in the iterable
-        """
-        field_move: FieldMove = data.target_field_move_requirements[target_id]
-
-        if not self.include and not self.exclude:
-            return Has(field_move.event_can_use_field_move)
-
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
-
-    def can_use_field_move(self, field_move: FieldMove) -> Rule:
-        if not self.include and not self.exclude:
-            return Has(field_move.event_can_use_field_move)
-
-        return has_field_move_item(self.world, field_move) & self.access_field_move(
-            field_move
-        )
-
-    @classmethod
-    def full_map(cls) -> "MonSelect":
-        return MonSelect()
-
-    @classmethod
-    def tutorial_school_area(cls) -> "MonSelect":
-        #  TODO, add ship area to include when randomizing
-        return MonSelect(
-            include={
-                "m001_002": [],
-                "m001_003a": [],  # quite sure all are available
-                "m001_005": [],
-                "m001_009": [],
-                "m001_011": [],
-                "m001_001": [0, 1, 2, 5],
-                "m001_015": [],
-            },
-        )
-
-    @classmethod
-    def marine_cave(cls) -> "MonSelect":
-        """Technically identical to outside_school_before_return_school,
-        but semantically preferred to strictly specify on such
-        small sample size"""
-        return MonSelect(
-            include={
-                "m001_001": [3, 4],
-                "m005_001b": [],
-                "m007_001": [],
-                "m006_002": [],  # unreachable until a bit later
-                "m006_003": [],  # unreachable until a bit later
-                "m006_004": [],  # unreachable until a bit later
-            },
-        )
+def place_npc(world: PokemonRSOA, place: Tuple[str, int], form_id: int):
+    map_name, index = place
+    npc = world.modified_regions[map_name].NPCS[index]
+    npc.set_form(form_id)
+    world.modified_regions[map_name].modified = True
 
 
-def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
-    if world.options.field_move_item == FieldMoveItem.option_vanilla:
-        return True_()
+def early_place_random_partners(world: PokemonRSOA) -> None:
+    name_to_id = {species.name.lower(): i for i, species in data.species.items()}
+    starters = [
+        name_to_id[name.lower()] for name in world.options.partner_starters.value
+    ]
+    partners = [name_to_id[name.lower()] for name in world.options.partners.value]
 
-    return Has(
-        field_move.category.item_name,
-        1,
+    all_random = world.options.randomize_partners == RandomizePartners.option_all_random
+    starters_only = (
+        world.options.randomize_partners == RandomizePartners.option_starter_only
     )
+
+    #  change the blacklist source!!
+    allowed_partners = [
+        i for i in [*range(1, 267), 435, 436, 437] if i not in partner_blacklist
+    ]
+    if len(partners) + len(starters) < 18:
+        partners += world.random.choices(
+            allowed_partners, k=18 - len(partners) - len(starters)
+        )
+    if len(starters) < 3:
+        choices = world.random.sample(partners, k=3 - len(starters))
+        for c in choices:
+            partners.remove(c)
+        starters += choices
+
+    world.random.shuffle(starters)
+    world.random.shuffle(partners)
+
+    starters[1] = 222
+    # starly, pachirichu, munchlax = [ for i in starters]
+    #
+    # place_npc(world, ("m005_003", 2), starly)
+    # place_npc(world, ("m005_003", 3), pachirichu)
+    # place_npc(world, ("m005_003", 4), munchlax)
+
+    world.modified_starters = starters
+
+    if starters_only:
+        return
+
+
+def early_place_random_restricted(world: PokemonRSOA) -> None:
+    """place surf in puel sea"""
+    options = {"m011_004": [1, 2, 3]}
+    apply_place_on_random(world, options, 0x06A)
+
+    #  replace with some helper func
+    #  this was a test for replacing croagunk!!!
+    # world.modified_regions["m010_003"].NPCS[0].set_form(
+    #     128,
+    # )
+
+
+def apply_randomized_pokemon(world: PokemonRSOA) -> None:
+    my_progression_items = [
+        item
+        for item in world.multiworld.itempool
+        if item.player == world.player
+        and item.classification & ItemClassification.progression
+    ]
+
+    if len(world.capture_groups.capture) != len(world.capture_groups.capture.items):
+        raise ValueError(
+            f"Default party: {len(world.capture_groups.capture)} != {len(world.capture_groups.capture.items)}"
+        )
+
+    if len(world.capture_groups.capture_ocean) != len(
+        world.capture_groups.capture_ocean.items
+    ):
+        print(world.capture_groups.capture_ocean.locations)
+        print(world.capture_groups.capture_ocean.items)
+        raise ValueError(
+            f"Ocean party: {len(world.capture_groups.capture_ocean)} != {len(world.capture_groups.capture_ocean.items)}"
+        )
+
+    party = world.capture_groups.capture
+
+    state_default = CollectionState(world.multiworld)
+    state_default.prog_items[world.player]["fill_restrictive"] = 1
+    for item in my_progression_items:
+        state_default.collect(item, True)
+
+    for loc in world.get_locations():
+        if "EVENT_USE_FIELD" not in loc.name:
+            continue
+        if FieldMove.is_party(loc.name) != Party.OCEAN:
+            continue
+        state_default.collect(loc.item, True)
+
+    fill_restrictive(
+        world.multiworld,
+        state_default,
+        locations=party.locations,
+        item_pool=party.items,
+        single_player_placement=True,
+        swap=True,
+        name="Randomize Pokémon - Default",
+    )
+
+    party = world.capture_groups.capture_ocean
+    if len(party) > 0:
+        state_ocean = CollectionState(world.multiworld)
+        state_ocean.prog_items[world.player]["fill_restrictive"] = 1
+        for item in my_progression_items:
+            state_ocean.collect(item, True)
+        # for i in range():
+        #     for j in range():
+        #         try:
+        #             state_ocean
+        #         except:
+        #             pass
+        fill_restrictive(
+            world.multiworld,
+            state_ocean,
+            locations=party.locations,
+            item_pool=party.items,
+            single_player_placement=True,
+            swap=True,
+            name="Randomize Pokémon - Ocean",
+        )
+
+    for loc, item in zip(
+        world.capture_groups.missable.locations,
+        world.capture_groups.missable.items,
+    ):
+        loc.item = item
+
+    for cap_loc, browser_loc in world.capture_groups.browser_before_capture:
+        cap_loc = world.multiworld.get_location(cap_loc.name, world.player)
+
+        item_name = cap_loc.item.name.replace("CAN_CAPTURE", "ADD_TO_BROWSER")
+        assert "ADD_TO_BROWSER" in item_name
+        browser_loc.item = PokemonRSOAItem(
+            item_name,
+            ItemClassification.progression_skip_balancing,
+            None,
+            world.player,
+        )
+
+    name_to_mon: Dict[str, SpeciesData] = {}
+    for i, mon in data.species.items():
+        name_to_mon[mon.name] = mon
+    try:
+        for loc in world.multiworld.get_locations(world.player):
+            if not (loc.name.startswith("m") and ".P." in loc.name):
+                continue
+            region_name, _, i = loc.name.split(".")
+            i = int(i.strip("_capturebrowsermissableocean"))
+            _, mon_name, mon_id = loc.item.name.split(";")
+            mon: SpeciesData = name_to_mon[mon_name]
+
+            region_data = world.modified_regions.get(region_name)
+            region_data.modified = True
+
+            species_id = int(mon_id)
+
+            region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
+            region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name
+    except:
+        print("um wat")
+        print(loc, mon_name, loc.item)
+        raise
+    apply_manually_fixed_pokemon(world)
+
+
+def copy_over_map_pokemon(
+    world: PokemonRSOA, from_: str, to: str, mapping: Optional[Dict[int, int]]
+) -> None:
+    from_map = world.modified_regions[from_]
+    to_map = world.modified_regions[to]
+    if not mapping and len(from_map.POKEMON_SPAWN.keys()) != len(
+        to_map.POKEMON_SPAWN.keys()
+    ):
+        raise ValueError(
+            f"Two unequally sized maps have been passed without a mapping table: {from_=}, {to=}"
+        )
+
+    to_map.modified = True
+    for i, mon_data in from_map.POKEMON_SPAWN.items():
+
+        if mapping:
+            j = mapping.get(i, None)
+            if j is None:
+                continue
+        else:
+            j = i
+        to_map.POKEMON_SPAWN[j].SPECIES_ID = mon_data.SPECIES_ID
+        to_map.POKEMON_SPAWN[j].SPECIES_NAME = mon_data.SPECIES_NAME
+
+
+def copy_over_spawn_to_npc(
+    world: PokemonRSOA, from_map: str, from_i: int, to_map: str, to_i: int
+) -> None:
+    mon_data = world.modified_regions[from_map].POKEMON_SPAWN[from_i]
+    world.modified_regions[to_map].NPCS[to_i].unk2 = mon_data.SPECIES_ID
+    world.modified_regions[to_map].NPCS[to_i].NAME = mon_data.SPECIES_NAME
+
+
+def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
+
+    m009_001a_to_m009_001b = {
+        0: 0,
+        1: 1,
+        2: 7,
+        3: 5,
+        4: 6,
+        5: 9,
+    }
+    copy_over_map_pokemon(world, "m009_001a", "m009_001b", m009_001a_to_m009_001b)
+
+    # #  rampardos
+    # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 0)
+    # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
+
+    spawn = world.modified_regions["m003_001"].POKEMON_SPAWN[1]
+    spawn.set_form(161)
+
+    return

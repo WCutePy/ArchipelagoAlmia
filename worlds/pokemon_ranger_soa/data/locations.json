@@ -33,7 +33,7 @@
   },
   "MISSION_04": {
     "label": "Mission 04: Destroy the Strange Machines!",
-    "parent_region": "m041_001",
+    "parent_region": "m004_002",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -41,7 +41,7 @@
   },
   "MISSION_05": {
     "label": "Mission 05: Recover a Key from Sharpedo!",
-    "parent_region": "m041_001",
+    "parent_region": "m011_005",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -49,7 +49,7 @@
   },
   "MISSION_06": {
     "label": "Mission 06: Seek the Origin of the Quake!",
-    "parent_region": "m041_001",
+    "parent_region": "m016_004",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -57,7 +57,7 @@
   },
   "MISSION_07": {
     "label": "Mission 07: Teach at Ranger School!",
-    "parent_region": "m041_001",
+    "parent_region": "m016_004",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -145,7 +145,7 @@
   },
   "QUEST_02": {
     "label": "Quest 02: Breeze Hill Sign Recovery",
-    "parent_region": "m041_001",
+    "parent_region": "m005_001b",
     "default_item": "Progressive Dark Defense",
     "addresses": "0x020B264E",
     "flag": 1,
@@ -161,7 +161,7 @@
   },
   "QUEST_04": {
     "label": "Quest 04: Clear the Crates!",
-    "parent_region": "m041_001",
+    "parent_region": "m009_012",
     "default_item": "Progressive Bug Defense",
     "addresses": "0x020B2650",
     "flag": 1,
@@ -169,7 +169,7 @@
   },
   "QUEST_05": {
     "label": "Quest 05: The Boy Who Cried Lumineon",
-    "parent_region": "m041_001",
+    "parent_region": "m010_003",
     "default_item": "Progressive Rock Defense",
     "addresses": "0x020B2651",
     "flag": 1,
@@ -177,7 +177,7 @@
   },
   "QUEST_06": {
     "label": "Quest 06: Nosepass! Must Have Nosepass!",
-    "parent_region": "m041_001",
+    "parent_region": "m010_022",
     "default_item": "Progressive Ground Defense",
     "addresses": "0x020B2652",
     "flag": 1,
@@ -185,7 +185,7 @@
   },
   "QUEST_07": {
     "label": "Quest 07: Who Ate My Lunch!?",
-    "parent_region": "m041_001",
+    "parent_region": "m009_001b",
     "default_item": "Progressive Power Plus",
     "addresses": "0x020B2653",
     "flag": 1,
@@ -193,7 +193,7 @@
   },
   "QUEST_08": {
     "label": "Quest 08: Eeve for Marital Bliss",
-    "parent_region": "m041_001",
+    "parent_region": "m010_001",
     "default_item": "Progressive Steel Defense",
     "addresses": "0x020B2654",
     "flag": 1,
@@ -201,7 +201,7 @@
   },
   "QUEST_09": {
     "label": "Quest 09: Oddish Research",
-    "parent_region": "m041_001",
+    "parent_region": "m014_003b",
     "default_item": "Progressive Fire Defense",
     "addresses": "0x020B2655",
     "flag": 1,
@@ -409,7 +409,7 @@
   },
     "QUEST_35": {
     "label": "Quest 35: Please Save Cranidos",
-    "parent_region": "m041_001",
+    "parent_region": "m009_002",
     "default_item": "Partner Pokemon - Cranidos",
     "addresses": "0x020B266F",
     "flag": 1,
@@ -489,7 +489,7 @@
   },
     "QUEST_45": {
     "label": "Quest 45: Please Save Turtwig",
-    "parent_region": "m041_001",
+    "parent_region": "m008_001",
     "default_item": "Partner Pokemon - Turtwig",
     "addresses": "0x020B267A",
     "flag": 1,
@@ -528,8 +528,8 @@
     "category": "quest"
   },
     "QUEST_50": {
-    "label": "Quest 50: Go Task To My Mom",
-    "parent_region": "m041_001",
+    "label": "Quest 50: Go Talk To My Mom",
+    "parent_region": "m010_002",
     "default_item": "Progressive Flying Defense",
     "addresses": "0x020B267F",
     "flag": 1,

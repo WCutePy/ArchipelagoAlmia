@@ -10,6 +10,8 @@ from .data import (
     PokemonSpawnEntry,
     FieldMove,
     MapData,
+    FieldMoveCategory,
+    Party,
 )
 from .events import (
     PInstanceEvent,
@@ -21,6 +23,8 @@ from .events import (
     get_instance_missable,
 )
 from .locations import create_event_location
+from .options import RandomizePokemon
+from .MonSelect import MonSelect, get_party_type
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -28,95 +32,114 @@ if TYPE_CHECKING:
 
 def attach_pokemon_encounter(
     world: PokemonRSOA,
-    species: SpeciesData,
     instance_name: str,
     spawn_data: PokemonSpawnEntry,
     connect_to: Region,
 ) -> Region:
     pokemon_region = Region(instance_name, world.player, world.multiworld)
     connect_to.connect(pokemon_region, instance_name)
+    species: SpeciesData = data.form_id_to_species[spawn_data.SPECIES_ID]
+
+    place_locked = False
+    if (
+        world.options.randomize_pokemon == RandomizePokemon.option_vanilla
+        or not spawn_data.randomize
+    ):
+        place_locked = True
+
+    map_name = instance_name.split(".")[0]
+    party = get_party_type(map_name)
 
     if spawn_data.missable:
         browser_name = get_instance_missable(instance_name)
-    else:
+        item_name = species.event_missable(form=spawn_data.SPECIES_ID)
+    elif spawn_data.one_time:
         browser_name = get_instance_browser(instance_name)
-    create_event_location(
+        item_name = species.event_add_to_browser(form=spawn_data.SPECIES_ID)
+        if place_locked:
+            world.capture_groups.default_ids_used.add(species.browser_id)
+    else:
+        browser_name = get_instance_capture(instance_name)
+        item_name = species.event_can_capture(party=party, form=spawn_data.SPECIES_ID)
+        if place_locked:
+            if party == Party.OCEAN:
+                world.capture_groups.ocean_ids_used.add(species.browser_id)
+            else:
+                world.capture_groups.default_ids_used.add(species.browser_id)
+
+    loc = create_event_location(
         world,
         browser_name,
         pokemon_region,
-        species.event_add_to_browser,
+        event_item_name=item_name,
+        place_locked=place_locked,
     )
 
-    if spawn_data.missable:
+    if spawn_data.browser_before_capture:
+        browser_name = get_instance_browser(instance_name)
+        item_name = species.event_add_to_browser(form=spawn_data.SPECIES_ID)
+        browser_loc = create_event_location(
+            world,
+            browser_name,
+            pokemon_region,
+            event_item_name=item_name,
+            place_locked=place_locked,
+        )
+        world.capture_groups.browser_before_capture.append((loc, browser_loc))
+
+    if place_locked:
         return pokemon_region
 
-    if not spawn_data.one_time:
-        create_event_location(
-            world,
-            get_instance_capture(instance_name),
-            pokemon_region,
-            species.event_can_capture,
-        )
+    if spawn_data.missable:
+        world.capture_groups.missable.append(loc)
+    elif spawn_data.one_time:
+        world.capture_groups.browser.append(loc)
+    else:
+        world.capture_groups.append_capture(loc, party)
 
     return pokemon_region
-
-
-def exclude_map(world: PokemonRSOA, map_name: str, region_data: MapData) -> bool:
-    return any(
-        w in region_data.HUMAN_NAME
-        for w in [
-            "DLC",
-            "-UNK",
-            "-UNUSED",
-            "ALTRU_TOWER-SKY-BLUE",
-            "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
-            "VIENTOWN-RANGER_STATION_BACKROOM",
-            "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
-        ]
-        if not (w == "-UNK" and "m009" in map_name)
-    )
 
 
 def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions: Dict[str, Region] = {}
 
-    form_species: Dict[int, SpeciesData] = {}
-    for browser_i, species_data in data.species.items():
-        for i in species_data.form_ids:
-            form_species[i] = species_data
-
     connections: List[Tuple[str, str, str]] = []
-    for region_name, region_data in world.modified_regions.items():
 
-        if exclude_map(world, region_name, region_data):
-            continue
+    """Logic chain"""
+    MonSelect.world = world
+    full_map = MonSelect.get_rules_scope()
+
+    for region_name, region_data in world.modified_regions.items():
 
         new_region = Region(region_data.HUMAN_NAME, world.player, world.multiworld)
 
-        for i, target_data in region_data.TARGETS.items():
-            event_name = get_instance_target(region_name, i)
-            target_location = create_event_location(world, event_name, new_region)
-            #
-            # field_move = data.target_field_move_requirements[target_data.TARGET_ID]
-            # if field_move.category != FieldMoveCategory.NONE:
-            #     world.set_rule(
-            #         target_location, Has(field_move.event_can_use_field_move)
-            #     )
-
-        for i, spawn_data in region_data.POKEMON_SPAWN.items():
-            pokemon_instance = get_instance_base(region_name, i)
-            species = form_species[spawn_data.SPECIES_ID]
-
-            p_region = attach_pokemon_encounter(
-                world, species, pokemon_instance, spawn_data, new_region
-            )
-            regions[pokemon_instance] = p_region
+        regions[region_name] = new_region
 
         for exit_name in region_data.EXITS:
             region_exit = exit_name.split("-> ")[1].split(".")[0]
             connections.append((exit_name, region_name, region_exit))
 
-        regions[region_name] = new_region
+        if not full_map.region_included(region_name, region_data):
+            continue
+
+        for i, target_data in region_data.TARGETS.items():
+            field_move = data.target_field_move_requirements[target_data.TARGET_ID]
+            if field_move.category == FieldMoveCategory.NONE:
+                continue
+
+            event_name = get_instance_target(region_name, i)
+
+            target_location = create_event_location(world, event_name, new_region)
+
+        for i, spawn_data in region_data.POKEMON_SPAWN.items():
+            if not full_map.instance_included(region_name, i):
+                continue
+            pokemon_instance = get_instance_base(region_name, i)
+
+            p_region = attach_pokemon_encounter(
+                world, pokemon_instance, spawn_data, new_region
+            )
+            regions[pokemon_instance] = p_region
 
     for name, source, dest in connections:
         source = regions.get(source, None)
@@ -135,38 +158,32 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     )  # TODO, connect to proper region
     regions["m029_001"].connect(regions["m029_009"], "Wailord fight")
 
-    for event in PInstanceEvent:
+    for event in PInstanceEvent.events():
+        if event not in full_map.event_mon:
+            continue
+
         pokemon = data.species[event.browser_id]
 
         p_region = attach_pokemon_encounter(
             world,
-            pokemon,
             event.event_name,
             PokemonSpawnEntry(
-                SPECIES_ID=pokemon.form_ids[0],
+                SPECIES_ID=list(pokemon.forms.keys())[0],
                 SPECIES_NAME=pokemon.name,
                 SPAWN_FLAG=-1,
                 one_time=event.one_time,
+                randomize=False,
             ),
             regions[event.map_name],
         )
         regions[event.event_name] = p_region
-
-    field_move_region = regions["Overworld"]
-    field_moves: Set[FieldMove] = set()
-
-    for i, pokemon in data.species.items():
-        field_moves.add(pokemon.field_move)
-
-    field_moves = sorted(field_moves)
-    for field_move in field_moves:
-        create_event_location(
-            world, field_move.event_can_use_field_move, field_move_region
-        )
+        world.capture_groups.default_ids_used.add(pokemon.browser_id)
 
     regions["Events"] = Region("Events", world.player, world.multiworld)
     regions["Overworld"].connect(regions["Events"], "Events region")
     for event in PREvent:
-        create_event_location(world, event.event_name, regions["Events"])
+        if event not in full_map.events:
+            continue
+        create_event_location(world, event.event_name, regions[event.map_name])
 
     return regions

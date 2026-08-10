@@ -62,19 +62,23 @@ class PatchMethods:
 
     @staticmethod
     def write_contents(patch: PokemonRSOAPatch, opened_zipfile: ZipFile) -> None:
-        from .patch import map_patch
+        from .patch import map_patch, species_patch
 
-        procedures: list[str] = ["base_patch"]
+        procedures: list[str] = ["base_patch", "quest_patch"]
 
         if patch.world.options.randomize_pokemon != RandomizePokemon.option_vanilla:
             procedures.append("map_patch")
             map_patch.write_patch(patch, opened_zipfile)
 
+        if patch.world.options.randomize_partners != RandomizePokemon.option_vanilla:
+            procedures.append("species_patch")
+            species_patch.write_patch(patch, opened_zipfile)
+
         opened_zipfile.writestr("procedures.txt", "\n".join(procedures))
-        # opened_zipfile.writestr(
-        #     "slot_data.json",
-        #     orjson.dumps(NetUtils.convert_to_base_types(patch.world.part_slot_data())),
-        # )  # for when I need the slot data
+        opened_zipfile.writestr(
+            "slot_data.json",
+            orjson.dumps(NetUtils.convert_to_base_types(patch.world.fill_slot_data())),
+        )  # for when I need the slot data
 
     @staticmethod
     def get_manifest(
@@ -94,13 +98,10 @@ class PatchMethods:
         #         if version.rom() == found_rom_version:
         #             return
 
-
-        logging.warning(
-            f"Starting rom patching"
-        )
+        logging.warning(f"Starting rom patching")
 
         from .apnds import rom as apnds_rom
-        from .patch import base_patch, map_patch
+        from .patch import base_patch, map_patch, quest_patch, species_patch
 
         patch_procedures: dict[
             str,
@@ -116,6 +117,8 @@ class PatchMethods:
         ] = {
             "base_patch": base_patch.patch,
             "map_patch": map_patch.patch,
+            "quest_patch": quest_patch.patch,
+            "species_patch": species_patch.patch,
         }
 
         files_dump: dict[str, bytes | bytearray] = {}
@@ -183,12 +186,14 @@ class PatchMethods:
 
         with open(target, "wb") as f:
             f.write(rom.to_bytes())
-        if get_settings()["pokemon_ranger_soa_settings"].get("dump_patched_files", None):
-            with ZipFile(
-                target.replace(".nds", "_files_dump.zip"), "w", ZIP_DEFLATED, True, 9
-            ) as dump:
-                for path, data in files_dump.items():
-                    dump.writestr(path, data)
+        # if get_settings()["pokemon_ranger_soa_settings"].get(
+        #     "dump_patched_files", None
+        # ):
+        #     with ZipFile(
+        #         target.replace(".nds", "_files_dump.zip"), "w", ZIP_DEFLATED, True, 9
+        #     ) as dump:
+        #         for path, data in files_dump.items():
+        #             dump.writestr(path, data)
 
     @staticmethod
     def read_contents(
