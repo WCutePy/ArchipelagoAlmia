@@ -63,16 +63,39 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     world.random.shuffle(partners)
 
     starters[1] = 222
-    starly, pachirichu, munchlax = [i for i in starters]
-    #
-    place_npc(world, ("m005_003", 2), starly)
-    place_npc(world, ("m005_003", 3), pachirichu)
-    place_npc(world, ("m005_003", 4), munchlax)
+    place_npc(world, ("m005_003", 2), 311)
+    place_npc(world, ("m008_006", 5), 311)
 
-    world.modified_starters = starters
+    place_npc(world, ("m005_003", 3), 312)
+    place_npc(world, ("m008_006", 4), 312)
 
+    place_npc(world, ("m005_003", 4), 313)
+    place_npc(world, ("m008_006", 10), 313)
+
+    # apply_place_on_random(world, {"m003_001": [1]}, 311)
+    # apply_place_on_random(world, {"m003_001": [2]}, 311)
+    # apply_place_on_random(world, {"m003_001": [4]}, 311)
+
+    vanilla_partners_in_some_order = [
+        168,  # chimchar
+        206,  # piplup
+        52,  # turtwig
+        213,  # snorunt
+        161,  # machop
+        80,  # croagunk
+        246,  # hippopotas
+        164,  # mime jr.
+        82,  # kricketot
+        84,  # cranidos
+        220,  # misdreavus
+        251,  # gible
+        244,  # sneasel
+        181,  # shieldon
+    ]
     if starters_only:
+        world.modified_partners = starters + vanilla_partners_in_some_order
         return
+    world.modified_partners = starters + partners
 
 
 def early_place_random_restricted(world: PokemonRSOA) -> None:
@@ -247,8 +270,5 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     # #  rampardos
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 0)
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
-
-    spawn = world.modified_regions["m003_001"].POKEMON_SPAWN[1]
-    spawn.set_form(161)
 
     return

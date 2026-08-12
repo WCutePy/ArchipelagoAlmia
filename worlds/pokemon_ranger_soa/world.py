@@ -147,6 +147,7 @@ class PokemonRSOA(World):
 
     modified_regions: Dict[str, MapData]
     modified_species: Dict[int, SpeciesData]  # browser id - SpeciesData
+    modified_partners: List[int]  # browser id
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
     # topology_present = True

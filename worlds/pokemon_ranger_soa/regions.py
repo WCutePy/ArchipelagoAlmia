@@ -38,7 +38,9 @@ def attach_pokemon_encounter(
 ) -> Region:
     pokemon_region = Region(instance_name, world.player, world.multiworld)
     connect_to.connect(pokemon_region, instance_name)
-    species: SpeciesData = data.form_id_to_species[spawn_data.SPECIES_ID]
+    species: SpeciesData = data.form_id_to_species.get(spawn_data.SPECIES_ID, None)
+    if species is None:
+        return None
 
     place_locked = False
     if (
@@ -139,6 +141,8 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             p_region = attach_pokemon_encounter(
                 world, pokemon_instance, spawn_data, new_region
             )
+            if p_region is None:
+                continue
             regions[pokemon_instance] = p_region
 
     for name, source, dest in connections:

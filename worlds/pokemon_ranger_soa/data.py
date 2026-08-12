@@ -303,6 +303,9 @@ class PokemonSpawnEntry:
 
     def set_form(self, form_id: int):
         self.SPECIES_ID = form_id
+        species = data.form_id_to_species.get(form_id, None)
+        if species is None:
+            return
         self.SPECIES_NAME = data.form_id_to_species[form_id].name
 
 
