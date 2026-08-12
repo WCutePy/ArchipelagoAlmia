@@ -10,6 +10,7 @@ from orjson import orjson
 
 import NetUtils
 from ..apnds.rom import Rom
+from ..apnds.lz import compress, decompress
 from ..data import data
 from ..options import RandomizePartners
 
@@ -33,7 +34,45 @@ class FormPatch:
         )
 
 
-def pokemon_to_npc_sprite(rom: Rom, national_dex: int, npc_form: int) -> None: ...
+def rename_archive_sprites(sprite_data: bytes, source_name: str, target_name:str) -> bytes:
+    # currently naively assumes the text being replaced is at the start of the filenames
+    source_name_b = source_name.encode()
+    target_name_b = target_name.encode()
+    length_change = len(target_name) - len(source_name)
+    
+    fnt_loc = sprite_data.index(b"BTNF")
+    fnt_length = int.from_bytes(sprite_data[fnt_loc+4:fnt_loc+8],"little")
+    fnt_parts = sprite_data[fnt_loc:fnt_loc+fnt_length].split(source_name_b)
+    name_count = len(fnt_parts)-1
+    
+    for i in range(name_count):
+        fnt_parts[i] = fnt_parts[i][:-1] + (fnt_parts[i][-1]+length_change).to_bytes(1)
+    fnt_parts[0] = b"BTNF" + (fnt_length+length_change*name_count).to_bytes(4,"little") + fnt_parts[0][8:]
+    fnt = target_name_b.join(fnt_parts)
+    
+    return (
+        sprite_data[:8] +
+        (int.from_bytes(sprite_data[8:12],"little") + length_change*name_count).to_bytes(4,"little") +
+        sprite_data[12:fnt_loc] +
+        fnt +
+        sprite_data[fnt_loc+fnt_length:]
+    )
+
+
+POKEMON_TO_NPC_BLACKLIST = (412,413,489,490)
+def pokemon_to_npc_sprite(rom: Rom, national_dex: int, npc_form: int) -> None:
+    if national_dex in POKEMON_TO_NPC_BLACKLIST:
+        raise ValueError(f"pokemon #{national_dex} is missing required sprites")
+    if national_dex in (421,423):
+        pokemon_filename = f"p{str(national_dex).rjust(3,'0')}_01"
+    else:
+        pokemon_filename = f"p{str(national_dex).rjust(3,'0')}_00"
+    npc_filename = f"npc{str(npc_form).rjust(3,'0')}"
+    pokemon_data = decompress(rom.files[f"/data/poke/{pokemon_filename}_LZ.bin"])
+    if national_dex == 291: # rename one of ninjask's sprites so that the correct files are present
+        pokemon_data = rename_archive_sprites(pokemon_data,"p291_00_t","p291_00_a01")
+    npc_data = rename_archive_sprites(pokemon_data,pokemon_filename,npc_filename)
+    rom.files[f"/data/npc/{npc_filename}_LZ.bin"] = compress(npc_data)
 
 
 def write_patch(
