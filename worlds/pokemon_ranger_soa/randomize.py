@@ -62,7 +62,7 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     world.random.shuffle(starters)
     world.random.shuffle(partners)
 
-    starters[1] = 222
+    starters = [38, 48, 180]
     place_npc(world, ("m005_003", 2), 311)
     place_npc(world, ("m008_006", 5), 311)
 

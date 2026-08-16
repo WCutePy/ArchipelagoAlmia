@@ -320,6 +320,11 @@ class NPCEntry:
 
     def set_form(self, form_id: int):
         self.unk2 = form_id
+        if self.unk3 != 1:
+            return
+        species = data.form_id_to_species.get(form_id, None)
+        if species is None:
+            return
         self.NAME = data.form_id_to_species[form_id].name
 
 

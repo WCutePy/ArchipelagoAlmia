@@ -396,7 +396,7 @@ def code_patch(
         )  # because imagine making this match any length of partners, has to be exactly 18.
         table_bytes = struct.pack(
             "<18H",
-            partner_ids,
+            *partner_ids,
         )
 
         is_partner_patch = code_bytes + table_bytes
