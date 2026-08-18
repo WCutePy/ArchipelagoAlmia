@@ -185,7 +185,3 @@ def patch(
         pokemon_to_npc_sprite(rom, data.species[munchlax].national_id, 113)
 
     rom.files[form_file_name] = bytes(form_file)
-
-    from .test_file import test
-
-    rom.files["/data/npc/npc112_LZ.bin"] = test

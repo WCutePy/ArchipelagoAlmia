@@ -88,7 +88,7 @@ class PokemonRangerSOA(BizHawkClient):
             return False
 
         ctx.game = self.game
-        ctx.items_handling = 0b001
+        ctx.items_handling = 0b111
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
 
@@ -102,17 +102,6 @@ class PokemonRangerSOA(BizHawkClient):
 
     async def game_watcher(self, ctx: "BizHawkClientContext") -> None:
         if ctx.server is None or ctx.server.socket.closed or ctx.slot_data is None:
-            return
-
-        if not ctx.items_handling & 0b010:
-            ctx.items_handling = 0b011
-            Utils.async_start(
-                ctx.send_msgs(
-                    [{"cmd": "ConnectUpdate", "items_handling": ctx.items_handling}]
-                )
-            )
-
-            await asyncio.sleep(0.75)
             return
 
         try:

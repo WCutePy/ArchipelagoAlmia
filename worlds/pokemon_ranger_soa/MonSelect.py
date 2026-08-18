@@ -299,6 +299,9 @@ class MonSelect:
     def missable(cls) -> MonSelect:
         m = MonSelect(include={})
 
+        if m.get_rule_num() == 6:
+            m.include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
+
         return m
 
     @classmethod
@@ -371,6 +374,11 @@ class MonSelect:
         return m
 
     @classmethod
+    def get_rule_num(cls) -> int:
+        if cls.world.options.goal == Goal.option_mission_clear:
+            return cls.world.options.mission_clear_target.value
+
+    @classmethod
     def get_rules_scope(cls) -> MonSelect:
         """
         Go through the rules to determine the currently
@@ -385,10 +393,7 @@ class MonSelect:
             6: cls.goal_mission_6,
             7: cls.goal_mission_7,
         }
-
-        if cls.world.options.goal == Goal.option_mission_clear:
-
-            return goals[cls.world.options.mission_clear_target.value]()
+        return goals[cls.get_rule_num()]()
 
     @classmethod
     def goal_school(cls) -> MonSelect:

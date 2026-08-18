@@ -955,6 +955,11 @@ def set_mission_6_rules(world: PokemonRSOA):
             False_(),
         )
 
+    world.set_rule(
+        get_pokemon_instance(world, "m015_004", 11),
+        all_maps.can_destroy_target("m015_004", 0),
+    )
+
     """m017 Ranger Union"""
     world.set_rule(
         get_connection(world, "m017_001", "m017_007"),
@@ -1082,6 +1087,13 @@ def set_mission_6_rules(world: PokemonRSOA):
 
 
 def set_mission_7_rules(world: PokemonRSOA):
+    all_maps = MonSelect.get_rules_scope()
+
+    for i in [0, 1, 4, 5, 6, 7, 8, 9, 10]:
+        world.set_rule(
+            get_pokemon_instance(world, "m015_004", i),
+            Has(get_mission_event(6)),
+        )
 
     for map_name, i in [
         ("m015_001", 0),

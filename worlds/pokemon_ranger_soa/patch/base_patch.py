@@ -7,6 +7,7 @@ from orjson import orjson
 from .map_patch import CompactMapData
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
+from ..data import data
 
 if TYPE_CHECKING:
     from ..rom import PokemonRSOAPatch
@@ -51,6 +52,10 @@ def patch_script_add_doduo(rom: Rom, file_name: str, locations: list[int]):
         if (instruction >> 24) != 8:
             continue
         print(f"{offset:08X}: {instruction:08X}")
+
+
+def list_of_same_patches(change: int, addresses: list[int]) -> list[tuple[int, int]]:
+    return [(i, change) for i in addresses]
 
 
 def patch(
@@ -214,14 +219,98 @@ def patch(
 
     """partner patches"""
 
-    randomize_partner_species = False
-    if randomize_partner_species:
-        """untested so far, as this might need other patches"""
-        kricketot = ...
-        CHAPTER_PATCHES["c029"] += [
-            # PUSH 175		; @3670
-            (3670, kricketot << 16 | 0x10),  # kricketot
+    partners = prsoa_patch_instance.files.get("partners.txt")
+    if partners:
+        partners = orjson.loads(partners)
+
+        starly, pach, munch, *_ = [data.form_id_to_species[i] for i in partners]
+
+        CHAPTER_PATCHES["c013"] += [
+            # 	PUSH 396		; @4460
+            # 	PUSH 170		; @4461
+            (4460, starly.national_id << 16 | 0x10),
+            (4461, 311 << 16 | 0x10),
+            # 	PUSH 396		; @8463
+            # 	PUSH 170		; @8464
+            (8463, starly.national_id << 16 | 0x10),
+            (8464, 311 << 16 | 0x10),
+            # PUSH 170		; @8557
+            (8557, 311 << 16 | 0x10),
+            # 	PUSH 396		; @10605
+            # 	PUSH 170		; @10606
+            (10605, starly.national_id << 16 | 0x10),
+            (10606, 311 << 16 | 0x10),
+            #  PUSH 396
+            *list_of_same_patches(
+                starly.national_id << 16 | 0x10,
+                [
+                    4228,
+                    4464,
+                    8467,
+                    8546,
+                    9679,
+                    9731,
+                    10609,
+                    11485,
+                    12022,
+                ],
+            ),
+            #
+            # PUSH 188
+            *list_of_same_patches(
+                312 << 16 | 0x10,
+                [4495, 8486, 8615, 10634],
+            ),
+            #  PUSH 417
+            *list_of_same_patches(
+                pach.national_id << 16 | 0x10,
+                [
+                    4179,
+                    4494,
+                    4498,
+                    8485,
+                    8489,
+                    8604,
+                    9622,
+                    9726,
+                    10633,
+                    10637,
+                    11505,
+                    12041,
+                ],
+            ),
+            #
+            # PUSH 215
+            *list_of_same_patches(
+                313 << 16 | 0x10,
+                [4529, 8508, 8673, 10662],
+            ),
+            #  PUSH 446
+            *list_of_same_patches(
+                pach.national_id << 16 | 0x10,
+                [
+                    4203,
+                    4528,
+                    4532,
+                    8507,
+                    8511,
+                    8662,
+                    9627,
+                    9674,
+                    10661,
+                    10665,
+                    11525,
+                    12060,
+                ],
+            ),
         ]
+
+        """untested so far, as this might need other patches"""
+        # kricketot = ...
+        # CHAPTER_PATCHES["c029"] += [
+        #     # PUSH 175		; @3670
+        #     (3670, kricketot << 16 | 0x10),  # kricketot
+        # ]
         # will need to randomize: m008_006 NPC 12, NPC 8
         # will need to edit a form to be a partner?
         # will need to patch a lot of text
@@ -363,6 +452,14 @@ def code_patch(
     #     (0x0327D0, NOP_INSTRUCTION),
     # )
 
+    """instant text speed"""
+    # just forces it in, which means no custom text speeds are used anymore
+    patches += [
+        (0xA854, 0xE3A00000),
+        (0xA858, 0xE584009C),
+        (0xA85C, 0xEA000005),
+    ]
+
     data = bytearray(rom.arm9)
 
     for offset, instruction in patches:
@@ -402,5 +499,17 @@ def code_patch(
         is_partner_patch = code_bytes + table_bytes
 
         data[offset : offset + len(is_partner_patch)] = is_partner_patch
+
+        # improve patch quality
+        # overlay 0, 0213a658
+        offset = 0x1DC78
+        overlay = bytearray(rom.arm9_overlays[0].data)
+
+        OVERLAY_INSTRUCTION_BYTES = ["5600a0e3", "1eff2fe1"]
+        get_value_patch = bytes.fromhex("".join(OVERLAY_INSTRUCTION_BYTES))
+        overlay[offset : offset + len(get_value_patch)] = get_value_patch
+        rom.arm9_overlays[0].data = bytes(overlay)
+        #  patch GetPartnerIndexFromFormId
+        #  don't know current impact of this...
 
     rom.arm9 = bytes(data)
