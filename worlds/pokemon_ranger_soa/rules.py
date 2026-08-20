@@ -1143,6 +1143,10 @@ def set_mission_7_rules(world: PokemonRSOA):
             & CanReachLocation(data.species[52].location_capture_name),
         )
 
+    world.set_rule(
+        get_pokemon_instance(world, "m001_011", 5), Has(get_mission_event(6))
+    )
+
 
 def set_completion_condition(world) -> None:
 

@@ -162,6 +162,15 @@ class PokemonRSOA(World):
 
         self.exclude_field_moves = set()
 
+        self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
+
+    def get_filler_item_name(self) -> str:
+        return "Woah. This is worthless!"
+
+    def generate_early(self) -> None:
+        self.options.verify()
+
+        MonSelect.world = self
         self.modified_regions = copy.deepcopy(data.regions)
         for map_name, map_indexes in MonSelect.missable().include.items():
             for i in map_indexes:
@@ -175,15 +184,6 @@ class PokemonRSOA(World):
                     i
                 ].browser_before_capture = True
         self.modified_species = copy.deepcopy(data.species)
-
-        self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
-        MonSelect.world = self
-
-    def get_filler_item_name(self) -> str:
-        return "Woah. This is worthless!"
-
-    def generate_early(self) -> None:
-        self.options.verify()
 
         ut_active = False
         # Check whether this is a fake generation performed by UT.

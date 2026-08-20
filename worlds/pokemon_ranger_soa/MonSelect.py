@@ -299,7 +299,7 @@ class MonSelect:
     def missable(cls) -> MonSelect:
         m = MonSelect(include={})
 
-        if m.get_rule_num() == 6:
+        if MonSelect.get_rule_num() == 6:
             m.include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
 
         return m
@@ -375,6 +375,7 @@ class MonSelect:
 
     @classmethod
     def get_rule_num(cls) -> int:
+        print(cls.world.options)
         if cls.world.options.goal == Goal.option_mission_clear:
             return cls.world.options.mission_clear_target.value
 
@@ -563,6 +564,7 @@ class MonSelect:
         base.include["m009_012"].append(0)
         base.include["m010_003"].append(15)
         del base.exclude["m015_001"]  # doduo
+        del base.exclude["m001_011"]  # ghastly TODO
 
         base.event_mon += [PInstanceEvent.TURTWIG]
 
