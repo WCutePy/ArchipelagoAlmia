@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Dict, List, Tuple, Set, Optional
 
 from BaseClasses import Region, Location, Item, ItemClassification
 from . import data
+from .options import HardModeAdventure
 
 if TYPE_CHECKING:
     from .world import PokemonTrozei
@@ -78,8 +79,18 @@ def create_all_items(world: PokemonTrozei) -> None:
         else:
             itempool.append(new_item)
 
+    if world.options.hard_mode == HardModeAdventure.option_hard_as_trap:
+        for i in range(world.options.hard_trap_count):
+            new_item = world.create_item("Permanent hard mode")
+            itempool.append(new_item)
+    elif world.options.hard_mode == HardModeAdventure.option_hard:
+        new_item = world.create_item("Permanent hard mode")
+        world.push_precollected(new_item)
+
     number_of_items = len(itempool)
-    number_of_unfilled_locations = len(world.multiworld.get_unfilled_locations(world.player))
+    number_of_unfilled_locations = len(
+        world.multiworld.get_unfilled_locations(world.player)
+    )
 
     needed_filler = number_of_unfilled_locations - number_of_items
 

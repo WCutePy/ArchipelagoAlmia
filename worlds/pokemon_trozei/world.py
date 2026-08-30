@@ -9,7 +9,9 @@ from worlds.AutoWorld import WebWorld, World
 
 from .options import PokemonTrozeiOptions, OPTION_GROUPS
 from . import regions, items, rules, rom
-from .client import PokemonTrozeiCient  # Unused, but required to register with BizHawkClient
+from .client import (
+    PokemonTrozeiCient,
+)  # Unused, but required to register with BizHawkClient
 
 
 class PokemonTrozeiWebWorld(WebWorld):
@@ -38,9 +40,7 @@ class PokemonTrozeiSettings(settings.Group):
         copy_to = "Pokemon Link.nds"
         md5s = ["5af68afc469ee54adc3721d9d8913904"]
 
-    link_rom_file: PokemonLinkRomFile = PokemonLinkRomFile(
-        PokemonLinkRomFile.copy_to
-    )
+    link_rom_file: PokemonLinkRomFile = PokemonLinkRomFile(PokemonLinkRomFile.copy_to)
 
 
 class PokemonTrozei(World):
@@ -59,7 +59,6 @@ class PokemonTrozei(World):
     origin_region_name = "Menu"
 
     ut_can_gen_without_yaml = True
-
 
     def __init__(self, multiworld, player):
         super(PokemonTrozei, self).__init__(multiworld, player)
@@ -122,24 +121,27 @@ class PokemonTrozei(World):
         rules.set_all_rules(self)
 
     def generate_output(self, output_directory: str) -> None:
-        patch = rom.PokemonLinkProcedurePatch(player=self.player, player_name=self.player_name)
+        patch = rom.PokemonLinkProcedurePatch(
+            player=self.player, player_name=self.player_name
+        )
 
         rom.write_tokens(self, patch)
 
         out_file_name = self.multiworld.get_out_file_name_base(self.player)
-        patch.write(os.path.join(output_directory, f"{out_file_name}{patch.patch_file_ending}"))
-
+        patch.write(
+            os.path.join(output_directory, f"{out_file_name}{patch.patch_file_ending}")
+        )
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         slot_data = self.options.as_dict(
             "required_bosses",
-            # "hard_mode",
+            "hard_mode",
+            "hard_trap_count",
             "death_link",
         )
 
         slot_data["seed"] = self.seed
         return slot_data
-
 
     @staticmethod
     def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
