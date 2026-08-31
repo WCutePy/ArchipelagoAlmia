@@ -20,3 +20,6 @@
 0x21 - 33 - Mission 6
 0x22 - 34 - Post mission 6 next day screen
 0x24 - 36 - Mission 7
+0x25 - 37 - Post mission 7 next day screen
+0x26 - 38 - Mission 8
+0x27 - 39 - Enter cargo ship m8

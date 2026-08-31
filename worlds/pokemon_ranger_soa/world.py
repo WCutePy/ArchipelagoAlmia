@@ -19,7 +19,7 @@ from .items import PokemonRSOAItem
 from .options import (
     PokemonRSOAOptions,
     OPTION_GROUPS,
-    RandomizePokemon,
+    RandomizePokemonEncounters,
     RandomizePartners,
 )
 from .MonSelect import MonSelect
@@ -168,7 +168,7 @@ class PokemonRSOA(World):
         return "Woah. This is worthless!"
 
     def generate_early(self) -> None:
-        self.options.verify()
+        self.options.verify(self.player_name)
 
         MonSelect.world = self
         self.modified_regions = copy.deepcopy(data.regions)
@@ -259,7 +259,7 @@ class PokemonRSOA(World):
         if self.options.randomize_partners != RandomizePartners.option_vanilla:
             early_place_random_partners(self)
 
-        if self.options.randomize_pokemon != RandomizePokemon.option_vanilla:
+        if self.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla:
             early_place_random_restricted(self)
 
     def create_regions(self) -> None:
@@ -275,7 +275,7 @@ class PokemonRSOA(World):
     def set_rules(self) -> None:
         rules.set_all_rules(self)
 
-        if self.options.randomize_pokemon != RandomizePokemon.option_vanilla:
+        if self.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla:
             apply_randomized_pokemon(self)
 
             import json
@@ -382,7 +382,11 @@ class PokemonRSOA(World):
             "rank_up_count",
             "rank_up_increment",
             "randomize_pokemon",
+            "randomize_pokemon_etc",
             "randomize_target_field_move",
+            "randomize_partners",
+            "partner_starters",
+            "partners",
         )
         # slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
         slot_data["blacklisted_captures"] = self.blacklisted_captures
@@ -404,7 +408,8 @@ class PokemonRSOA(World):
         3: 1500,
         4: 1500,
         5: 3200,
-        6: 1000000,
+        6: 3200,
+        7: 1000000,
         100: 1000000,
     }
 

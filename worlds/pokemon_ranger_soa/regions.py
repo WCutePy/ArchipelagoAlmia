@@ -23,7 +23,7 @@ from .events import (
     get_instance_missable,
 )
 from .locations import create_event_location
-from .options import RandomizePokemon
+from .options import RandomizePokemonEncounters
 from .MonSelect import MonSelect, get_party_type
 
 if TYPE_CHECKING:
@@ -44,7 +44,7 @@ def attach_pokemon_encounter(
 
     place_locked = False
     if (
-        world.options.randomize_pokemon == RandomizePokemon.option_vanilla
+        world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla
         or not spawn_data.randomize
     ):
         place_locked = True
@@ -157,6 +157,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
 
     """Additional connections that behave different"""
 
+    regions["m019_002"].connect(regions["m020_001"], "m019_002 -> m020_001")
     regions["m029_001"].connect(
         regions["m030_001"], "Oil Field Hideout"
     )  # TODO, connect to proper region

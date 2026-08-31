@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
 from ..apnds.lz import compress, decompress
-from ..options import RandomizePokemon
+from ..options import RandomizePokemonEncounters
 
 if TYPE_CHECKING:
     from ..rom import PokemonRSOAPatch
@@ -29,7 +29,7 @@ def write_patch(
         pokemon = []
         if (
             prsoa_patch_instance.world.options.randomize_pokemon
-            != RandomizePokemon.option_vanilla
+            != RandomizePokemonEncounters.option_vanilla
         ):
             for i, object_data in map_data.TARGETS.items():
                 objects.append(object_data.TARGET_ID)
@@ -52,9 +52,6 @@ def write_patch(
 def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
     if not data:
         return
-
-    # #  TODO remove
-    # return
 
     file_name = f"/data/field/map/{map_name}.map.dat.lz"
 
@@ -216,8 +213,8 @@ def patch(
         patch_file = prsoa_patch_instance.get_file(file_name)
         map_name = file_name[4:-4]
 
-        if map_name != "m005_003" and map_name != "m003_001":
-            continue
+        # if map_name != "m005_003" and map_name != "m003_001":
+        #     continue
 
         map_data = CompactMapData.from_bytes(patch_file)
 

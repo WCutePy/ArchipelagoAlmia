@@ -281,18 +281,50 @@ class FieldMoveLevelItem(Range):
     default = 1
 
 
-class RandomizePokemon(Choice):
+class RandomizePokemonEncounters(Choice):
+    """
+    Randomizes wild Pokémon encounters and static
+    story encounters.
+    Not all wild or static encounters are necessarily included
+    at the time due to technical limitations.
+    """
+
     auto_display_name = True
 
     option_vanilla = 0
     option_full_random = 1
-    # option_field_move_replacement = 2
-    # option_full_random_with_softlock = 3
+
+    default = option_full_random
+
+
+class RandomizePokemonEtc(Choice):
+    """
+    Randomizes Pokémon that exist on the overworld that exist as NPC's,
+    and you are not able to battle with.
+    Not every NPC Pokémon is/will be randomized.
+    """
+
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_full_random = 1
 
     default = option_full_random
 
 
 class RandomizePartners(Choice):
+    """
+    Randomizes partner Pokémon species.
+    Allows randomizing all partners including quest partners,
+    or simply randomizing the starter species.
+
+    When randomizing partners a new version of the species
+    is introduced that can not use a field move. Its
+    HP and EXP is changed, such that any Pokémon is catchable.
+    The original species is still available in the wild, and
+    the vanilla partner species are available in the wild.
+    """
+
     auto_display_name = True
 
     option_vanilla = 0
@@ -307,11 +339,24 @@ partner_blacklist = {
 
 
 class PartnerStarters(OptionList):
+    """
+    Allows setting 0 - 3 of the starters species.
+    It is used like ["Gardevoir", "Riolu"] to have a Gardevoir
+    and Riolu be 2 of the 3 starters to choose from, with the other
+    being determined fully randomly.
+
+    Wailord is blacklisted as possible starter.
+
+    Both the list and randomly chosen mons can include duplicates.
+    """
+
     auto_display_name = True
 
     valid_keys_casefold = True
     valid_keys = [
-        data.name for i, data in data.species.items() if i not in partner_blacklist
+        data.name.casefold()
+        for i, data in data.species.items()
+        if i not in partner_blacklist
     ]
 
     def verify(
@@ -334,11 +379,32 @@ class PartnerStarters(OptionList):
 
 
 class Partners(OptionList):
+    """
+    Allows setting 0 - (15-18) of the partner species.
+    It is used like ["Gardevoir", "Riolu"] to have a Gardevoir
+    and Riolu be 2 of the partners that appear in the game, with the other
+    being determined fully randomly.
+
+    If any starters are specified, the max length of partners is reduced.
+    If starters length is less than 3, it first rolls unspecified partners
+    to lengthen this list to its max, and then randomly selects partners from
+    that to be starters.
+    So if you specify as starters ["Gardevoir", "Riolu"], and as partners
+    ["Gible", "Meowth"], it will pad this list to ["Gible", "Meowth", ??, ??, ??, ...]
+    and randomly choose one of those to be a starter.
+
+    Wailord is blacklisted as possible partner.
+
+    Both the list and randomly chosen mons can include duplicates.
+    """
+
     auto_display_name = True
 
     valid_keys_casefold = True
     valid_keys = [
-        data.name for i, data in data.species.items() if i not in partner_blacklist
+        data.name.casefold()
+        for i, data in data.species.items()
+        if i not in partner_blacklist
     ]
 
     def verify(
@@ -395,13 +461,14 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     field_move_item: FieldMoveItem
     field_move_levels: FieldMoveLevelItem
 
-    randomize_pokemon: RandomizePokemon
+    randomize_pokemon: RandomizePokemonEncounters
+    randomize_pokemon_etc: RandomizePokemonEtc
     randomize_partners: RandomizePartners
     partner_starters: PartnerStarters
     partners: Partners
     randomize_target_field_move: RandomizeTargetFieldMove
 
-    def verify(self):
+    def verify(self, player_name: str):
         errors = []
 
         if len(self.partners.value) > (18 - len(self.partner_starters.value)):
@@ -433,7 +500,8 @@ OPTION_GROUPS = [
     OptionGroup(
         "Randomization",
         [
-            RandomizePokemon,
+            RandomizePokemonEncounters,
+            RandomizePokemonEtc,
             RandomizeTargetFieldMove,
         ],
     ),

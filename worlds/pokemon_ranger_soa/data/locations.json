@@ -57,7 +57,7 @@
   },
   "MISSION_07": {
     "label": "Mission 07: Teach at Ranger School!",
-    "parent_region": "m016_004",
+    "parent_region": "m004_002",
     "default_item": null,
     "addresses": null,
     "flag": null,

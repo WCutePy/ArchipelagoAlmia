@@ -118,10 +118,21 @@ class PInstanceEvent(EventRegistry):
 
     RAMPARDOS = InstanceEvent(
         "m016_004", 2, mandatory=True
-    )  # could be removed kinda, the capture
+    )  # could be removed kinda, the capture might be early?
 
     TURTWIG = InstanceEvent("m004_007", 52)  # after m6
+    CROAGUNK = InstanceEvent("m002_001", 80, mandatory=True)  # m7
+    CARNIVINE_2 = InstanceEvent("m001_005", 136, mandatory=True)  # 2 of them
 
+    SLUGMA = InstanceEvent("m019_003", 140, mandatory=True)
+    MAGCARGO = InstanceEvent("m019_003", 141, mandatory=True)  # m8 together with slugma
+    KANGASKHAN = InstanceEvent("m019_004", 146, mandatory=True)  # m8
+    NUMEL_3 = InstanceEvent("m019_004", 124, mandatory=True)  # m8
+    BEEDRIL_2 = InstanceEvent("m019_002", 58, mandatory=True)
+    GLOOM = InstanceEvent("m019_002", 115, mandatory=True)
+    MACHOKE_2 = InstanceEvent("m020_001", 162, mandatory=True)  # in ship
+    MIME_JR = InstanceEvent("m020_00", 164, mandatory=True)
+    MAREEP = InstanceEvent("m020_007", 105, mandatory=True)
     #
     #
     #
@@ -136,11 +147,9 @@ class PInstanceEvent(EventRegistry):
     STARLY = InstanceEvent("m041_001", 23)
     SHIELDON = InstanceEvent("m041_001", 181)
     PACHIRISU = InstanceEvent("m041_001", 26)
-    MIME_JR = InstanceEvent("m041_001", 164)
     GIBLE = InstanceEvent("m041_001", 251)
     MUNCHLAX = InstanceEvent("m041_001", 27)
     HIPPOPOTAS = InstanceEvent("m041_001", 246)
-    CROAGUNK = InstanceEvent("m041_001", 80)
     SNOVER = InstanceEvent("m041_001", 211)
 
     """DLC?"""

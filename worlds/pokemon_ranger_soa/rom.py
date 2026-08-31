@@ -20,7 +20,7 @@ from worlds.Files import (
     APAutoPatchInterface,
 )
 from .data import data, POKE_ID_ROW_ROM_SIZE
-from .options import RandomizePokemon
+from .options import RandomizePokemonEncounters
 
 if TYPE_CHECKING:
     from . import PokemonRSOA
@@ -66,11 +66,17 @@ class PatchMethods:
 
         procedures: list[str] = ["base_patch", "quest_patch"]
 
-        if patch.world.options.randomize_pokemon != RandomizePokemon.option_vanilla:
+        if (
+            patch.world.options.randomize_pokemon
+            != RandomizePokemonEncounters.option_vanilla
+        ):
             procedures.append("map_patch")
             map_patch.write_patch(patch, opened_zipfile)
 
-        if patch.world.options.randomize_partners != RandomizePokemon.option_vanilla:
+        if (
+            patch.world.options.randomize_partners
+            != RandomizePokemonEncounters.option_vanilla
+        ):
             procedures.append("species_patch")
             species_patch.write_patch(patch, opened_zipfile)
 
@@ -316,7 +322,6 @@ def _remove_field_moves(
                 + (val * POKE_ID_ROW_ROM_SIZE)
                 + 5
             )
-            print(f"{address:x}")
             patch.write_token(
                 APTokenTypes.WRITE,
                 address,

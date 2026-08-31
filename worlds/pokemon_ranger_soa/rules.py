@@ -213,6 +213,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
         5: set_mission_5_rules,
         6: set_mission_6_rules,
         7: set_mission_7_rules,
+        8: set_mission_8_rules,
     }
 
     up_to_mission = world.options.mission_clear_target.value
@@ -1072,7 +1073,7 @@ def set_mission_6_rules(world: PokemonRSOA):
     for loc in [data.locations["MISSION_06"].label, get_mission_event(6)]:
         world.set_rule(
             get_location(world, loc),
-            can_access_mission_complete,
+            can_access_mission_complete,  # TODO add strength check
         )
 
     #  TODO fix this (but works for now)
@@ -1089,7 +1090,7 @@ def set_mission_6_rules(world: PokemonRSOA):
 def set_mission_7_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope()
 
-    for i in [0, 1, 4, 5, 6, 7, 8, 9, 10]:
+    for i in [0, 1, 4, 5, 6, 8, 9, 10]:
         world.set_rule(
             get_pokemon_instance(world, "m015_004", i),
             Has(get_mission_event(6)),
@@ -1144,8 +1145,87 @@ def set_mission_7_rules(world: PokemonRSOA):
         )
 
     world.set_rule(
+        get_entrance(world, PInstanceEvent.CROAGUNK.event_name),
+        Has(get_mission_event(6)),
+    )
+
+    world.set_rule(
         get_pokemon_instance(world, "m001_011", 5), Has(get_mission_event(6))
     )
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.CARNIVINE_2.event_name),
+        Has(get_mission_event(6)),
+    )
+    for loc in [data.locations["MISSION_07"].label, get_mission_event(7)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(6)),  # add strength check?
+        )
+
+
+def set_mission_8_rules(world: PokemonRSOA):
+    all_maps = MonSelect.get_rules_scope()
+    """Boyleland m018"""
+    world.set_rule(
+        get_connection(world, "npc_m010_020", "m018_001"), Has(get_mission_event(7))
+    )
+
+    for to in ["m201_002", "m010_003", "m033_001"]:
+        world.set_rule(get_connection(world, "npc_m018_001", to), False_())
+
+    #  Temporary
+    world.set_rule(get_connection(world, "m018_001", "m019_005"), False_())
+
+    #  weird ones
+    for from_, to in [("m018_001", "m018_001"), ("npc_m018_005", "m018_005")]:
+        world.set_rule(get_connection(world, from_, to), False_())
+
+    """m019_001"""
+    #  free access: 1, 6, 7,
+    can_airlift = all_maps.can_use_field_move(FieldMove(FieldMoveCategory.AIRLIFT, 1))
+
+    for i in [2, 3, 5]:
+        world.set_rule(get_pokemon_instance(world, "m019_001", i), can_airlift)
+
+    #  three unacounted so far!
+
+    world.set_rule(get_connection(world, "m019_001", "m019_003"), can_airlift)
+    world.set_rule(get_connection(world, "m019_001", "m019_005"), False_())  # unk
+
+    """m019_003"""
+    can_airlift_twice = can_airlift & Has(data.species[142].event_can_capture(), 2)
+
+    for i in range(8):
+        if i in [0, 2]:
+            continue
+        world.set_rule(get_pokemon_instance(world, "m019_003", i), can_airlift_twice)
+
+    world.set_rule(get_connection(world, "m019_003", "m019_004"), can_airlift_twice)
+
+    world.set_rule(get_connection(world, "m019_003", "m019_005"), False_())
+    world.set_rule(get_connection(world, "m019_003", "m019_015"), False_())
+
+    """m019_004"""
+    #  could add logic based on the event encounters, but eh
+    world.set_rule(
+        get_connection(world, "m019_004", "m019_010"),
+        all_maps.can_destroy_target("m019_004", 4),
+    )
+
+    to_crush_2 = all_maps.can_destroy_target("m019_004", 2)
+    world.set_rule(get_connection(world, "m019_004", "m019_002"), to_crush_2)
+    world.set_rule(get_entrance(world, PInstanceEvent.NUMEL_3.event_name), to_crush_2)
+
+    """m019_002"""
+    #  could add defeating the event to get to the ship??
+    world.set_rule(get_connection(world, "m019_002", "m020_001"), True_())
+
+    """ship m020_001"""
+    world.set_rule(get_connection(world, "m020_001", "m020_016"), False_())
+
+    # world.set_rule(get_connection(world, "m020_001", "m020_002"), False_())
+    # world.set_rule(get_connection(world, "m020_001", "m020_005"), False_())
 
 
 def set_completion_condition(world) -> None:

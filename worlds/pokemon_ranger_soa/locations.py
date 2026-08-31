@@ -7,7 +7,7 @@ from BaseClasses import ItemClassification, Location, Region, LocationProgressTy
 from .data import data, LocationData, LocationCategory, SpeciesData, FieldMove, Party
 from .events import PInstanceEvent
 from .items import PokemonRSOAItem
-from .options import RandomizePokemon
+from .options import RandomizePokemonEncounters
 from .MonSelect import MonSelect
 
 if TYPE_CHECKING:
@@ -144,7 +144,7 @@ def create_pokemon_locations(
     regions["Overworld"].connect(region, "Browser")
 
     full_map = MonSelect.get_rules_scope()
-    if world.options.randomize_pokemon == RandomizePokemon.option_vanilla:
+    if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
 
         for pokemon_id in world.capture_groups.get_ids_all:
             pokemon = data.species[pokemon_id]
@@ -191,6 +191,8 @@ def create_pokemon_locations(
         114,  # oddish quest
         109,  # ambipom
         44,  # nosepass
+        142,  # drifloon
+        142,  # drifloon numba 2!
     ]
 
     ocean_captures = [

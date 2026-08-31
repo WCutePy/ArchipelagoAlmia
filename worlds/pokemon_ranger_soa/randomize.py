@@ -7,7 +7,7 @@ from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
 from .data import SpeciesData, data, FieldMove, Party
 from .items import PokemonRSOAItem
-from .options import RandomizePartners, partner_blacklist
+from .options import RandomizePartners, partner_blacklist, RandomizePokemonEtc
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -62,7 +62,6 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     world.random.shuffle(starters)
     world.random.shuffle(partners)
 
-    starters = [38, 48, 180]
     place_npc(world, ("m005_003", 2), 311)
     place_npc(world, ("m008_006", 5), 311)
 
@@ -103,11 +102,18 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     options = {"m011_004": [1, 2, 3]}
     apply_place_on_random(world, options, 0x06A)
 
-    #  replace with some helper func
-    #  this was a test for replacing croagunk!!!
-    # world.modified_regions["m010_003"].NPCS[0].set_form(
-    #     128,
-    # )
+    """volcano cave drifloon"""
+    options = {
+        "m019_003": [1, 3, 4, 5, 6, 7],
+        "m019_004": [1, 3, 4, 5, 6, 9],
+    }
+    apply_place_on_random(world, options, 0x0C4)
+
+    options = {
+        "m019_004": [2, 7, 8],
+        "m019_016": [0, 1, 2],
+    }
+    apply_place_on_random(world, options, 0x0C4)
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
@@ -220,6 +226,8 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         print(loc, mon_name, loc.item)
         raise
     apply_manually_fixed_pokemon(world)
+    if world.options.randomize_pokemon_etc != RandomizePokemonEtc.option_vanilla:
+        apply_randomize_npc_pokemon(world)
 
 
 def copy_over_map_pokemon(
@@ -272,3 +280,23 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
 
     return
+
+
+def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
+    groups: List[List[Tuple[str, int]]] = [
+        [
+            ("m201_001", 2),
+            ("m201_001", 3),
+            ("m201_001", 4),
+            ("m201_001", 5),
+        ],  # m8 drifloon water
+        [("m018_001", i) for i in range(0, 5)],  # m8 drifloon boyleland
+        [("m019_013", 0), ("m019_013", 1)],  # m8 drifloon left side
+    ]
+
+    pokemon = world.random.choices(list(world.modified_species.keys()), k=len(groups))
+
+    for group, mon in zip(groups, pokemon):
+        form_id = list(world.modified_species[mon].forms.keys())[0]
+        for place in group:
+            place_npc(world, place, form_id)

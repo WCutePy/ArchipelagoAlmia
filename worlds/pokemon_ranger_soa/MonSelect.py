@@ -375,7 +375,6 @@ class MonSelect:
 
     @classmethod
     def get_rule_num(cls) -> int:
-        print(cls.world.options)
         if cls.world.options.goal == Goal.option_mission_clear:
             return cls.world.options.mission_clear_target.value
 
@@ -393,6 +392,7 @@ class MonSelect:
             5: cls.goal_mission_5,
             6: cls.goal_mission_6,
             7: cls.goal_mission_7,
+            8: cls.goal_mission_8,
         }
         return goals[cls.get_rule_num()]()
 
@@ -566,6 +566,37 @@ class MonSelect:
         del base.exclude["m015_001"]  # doduo
         del base.exclude["m001_011"]  # ghastly TODO
 
-        base.event_mon += [PInstanceEvent.TURTWIG]
+        base.event_mon += [
+            PInstanceEvent.TURTWIG,
+            PInstanceEvent.CROAGUNK,
+            PInstanceEvent.CARNIVINE_2,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_8(cls) -> MonSelect:
+        base = cls.goal_mission_7()
+
+        base.include |= {
+            "m018_001": [1, 2],
+            "m019_001": [],
+            "m019_013": [],
+            "m019_003": [],  #
+            "m019_004": [],  #
+            "m019_002": [],
+            "m020_001": [],
+        }
+
+        base.exclude["m019_003"] = [0]
+        base.exclude["m019_001"] = [0, 4, 8]
+
+        base.event_mon += [
+            PInstanceEvent.SLUGMA,
+            PInstanceEvent.MAGCARGO,
+            PInstanceEvent.KANGASKHAN,
+            PInstanceEvent.NUMEL_3,
+            PInstanceEvent.MIME_JR,
+        ]
 
         return base
