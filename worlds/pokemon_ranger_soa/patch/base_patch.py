@@ -54,6 +54,49 @@ def patch_script_add_doduo(rom: Rom, file_name: str, locations: list[int]):
         print(f"{offset:08X}: {instruction:08X}")
 
 
+def message_file_to_json(rom, category: str, name: str) -> dict:
+    """
+    Adapted from ra23mes by SombrAbsol
+    """
+    file_name = f"/data/message/{category}/{name}.mes"
+    file_data = rom.files[file_name]
+
+    offset = 4
+    count, *_ = struct.unpack_from("<I", file_data, offset)
+
+    strings = {}
+    offset = 8
+    for i in range(count):
+        block_size = struct.unpack_from("<I", file_data, offset)[0]
+        offset += 4
+
+        block = file_data[offset : offset + block_size]
+
+        string = block.decode("utf-8")
+        j = len(string) - 1
+        while string[j] == "\x00" and j > 0:
+            j -= 1
+        strings[i] = string[: j + 1]
+        offset += block_size
+    return strings
+
+
+def json_to_mes(rom, inp: dict[int, str], category: str, name: str):
+    file_name = f"/data/message/{category}/{name}.mes"
+
+    keys = sorted(inp.keys())
+
+    out = bytearray(8)
+    for i in keys:
+        text: str = inp[i]
+        enc = text.encode()
+        enc = enc + (4 - (len(enc) % 4)) * b"\x00"
+        out += int.to_bytes(len(enc), 4, byteorder="little") + enc
+
+    struct.pack_into("<II", out, 0, len(out) - 8, len(keys))
+    rom.files[file_name] = bytes(out)
+
+
 def list_of_same_patches(change: int, addresses: list[int]) -> list[tuple[int, int]]:
     return [(i, change) for i in addresses]
 
@@ -80,6 +123,8 @@ def patch(
     FIELD_MAP_PATCHES = defaultdict(list)
     CHAPTER_PATCHES = defaultdict(list)
     QUEST_PATCHES = defaultdict(list)
+
+    EDITED_MES = defaultdict(lambda: defaultdict(dict))
 
     """School gate"""
     EVENTRECT_PATCHES |= {
@@ -217,6 +262,39 @@ def patch(
         (99, 0x4F38_00_10),
     ]
 
+    """mission 8"""
+    """Entering the ship in vanilla does not allow you to leave until completed. 
+    This is in the Archipelago still a preferred attribute. Depending on what is randomized, 
+    this could leave the game hardlocked when entering the ship without required unlocks."""
+    field_move_item = slot_data["field_move_item"]
+    if field_move_item:
+        """The purpose is to change minimal behaviour, and allow reusing the settingsvar
+        variable to let the client communicate that the ship can be enterd.
+        """
+        EVENTRECT_PATCHES["EventRect001005"] += [
+            #  PUSH 0		; @27 -> push 2
+            (27, 0x00_02_00_10),
+            #  IS_EQ 		; @28 -> IS_LT
+            (28, 0x00_0D_00_16),
+        ]
+        CHAPTER_PATCHES["c039"] += [
+            # PUSH 1		; @16753 -> PUSH 2
+            (16753, 0x00_02_00_10)
+        ]
+
+        file_name = "/data/Script/field/eventrect/er019/EventRect019011.fsb"
+        from ._data import EventRect019011
+
+        rom.files[file_name] = EventRect019011
+
+        mes = message_file_to_json(rom, "chapter", "chapter038_mes_us")
+        EDITED_MES["chapter"]["chapter038_mes_us"] = mes
+
+        mes[6] = (
+            "[W:01][C:4]Archipelago[C:2][W:00]:[E]You can't continue yet![R]"
+            "You need unlocks for the[E]following field moves:[R]"
+            "Tackle 2, Cut 2, Flash, ..."
+        )
     """partner patches"""
 
     partners = prsoa_patch_instance.files.get("partners.txt")
@@ -432,6 +510,10 @@ def patch(
     for chapter, writes in QUEST_PATCHES.items():
         file_name = f"/data/Script/quest/{chapter}.fsb"
         patch_script_in_place_four_bytes(rom, file_name, writes)
+
+    for category, values in EDITED_MES.items():
+        for file, file_json in values.items():
+            json_to_mes(rom, file_json, category, file)
 
 
 def code_patch(

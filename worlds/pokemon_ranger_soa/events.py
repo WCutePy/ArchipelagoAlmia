@@ -131,7 +131,7 @@ class PInstanceEvent(EventRegistry):
     BEEDRIL_2 = InstanceEvent("m019_002", 58, mandatory=True)
     GLOOM = InstanceEvent("m019_002", 115, mandatory=True)
     MACHOKE_2 = InstanceEvent("m020_001", 162, mandatory=True)  # in ship
-    MIME_JR = InstanceEvent("m020_00", 164, mandatory=True)
+    MIME_JR = InstanceEvent("m020_005", 164, mandatory=True)
     MAREEP = InstanceEvent("m020_007", 105, mandatory=True)
     #
     #

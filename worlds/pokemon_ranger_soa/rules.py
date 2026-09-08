@@ -52,7 +52,7 @@ from .events import (
     get_quest_event,
     get_instance_missable,
 )
-from .options import FieldMoveItem
+from .options import FieldMoveItem, RandomizePokemonEncounters
 from .MonSelect import sanitize_map_name, MonSelect, has_field_move_item
 
 if TYPE_CHECKING:
@@ -460,11 +460,13 @@ def set_mission_3_rules(world: PokemonRSOA):
     burning_log = all_maps.can_destroy_target_type(72)
     completed_mimi = Has(PREvent.GIVE_HAPPINY_TO_MIMI.event_name)
 
+    mimi_rule = CanReachRegion(world.modified_regions["m009_002"].HUMAN_NAME)
+    if world.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla:
+        mimi_rule &= Has(
+            data.species[22].event_can_capture(form=211)
+        ) & CanReachLocation(data.species[22].location_capture_name)
     world.set_rule(
-        get_location(world, PREvent.GIVE_HAPPINY_TO_MIMI.event_name),
-        Has(data.species[22].event_can_capture(form=211))
-        & CanReachLocation(data.species[22].location_capture_name)
-        & CanReachRegion(world.modified_regions["m009_002"].HUMAN_NAME),
+        get_location(world, PREvent.GIVE_HAPPINY_TO_MIMI.event_name), mimi_rule
     )
 
     # not at all: 2 cherubi, 4 sphinx, 5 taillow, 8 cherubi, 0xB pichu, 0xC happiny
@@ -603,10 +605,13 @@ def set_mission_4_rules(world: PokemonRSOA):
     # bonsly, torterra
 
     fallen_tree = all_maps.can_destroy_target("m009_008", 1)
-    for i in [4, 5]:
-        world.set_rule(get_pokemon_instance(world, "m009_008", i), fallen_tree)
-
-    world.set_rule(get_pokemon_instance(world, "m009_008", 5), fallen_tree)
+    # Vanilla these are not achievable during mission 4.
+    # Randomized these could be
+    try:
+        for i in [4, 5]:
+            world.set_rule(get_pokemon_instance(world, "m009_008", i), fallen_tree)
+    except KeyError:
+        pass
 
     # the others are free as well due to side route
 
@@ -1223,6 +1228,8 @@ def set_mission_8_rules(world: PokemonRSOA):
 
     """ship m020_001"""
     world.set_rule(get_connection(world, "m020_001", "m020_016"), False_())
+
+    #  consider editing eventrect 10..05
 
     # world.set_rule(get_connection(world, "m020_001", "m020_002"), False_())
     # world.set_rule(get_connection(world, "m020_001", "m020_005"), False_())

@@ -381,6 +381,7 @@ class PokemonRSOA(World):
             "rank_up_type",
             "rank_up_count",
             "rank_up_increment",
+            "field_move_item",
             "randomize_pokemon",
             "randomize_pokemon_etc",
             "randomize_target_field_move",

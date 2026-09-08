@@ -1,0 +1,132 @@
+
+evententer:
+	PUSH 1		; @8
+	JZ loc_81		; @9
+	SYSCALL 2, 143, 0		;sc2_unk_0x008f @10
+	PUSHRESULT 		; @11
+	PUSH32 49152		; @12
+	IS_EQ 		; @14
+	JZ loc_78		; @15
+	SYSCALL 2, 155, 0		;getchapter @16
+	PUSHRESULT 		; @17
+	PUSH 38		; @18
+	IS_EQ 		; @19
+	JPZ loc_28		; @20
+	PUSH 6		; @21
+	SYSCALL 2, 131, 1		;get_event_variable @22
+	PUSHRESULT 		; @23
+	PUSH 0		; @24
+	IS_EQ 		; @25
+	JPZ loc_28		; @26
+	PUSH 1		; @27
+
+loc_28:
+	JZ loc_33		; @28
+	PUSH 0		; @29
+	PUSHSTRING 0		; @30
+	SYSCALL 14, 1, 2		;sc14_unk_0x0001 @31
+	JMP loc_78		; @32
+
+loc_33:
+	PUSH 19;
+	SYSCALL 2, 133, 1;
+	PUSHRESULT;
+	PUSH 0;
+	IS_EQ;
+	JZ loc_34;
+	PUSH 1		; @1160
+	PUSH 1		; @1161
+	PUSH 6		; @1162
+	PUSH 2		; @1163
+	SYSCALL 2, 24, 4		;printmsg @1164
+
+loc_1165:
+	SYSCALL 2, 25, 0		;waitmsg @1165
+	PUSHRESULT 		; @1166
+	JNZW loc_1165		; @1167
+	SYSCALL 2, 26, 0		;closemsg @1168
+	PUSH 0		; @29
+	PUSHSTRING 0		; @30
+	SYSCALL 14, 1, 2		;sc14_unk_0x0001 @31
+	JMP loc_81;
+loc_34:
+	SYSCALL 2, 155, 0		;getchapter @33
+	PUSHRESULT 		; @34
+	PUSH 38		; @35
+	IS_EQ 		; @36
+	JPZ loc_45		; @37
+	PUSH 6		; @38
+	SYSCALL 2, 131, 1		;get_event_variable @39
+	PUSHRESULT 		; @40
+	PUSH 1		; @41
+	IS_EQ 		; @42
+	JPZ loc_45		; @43
+	PUSH 1		; @44
+
+loc_45:
+	JZ loc_48		; @45
+	PUSHSTRING 12		; @46
+	SYSCALL 2, 116, 1		;strcpy2debugbuffer2 @47
+
+loc_48:
+	SYSCALL 14, 5, 0		;sc14_unk_0x0005 @48
+	PUSH 16		; @49
+	PUSH32 50917377		; @50
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @52
+	PUSH 228		; @53
+	SYSCALL 2, 4, 1		;sc2_unk_0x0004 @54
+	PUSH 272		; @55
+	SYSCALL 2, 12, 1		;sc2_unk_0x000c @56
+	PUSH 60		; @57
+	SYSCALL 2, 107, 1		;sc2_unk_0x006b @58
+
+loc_59:
+	SYSCALL 2, 111, 0		;sc2_unk_0x006f @59
+	PUSHRESULT 		; @60
+	JNZW loc_59		; @61
+	SYSCALL 2, 117, 0		;sc2_unk_0x0075 @62
+	PUSHRESULT 		; @63
+	PUSH 0		; @64
+	IS_EQ 		; @65
+	JZ loc_69		; @66
+	PUSHSTRING 21		; @67
+	SYSCALL 2, 116, 1		;strcpy2debugbuffer2 @68
+
+loc_69:
+	SYSCALL 14, 6, 0		;sc14_unk_0x0006 @69
+	PUSHSTRING 33		; @70
+	SYSCALL 0, 3, 1		;debug_printf @71
+	PUSH -1		; @72
+	PUSH 584		; @73
+	PUSH 264		; @74
+	PUSH 141		; @75
+	SYSCALL 2, 115, 4		;setplayerspawn @76
+	JMP loc_81		; @77
+
+loc_78:
+	PUSH 0		; @78
+	SETFIELD20 		; @79
+	JMP evententer		; @80
+
+loc_81:
+	PUSH 0		; @81
+	RETURN 1, 2		; @82
+
+eventleave:
+	PUSHSTRING 56		; @83
+	SYSCALL 0, 3, 1		;debug_printf @84
+	PUSH 0		; @85
+	RETURN 1, 2		; @86
+
+;Functions:
+.func evententer
+.func eventleave
+
+;Symbols:
+
+;Strings:
+.asciiz "c038Yy_39bt"		;12
+.asciiz "c038Ship"		;21
+.asciiz "sHoleFadein"		;33
+.asciiz "EventRectEnter 019011\0a"		;56
+.asciiz "EventRectLeave 009003\0a"		;79

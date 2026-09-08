@@ -50,7 +50,7 @@ from .events import (
     get_quest_event,
     get_instance_missable,
 )
-from .options import FieldMoveItem, Goal
+from .options import FieldMoveItem, Goal, RandomizePokemonEncounters
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -500,6 +500,14 @@ class MonSelect:
         }
 
         base.exclude |= {"m010_002": [3], "m010_022": [6]}
+        if (
+            cls.world.options.randomize_pokemon
+            == RandomizePokemonEncounters.option_vanilla
+        ):
+            base.exclude["m009_008"] = [
+                4,
+                5,
+            ]  # TODO drop this when achievable in vanilla.
         base.event_mon += [
             PInstanceEvent.RATATA_4,
             PInstanceEvent.TOXICROAK,

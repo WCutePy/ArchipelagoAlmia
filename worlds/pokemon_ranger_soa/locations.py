@@ -162,7 +162,10 @@ def create_pokemon_locations(
             world, world.capture_groups.get_ids_default, field_move_region
         )
         add_field_move_events(
-            world, world.capture_groups.get_ids_ocean, field_move_region
+            world,
+            world.capture_groups.get_ids_ocean,
+            field_move_region,
+            party=Party.OCEAN,
         )
         return
 

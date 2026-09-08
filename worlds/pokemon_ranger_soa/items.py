@@ -90,7 +90,7 @@ def create_all_items(world: PokemonRSOA) -> None:
     ) - len(world.capture_groups)
     print(f"printing: {number_of_unfilled_locations}")
 
-    needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
+    needed_number_of_filler_items = number_of_unfilled_locations - number_of_items + 5
     #
     # if not world.options.level_up_type.option_vanilla:
     #     items = []
