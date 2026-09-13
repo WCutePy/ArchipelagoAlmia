@@ -297,7 +297,13 @@ class MonSelect:
 
     @classmethod
     def missable(cls) -> MonSelect:
-        m = MonSelect(include={})
+        m = MonSelect(
+            include={
+                "m020_001": [*range(0, 13)],
+                "m020_002": [*range(0, 13)],
+                "m020_016": [0],
+            }
+        )
 
         if MonSelect.get_rule_num() == 6:
             m.include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
@@ -308,9 +314,9 @@ class MonSelect:
     def browser_before_capture(cls) -> MonSelect:
         return MonSelect(
             include={
-                "m006_001": [],
-                "m010_001": [],
-                "m010_002": [],
+                "m006_001": [*range(0, 7)],
+                "m010_001": [*range(0, 7)],
+                "m010_002": [*range(0, 10)],
                 "m010_003": [
                     14,
                     13,
@@ -318,8 +324,10 @@ class MonSelect:
                     10,
                     9,
                 ],
-                "m010_022": [],
-                "m016_002": [],
+                "m010_022": [*range(0, 9)],
+                "m016_002": [
+                    *range(0, 14)
+                ],  # except the cherrim but does it ever spawn at all?
             }
         )
 
@@ -327,10 +335,10 @@ class MonSelect:
     def randomize_false(cls) -> MonSelect:
         m = MonSelect(
             include={
-                "m001_006": [],  # make it so these are random just more appropriate in the future (pichu)
-                "m006_001": [
-                    5
-                ],  # zubat can be randomized when randomizing the event encounter attached
+                "m001_006": [0, 1],  # make it so these are random just
+                # more appropriate in the future (pichu)
+                "m006_001": [5],  # zubat can be randomized when
+                # randomizing the event encounter attached
                 "m011_005": [5],  # sharpedo
                 "m016_004": [2],  # rampardos (could be random already techn)
             },
@@ -593,11 +601,20 @@ class MonSelect:
             "m019_003": [],  #
             "m019_004": [],  #
             "m019_002": [],
+            "m019_016": [],
             "m020_001": [],
+            "m020_002": [],
+            "m020_013": [],
+            "m020_003": [],
+            "m020_007": [],
+            "m020_004": [],
+            "m020_011": [],
+            "m020_016": [],
         }
 
         base.exclude["m019_003"] = [0]
         base.exclude["m019_001"] = [0, 4, 8]
+        base.exclude["m020_013"] = [0]
 
         base.event_mon += [
             PInstanceEvent.SLUGMA,
@@ -606,5 +623,15 @@ class MonSelect:
             PInstanceEvent.NUMEL_3,
             PInstanceEvent.MIME_JR,
         ]
+
+        return base
+
+    @classmethod
+    def goal_mission_9(cls) -> MonSelect:
+        base = cls.goal_mission_8()
+
+        base.include |= {"m020_010": [0], "m020_014": [0, 1]}
+
+        del base.exclude["m001_002"]  # charmander from the ship
 
         return base

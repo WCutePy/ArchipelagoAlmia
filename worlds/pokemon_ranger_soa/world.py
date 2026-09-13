@@ -8,6 +8,7 @@ import settings
 from BaseClasses import Tutorial, Location, Item, CollectionState, ItemClassification
 from Fill import sweep_from_pool
 from Options import Option
+from test.hosting import world
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
@@ -21,12 +22,14 @@ from .options import (
     OPTION_GROUPS,
     RandomizePokemonEncounters,
     RandomizePartners,
+    RandomizePokemonEtc,
 )
 from .MonSelect import MonSelect
 from .randomize import (
     apply_randomized_pokemon,
     early_place_random_restricted,
     early_place_random_partners,
+    apply_randomize_npc_pokemon,
 )
 from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
 from Fill import FillError, fill_restrictive
@@ -275,9 +278,17 @@ class PokemonRSOA(World):
     def set_rules(self) -> None:
         rules.set_all_rules(self)
 
+        randomized = False
+
         if self.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla:
             apply_randomized_pokemon(self)
+            randomized = True
 
+        if self.options.randomize_pokemon_etc != RandomizePokemonEtc.option_vanilla:
+            apply_randomize_npc_pokemon(self)
+            randomized = True
+
+        if randomized:
             import json
 
             dump = {}

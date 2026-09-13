@@ -1219,8 +1219,24 @@ def set_mission_8_rules(world: PokemonRSOA):
     )
 
     to_crush_2 = all_maps.can_destroy_target("m019_004", 2)
-    world.set_rule(get_connection(world, "m019_004", "m019_002"), to_crush_2)
     world.set_rule(get_entrance(world, PInstanceEvent.NUMEL_3.event_name), to_crush_2)
+
+    may_enter_ship = to_crush_2 & And(
+        *[
+            has_field_move_item(world, i)
+            for i in [
+                FieldMove(FieldMoveCategory.ELECTRIFY, 2),
+                FieldMove(FieldMoveCategory.CRUSH, 2),
+                FieldMove(FieldMoveCategory.TACKLE, 2),
+                FieldMove(FieldMoveCategory.CUT, 2),
+                FieldMove(FieldMoveCategory.FLASH, 1),
+                FieldMove(
+                    FieldMoveCategory.RECHARGE, 2
+                ),  # recharge 2 is meant as soft logic
+            ]
+        ]
+    )
+    world.set_rule(get_connection(world, "m019_004", "m019_002"), may_enter_ship)
 
     """m019_002"""
     #  could add defeating the event to get to the ship??

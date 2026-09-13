@@ -19171,7 +19171,7 @@
             "m020_001 -> m020_005": []
         }
     },
-    "m020_002": {
+      "m020_002": {
         "INDEX": "0x09F",
         "HUMAN_NAME": "CARGO_SHIP-B1_NORTH",
         "TRIGGERS": {

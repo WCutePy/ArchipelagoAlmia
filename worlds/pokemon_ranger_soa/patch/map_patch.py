@@ -27,18 +27,14 @@ def write_patch(
         npc = []
 
         pokemon = []
-        if (
-            prsoa_patch_instance.world.options.randomize_pokemon
-            != RandomizePokemonEncounters.option_vanilla
-        ):
-            for i, object_data in map_data.TARGETS.items():
-                objects.append(object_data.TARGET_ID)
+        for i, object_data in map_data.TARGETS.items():
+            objects.append(object_data.TARGET_ID)
 
-            for i, npc_data in map_data.NPCS.items():
-                npc.append(npc_data.unk2)
+        for i, npc_data in map_data.NPCS.items():
+            npc.append(npc_data.unk2)
 
-            for i, spawn_data in map_data.POKEMON_SPAWN.items():
-                pokemon.append(spawn_data.SPECIES_ID)
+        for i, spawn_data in map_data.POKEMON_SPAWN.items():
+            pokemon.append(spawn_data.SPECIES_ID)
 
         data = (
             struct.pack("<III", len(objects), len(npc), len(pokemon))
@@ -217,6 +213,9 @@ def patch(
         #     continue
 
         map_data = CompactMapData.from_bytes(patch_file)
+        if map_data is None:
+            print("wtf how", map_name)
+            continue
 
         data = {0x04: map_data.objects, 0x08: map_data.npcs, 0x09: map_data.pokemon}
         add_map_base_patches(map_name, data)

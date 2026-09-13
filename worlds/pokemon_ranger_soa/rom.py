@@ -20,7 +20,7 @@ from worlds.Files import (
     APAutoPatchInterface,
 )
 from .data import data, POKE_ID_ROW_ROM_SIZE
-from .options import RandomizePokemonEncounters
+from .options import RandomizePokemonEncounters, RandomizePokemonEtc
 
 if TYPE_CHECKING:
     from . import PokemonRSOA
@@ -66,10 +66,8 @@ class PatchMethods:
 
         procedures: list[str] = ["base_patch", "quest_patch"]
 
-        if (
-            patch.world.options.randomize_pokemon
-            != RandomizePokemonEncounters.option_vanilla
-        ):
+        #  could be a summation of checks, but what, there's only ~470 items
+        if any(m.modified for m in patch.world.modified_regions.values()):
             procedures.append("map_patch")
             map_patch.write_patch(patch, opened_zipfile)
 

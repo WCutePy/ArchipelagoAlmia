@@ -124,7 +124,7 @@ class PInstanceEvent(EventRegistry):
     CROAGUNK = InstanceEvent("m002_001", 80, mandatory=True)  # m7
     CARNIVINE_2 = InstanceEvent("m001_005", 136, mandatory=True)  # 2 of them
 
-    SLUGMA = InstanceEvent("m019_003", 140, mandatory=True)
+    SLUGMA = InstanceEvent("m019_003", 140, mandatory=True)  # m8
     MAGCARGO = InstanceEvent("m019_003", 141, mandatory=True)  # m8 together with slugma
     KANGASKHAN = InstanceEvent("m019_004", 146, mandatory=True)  # m8
     NUMEL_3 = InstanceEvent("m019_004", 124, mandatory=True)  # m8
@@ -132,8 +132,11 @@ class PInstanceEvent(EventRegistry):
     GLOOM = InstanceEvent("m019_002", 115, mandatory=True)
     MACHOKE_2 = InstanceEvent("m020_001", 162, mandatory=True)  # in ship
     MIME_JR = InstanceEvent("m020_005", 164, mandatory=True)
-    MAREEP = InstanceEvent("m020_007", 105, mandatory=True)
-    #
+    MAREEP_3 = InstanceEvent("m020_007", 105, mandatory=True)
+    MAGCARGO_3 = InstanceEvent("m020_003", 141, mandatory=True)  # in ship 3 at once
+    RHYHORN_2 = InstanceEvent("m020_008", 149, mandatory=True)  # top of ship
+    STUNKY_3 = InstanceEvent("m020_008", 144, mandatory=True)  # top of ship
+    DRAPION = InstanceEvent("m020_008", 174, mandatory=True)  # top of ship
     #
     #
     WAILORD = InstanceEvent("m029_009", 238, mandatory=True)

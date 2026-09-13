@@ -5,7 +5,7 @@ from typing import Dict, TYPE_CHECKING, Optional, List, Tuple
 
 from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
-from .data import SpeciesData, data, FieldMove, Party
+from .data import SpeciesData, data, FieldMove, Party, FieldMoveCategory
 from .items import PokemonRSOAItem
 from .options import RandomizePartners, partner_blacklist, RandomizePokemonEtc
 
@@ -17,7 +17,10 @@ def apply_place_on_random(
     world: PokemonRSOA, options: Dict[str, List[int]], form_id: int
 ) -> Tuple[str, int]:
     options = [(key, value) for key, values in options.items() for value in values]
-    option = world.random.choice(options)
+    if len(options) == 1:
+        option = options[0]
+    else:
+        option = world.random.choice(options)
     map_name, index = option
     spawn = world.modified_regions[map_name].POKEMON_SPAWN[index]
     spawn.set_form(form_id)
@@ -31,6 +34,30 @@ def place_npc(world: PokemonRSOA, place: Tuple[str, int], form_id: int):
     npc = world.modified_regions[map_name].NPCS[index]
     npc.set_form(form_id)
     world.modified_regions[map_name].modified = True
+
+
+def form_options_by_criteria(world: PokemonRSOA, field_move: FieldMove, health: int):
+    options = []
+    lowest_form = None
+    lowest_health: int | None = None
+
+    for species in world.modified_species.values():
+        if (
+            field_move.category == species.field_move.category
+            and field_move < species.field_move
+        ):
+            continue
+        for form, form_data in species.forms.items():
+            if form_data.friendship_gauge > health:
+                continue
+            options.append(form)
+            if lowest_form is None or lowest_health > form_data.friendship_gauge:
+                lowest_form = form
+                lowest_health = form_data.friendship_gauge
+
+    if options:
+        return options
+    return [lowest_form]
 
 
 def early_place_random_partners(world: PokemonRSOA) -> None:
@@ -114,6 +141,75 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
         "m019_016": [0, 1, 2],
     }
     apply_place_on_random(world, options, 0x0C4)
+
+    """place the whole ship required section"""
+    max_health = 1000
+    recharge_options_1 = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.RECHARGE, level=1), max_health
+    )
+    recharge_options_2 = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.RECHARGE, level=2), max_health
+    )
+    form_options = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.ELECTRIFY, level=2), max_health
+    )
+    options = {
+        "m020_001": [0, 1, 2, 3, 4, 5, 6],  # all
+        "m020_002": [*range(0, 13)],  # all
+        # m020_016 when those ralts??
+    }
+    out = apply_place_on_random(world, options, world.random.choice(form_options))
+    options[out[0]].remove(out[1])
+    form_options = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.CRUSH, level=2), max_health
+    )
+    out = apply_place_on_random(world, options, world.random.choice(form_options))
+    options[out[0]].remove(out[1])
+    out = apply_place_on_random(world, options, world.random.choice(recharge_options_1))
+    options[out[0]].remove(out[1])
+
+    options |= {"m020_013": [3, 7, 9]}
+    tackle_2_options = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.TACKLE, level=2), max_health
+    )
+    out = apply_place_on_random(world, options, world.random.choice(tackle_2_options))
+    options[out[0]].remove(out[1])
+
+    options["m020_013"] += [1, 2, 4, 5, 6, 8, 10, 11, 12]
+    options |= {
+        "m020_003": [1, 3, 4],
+        "m020_007": [0, 1, 2],
+        "m020_004": [0, 1],
+    }
+
+    cut_2_options = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.CUT, level=2), max_health
+    )
+    out = apply_place_on_random(world, options, world.random.choice(cut_2_options))
+    options[out[0]].remove(out[1])
+    out = apply_place_on_random(world, options, world.random.choice(recharge_options_2))
+    options[out[0]].remove(out[1])
+
+    options |= {"m020_011": [0, 1]}
+    out = apply_place_on_random(world, options, world.random.choice(recharge_options_1))
+    options[out[0]].remove(out[1])
+
+    #  cut 2 counts for the rope cut 1
+    flash = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.FLASH, level=1), max_health
+    )
+    flash_mon = world.random.choice(flash)
+    out = apply_place_on_random(world, options, flash_mon)
+    options[out[0]].remove(out[1])
+
+    if world.options.randomize_pokemon_etc != RandomizePokemonEtc.option_vanilla:
+        place_npc(world, ("m001_014", 5), flash_mon)
+
+    # after flash + cut 1 ( not relevant)
+    options["m020_003"] += [0, 2]
+
+    last_one = {"m020_016": [0]}
+    apply_place_on_random(world, last_one, world.random.choice(tackle_2_options))
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
@@ -226,8 +322,6 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         print(loc, mon_name, loc.item)
         raise
     apply_manually_fixed_pokemon(world)
-    if world.options.randomize_pokemon_etc != RandomizePokemonEtc.option_vanilla:
-        apply_randomize_npc_pokemon(world)
 
 
 def copy_over_map_pokemon(
@@ -261,6 +355,7 @@ def copy_over_spawn_to_npc(
     mon_data = world.modified_regions[from_map].POKEMON_SPAWN[from_i]
     world.modified_regions[to_map].NPCS[to_i].unk2 = mon_data.SPECIES_ID
     world.modified_regions[to_map].NPCS[to_i].NAME = mon_data.SPECIES_NAME
+    world.modified_regions[to_map].modified = True
 
 
 def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
@@ -275,6 +370,9 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     }
     copy_over_map_pokemon(world, "m009_001a", "m009_001b", m009_001a_to_m009_001b)
 
+    #  since they already swapped things I need to confirm
+    #  if the two bidoofs match in position or need to swap.
+    m001_005_to_m001_014 = {0: 1, 1: 0, 2: 2, 3: 3}
     # #  rampardos
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 0)
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
@@ -284,6 +382,8 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
 
 def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
     groups: List[List[Tuple[str, int]]] = [
+        # --- mission interactions
+        # consider making the drifloon groups the same???
         [
             ("m201_001", 2),
             ("m201_001", 3),
@@ -292,6 +392,37 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
         ],  # m8 drifloon water
         [("m018_001", i) for i in range(0, 5)],  # m8 drifloon boyleland
         [("m019_013", 0), ("m019_013", 1)],  # m8 drifloon left side
+        # ---
+        [("m020_014", 1)],  # m8 kidnapped magmar
+        [("m020_014", 2), ("m020_009", 2), ("m001_014", 6)],  # m8 kidnapped pikachu
+        [
+            ("m019_002", 6),
+            ("m019_002", 7),
+            ("m019_002", 8),
+            ("m020_014", 3),
+            ("m020_014", 4),
+            ("m020_013", 5),
+            ("m020_009", 2),
+        ],  # m8 kidnapped charmander
+        [
+            ("m019_002", 9),
+            ("m019_002", 10),
+            ("m019_002", 11),
+            ("m020_014", 5),
+            ("m020_014", 6),
+        ],  # m8 kidnapped slugma
+        [("m020_014", 7), ("m020_014", 8)],  # m8 kidnapped stunky
+        [("m020_008", 0)],  # m8 gliscor fly away
+        #
+    ]
+
+    groups += [
+        # --- partners
+        [
+            ("m020_006", 2),
+            ("m020_009", 8),
+            ("m001_014", 8),
+        ]  # m8  # m8  # barlow Makuhita
     ]
 
     pokemon = world.random.choices(list(world.modified_species.keys()), k=len(groups))
@@ -300,3 +431,21 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
         form_id = list(world.modified_species[mon].forms.keys())[0]
         for place in group:
             place_npc(world, place, form_id)
+
+    if world.modified_regions["m020_013"].modified:
+        #  made the npcs the same as the mons that appear in the actual map,
+        #  as these are the pokemon that should be running away in m8 cutscene
+        for i in [0, 1, 2, 3]:
+            j = world.random.randint(1, 12)
+            copy_over_spawn_to_npc(world, "m020_013", j, "m020_011", i)
+
+        for i in [0, 1, 2, 3, 4]:
+            #  the two magcargo are weird as they have no logical origin source
+            j = world.random.randint(0, 12)
+            copy_over_spawn_to_npc(world, "m020_002", j, "m020_013", i)
+
+        for i in [4, 5, 6]:
+            j = world.random.randint(1, 12)
+            copy_over_spawn_to_npc(world, "m020_013", j, "m020_009", i)
+
+        copy_over_spawn_to_npc(world, "m020_013", 8, "m001_014", 9)
