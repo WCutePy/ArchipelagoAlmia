@@ -40,8 +40,9 @@ def attach_pokemon_encounter(
     connect_to.connect(pokemon_region, instance_name)
     species: SpeciesData = data.form_id_to_species.get(spawn_data.SPECIES_ID, None)
     if species is None:
-        return None
-
+        raise ValueError(
+            f"no species is given for\n{instance_name=}, {spawn_data=}, {connect_to=}"
+        )
     place_locked = False
     if (
         world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla
@@ -87,7 +88,8 @@ def attach_pokemon_encounter(
             event_item_name=item_name,
             place_locked=place_locked,
         )
-        world.capture_groups.browser_before_capture.append((loc, browser_loc))
+        if not place_locked:
+            world.capture_groups.browser_before_capture.append((loc, browser_loc))
 
     if place_locked:
         return pokemon_region

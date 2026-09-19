@@ -97,6 +97,7 @@ def create_all_locations(
         5: [2, 35],
         6: [5, 8, 50],
         7: [6, 7, 9, 45],
+        9: [10, 12, 13, 14, 36, 51],
     }
     for i in range(0, max_mission + 1):
         permitted_quests += quests_table.get(i, [])
@@ -196,6 +197,7 @@ def create_pokemon_locations(
         44,  # nosepass
         142,  # drifloon
         142,  # drifloon numba 2!
+        48,  # cherrim
     ]
 
     ocean_captures = [

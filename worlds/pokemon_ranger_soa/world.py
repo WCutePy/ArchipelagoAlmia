@@ -112,6 +112,8 @@ class CaptureGroups:
             self.capture.append(other)
         elif party == party.OCEAN:
             self.capture_ocean.append(other)
+        else:
+            raise ValueError(f"{other=}, {party=}")
 
     @property
     def get_ids_all(self) -> List[int]:
@@ -421,7 +423,8 @@ class PokemonRSOA(World):
         4: 1500,
         5: 3200,
         6: 3200,
-        7: 1000000,
+        7: 7800,
+        8: 1000000,
         100: 1000000,
     }
 

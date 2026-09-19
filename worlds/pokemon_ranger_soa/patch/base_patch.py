@@ -383,17 +383,45 @@ def patch(
             ),
         ]
 
-        """untested so far, as this might need other patches"""
-        # kricketot = ...
-        # CHAPTER_PATCHES["c029"] += [
-        #     # PUSH 175		; @3670
-        #     (3670, kricketot << 16 | 0x10),  # kricketot
-        # ]
-        # will need to randomize: m008_006 NPC 12, NPC 8
-        # will need to edit a form to be a partner?
+        """untested from here!!!"""
+        kricketot = 314
+        CHAPTER_PATCHES["c029"] += [
+            # PUSH 175		; @3670
+            (3670, kricketot << 16 | 0x10),  # kricketot
+        ]
         # will need to patch a lot of text
 
-    unlock_partner_as_items = False
+        cranidos = 315
+        QUEST_PATCHES["q035"] += [
+            # PUSH 182		; @429
+            (429, cranidos << 16 | 0x10),
+        ]
+
+        turtwig = 316
+        QUEST_PATCHES["q046"] += [
+            # 	PUSH 161		; @457
+            (457, turtwig << 16 | 0x10)
+        ]
+
+        croagunk = 317
+        CHAPTER_PATCHES["c036"] += [
+            # 	PUSH 220		; @2173
+            (2173, croagunk << 16 | 0x10)
+        ]
+
+        mime_jr = 318
+        CHAPTER_PATCHES["c039"] += [
+            # PUSH 210		; @2298
+            (2298, mime_jr << 16 | 0x10)
+        ]
+
+        shieldon = 319
+        QUEST_PATCHES["q036"] += [
+            # PUSH 183		; @359
+            (359, shieldon << 16 | 0x10),
+        ]
+
+    unlock_partner_as_items = True
     if unlock_partner_as_items:
 
         """Makes cranidos automatically leave"""
@@ -403,9 +431,14 @@ def patch(
         ]
 
         # TODO UNTESTED (nobody has time for that)
-        QUEST_PATCHES["q045"] += [
-            # PUSH 1		; @987 -> JMP loc_1197
-            (987, 0x00_D1_00_08)
+        QUEST_PATCHES["q046"] += [
+            # PUSH 1		; @930
+            (930, 0x00_D2_00_08)
+        ]
+
+        QUEST_PATCHES["q036"] += [
+            # 	PUSH 1		; @845
+            (845, 0x00_CF_00_08)
         ]
 
     early_staraptor = True

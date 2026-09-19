@@ -36,24 +36,27 @@ def place_npc(world: PokemonRSOA, place: Tuple[str, int], form_id: int):
     world.modified_regions[map_name].modified = True
 
 
-def form_options_by_criteria(world: PokemonRSOA, field_move: FieldMove, health: int):
+def form_options_by_criteria(
+    world: PokemonRSOA, field_move: FieldMove, health: int, exact: bool = True
+):
     options = []
     lowest_form = None
     lowest_health: int | None = None
 
     for species in world.modified_species.values():
-        if (
-            field_move.category == species.field_move.category
-            and field_move < species.field_move
-        ):
+        if field_move.category != species.field_move.category:
+            continue
+        if exact and field_move.level != species.field_move.level:
+            continue
+        elif not exact and species.field_move.level < field_move.level:
             continue
         for form, form_data in species.forms.items():
-            if form_data.friendship_gauge > health:
-                continue
-            options.append(form)
             if lowest_form is None or lowest_health > form_data.friendship_gauge:
                 lowest_form = form
                 lowest_health = form_data.friendship_gauge
+            if form_data.friendship_gauge > health:
+                continue
+            options.append(form)
 
     if options:
         return options
@@ -98,29 +101,59 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     place_npc(world, ("m005_003", 4), 313)
     place_npc(world, ("m008_006", 10), 313)
 
-    # apply_place_on_random(world, {"m003_001": [1]}, 311)
-    # apply_place_on_random(world, {"m003_001": [2]}, 311)
-    # apply_place_on_random(world, {"m003_001": [4]}, 311)
-
     vanilla_partners_in_some_order = [
+        82,  # kricketot
+        84,  # cranidos
+        80,  # croagunk
+        164,  # mime jr.
+        181,  # shieldon
+        #
         168,  # chimchar
         206,  # piplup
         52,  # turtwig
         213,  # snorunt
         161,  # machop
-        80,  # croagunk
         246,  # hippopotas
-        164,  # mime jr.
-        82,  # kricketot
-        84,  # cranidos
         220,  # misdreavus
         251,  # gible
         244,  # sneasel
-        181,  # shieldon
     ]
     if starters_only:
         world.modified_partners = starters + vanilla_partners_in_some_order
         return
+    # kricketot
+    place_npc(world, ("m008_006", 8), 314)
+    place_npc(world, ("m008_006", 12), 314)
+
+    # cranidos
+    place_npc(world, ("m008_006", 9), 315)
+    place_npc(world, ("m016_003", 1), 315)
+
+    # turtwig
+    place_npc(world, ("m008_008", 0), 316)
+    place_npc(world, ("m004_007", 0), 316)
+
+    # croagunk
+    place_npc(world, ("m008_008", 2), 317)
+    place_npc(world, ("m002_001", 9), 317)
+
+    # mime jr
+    place_npc(world, ("m008_008", 4), 318)
+    place_npc(world, ("m001_014", 7), 318)
+    # place_npc(world, ("m018_001", 21), 318) unsure if this is the partner mime jr or not!!!
+    place_npc(world, ("m019_002", 15), 318)
+    place_npc(world, ("m020_002", 0), 318)
+    place_npc(world, ("m020_005", 1), 318)
+    place_npc(world, ("m020_009", 7), 318)
+    place_npc(world, ("m020_014", 0), 318)
+    place_npc(world, ("m020_016", 1), 318)
+
+    # shieldon
+    place_npc(world, ("m008_006", 9), 319)
+    place_npc(world, ("m016_003", 1), 319)
+
+    ...
+
     world.modified_partners = starters + partners
 
 
@@ -143,7 +176,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     apply_place_on_random(world, options, 0x0C4)
 
     """place the whole ship required section"""
-    max_health = 1000
+    max_health = 2000
     recharge_options_1 = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.RECHARGE, level=1), max_health
     )
@@ -199,6 +232,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
         world, FieldMove(category=FieldMoveCategory.FLASH, level=1), max_health
     )
     flash_mon = world.random.choice(flash)
+    assert flash_mon == 65  # has to be electabuzz for now without script changes
     out = apply_place_on_random(world, options, flash_mon)
     options[out[0]].remove(out[1])
 
@@ -413,7 +447,9 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
         ],  # m8 kidnapped slugma
         [("m020_014", 7), ("m020_014", 8)],  # m8 kidnapped stunky
         [("m020_008", 0)],  # m8 gliscor fly away
-        #
+        [("m015_001", 11)],  # q12 budew
+        [("m018_001", 21)],  # spinning mime jr
+        [("m018_001", 22)],  # spinned around bidoof
     ]
 
     groups += [
@@ -422,19 +458,18 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
             ("m020_006", 2),
             ("m020_009", 8),
             ("m001_014", 8),
-        ]  # m8  # m8  # barlow Makuhita
+        ],  # m8  # m8  # barlow Makuhita
+        [("m017_004", 13)],  # m9 keith Buizel
     ]
 
-    pokemon = world.random.choices(list(world.modified_species.keys()), k=len(groups))
-
-    for group, mon in zip(groups, pokemon):
-        form_id = list(world.modified_species[mon].forms.keys())[0]
-        for place in group:
-            place_npc(world, place, form_id)
-
     if world.modified_regions["m020_013"].modified:
-        #  made the npcs the same as the mons that appear in the actual map,
+        #  made the npcs somewhat the same as the mons that appear in the actual map,
         #  as these are the pokemon that should be running away in m8 cutscene
+        #  doing it randomly however rather than setting the exact ones.
+        #  purugly and vulpix
+        copy_over_spawn_to_npc(world, "m020_007", 2, "m019_002", 16)
+        copy_over_spawn_to_npc(world, "m020_007", 1, "m019_002", 17)
+
         for i in [0, 1, 2, 3]:
             j = world.random.randint(1, 12)
             copy_over_spawn_to_npc(world, "m020_013", j, "m020_011", i)
@@ -449,3 +484,10 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
             copy_over_spawn_to_npc(world, "m020_013", j, "m020_009", i)
 
         copy_over_spawn_to_npc(world, "m020_013", 8, "m001_014", 9)
+
+    pokemon = world.random.choices(list(world.modified_species.keys()), k=len(groups))
+
+    for group, mon in zip(groups, pokemon):
+        form_id = list(world.modified_species[mon].forms.keys())[0]
+        for place in group:
+            place_npc(world, place, form_id)

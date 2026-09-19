@@ -104,26 +104,26 @@ class PInstanceEvent(EventRegistry):
     TIM_BIDOOF = InstanceEvent(
         "m001_001", 4, mandatory=True
     )  # 2 bidoof that attack Tim when leaving school, fight only 1
-
+    #
     TANGROWTH = InstanceEvent("m001_003b", 36, mandatory=True)  # m0 graduation
     MILTANK = InstanceEvent("m004_001", 46, mandatory=True)  # quest 1
     BUDEW_4 = InstanceEvent("m009_002", 8, mandatory=True)  # m3 jump out at burning log
-
+    #
     RATATA_4 = InstanceEvent("m010_003", 67, mandatory=True)  # m4 port
     TOXICROAK = InstanceEvent("m010_003", 81, mandatory=True)  # m4 port
-
+    #
     KRICKETOT = InstanceEvent("m008_006", 82, mandatory=True)  # before m5
     CRANIDOS = InstanceEvent("m009_002", 84)
     WARTORTLE_WITH_CRANIDOS = InstanceEvent("m009_002", 12)
-
+    #
     RAMPARDOS = InstanceEvent(
         "m016_004", 2, mandatory=True
     )  # could be removed kinda, the capture might be early?
-
+    #
     TURTWIG = InstanceEvent("m004_007", 52)  # after m6
     CROAGUNK = InstanceEvent("m002_001", 80, mandatory=True)  # m7
     CARNIVINE_2 = InstanceEvent("m001_005", 136, mandatory=True)  # 2 of them
-
+    #
     SLUGMA = InstanceEvent("m019_003", 140, mandatory=True)  # m8
     MAGCARGO = InstanceEvent("m019_003", 141, mandatory=True)  # m8 together with slugma
     KANGASKHAN = InstanceEvent("m019_004", 146, mandatory=True)  # m8
@@ -137,6 +137,8 @@ class PInstanceEvent(EventRegistry):
     RHYHORN_2 = InstanceEvent("m020_008", 149, mandatory=True)  # top of ship
     STUNKY_3 = InstanceEvent("m020_008", 144, mandatory=True)  # top of ship
     DRAPION = InstanceEvent("m020_008", 174, mandatory=True)  # top of ship
+    #
+    CHARMANDER = InstanceEvent("m019_002", 137)  # q013
     #
     #
     WAILORD = InstanceEvent("m029_009", 238, mandatory=True)

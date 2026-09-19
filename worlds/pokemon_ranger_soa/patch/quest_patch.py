@@ -35,18 +35,24 @@ def patch(
     # ]
     # # TODO change messages to replace combee for mon.name
 
+    # """quest 12"""
+    # mon = ...
+    # quest_12_push_cherrim = mon << 16 | 0x10
+    # QUEST_PATCHES["Q012"] += [
+    #     # PUSH 192		; @116
+    #     (116, quest_12_push_cherrim),
+    #     # 	PUSH 192		; @122
+    #     (122, quest_12_push_cherrim),
+    # ]
+
     """quest 35"""
-    if randomize_partner_species:
-        cranidos = 100
-        # will need to randomize: m009_002 NPC 9
-        wartortle_with_cranidos = 10
-        # randomize m009_002 NPC 10 ???
-        QUEST_PATCHES["q035"] += [
-            # PUSH 182		; @429
-            (429, cranidos << 16 | 0x10),
-            # PUSH 4		; @431
-            (431, wartortle_with_cranidos << 16 | 0x10),
-        ]
+    # if randomize_partner_species:
+    #     wartortle_with_cranidos = 4
+    #     # randomize m009_002 NPC 10 ???
+    #     QUEST_PATCHES["q035"] += [
+    #         # PUSH 4		; @431
+    #         (431, wartortle_with_cranidos << 16 | 0x10),
+    #     ]
 
     for chapter, writes in QUEST_PATCHES.items():
         file_name = f"/data/Script/quest/{chapter}.fsb"

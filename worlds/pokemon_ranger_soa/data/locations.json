@@ -65,7 +65,7 @@
   },
   "MISSION_08": {
     "label": "Mission 08: Look for Missing Barlow!",
-    "parent_region": "m041_001",
+    "parent_region": "m001_014",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -209,7 +209,7 @@
   },
   "QUEST_10": {
     "label": "Quest 10: Light the Leaves",
-    "parent_region": "m041_001",
+    "parent_region": "m001_002",
     "default_item": "Progressive Time Assist",
     "addresses": "0x020B2656",
     "flag": 1,
@@ -225,7 +225,7 @@
   },
   "QUEST_12": {
     "label": "Quest 12: Cherrim, Cherrim, Come to Us",
-    "parent_region": "m041_001",
+    "parent_region": "m015_001",
     "default_item": "Progressive Ghost Defense",
     "addresses": "0x020B2658",
     "flag": 1,
@@ -241,7 +241,7 @@
   },
   "QUEST_14": {
     "label": "Quest 14: That Smell of Muk",
-    "parent_region": "m041_001",
+    "parent_region": "m018_001",
     "default_item": "Progressive Poison Defense",
     "addresses": "0x020B265A",
     "flag": 1,
@@ -417,7 +417,7 @@
   },
     "QUEST_36": {
     "label": "Quest 36: Please Save Shieldon",
-    "parent_region": "m041_001",
+    "parent_region": "m016_003",
     "default_item": "Partner Pokemon - Shieldon",
     "addresses": "0x020B2670",
     "flag": 1,
@@ -537,7 +537,7 @@
   },
     "QUEST_51": {
     "label": "Quest 51: What Reporter Hans Forgot",
-    "parent_region": "m041_001",
+    "parent_region": "m008_006",
     "default_item": "Progressive Psychic Defense",
     "addresses": "0x020B2680",
     "flag": 1,

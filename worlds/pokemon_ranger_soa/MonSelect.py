@@ -299,7 +299,7 @@ class MonSelect:
     def missable(cls) -> MonSelect:
         m = MonSelect(
             include={
-                "m020_001": [*range(0, 13)],
+                "m020_001": [*range(0, 5)],
                 "m020_002": [*range(0, 13)],
                 "m020_016": [0],
             }
@@ -622,6 +622,11 @@ class MonSelect:
             PInstanceEvent.KANGASKHAN,
             PInstanceEvent.NUMEL_3,
             PInstanceEvent.MIME_JR,
+            PInstanceEvent.MAREEP_3,
+            PInstanceEvent.MAGCARGO_3,
+            PInstanceEvent.RHYHORN_2,
+            PInstanceEvent.STUNKY_3,
+            PInstanceEvent.DRAPION,
         ]
 
         return base
@@ -632,6 +637,15 @@ class MonSelect:
 
         base.include |= {"m020_010": [0], "m020_014": [0, 1]}
 
-        del base.exclude["m001_002"]  # charmander from the ship
+        del base.exclude["m001_002"]  # charmander are now present from the ship
+        # staraptor
+        del base.exclude["m003_001"]
+        del base.exclude["m007_001"]
+        base.include["m009_012"] = []
+        base.include["m014_001"] = []
+        base.include["m017_001"] = (
+            []
+        )  # unknown when the doduo here spawns atm, at latest now
+        base.include["m018_001"].append(3)
 
         return base

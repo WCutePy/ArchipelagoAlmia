@@ -143,6 +143,8 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
         start_level = pokemon.field_move.level
 
+        #  TODO the fieldmove rules currently DO NOT account that a pokemon can not use
+        #   their field move at all with the adequate level field move item unlock
         for j in range(1, start_level + 1):
             field_move = FieldMove(category=pokemon.field_move.category, level=j)
             current_rule = field_move_rules.get(field_move, None)
@@ -189,6 +191,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
                 )
                 world.set_rule(field_move_location, field_move_rule)
             except KeyError:
+                continue
                 logging.warning(
                     f"{field_move} is part of browser, but potentially not as capture - {party}"
                 )
@@ -294,14 +297,19 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
     )
 
-    for from_ in ["m001_005", "m001_014"]:
-        world.set_rule(
-            get_connection(world, from_, "m001_016"),
-            (
-                Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name)
-                & full_map.can_destroy_target("m001_005", 1)
-            ),
-        )  # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
+    #  a sequence break is still possible, but for now not considered in logic
+    #  for my personal preference it stays out of logic!!!
+    world.set_rule(
+        get_connection(world, "m001_005", "m001_016"),
+        False_(),
+    )
+    world.set_rule(
+        get_connection(world, "m001_014", "m001_016"),
+        (
+            Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name)
+            & full_map.can_destroy_target("m001_005", 1)
+        ),
+    )  # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
 
     for i in [0, 1, 2, 3]:
         world.set_rule(
@@ -1143,11 +1151,7 @@ def set_mission_7_rules(world: PokemonRSOA):
         Has(get_mission_event(6)),
     )
     for loc in [data.locations["QUEST_45"].label, get_quest_event(45)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(6))
-            & CanReachLocation(data.species[52].location_capture_name),
-        )
+        world.set_rule(get_location(world, loc), Has(get_mission_event(6)))
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.CROAGUNK.event_name),
@@ -1235,7 +1239,7 @@ def set_mission_8_rules(world: PokemonRSOA):
                 ),  # recharge 2 is meant as soft logic
             ]
         ]
-    )
+    )  # consider adding a required power scaling *before entering*
     world.set_rule(get_connection(world, "m019_004", "m019_002"), may_enter_ship)
 
     """m019_002"""
@@ -1244,11 +1248,62 @@ def set_mission_8_rules(world: PokemonRSOA):
 
     """ship m020_001"""
     world.set_rule(get_connection(world, "m020_001", "m020_016"), False_())
+    world.set_rule(get_connection(world, "m020_002", "m020_002"), False_())
+    world.set_rule(get_connection(world, "npc_m020_014", "m020_014"), False_())
+    world.set_rule(
+        get_connection(world, "m020_008", "m020_012"), False_()
+    )  # cutscene of valve
+    world.set_rule(get_connection(world, "m020_008", "m020_008"), False_())
 
-    #  consider editing eventrect 10..05
+    for loc in [data.locations["MISSION_08"].label, get_mission_event(8)]:
+        world.set_rule(
+            get_location(world, loc),
+            may_enter_ship & Has(get_mission_event(7)),  # add strength check?
+        )
 
-    # world.set_rule(get_connection(world, "m020_001", "m020_002"), False_())
-    # world.set_rule(get_connection(world, "m020_001", "m020_005"), False_())
+
+def set_mission_9_rules(world: PokemonRSOA):
+    all_maps = MonSelect.get_rules_scope()
+
+    for loc in [data.locations["QUEST_10"].label, get_quest_event(10)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(7))
+            & all_maps.can_destroy_target("m001_002", 2)
+            & all_maps.can_destroy_target("m001_002", 8)
+            & all_maps.can_destroy_target("m001_002", 9),
+        )
+
+    for loc in [data.locations["QUEST_12"].label, get_quest_event(12)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(7))
+            & Has(data.species[48].event_can_capture(form=192))
+            & CanReachLocation(data.species[48].location_capture_name),
+        )
+
+    for loc in [data.locations["QUEST_13"].label, get_quest_event(13)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(7))
+            & all_maps.can_destroy_target("m019_002", 4)
+            & all_maps.can_destroy_target("m019_002", 5),
+            #  beating the charmander mon
+        )
+
+    for loc in [data.locations["QUEST_14"].label, get_quest_event(14)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(7))
+            & Has(data.species[152].event_can_capture(form=45))
+            & CanReachLocation(data.species[152].location_capture_name),
+        )
+
+    for loc in [data.locations["QUEST_36"].label, get_quest_event(36)]:
+        world.set_rule(get_location(world, loc), Has(get_mission_event(7)))
+
+    for loc in [data.locations["QUEST_51"].label, get_quest_event(51)]:
+        world.set_rule(get_location(world, loc), Has(get_mission_event(7)))
 
 
 def set_completion_condition(world) -> None:
