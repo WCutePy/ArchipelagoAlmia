@@ -217,6 +217,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
         6: set_mission_6_rules,
         7: set_mission_7_rules,
         8: set_mission_8_rules,
+        9: set_mission_9_rules,
     }
 
     up_to_mission = world.options.mission_clear_target.value
@@ -1304,6 +1305,143 @@ def set_mission_9_rules(world: PokemonRSOA):
 
     for loc in [data.locations["QUEST_51"].label, get_quest_event(51)]:
         world.set_rule(get_location(world, loc), Has(get_mission_event(7)))
+
+    """chroma"""
+
+    world.set_rule(
+        get_connection(world, "m014_001", "m021_001"), Has(get_mission_event(7))
+    )
+
+    for i, j in [(14, 0), (15, 2), (16, 3)]:
+        # target numbers are fully a guess, but all same trees so likely irrelevant
+        world.set_rule(
+            get_pokemon_instance(world, "m021_001", i),
+            all_maps.can_destroy_target("m021_001", j),
+        )
+
+    for to in ["m014_004", "m014_005"]:
+        world.set_rule(get_connection(world, "m021_001", to), False_())
+
+    for i in [8, 10]:
+        world.set_rule(
+            get_pokemon_instance(world, "m022_001", i),
+            all_maps.can_destroy_target("m022_001", 6),
+        )
+
+    world.set_rule(
+        get_pokemon_instance(world, "m022_001", 0),
+        all_maps.can_use_field_move(FieldMove(FieldMoveCategory.DEMIST, 1)),
+    )
+
+    world.set_rule(
+        get_connection(world, "m022_001", "m022_003"),
+        all_maps.can_destroy_target("m022_001", 6),
+    )
+
+    for to in ["m022_004", "m023_018"]:
+        world.set_rule(get_connection(world, "m022_001", to), False_())
+
+    """enter ruins"""
+    world.set_rule(
+        get_connection(world, "m022_002", "m023_001"),
+        all_maps.can_destroy_target("m022_002", 1),
+    )
+
+    can_elevate = all_maps.can_use_field_move(FieldMove(FieldMoveCategory.ELEVATE, 1))
+    world.set_rule(get_connection(world, "m023_001", "m023_002"), can_elevate)
+
+    world.set_rule(
+        get_connection(world, "m023_003", "m023_005"),
+        all_maps.can_destroy_target("m023_003", 0),
+    )
+
+    world.set_rule(
+        get_connection(world, "m023_004", "m023_006"),
+        all_maps.can_use_field_move(FieldMove(FieldMoveCategory.FLASH, 1))
+        & all_maps.can_destroy_target("m023_004", 0)
+        & has_field_move_item(world, FieldMove(FieldMoveCategory.ELEVATE, 1)),
+        #  might need to tag on can_elevate, not sure
+    )
+
+    world.set_rule(
+        get_connection(world, "m023_006", "m023_008"),
+        all_maps.can_destroy_target("m023_006", 0),
+    )
+
+    world.set_rule(
+        get_connection(world, "m023_007", "m023_009"),
+        all_maps.can_use_field_move(FieldMove(FieldMoveCategory.FLASH, 1))
+        & (
+            all_maps.can_destroy_target("m023_007", 0)
+            | all_maps.can_destroy_target("m023_007", 1)
+        ),
+    )
+
+    world.set_rule(
+        get_connection(world, "m023_009", "m023_011"),
+        all_maps.can_destroy_target("m023_009", 0),
+    )
+
+    for i in []:
+        world.set_rule(
+            get_pokemon_instance(world, "m023_013", i),
+            all_maps.can_destroy_target("m023_011", 0),
+        )
+
+    south_b1 = CanReachRegion(world.modified_regions["m023_013"].HUMAN_NAME)
+    world.set_rule(get_pokemon_instance(world, "m023_006", 3), south_b1)
+    world.set_rule(get_connection(world, "m023_006", "m023_011"), south_b1)
+
+    world.set_rule(
+        get_connection(world, "m023_006", "m023_010"),
+        south_b1 & all_maps.can_destroy_target("m023_006", 1),
+    )
+
+    access_stink_cutscene_room = all_maps.can_destroy_target(
+        "m023_011", 0
+    ) & all_maps.can_destroy_target("m023_013", 0)
+    world.set_rule(
+        get_connection(world, "m023_013", "m023_014"),
+        access_stink_cutscene_room,
+    )
+
+    world.set_rule(
+        get_pokemon_instance(world, "m023_013", 1),
+        all_maps.can_destroy_target("m023_011", 0),
+    )
+    world.set_rule(
+        get_pokemon_instance(world, "m023_013", 0), access_stink_cutscene_room
+    )
+
+    can_stink = all_maps.can_use_field_move(
+        field_move=FieldMove(FieldMoveCategory.STINK, 1)
+    )
+    world.set_rule(get_connection(world, "m023_014", "m023_015"), can_stink)
+    #  unknown when koffings are accessble in m023_014
+
+    world.set_rule(
+        get_connection(world, "m023_015", "m023_016"), True_()  # beat spiritomb
+    )
+
+    try:
+        world.set_rule(
+            get_pokemon_instance(world, "m023_016", 0),
+            all_maps.can_destroy_target("m023_016", 0),
+        )
+    except:
+        pass
+
+    #  this automatically leads to all others maps that are unlisted, and set to False_() from m022_001
+
+    world.set_rule(get_connection(world, "npc_m022_004", "m004_006"), False_())
+
+    for loc in [data.locations["MISSION_09"].label, get_mission_event(9)]:
+        world.set_rule(
+            get_location(world, loc),
+            CanReachRegion(
+                world.modified_regions["m022_004"].HUMAN_NAME
+            ),  # add strength check?
+        )
 
 
 def set_completion_condition(world) -> None:

@@ -295,6 +295,72 @@ def patch(
             "You need unlocks for the[E]following field moves:[R]"
             "Tackle 2, Cut 2, Flash, ..."
         )
+
+    # """mission 9"""
+    # """Makes it so that the bastiodon pokemon can not be blocked off from ever being unlocked.
+    # Opening the ruins removes the fog, but does not remove the fog blocking access to bastiodon.
+    # Clearing the mission and moving to the next chapter does not remove this fog either.
+    # As such the fog checks need to be moved away from chapter and event variables to
+    # the settings variable. The alternate is removing the fog on the chapter complete, but that
+    # reduces the demist usage to virtually 0 when randomized.
+    # The current patch has keith not use one of his dialogue, as it is based on event variables.
+    # """
+    # so far it is unknown if ones chapter scripts can be called from a different chapter.
+    #
+    # This would change the fog being destroyed to a settings variable.
+    # CHAPTER_PATCHES["c043"] += [
+    #     # 	PUSH 3		; @6911
+    #     # 	PUSH 0		; @6912
+    #     # 	SYSCALL 2, 132, 2		;syscall_2_132 @6913
+    #     (6911, 0x00_03_00_10),
+    #     (6912, 0x00_13_00_10),
+    #     (6913, 0x08_86_02_01),
+    # ]
+    #
+    # changing this influences when the fog disappears. However it is still
+    # unknown what check is truly used to determine things.
+    # FIELD_MAP_PATCHES["m022_001"] += [
+    #     # 	PUSH 3		; @55
+    #     (55, 0x00_01_00_10)
+    # ]
+
+    """mission 9"""
+    if field_move_item:
+        """
+        This will have the player be blocked from jumping down the first hole in the Chroma Ruins
+        until they have elevate unlocked, preventing a potential soft lock, and in the case
+        that they are lucky enough to make it to the save machine and actually save there a hard lock.
+
+        Currently makes use of settings var 21, by settings its first bit to 1.
+        Currently unknown if this var sees any use ingame.
+        """
+        file_name = "/data/Script/field/eventrect/er023/EventRect023027.fsb"
+        from ._data import EventRect023027
+
+        rom.files[file_name] = EventRect023027
+
+        mes = message_file_to_json(rom, "chapter", "chapter043_mes_us")
+        EDITED_MES["chapter"]["chapter043_mes_us"] = mes
+
+        mes[14] = (
+            f"[W:01][C:4]Sven[C:2][W:00]:[E]Whoa! Careful from up there![R]"
+            "Without knowing Elevate there is NO[E] getting out of here![R]"
+            "Come back later when you get it.[E]And bring a light, it's bloody dark in here"
+        )
+
+    """mission 9"""
+    """Allows any skuntank to be needed in the party, rather than only
+        the specific skuntank to be able to continue to using stink.
+    """
+    CHAPTER_PATCHES["c043"] += [
+        #  PUSH32 17563648		; @12747
+        (12747, 0x0),
+        (12748, 0x00_CE_00_10),
+        # #  SYSCALL 2, 142, 1		;syscall_2_142 @12749
+        (12749, 0x08_8D_01_01),
+        # (12751, 0x00_10_00_10)
+    ]
+
     """partner patches"""
 
     partners = prsoa_patch_instance.files.get("partners.txt")

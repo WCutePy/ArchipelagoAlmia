@@ -299,6 +299,14 @@ class MonSelect:
     def missable(cls) -> MonSelect:
         m = MonSelect(
             include={
+                "m001_004": [0, 1],
+                "m001_006": [0, 1],
+                "m001_007": [0, 1, 2, 3],
+                "m001_008": [0, 1, 2, 3, 4],
+                "m001_011": [0, 1, 2, 3],  # technically not missable but one time
+                "m009_002": [12, 14, 15],  # should be correct with logic
+                "m009_010": [0, 1, 2, 3, 4],  # salamence is likely not missable
+                # and if the script can use some random number generator, none are missable.
                 "m020_001": [*range(0, 5)],
                 "m020_002": [*range(0, 13)],
                 "m020_016": [0],
@@ -307,6 +315,13 @@ class MonSelect:
 
         if MonSelect.get_rule_num() == 6:
             m.include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
+
+        if MonSelect.get_rule_num() >= 9:
+            if (
+                cls.world.options.randomize_pokemon
+                != RandomizePokemonEncounters.option_vanilla
+            ):
+                m.include["m022_001"] = [0]
 
         return m
 
@@ -337,6 +352,12 @@ class MonSelect:
             include={
                 "m001_006": [0, 1],  # make it so these are random just
                 # more appropriate in the future (pichu)
+                "m001_008": [
+                    0,
+                    3,
+                ],  # this is to make sure the field move is present. Make different!
+                "m001_011": [0, 1, 2, 3],
+                "m001_013": [0],
                 "m006_001": [5],  # zubat can be randomized when
                 # randomizing the event encounter attached
                 "m011_005": [5],  # sharpedo
@@ -401,6 +422,7 @@ class MonSelect:
             6: cls.goal_mission_6,
             7: cls.goal_mission_7,
             8: cls.goal_mission_8,
+            9: cls.goal_mission_9,
         }
         return goals[cls.get_rule_num()]()
 
@@ -602,6 +624,7 @@ class MonSelect:
             "m019_004": [],  #
             "m019_002": [],
             "m019_016": [],
+            "m019_010": [],
             "m020_001": [],
             "m020_002": [],
             "m020_013": [],
@@ -635,10 +658,41 @@ class MonSelect:
     def goal_mission_9(cls) -> MonSelect:
         base = cls.goal_mission_8()
 
-        base.include |= {"m020_010": [0], "m020_014": [0, 1]}
+        base.include |= {
+            "m020_010": [0],
+            "m020_014": [0, 1],
+            "m021_001": [],
+            "m021_002": [],
+            "m022_001": [],
+            # post koffing_3, 2, 5, 4, 3, 1, 8, 10, 0
+            "m022_003": [],
+            "m022_002": [1],
+            "m023_001": [],
+            "m023_002": [],
+            "m023_003": [],
+            "m023_004": [],
+            "m023_005": [],
+            "m023_006": [],
+            "m023_007": [],
+            "m023_008": [],
+            "m023_009": [],
+            "m023_010": [],
+            "m023_011": [],
+            "m023_012": [],
+            "m023_013": [],
+            "m023_015": [],
+            "m023_016": [],
+        }
+
+        if (
+            cls.world.options.randomize_pokemon
+            == RandomizePokemonEncounters.option_vanilla
+        ):
+            base.exclude["m023_010"] = []
+            base.exclude["m023_016"] = []
 
         del base.exclude["m001_002"]  # charmander are now present from the ship
-        # staraptor
+        # staraptor's are now available
         del base.exclude["m003_001"]
         del base.exclude["m007_001"]
         base.include["m009_012"] = []
@@ -647,5 +701,20 @@ class MonSelect:
             []
         )  # unknown when the doduo here spawns atm, at latest now
         base.include["m018_001"].append(3)
+
+        base.exclude |= {
+            "m021_001": [6],
+            "m022_003": [1],
+            "m023_014": [],  # idk when this spawns
+        }  # vespiqueen, probably quest related
+
+        base.event_mon += [
+            PInstanceEvent.CHARMANDER,
+            PInstanceEvent.MURKROW_3,
+            PInstanceEvent.KOFFING_3,
+            PInstanceEvent.MURKROW_2,
+            PInstanceEvent.KOFFING_2,
+            PInstanceEvent.SPIRITOMB,
+        ]
 
         return base

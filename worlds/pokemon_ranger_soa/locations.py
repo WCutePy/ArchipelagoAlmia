@@ -198,6 +198,11 @@ def create_pokemon_locations(
         142,  # drifloon
         142,  # drifloon numba 2!
         48,  # cherrim
+        152,  # muk quest
+        143,  # drifblim
+        194,  # sandshrew tunnel
+        145,  # skuntank stink
+        160,  # gallade for registeel
     ]
 
     ocean_captures = [

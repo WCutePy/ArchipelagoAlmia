@@ -73,7 +73,7 @@
   },
   "MISSION_09": {
     "label": "Mission 09: Support Sven at the Ruins!",
-    "parent_region": "m041_001",
+    "parent_region": "m022_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -233,7 +233,7 @@
   },
   "QUEST_13": {
     "label": "Quest 13: Team Dim Sun's Appetite",
-    "parent_region": "m041_001",
+    "parent_region": "m019_002",
     "default_item": "Progressive Recovery",
     "addresses": "0x020B2659",
     "flag": 1,

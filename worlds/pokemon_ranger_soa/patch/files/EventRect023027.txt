@@ -1,0 +1,72 @@
+
+evententer:
+    push 21;
+    SYSCALL 2, 133, 1;
+    PUSHRESULT;
+    PUSH 1;
+    AND;
+    PUSH 0;
+    IS_EQ;
+    JZ loc_8;
+    PUSH 1		; @1160
+	PUSH 1		; @1161
+	PUSH 14		; @1162
+	PUSH 2		; @1163
+	SYSCALL 2, 24, 4		;printmsg @1164
+
+loc_1165:
+	SYSCALL 2, 25, 0		;waitmsg @1165
+	PUSHRESULT 		; @1166
+	JNZW loc_1165		; @1167
+	SYSCALL 2, 26, 0		;closemsg @1168
+    PUSH 0		; @32
+	RETURN 1, 2		; @33
+
+loc_8:
+	SYSCALL 14, 5, 0		;sc14_unk_0x0005 @8
+	PUSH 8192		; @9
+	PUSH 0		; @10
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @11
+	PUSH 30		; @12
+	SYSCALL 2, 107, 1		;sc2_unk_0x006b @13
+
+loc_14:
+	SYSCALL 2, 111, 0		;sc2_unk_0x006f @14
+	PUSHRESULT 		; @15
+	JNZW loc_14		; @16
+	SYSCALL 2, 117, 0		;sc2_unk_0x0075 @17
+	PUSHRESULT 		; @18
+	PUSH 0		; @19
+	IS_EQ 		; @20
+	JZ loc_24		; @21
+	PUSHSTRING 0		; @22
+	SYSCALL 2, 116, 1		;strcpy2debugbuffer2 @23
+
+loc_24:
+	SYSCALL 14, 6, 0		;sc14_unk_0x0006 @24
+	PUSHSTRING 10		; @25
+	SYSCALL 0, 3, 1		;debug_printf @26
+	PUSH -1		; @27
+	PUSH 144		; @28
+	PUSH 224		; @29
+	PUSH 186		; @30
+	SYSCALL 2, 115, 4		;setplayerspawn @31
+	PUSH 0		; @32
+	RETURN 1, 2		; @33
+
+eventleave:
+	PUSHSTRING 33		; @34
+	SYSCALL 0, 3, 1		;debug_printf @35
+	PUSH 0		; @36
+	RETURN 1, 2		; @37
+
+;Functions:
+.func evententer
+.func eventleave
+
+;Symbols:
+
+;Strings:
+.asciiz "sFallDown"		;10
+.asciiz "EventRectEnter 023027\0a"		;33
+.asciiz "EventRectLeave 009003\0a"		;56

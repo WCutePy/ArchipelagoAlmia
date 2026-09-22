@@ -245,6 +245,46 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     last_one = {"m020_016": [0]}
     apply_place_on_random(world, last_one, world.random.choice(tackle_2_options))
 
+    """mission 9 drifblim"""
+    max_health = 5000
+    options = {
+        "m023_006": [0, 1, 2],
+        "m023_007": [0, 1],
+    }
+    elevate_users = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.ELEVATE, level=1), max_health
+    )
+    out = apply_place_on_random(world, options, world.random.choice(elevate_users))
+    world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+
+    # m023_011 - 7, 0, 4
+    # m023_013 - 2, 4, 3
+
+    m023_013 = [2, 3, 4]
+    options = {"m023_013": m023_013}
+    out = apply_place_on_random(world, options, world.random.choice(elevate_users))
+    world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+    m023_013.remove(out[1])
+
+    options = {
+        "m023_011": [1, 2, 3, 5, 6],
+    }
+    crush_2 = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.CRUSH, level=2), max_health
+    )
+    out = apply_place_on_random(world, options, world.random.choice(crush_2))
+    options[out[0]].remove(out[1])
+
+    options["m023_011"] += [0, 4, 7]
+    options["m023_013"] = m023_013
+
+    out = apply_place_on_random(world, options, world.random.choice(elevate_users))
+    world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+
+    options = {"m023_015": [0, 1]}
+    out = apply_place_on_random(world, options, world.random.choice(elevate_users))
+    world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     my_progression_items = [
@@ -458,8 +498,10 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
             ("m020_006", 2),
             ("m020_009", 8),
             ("m001_014", 8),
-        ],  # m8  # m8  # barlow Makuhita
+        ],  # m8 barlow Makuhita
+        #  skipped out on the Wendy Staraptor, as it's flying, requires testing
         [("m017_004", 13)],  # m9 keith Buizel
+        [("m023_014", 12)],  # m9 sven Luxray
     ]
 
     if world.modified_regions["m020_013"].modified:

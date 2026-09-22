@@ -139,7 +139,11 @@ class PInstanceEvent(EventRegistry):
     DRAPION = InstanceEvent("m020_008", 174, mandatory=True)  # top of ship
     #
     CHARMANDER = InstanceEvent("m019_002", 137)  # q013
-    #
+    MURKROW_3 = InstanceEvent("m022_001", 185, mandatory=True)  # m9 enter highlands
+    KOFFING_3 = InstanceEvent("m022_001", 187, mandatory=True)
+    MURKROW_2 = InstanceEvent("m022_001", 185, mandatory=True)  # with koffing 2
+    KOFFING_2 = InstanceEvent("m022_001", 187, mandatory=True)  # with murkrow 2
+    SPIRITOMB = InstanceEvent("m023_015", 196, mandatory=True)  # bossfight
     #
     WAILORD = InstanceEvent("m029_009", 238, mandatory=True)
 

@@ -26,4 +26,4 @@
 0x28 - 40 - Post mission 8 next day screen
 0x29 - 41 - Post mission 8
 0x2A - 42 - Post mission 8 in ranger union screen
-0x2B - 43 -
+0x2B - 43 - Mission 9
