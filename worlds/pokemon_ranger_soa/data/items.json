@@ -487,7 +487,7 @@
         "copies": 10
     },
     {
-        "label": "Progressive Cut",
+        "label": "Progressive Cut Unlock",
         "item_id": 10001,
         "classification": 1,
         "item_categories": [
@@ -498,7 +498,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Crush",
+        "label": "Progressive Crush Unlock",
         "item_id": 10002,
         "classification": 1,
         "item_categories": [
@@ -509,7 +509,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Psy Power",
+        "label": "Progressive Psy Power Unlock",
         "item_id": 10003,
         "classification": 1,
         "item_categories": [
@@ -520,7 +520,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Tackle",
+        "label": "Progressive Tackle Unlock",
         "item_id": 10004,
         "classification": 1,
         "item_categories": [
@@ -531,7 +531,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Electrify",
+        "label": "Progressive Electrify Unlock",
         "item_id": 10005,
         "classification": 1,
         "item_categories": [
@@ -542,7 +542,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Soak",
+        "label": "Progressive Soak Unlock",
         "item_id": 10006,
         "classification": 1,
         "item_categories": [
@@ -553,7 +553,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Burn",
+        "label": "Progressive Burn Unlock",
         "item_id": 10007,
         "classification": 1,
         "item_categories": [
@@ -564,7 +564,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Tunnel",
+        "label": "Tunnel Unlock",
         "item_id": 10008,
         "classification": 1,
         "item_categories": [
@@ -575,7 +575,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Recharge",
+        "label": "Progressive Recharge Unlock",
         "item_id": 10009,
         "classification": 1,
         "item_categories": [
@@ -586,7 +586,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Agility",
+        "label": "Agility Unlock",
         "item_id": 10010,
         "classification": 1,
         "item_categories": [
@@ -597,7 +597,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Fly",
+        "label": "Fly Unlock",
         "item_id": 10011,
         "classification": 1,
         "item_categories": [
@@ -608,7 +608,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Teleport",
+        "label": "Teleport Unlock",
         "item_id": 10012,
         "classification": 1,
         "item_categories": [
@@ -619,7 +619,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Rain Dance",
+        "label": "Rain Dance Unlock",
         "item_id": 10013,
         "classification": 1,
         "item_categories": [
@@ -630,7 +630,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Demist",
+        "label": "Demist Unlock",
         "item_id": 10014,
         "classification": 1,
         "item_categories": [
@@ -641,7 +641,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Flash",
+        "label": "Flash Unlock",
         "item_id": 10015,
         "classification": 1,
         "item_categories": [
@@ -652,7 +652,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Airlift",
+        "label": "Airlift Unlock",
         "item_id": 10016,
         "classification": 1,
         "item_categories": [
@@ -663,7 +663,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Elevate",
+        "label": "Elevate Unlock",
         "item_id": 10017,
         "classification": 1,
         "item_categories": [
@@ -674,7 +674,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Stink",
+        "label": "Stink Unlock",
         "item_id": 10018,
         "classification": 1,
         "item_categories": [
@@ -685,7 +685,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Sand Fill",
+        "label": "Sand Fill Unlock",
         "item_id": 10019,
         "classification": 1,
         "item_categories": [
@@ -696,7 +696,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive River Flow",
+        "label": "Progressive River Flow Unlock",
         "item_id": 10021,
         "classification": 1,
         "item_categories": [
@@ -707,7 +707,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Magma Flow",
+        "label": "Magma Flow Unlock",
         "item_id": 10022,
         "classification": 1,
         "item_categories": [
@@ -718,7 +718,7 @@
         "copies": 1
     },
     {
-        "label": "Progressive Swim",
+        "label": "Swim Unlock",
         "item_id": 10023,
         "classification": 1,
         "item_categories": [
@@ -729,7 +729,7 @@
         "copies": 1
     },
         {
-        "label": "Progressive Dark Power",
+        "label": "Dark Power Unlock",
         "item_id": 10024,
         "classification": 1,
         "item_categories": [

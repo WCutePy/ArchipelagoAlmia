@@ -449,7 +449,6 @@ def patch(
             ),
         ]
 
-        """untested from here!!!"""
         kricketot = 314
         CHAPTER_PATCHES["c029"] += [
             # PUSH 175		; @3670
@@ -487,7 +486,25 @@ def patch(
             (359, shieldon << 16 | 0x10),
         ]
 
-    unlock_partner_as_items = True
+        chimchar = 320
+        QUEST_PATCHES["q037"] += [
+            # PUSH 164		; @604
+            (604, chimchar << 16 | 0x10)
+        ]
+
+        piplup = 321
+        QUEST_PATCHES["q045"] += [
+            # PUSH 167		; @478
+            (478, piplup << 16 | 0x10)
+        ]
+
+        snover = 322
+        QUEST_PATCHES["q039"] += [
+            # 	PUSH 226		; @671
+            (671, snover << 16 | 0x10)
+        ]
+
+    unlock_partner_as_items = True  # TODO make option!
     if unlock_partner_as_items:
 
         """Makes cranidos automatically leave"""
@@ -505,6 +522,21 @@ def patch(
         QUEST_PATCHES["q036"] += [
             # 	PUSH 1		; @845
             (845, 0x00_CF_00_08)
+        ]
+
+        QUEST_PATCHES["q037"] += [
+            # PUSH 1		; @1121
+            (1121, 0x00_CE_00_08)
+        ]
+
+        QUEST_PATCHES["q045"] += [
+            # PUSH 1		; @987
+            (987, 0x00_D1_00_08)
+        ]
+
+        QUEST_PATCHES["q039"] += [
+            # 	PUSH 1		; @1257
+            (1257, 0x00_D1_00_08)
         ]
 
     early_staraptor = True

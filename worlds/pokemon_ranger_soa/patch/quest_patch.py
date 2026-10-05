@@ -1,10 +1,10 @@
 import logging
 import zipfile
 from collections import defaultdict
-
 from ..apnds.rom import Rom
 
 from .base_patch import patch_script_in_place_four_bytes
+from .map_patch import CompactMapData
 
 
 def write_patch(
@@ -45,14 +45,33 @@ def patch(
     #     (122, quest_12_push_cherrim),
     # ]
 
-    """quest 35"""
-    # if randomize_partner_species:
-    #     wartortle_with_cranidos = 4
-    #     # randomize m009_002 NPC 10 ???
-    #     QUEST_PATCHES["q035"] += [
-    #         # PUSH 4		; @431
-    #         (431, wartortle_with_cranidos << 16 | 0x10),
-    #     ]
+    # """quest 35"""
+    # wartortle_with_cranidos = 4
+    # # randomize m009_002 NPC 10 ???
+    # QUEST_PATCHES["q035"] += [
+    # # PUSH 4		; @431
+    # (431, wartortle_with_cranidos << 16 | 0x10),
+    # ]
+
+    # # """quest 16"""
+    # # somehow seems to not be functional code!!!
+    # m021_001 = CompactMapData.from_map_name(prsoa_patch_instance, "m021_001")
+    # vespiqueen = m021_001.pokemon[6]
+    # combee = m021_001.pokemon[14]
+    # QUEST_PATCHES["q016"] += [
+    #     # PUSH 187		; @516
+    #     (516, vespiqueen << 16 | 0x10),
+    #     # PUSH 186		; @518
+    #     (518, combee << 16 | 0x10),
+    #     # PUSH 186		; @520
+    #     (520, combee << 16 | 0x10),
+    #     # PUSH 187		; @918
+    #     (918, vespiqueen >> 16 | 0x10),
+    #     # PUSH 186		; @920
+    #     (920, combee << 16 | 0x10),
+    #     # PUSH 186		; @922
+    #     (922, combee << 16 | 0x10),
+    # ]
 
     for chapter, writes in QUEST_PATCHES.items():
         file_name = f"/data/Script/quest/{chapter}.fsb"

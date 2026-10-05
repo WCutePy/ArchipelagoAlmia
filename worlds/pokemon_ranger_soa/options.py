@@ -284,7 +284,7 @@ class FieldMoveLevelItem(Range):
 class RandomizePokemonEncounters(Choice):
     """
     Randomizes wild Pokémon encounters and static
-    story encounters.
+    story/quest encounters.
     Not all wild or static encounters are necessarily included
     at the time due to technical limitations.
     """
@@ -309,7 +309,7 @@ class RandomizePokemonEtc(Choice):
     option_vanilla = 0
     option_full_random = 1
 
-    default = option_vanilla
+    default = option_full_random
 
 
 class RandomizePartners(Choice):

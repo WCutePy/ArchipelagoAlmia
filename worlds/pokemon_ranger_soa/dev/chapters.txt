@@ -27,3 +27,14 @@
 0x29 - 41 - Post mission 8
 0x2A - 42 - Post mission 8 in ranger union screen
 0x2B - 43 - Mission 9
+0x2C - 44 - Next day screen
+0x2D - 45 - Pre mission 10, brighton
+0x2E - 46 - Pre mission 10, crysta cave
+0x2F - 47 - Next day screen
+0x30 - 48 - Mission 10
+0x31 - 49 - Next day screen
+0x32 - 50 - Blue gem section
+0x33 - 51 - Left ranger union, Mission 11
+0x34 - 52 - Post mission 11, entered ranger union
+0x35 - 53 - Left ranger union, Mission 12
+0x36 - 54 - Mission 13, oil field hideout

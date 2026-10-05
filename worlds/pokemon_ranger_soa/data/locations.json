@@ -81,7 +81,7 @@
   },
   "MISSION_10": {
     "label": "Mission 10: Get the Blue Gem!",
-    "parent_region": "m041_001",
+    "parent_region": "m028_023",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -89,7 +89,7 @@
   },
   "MISSION_11": {
     "label": "Mission 11: Get the Red Gem!",
-    "parent_region": "m041_001",
+    "parent_region": "m019_012",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -97,7 +97,7 @@
   },
   "MISSION_12": {
     "label": "Mission 12: Rescue Wailord!",
-    "parent_region": "m041_001",
+    "parent_region": "m029_001",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -233,7 +233,7 @@
   },
   "QUEST_13": {
     "label": "Quest 13: Team Dim Sun's Appetite",
-    "parent_region": "m019_002",
+    "parent_region": "m018_001",
     "default_item": "Progressive Recovery",
     "addresses": "0x020B2659",
     "flag": 1,
@@ -249,7 +249,7 @@
   },
   "QUEST_15": {
     "label": "Quest 15: Dim...Sun...Come Back...",
-    "parent_region": "m041_001",
+    "parent_region": "m010_001",
     "default_item": "Progressive Ice Defense",
     "addresses": "0x020B265B",
     "flag": 1,
@@ -257,7 +257,7 @@
   },
   "QUEST_16": {
     "label": "Quest 16: Apologies to Vespiquen",
-    "parent_region": "m041_001",
+    "parent_region": "m021_001",
     "default_item": "Energy Plus",
     "addresses": "0x020B265C",
     "flag": 1,
@@ -265,7 +265,7 @@
   },
   "QUEST_17": {
     "label": "Quest 17: Lonely Chingling",
-    "parent_region": "m041_001",
+    "parent_region": "m010_022",
     "default_item": "Progressive Dragon Defense",
     "addresses": "0x020B265D",
     "flag": 1,
@@ -273,7 +273,7 @@
   },
   "QUEST_18": {
     "label": "Quest 18: Abomasnow Research",
-    "parent_region": "m041_001",
+    "parent_region": "m025_001",
     "default_item": "Progressive Fighting Defense",
     "addresses": "0x020B265E",
     "flag": 1,
@@ -281,7 +281,7 @@
   },
     "QUEST_19": {
     "label": "Quest 19: Melt The Ice",
-    "parent_region": "m041_001",
+    "parent_region": "m025_002",
     "default_item": "Progressive Water Defense",
     "addresses": "0x020B265F",
     "flag": 1,
@@ -289,7 +289,7 @@
   },
     "QUEST_20": {
     "label": "Quest 20: Drifblim's Moving Service",
-    "parent_region": "m041_001",
+    "parent_region": "m010_002",
     "default_item": "Progressive Power Plus",
     "addresses": "0x020B2660",
     "flag": 1,
@@ -297,7 +297,7 @@
   },
     "QUEST_21": {
     "label": "Quest 21: Secure The Hidden Harbor",
-    "parent_region": "m041_001",
+    "parent_region": "m018_005",
     "default_item": "Progressive Fire Defense",
     "addresses": "0x020B2661",
     "flag": 1,
@@ -305,7 +305,7 @@
   },
     "QUEST_22": {
     "label": "Quest 22: Thaw The Frozen Door",
-    "parent_region": "m041_001",
+    "parent_region": "m026_001",
     "default_item": "Progressive Normal Defense",
     "addresses": "0x020B2662",
     "flag": 1,
@@ -425,7 +425,7 @@
   },
     "QUEST_37": {
     "label": "Quest 37: Please Save Chimchar",
-    "parent_region": "m041_001",
+    "parent_region": "m022_001",
     "default_item": "Partner Pokemon - Chimchar",
     "addresses": "0x020B2671",
     "flag": 1,
@@ -441,7 +441,7 @@
   },
     "QUEST_39": {
     "label": "Quest 39: Snover's Mysterious Presence",
-    "parent_region": "m041_001",
+    "parent_region": "m019_005",
     "default_item": "Partner Pokemon - Snover",
     "addresses": "0x020B2673",
     "flag": 1,
@@ -481,7 +481,7 @@
   },
     "QUEST_44": {
     "label": "Quest 44: Please Save Piplup",
-    "parent_region": "m041_001",
+    "parent_region": "m026_001",
     "default_item": "Partner Pokemon - Piplup",
     "addresses": "0x020B2679",
     "flag": 1,

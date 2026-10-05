@@ -60,7 +60,7 @@ def attach_pokemon_encounter(
         browser_name = get_instance_browser(instance_name)
         item_name = species.event_add_to_browser(form=spawn_data.SPECIES_ID)
         if place_locked:
-            world.capture_groups.default_ids_used.add(species.browser_id)
+            world.capture_groups.one_time_ids.add(species.browser_id)
     else:
         browser_name = get_instance_capture(instance_name)
         item_name = species.event_can_capture(party=party, form=spawn_data.SPECIES_ID)
@@ -184,7 +184,10 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
             regions[event.map_name],
         )
         regions[event.event_name] = p_region
-        world.capture_groups.default_ids_used.add(pokemon.browser_id)
+        if event.one_time:
+            world.capture_groups.one_time_ids.add(pokemon.browser_id)
+        else:
+            raise ValueError("not yet supported to have not one time events")
 
     regions["Events"] = Region("Events", world.player, world.multiworld)
     regions["Overworld"].connect(regions["Events"], "Events region")

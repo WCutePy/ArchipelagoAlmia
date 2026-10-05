@@ -44,6 +44,8 @@ def form_options_by_criteria(
     lowest_health: int | None = None
 
     for species in world.modified_species.values():
+        if species.browser_id in world.blacklisted_captures:
+            continue
         if field_move.category != species.field_move.category:
             continue
         if exact and field_move.level != species.field_move.level:
@@ -140,20 +142,32 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     # mime jr
     place_npc(world, ("m008_008", 4), 318)
     place_npc(world, ("m001_014", 7), 318)
-    # place_npc(world, ("m018_001", 21), 318) unsure if this is the partner mime jr or not!!!
     place_npc(world, ("m019_002", 15), 318)
     place_npc(world, ("m020_002", 0), 318)
     place_npc(world, ("m020_005", 1), 318)
     place_npc(world, ("m020_009", 7), 318)
     place_npc(world, ("m020_014", 0), 318)
     place_npc(world, ("m020_016", 1), 318)
+    place_npc(world, ("m018_001", 21), 318)  # post capture and such
 
     # shieldon
     place_npc(world, ("m008_006", 9), 319)
     place_npc(world, ("m016_003", 1), 319)
 
-    ...
+    # chimchar
+    place_npc(world, ("m008_008", 1), 320)
+    place_npc(world, ("m022_001", 4), 320)
 
+    # piplup
+    place_npc(world, ("m008_008", 7), 321)
+    place_npc(world, ("m026_001", 10), 321)
+
+    # snover
+    place_npc(world, ("m008_008", 3), 321)
+    place_npc(world, ("m019_005", 1), 321)
+
+    ...
+    #  TODO change the partner encounter events
     world.modified_partners = starters + partners
 
 
@@ -254,6 +268,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     elevate_users = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.ELEVATE, level=1), max_health
     )
+    elevate_users = [197]
     out = apply_place_on_random(world, options, world.random.choice(elevate_users))
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
 
@@ -284,6 +299,78 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     options = {"m023_015": [0, 1]}
     out = apply_place_on_random(world, options, world.random.choice(elevate_users))
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+
+    """mission 10"""
+    options = {"m009_004": [3, 5, 7, 9]}  # also 0 for staraptor
+    floatzel = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.RIVER_FLOW, level=1), max_health
+    )
+    out = apply_place_on_random(world, options, world.random.choice(floatzel))
+
+    options = {
+        "m009_003": [0, 1, 4, 5, 6, 7, 8, 10, 11],
+        "m009_004": [1, 2, 4, 6, 10],
+    }
+    out = apply_place_on_random(world, options, world.random.choice(floatzel))
+
+    """crysta cave"""
+    base_options = {
+        "m024_001": [0, 1, 2],
+        "m024_002": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "m024_004": [0, 1],
+        "m024_005": [0],
+    }
+    out = apply_place_on_random(world, base_options, world.random.choice(floatzel))
+
+    options = {"m024_001": [3, 4, 6]}
+    out = apply_place_on_random(world, options, world.random.choice(floatzel))
+
+    options = {
+        "m024_003": [0],
+        "m024_006": [0],
+    }
+    out = apply_place_on_random(world, options, world.random.choice(floatzel))
+
+    empoleon = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.RIVER_FLOW, level=2), max_health
+    )
+    options = {
+        "m027_002": [5, 8],
+    }
+    out = apply_place_on_random(world, options, world.random.choice(empoleon))
+
+    options = {
+        "m027_002": [0, 1, 2, 4, 6],  # exclude staraptor 3
+    }
+    out = apply_place_on_random(world, options, world.random.choice(empoleon))
+
+    """mission 11"""
+    max_health = 5000
+    torkoal = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.MAGMA_FLOW, level=1), max_health
+    )
+
+    options = {
+        "m019_005": [1, 2, 3, 5, 7],
+        "m019_017": [0, 1, 2],
+    }
+    out = apply_place_on_random(world, options, world.random.choice(torkoal))
+
+    options = {"m019_003": [0], "m019_015": [0]}
+    out = apply_place_on_random(world, options, world.random.choice(torkoal))
+
+    options = {"m019_007": [5, 6]}
+    out = apply_place_on_random(world, options, world.random.choice(torkoal))
+
+    cut_3 = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.CUT, level=3), max_health
+    )
+    options = {
+        "m029_003": [0, 1, 2, 3, 4, 5, 7, 8, 9],
+    }
+    out = apply_place_on_random(world, options, world.random.choice(cut_3))
+    #  could have also placed swim, but I'll be nice for once!!!
+    #  should probably still place swim in sea of wailord :)
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
@@ -338,12 +425,6 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         state_ocean.prog_items[world.player]["fill_restrictive"] = 1
         for item in my_progression_items:
             state_ocean.collect(item, True)
-        # for i in range():
-        #     for j in range():
-        #         try:
-        #             state_ocean
-        #         except:
-        #             pass
         fill_restrictive(
             world.multiworld,
             state_ocean,
@@ -451,6 +532,10 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 0)
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
 
+    # if world.modified_regions["m021_001"].modified:
+    #     copy_over_spawn_to_npc(world, "m021_001", 14, "m021_001", 5)
+    #     copy_over_spawn_to_npc(world, "m021_001", 14, "m021_001", 6)
+
     return
 
 
@@ -488,8 +573,9 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
         [("m020_014", 7), ("m020_014", 8)],  # m8 kidnapped stunky
         [("m020_008", 0)],  # m8 gliscor fly away
         [("m015_001", 11)],  # q12 budew
-        [("m018_001", 21)],  # spinning mime jr
         [("m018_001", 22)],  # spinned around bidoof
+        [("m026_001", 8), ("m025_001", 4), ("m025_002", 2)],  # cutscene empoleon
+        [("m029_001", 1)],  # m12 wailmer
     ]
 
     groups += [
@@ -505,12 +591,16 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
     ]
 
     if world.modified_regions["m020_013"].modified:
+        #  purugly and vulpix
+        copy_over_spawn_to_npc(world, "m020_007", 2, "m019_002", 16)
+        copy_over_spawn_to_npc(world, "m020_007", 2, "m018_004", 0)
+
+        copy_over_spawn_to_npc(world, "m020_007", 1, "m019_002", 17)
+        copy_over_spawn_to_npc(world, "m020_007", 1, "m018_004", 1)
+
         #  made the npcs somewhat the same as the mons that appear in the actual map,
         #  as these are the pokemon that should be running away in m8 cutscene
         #  doing it randomly however rather than setting the exact ones.
-        #  purugly and vulpix
-        copy_over_spawn_to_npc(world, "m020_007", 2, "m019_002", 16)
-        copy_over_spawn_to_npc(world, "m020_007", 1, "m019_002", 17)
 
         for i in [0, 1, 2, 3]:
             j = world.random.randint(1, 12)

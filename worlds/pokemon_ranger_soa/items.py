@@ -78,8 +78,6 @@ def create_all_items(world: PokemonRSOA) -> None:
         for i, item in data.items.items():
             if ItemCategory.FIELD_MOVE not in item.item_categories:
                 continue
-            if item.label.lstrip("Progressive ") in world.exclude_field_moves:
-                continue
             new_item = world.create_item(item.label)
             itempool.append(new_item)
 

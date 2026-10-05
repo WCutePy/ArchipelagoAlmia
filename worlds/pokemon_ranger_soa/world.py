@@ -23,6 +23,7 @@ from .options import (
     RandomizePokemonEncounters,
     RandomizePartners,
     RandomizePokemonEtc,
+    Goal,
 )
 from .MonSelect import MonSelect
 from .randomize import (
@@ -95,6 +96,7 @@ class CaptureGroups:
     browser_before_capture: List[Tuple[Location, Location]] = field(
         default_factory=list
     )
+    one_time_ids: Set = field(default_factory=set)
     default_ids_used: Set = field(default_factory=set)
     ocean_ids_used: Set = field(default_factory=set)
 
@@ -118,6 +120,10 @@ class CaptureGroups:
     @property
     def get_ids_all(self) -> List[int]:
         return sorted({*self.default_ids_used, *self.ocean_ids_used})
+
+    @property
+    def get_ids_one_time(self) -> List[int]:
+        return sorted(self.one_time_ids)
 
     @property
     def get_ids_default(self) -> List[int]:
@@ -414,6 +420,11 @@ class PokemonRSOA(World):
         # using that slot data.
         return slot_data
 
+    def get_rule_num(self) -> int:
+        if self.options.goal == Goal.option_mission_clear:
+            return self.options.mission_clear_target.value
+        raise ValueError("Unsupported yaml goal")
+
     mission_affinities = {
         -1: 150,
         0: 250,
@@ -424,7 +435,12 @@ class PokemonRSOA(World):
         5: 3200,
         6: 3200,
         7: 7800,
-        8: 1000000,
+        8: 8700,
+        9: 10000,
+        10: 12800,
+        11: 1000000,
+        12: 1000000,
+        13: 1000000,
         100: 1000000,
     }
 

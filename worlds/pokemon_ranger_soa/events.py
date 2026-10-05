@@ -138,6 +138,7 @@ class PInstanceEvent(EventRegistry):
     STUNKY_3 = InstanceEvent("m020_008", 144, mandatory=True)  # top of ship
     DRAPION = InstanceEvent("m020_008", 174, mandatory=True)  # top of ship
     #
+    SHIELDON = InstanceEvent("m016_003", 181)  # q036
     CHARMANDER = InstanceEvent("m019_002", 137)  # q013
     MURKROW_3 = InstanceEvent("m022_001", 185, mandatory=True)  # m9 enter highlands
     KOFFING_3 = InstanceEvent("m022_001", 187, mandatory=True)
@@ -145,21 +146,46 @@ class PInstanceEvent(EventRegistry):
     KOFFING_2 = InstanceEvent("m022_001", 187, mandatory=True)  # with murkrow 2
     SPIRITOMB = InstanceEvent("m023_015", 196, mandatory=True)  # bossfight
     #
-    WAILORD = InstanceEvent("m029_009", 238, mandatory=True)
+    CHIMCHAR = InstanceEvent("m022_001", 168)  # q037
+    BEEDRILl_2_Q = InstanceEvent("m022_001", 58)  # chimchar quest
+    GOLBAT_3 = InstanceEvent("m024_004", 15, mandatory=True)  # m10
+    HOUNDOOM = InstanceEvent("m026_001", 154, mandatory=True)  # m10
+    HOUNDOUR_4 = InstanceEvent("m028_001", 153, mandatory=True)  # m10
+    SEEDOT_8 = InstanceEvent("m028_020", 33, mandatory=True)  # m10
+    FROSLASS = InstanceEvent("m028_022b", 215, mandatory=True)  # bossfight
+    LUCARIO = InstanceEvent("m028_023", 223, mandatory=True)  # bossfight
+    #
+    PIPLUP = InstanceEvent("m026_001", 206)  # q045
+    HOUNDOOM_Q = InstanceEvent("m026_001", 154)  # q045 with piplup
+    CHATOT_5 = InstanceEvent("m019_014", 69)  # m11 - missable vanilla and randomized???
+    BAGON_3 = InstanceEvent("m019_006", 225, mandatory=True)  # m11 with shelgon
+    SHELGON = InstanceEvent("m019_006", 226, mandatory=True)  # m11 with bagon_3
+    MONFERNO_2 = InstanceEvent("m019_011", 169, mandatory=True)  # m11
+    INFERNAPE = InstanceEvent("m019_011", 170, mandatory=True)  # m11 boss
+    HEATRAN = InstanceEvent("m019_012", 228, mandatory=True)  # m11 boss
+    #
+    SNOVER = InstanceEvent("m019_005", 211)  # q
+    SEADRA = InstanceEvent("m029_001", 230, mandatory=True)  # m12 with horsea_2
+    HORSEA_2 = InstanceEvent("m029_001", 229, mandatory=True)  # m12 with seadra
+    FINNEON_4 = InstanceEvent("m029_002", 86, mandatory=True)  # m12
+    STARMIE_3 = InstanceEvent("m029_002", 95, mandatory=True)  # m12
+    HUNTAIL = InstanceEvent("m029_003", 232, mandatory=True)  # together with gorebyss
+    GOREBYSS = InstanceEvent("m029_003", 233, mandatory=True)  # together with huntail
+    KINGDRA = InstanceEvent("m029_001", 231, mandatory=True)  # boss
+    #
+    WAILORD = InstanceEvent(
+        "m029_009", 238, mandatory=True
+    )  # friendship technically past m12
 
     """Partners"""
     MACHOP = InstanceEvent("m041_001", 161)
     MISDREAVUS = InstanceEvent("m041_001", 220)
     SNEASEL = InstanceEvent("m041_001", 244)
-    CHIMCHAR = InstanceEvent("m041_001", 168)
-    PIPLUP = InstanceEvent("m041_001", 206)
     STARLY = InstanceEvent("m041_001", 23)
-    SHIELDON = InstanceEvent("m041_001", 181)
     PACHIRISU = InstanceEvent("m041_001", 26)
     GIBLE = InstanceEvent("m041_001", 251)
     MUNCHLAX = InstanceEvent("m041_001", 27)
     HIPPOPOTAS = InstanceEvent("m041_001", 246)
-    SNOVER = InstanceEvent("m041_001", 211)
 
     """DLC?"""
     DARKRAI = InstanceEvent("m041_001", 257, False)

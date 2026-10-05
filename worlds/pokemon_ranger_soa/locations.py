@@ -4,11 +4,20 @@ from typing import TYPE_CHECKING, Dict, Set, Optional
 
 from BaseClasses import ItemClassification, Location, Region, LocationProgressType
 
-from .data import data, LocationData, LocationCategory, SpeciesData, FieldMove, Party
+from .data import (
+    data,
+    LocationData,
+    LocationCategory,
+    SpeciesData,
+    FieldMove,
+    Party,
+    FieldMoveCategory,
+)
 from .events import PInstanceEvent
 from .items import PokemonRSOAItem
 from .options import RandomizePokemonEncounters
 from .MonSelect import MonSelect
+from .randomize import form_options_by_criteria
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -23,7 +32,7 @@ def create_event_location(
     event_loc_name: str,
     event_region: Region,
     event_item_name: Optional[str] = None,
-    show_spoiler: bool = True,  # todo swithc
+    show_spoiler: bool = False,  # todo swithc
     place_locked: bool = True,
 ) -> PokemonRSOALocation:
     if event_item_name is None:
@@ -98,6 +107,9 @@ def create_all_locations(
         6: [5, 8, 50],
         7: [6, 7, 9, 45],
         9: [10, 12, 13, 14, 36, 51],
+        10: [15, 16, 37],
+        11: [17, 18, 19, 44],
+        12: [20, 21, 22, 39],
     }
     for i in range(0, max_mission + 1):
         permitted_quests += quests_table.get(i, [])
@@ -129,6 +141,21 @@ def create_all_locations(
 
         if location_data.category in [LocationCategory.MISSION, LocationCategory.QUEST]:
             create_event_location(world, f"COMPLETE_{name}", region, show_spoiler=True)
+
+    if (
+        world.options.field_move_item != world.options.field_move_item.option_vanilla
+        and world.get_rule_num() >= 13
+    ):
+        region = regions.get("m030_002")
+
+        extra_location = PokemonRSOALocation(
+            world.player,
+            "Reach Oil Field Hideout",
+            world.location_name_to_id["Reach Oil Field Hideout"],
+            region,
+        )
+        extra_location.place_locked_item(world.create_item("Fly Unlock"))
+        region.locations.append(extra_location)
 
 
 def create_quest_locations(world: PokemonRSOA) -> None:
@@ -199,16 +226,44 @@ def create_pokemon_locations(
         142,  # drifloon numba 2!
         48,  # cherrim
         152,  # muk quest
-        143,  # drifblim
+        [143, 197],  # drifblim
         194,  # sandshrew tunnel
         145,  # skuntank stink
         160,  # gallade for registeel
+        185,  # murkrow for quest
+        185,  # murkrow numba 2
+        # todo figure out to add floatzel and empoleon, or if those stay at their set spots
+        [222, 216],  # riolu
+        [222, 216],  # riolu
+        205,  # chingling quest
+        [212, 227],  # abomasnow quest
+        224,  # torkoal
     ]
+    crush_3 = form_options_by_criteria(
+        world, FieldMove(category=FieldMoveCategory.CRUSH, level=3), 5000
+    )
 
+    # maybe move these properly to randomize or some :skull:
     ocean_captures = [
-        86,  # finneon for crush 1
-        207,  # prinplup for cut 2
+        data.form_id_to_species[
+            world.random.choice(
+                form_options_by_criteria(
+                    world, FieldMove(category=FieldMoveCategory.CRUSH, level=1), 1000
+                )
+            )
+        ].browser_id,
+        data.form_id_to_species[
+            world.random.choice(
+                form_options_by_criteria(
+                    world, FieldMove(category=FieldMoveCategory.CUT, level=2), 1000
+                )
+            )
+        ].browser_id,
         91,  # mantine to swim
+        *[
+            data.form_id_to_species[world.random.choice(crush_3)].browser_id
+            for _ in range(4)
+        ],
     ]
 
     add_to = world.random.choices([0, 1], weights=[capture_mons, capture_ocean_mons])[0]

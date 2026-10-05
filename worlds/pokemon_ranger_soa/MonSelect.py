@@ -82,7 +82,7 @@ mission 3
 
 
 def get_party_type(map_name: str) -> Party:
-    if map_name[:4] in ["m011"]:
+    if map_name[:4] in ["m011", "m029"]:
         return Party.OCEAN
     return Party.DEFAULT
 
@@ -310,13 +310,14 @@ class MonSelect:
                 "m020_001": [*range(0, 5)],
                 "m020_002": [*range(0, 13)],
                 "m020_016": [0],
+                "m015_002": [0, 1, 2, 3, 4],
             }
         )
 
-        if MonSelect.get_rule_num() == 6:
+        if cls.world.get_rule_num() == 6:
             m.include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
 
-        if MonSelect.get_rule_num() >= 9:
+        if cls.world.get_rule_num() >= 9:
             if (
                 cls.world.options.randomize_pokemon
                 != RandomizePokemonEncounters.option_vanilla
@@ -331,7 +332,7 @@ class MonSelect:
             include={
                 "m006_001": [*range(0, 7)],
                 "m010_001": [*range(0, 7)],
-                "m010_002": [*range(0, 10)],
+                "m010_002": [0, 1, 2, 4, 5, 6, 7, 8, 9],
                 "m010_003": [
                     14,
                     13,
@@ -339,7 +340,7 @@ class MonSelect:
                     10,
                     9,
                 ],
-                "m010_022": [*range(0, 9)],
+                "m010_022": [0, 1, 2, 3, 4, 5, 7, 8],
                 "m016_002": [
                     *range(0, 14)
                 ],  # except the cherrim but does it ever spawn at all?
@@ -362,6 +363,7 @@ class MonSelect:
                 # randomizing the event encounter attached
                 "m011_005": [5],  # sharpedo
                 "m016_004": [2],  # rampardos (could be random already techn)
+                "m021_001": [6, 14],  # Vespiquen and combee that show up in the quest
             },
         )
 
@@ -400,12 +402,12 @@ class MonSelect:
             "m035_001": [3],
         }
         m.add_to(m.include, DODUO)
-        return m
 
-    @classmethod
-    def get_rule_num(cls) -> int:
-        if cls.world.options.goal == Goal.option_mission_clear:
-            return cls.world.options.mission_clear_target.value
+        EMPOLEON = {
+            "m027_002": [9],
+        }
+        m.add_to(m.include, EMPOLEON)
+        return m
 
     @classmethod
     def get_rules_scope(cls) -> MonSelect:
@@ -423,8 +425,12 @@ class MonSelect:
             7: cls.goal_mission_7,
             8: cls.goal_mission_8,
             9: cls.goal_mission_9,
+            10: cls.goal_mission_10,
+            11: cls.goal_mission_11,
+            12: cls.goal_mission_12,
+            13: cls.goal_mission_13,
         }
-        return goals[cls.get_rule_num()]()
+        return goals[cls.world.get_rule_num()]()
 
     @classmethod
     def goal_school(cls) -> MonSelect:
@@ -636,7 +642,7 @@ class MonSelect:
         }
 
         base.exclude["m019_003"] = [0]
-        base.exclude["m019_001"] = [0, 4, 8]
+        base.exclude["m019_001"] = [0, 4]
         base.exclude["m020_013"] = [0]
 
         base.event_mon += [
@@ -709,6 +715,7 @@ class MonSelect:
         }  # vespiqueen, probably quest related
 
         base.event_mon += [
+            PInstanceEvent.SHIELDON,
             PInstanceEvent.CHARMANDER,
             PInstanceEvent.MURKROW_3,
             PInstanceEvent.KOFFING_3,
@@ -716,5 +723,152 @@ class MonSelect:
             PInstanceEvent.KOFFING_2,
             PInstanceEvent.SPIRITOMB,
         ]
+
+        return base
+
+    @classmethod
+    def goal_mission_10(cls) -> MonSelect:
+        base = cls.goal_mission_9()
+
+        base.include |= {
+            "m009_003": [],
+            "m009_004": [],
+            "m009_006": [],
+            "m024_001": [],
+            "m024_002": [],
+            "m024_003": [],
+            "m024_004": [],
+            "m024_005": [],
+            "m024_006": [],
+            "m024_007": [],
+            "m025_001": [],
+            "m026_001": [],
+            "m027_001": [],
+            "m027_002": [],
+            "m028_006": [],
+            "m028_001": [],
+            "m028_002": [],
+            "m028_004": [],
+            "m028_005": [],
+            "m028_012": [],
+            "m028_013": [],
+            "m028_009": [],
+            "m028_010": [],
+            "m028_018": [],
+            "m028_019": [],
+            "m028_020": [],
+            "m028_003": [],
+            "m028_017": [],
+            "m028_024": [],
+            "m028_016": [],
+            "m028_011": [],
+        }
+
+        base.exclude |= {
+            "m009_003": [],
+            "m009_004": [11, 12],
+            "m024_001": [5],
+            "m027_002": [7],
+            "m028_006": [],
+            "m028_003": [2],
+            "m028_026": [0],
+            "m028_022a": [],
+            "m028_022b": [],
+            "m028_023": [],
+        }
+
+        del base.exclude["m010_002"]  # murkrow
+        del base.exclude["m010_022"]  # murkrow
+        del base.exclude["m021_001"]  # vespiqueen
+        # floatzel
+        del base.exclude["m009_009"]
+        del base.exclude["m015_004"]
+
+        if (
+            cls.world.options.randomize_pokemon
+            == RandomizePokemonEncounters.option_vanilla
+        ):
+            base.exclude["m009_006"] = []
+            base.exclude["m028_024"] = [0]
+
+        base.event_mon += [
+            PInstanceEvent.CHIMCHAR,
+            PInstanceEvent.BEEDRILl_2_Q,
+            PInstanceEvent.GOLBAT_3,
+            PInstanceEvent.HOUNDOOM,
+            PInstanceEvent.HOUNDOUR_4,
+            PInstanceEvent.SEEDOT_8,
+            PInstanceEvent.FROSLASS,
+            PInstanceEvent.LUCARIO,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_11(cls) -> MonSelect:
+        base = cls.goal_mission_10()
+
+        base.include |= {
+            "m019_005": [],
+            "m019_015": [],
+            "m019_006": [],
+            "m019_014": [],
+            "m019_007": [],
+            "m019_011": [],
+        }
+
+        base.exclude |= {
+            "m019_006": [0],
+            "m019_007": [8, 9, 10],
+            "m019_011": [0],
+        }
+
+        del base.exclude["m019_003"]
+        del base.exclude["m019_001"]
+
+        base.event_mon += [
+            PInstanceEvent.PIPLUP,
+            PInstanceEvent.HOUNDOOM_Q,
+            PInstanceEvent.CHATOT_5,
+            PInstanceEvent.BAGON_3,
+            PInstanceEvent.SHELGON,
+            PInstanceEvent.MONFERNO_2,
+            PInstanceEvent.INFERNAPE,
+            PInstanceEvent.HEATRAN,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_12(cls) -> MonSelect:
+        base = cls.goal_mission_11()
+
+        base.include |= {
+            "m029_001": [],
+            "m029_002": [],
+            "m029_003": [],
+            "m029_004": [],
+        }
+
+        base.exclude["m029_004"] = [5]
+
+        base.event_mon += [
+            PInstanceEvent.SNOVER,
+            PInstanceEvent.HORSEA_2,
+            PInstanceEvent.SEADRA,
+            PInstanceEvent.FINNEON_4,
+            PInstanceEvent.STARMIE_3,
+            PInstanceEvent.HUNTAIL,
+            PInstanceEvent.GOREBYSS,
+            PInstanceEvent.KINGDRA,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_13(cls) -> MonSelect:
+        base = cls.goal_mission_12()
+
+        base.include |= {}
 
         return base
