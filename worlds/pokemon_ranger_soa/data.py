@@ -105,7 +105,11 @@ class FieldMoveCategory(IntEnum):
 
     @property
     def item_name(self) -> str:
-        return f"Progressive {self.name.replace("_", " ").title()}"
+        if self.value in [1, 2, 3, 4, 5, 6, 7, 9, 21]:
+            start = "Progressive "
+        else:
+            start = ""
+        return f"{start}{self.name.replace("_", " ").title()} Unlock"
 
 
 class Party(StrEnum):

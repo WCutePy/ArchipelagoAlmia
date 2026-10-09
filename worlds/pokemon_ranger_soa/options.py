@@ -309,7 +309,7 @@ class RandomizePokemonEtc(Choice):
     option_vanilla = 0
     option_full_random = 1
 
-    default = option_full_random
+    default = option_vanilla
 
 
 class RandomizePartners(Choice):

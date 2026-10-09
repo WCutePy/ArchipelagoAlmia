@@ -361,6 +361,21 @@ def patch(
         # (12751, 0x00_10_00_10)
     ]
 
+    """mission 13"""
+    """Allows re-entering Sea of Wailord before completing mission 13"""
+    FIELD_MAP_PATCHES["m010_020"] += [
+        (86, 0x00_00_00_11),
+        (87, 0x02_05_0A_04),
+        (88, 0x08370101),
+        (89, 0x08_9B_00_01),
+        (90, 0x00_00_00_12),
+        (91, 0x00_25_00_10),
+        (92, 0x00_10_00_16),
+        (93, 0x00_01_02_08),
+        (95, 0x00_00_00_11),
+        (96, 0x02_05_A0_02),
+    ]
+
     """partner patches"""
 
     partners = prsoa_patch_instance.files.get("partners.txt")
