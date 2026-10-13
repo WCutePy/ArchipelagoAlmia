@@ -44,8 +44,6 @@ def form_options_by_criteria(
     lowest_health: int | None = None
 
     for species in world.modified_species.values():
-        if species.browser_id in world.blacklisted_captures:
-            continue
         if field_move.category != species.field_move.category:
             continue
         if exact and field_move.level != species.field_move.level:
@@ -56,6 +54,8 @@ def form_options_by_criteria(
             if lowest_form is None or lowest_health > form_data.friendship_gauge:
                 lowest_form = form
                 lowest_health = form_data.friendship_gauge
+            if species.browser_id in world.blacklisted_captures:
+                continue  # ensures that if all applicable mons are blacklisted it returns the lowest health
             if form_data.friendship_gauge > health:
                 continue
             options.append(form)
@@ -78,8 +78,12 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     )
 
     #  change the blacklist source!!
+    additional_blacklist = world.options.blacklist_random_mons.get_blacklist("partner")
+
     allowed_partners = [
-        i for i in [*range(1, 267), 435, 436, 437] if i not in partner_blacklist
+        i
+        for i in [*range(1, 267), 435, 436, 437]
+        if i not in partner_blacklist and i not in additional_blacklist
     ]
     if len(partners) + len(starters) < 18:
         partners += world.random.choices(
@@ -114,13 +118,15 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
         206,  # piplup
         52,  # turtwig
         213,  # snorunt
+        244,  # sneasel
+        #
         161,  # machop
         246,  # hippopotas
         220,  # misdreavus
         251,  # gible
-        244,  # sneasel
     ]
     if starters_only:
+        world.blacklisted_captures |= set(vanilla_partners_in_some_order)
         world.modified_partners = starters + vanilla_partners_in_some_order
         return
     # kricketot
@@ -163,8 +169,16 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     place_npc(world, ("m026_001", 10), 321)
 
     # snover
-    place_npc(world, ("m008_008", 3), 321)
-    place_npc(world, ("m019_005", 1), 321)
+    place_npc(world, ("m008_008", 3), 322)
+    place_npc(world, ("m019_005", 1), 322)
+
+    # sneasel
+    place_npc(world, ("m008_006", 3), 323)
+    place_npc(world, ("m028_009", 1), 323)
+
+    # misdreavus
+    place_npc(world, ("m008_006", 7), 324)
+    place_npc(world, ("m023_005", 0), 324)
 
     ...
     #  TODO change the partner encounter events
@@ -268,7 +282,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     elevate_users = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.ELEVATE, level=1), max_health
     )
-    elevate_users = [197]
+    elevate_users = [197]  # because of the quest that only takes one type of driblim...
     out = apply_place_on_random(world, options, world.random.choice(elevate_users))
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
 
@@ -371,6 +385,11 @@ def early_place_random_restricted(world: PokemonRSOA) -> None:
     out = apply_place_on_random(world, options, world.random.choice(cut_3))
     #  could have also placed swim, but I'll be nice for once!!!
     #  should probably still place swim in sea of wailord :)
+
+    """mission 14"""
+    options = {"m036_016": [0, 1, 2, 3, 4]}
+    out = apply_place_on_random(world, options, world.random.choice(elevate_users))
+    world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
@@ -528,6 +547,8 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     #  since they already swapped things I need to confirm
     #  if the two bidoofs match in position or need to swap.
     m001_005_to_m001_014 = {0: 1, 1: 0, 2: 2, 3: 3}
+    copy_over_map_pokemon(world, "m001_005", "m001_014", m001_005_to_m001_014)
+
     # #  rampardos
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 0)
     # copy_over_spawn_to_npc(world, "m016_004", 2, "m016_004", 1)
@@ -535,6 +556,27 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     # if world.modified_regions["m021_001"].modified:
     #     copy_over_spawn_to_npc(world, "m021_001", 14, "m021_001", 5)
     #     copy_over_spawn_to_npc(world, "m021_001", 14, "m021_001", 6)
+
+    m029_001_to_m029_007 = {
+        0: 1,
+        1: 2,
+        2: 4,
+        3: 7,
+        4: 6,
+        5: 8,
+    }
+    copy_over_map_pokemon(world, "m029_001", "m029_007", m029_001_to_m029_007)
+
+    m029_002_to_m029_008 = {
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 3,  # NOT actually a match vanilla
+        4: 7,
+        5: 5,
+        6: 8,
+    }
+    copy_over_map_pokemon(world, "m029_002", "m029_008", m029_002_to_m029_008)
 
     return
 
@@ -575,7 +617,13 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
         [("m015_001", 11)],  # q12 budew
         [("m018_001", 22)],  # spinned around bidoof
         [("m026_001", 8), ("m025_001", 4), ("m025_002", 2)],  # cutscene empoleon
-        [("m029_001", 1)],  # m12 wailmer
+        [
+            ("m029_001", 1),
+            ("m030_010", 7),
+            ("m030_022", 1),
+            ("m029_010", 2),
+        ],  # m12 & m13 wailmer
+        [*[("m033_001", i) for i in range(13, 18)]],  # m14 hippopotas
     ]
 
     groups += [
@@ -585,8 +633,14 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
             ("m020_009", 8),
             ("m001_014", 8),
         ],  # m8 barlow Makuhita
-        #  skipped out on the Wendy Staraptor, as it's flying, requires testing
-        [("m017_004", 13)],  # m9 keith Buizel
+        #  skipped out on the Wendy Staraptor, as it's flying, requires testing for sprites!!!
+        [
+            ("m017_004", 13),
+            ("m036_001", 0),
+            ("m036_012", 1),
+            ("m036_011", 2),
+            ("m036_016", 5),
+        ],  # m9 keith Buizel
         [("m023_014", 12)],  # m9 sven Luxray
     ]
 
@@ -617,7 +671,11 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
 
         copy_over_spawn_to_npc(world, "m020_013", 8, "m001_014", 9)
 
-    pokemon = world.random.choices(list(world.modified_species.keys()), k=len(groups))
+    #  consider copying over the helped empoleon to the wild empoleon?
+
+    pokemon = world.random.choices(
+        [i for i in world.modified_species.keys() if i != 238], k=len(groups)
+    )
 
     for group, mon in zip(groups, pokemon):
         form_id = list(world.modified_species[mon].forms.keys())[0]

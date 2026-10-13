@@ -32,6 +32,7 @@ class LocationCategory(StrEnum):
     BROWSER_RANK = auto()
     MISSION = auto()
     QUEST = auto()
+    EXTRA = auto()
 
 
 @dataclass
@@ -39,11 +40,11 @@ class LocationData:
     name: str
     label: str
     parent_region: Optional[str]
-    default_item: Optional[int]
-    addresses: Optional[List[str]]
-    flag: Optional[int]
     category: LocationCategory
     id: Optional[int]
+    default_item: Optional[int] = None
+    addresses: Optional[List[str]] = None
+    flag: Optional[int] = None
 
     def __post_init__(self):
         if not isinstance(self.category, LocationCategory):
@@ -423,6 +424,8 @@ def location_category_to_id(base_number: int, category: str):
         return base_number + 1000
     if category == LocationCategory.BROWSER_RANK:
         return base_number + 10000
+    if category == LocationCategory.EXTRA:
+        return base_number + 100000
     raise ValueError(category)
 
 
@@ -443,12 +446,12 @@ def pokemon_to_target_id(name: str) -> Optional[int]:
         "geodude": 0x4,
         "graveler": 0x5,
         "sudowoodo": 0x6,
-        "cacturne": 0x7,
+        # "cacturne": 0x7,
         # "claydol": 0x8,
         "torterra": 0x9,
-        "bronzor": 0xA,
+        # "bronzor": 0xA,
         "bonsly": 0xB,
-        "carnivine": 0xC,
+        # "carnivine": 0xC,
         "abomasnow": 0xD,
     }
     return mapping.get(name, None)
@@ -503,7 +506,7 @@ def _init():
             number = None
             print(f"error generating a number for: {name}, {location_data}")
 
-        if isinstance(location_data["addresses"], str):
+        if isinstance(location_data.get("addresses", None), str):
             location_data["addresses"] = [location_data["addresses"]]
 
         data.locations[name] = LocationData(name=name, id=number, **location_data)

@@ -10,6 +10,8 @@ from Options import (
     DeathLink,
     OptionList,
     OptionError,
+    OptionDict,
+    OptionSet,
 )
 from .data import data
 from ..AutoWorld import World
@@ -436,6 +438,128 @@ class RandomizeTargetFieldMove(Choice):
     default = option_vanilla
 
 
+class BlacklistRandomMons(OptionDict):
+    """
+    Species to exclude from encounters and partner selection.
+
+    Mandatory wild encounters, for field moves, mission or quests
+    will either be removed from the blacklist or have minimal instances
+    stay in one vanilla location.
+
+    wild: Species blacklisted from wild encounters.
+    static: Species blacklisted from story encounters.
+    partner: Species blacklisted as partners.
+        Does not
+    static_same_as_wild: If enabled, the wild blacklist
+        is also used for static encounters.
+    partner_same_as_wild: If enabled, the wild blacklist
+        is also used for random partners blacklist.
+
+    Hippowdon is blacklisted by default due to its burrow AI
+        being broken on multiple maps. The vanilla Hippodown will
+        always be included.
+    """
+
+    display_name = "Random Encounter Blacklist"
+
+    valid_keys = {
+        "wild",
+        "static",
+        "partner",
+        "static_same_as_wild",
+        "partner_same_as_wild",
+    }
+
+    default = {
+        "wild": ["Hippowdon"],
+        "static": [],
+        "partner": [],
+        "static_same_as_wild": 0,
+        "partner_same_as_wild": 0,
+    }
+
+    def verify(
+        self,
+        world: type[World],
+        player_name: str,
+        plando_options: PlandoOptions,
+    ) -> None:
+        super().verify(world, player_name, plando_options)
+
+        errors = []
+
+        wild = self.value.get("wild", [])
+        static = self.value.get("static", [])
+        partner = self.value.get("partner", [])
+
+        name_to_id = {
+            species.name.casefold(): species_id
+            for species_id, species in data.species.items()
+        }
+
+        for key, species_list in (
+            ("wild", wild),
+            ("static", static),
+            ("partner", partner),
+        ):
+            if not isinstance(species_list, list):
+                errors.append(f"'{key}' must be a list of species names.")
+                continue
+
+            for species in species_list:
+                if not isinstance(species, str):
+                    errors.append(
+                        f"Invalid entry in '{key}': {species!r} "
+                        "must be a species name."
+                    )
+                elif species.casefold() not in name_to_id:
+                    errors.append(f"Unknown species in '{key}': {species!r}.")
+        if errors:
+            raise OptionError(
+                f"For option {self.display_name} "
+                f"of player {player_name}:\n" + "\n".join(errors)
+            )
+        for key in ("wild", "static", "partner"):
+            self.value[key] = [
+                name_to_id[name.casefold()] for name in self.value.get(key, [])
+            ]
+
+    def get_blacklist(self, encounter_type: str) -> list[int]:
+        if encounter_type not in {"wild", "static", "partner"}:
+            raise ValueError(f"Unknown blacklist type: {encounter_type}")
+
+        if encounter_type == "static" and self.value.get("static_same_as_wild", False):
+            species = self.value.get("wild", [])
+        elif encounter_type == "partner" and self.value.get(
+            "partner_same_as_wild", False
+        ):
+            species = self.value.get("wild", [])
+        else:
+            species = self.value.get(encounter_type, [])
+
+        return species
+
+
+class RemoveRoadblocks(OptionSet):
+    """
+    This option allows removing roadblocks in the game
+    that are not required to be removed, but may be preferred
+
+    - Protect the Ranger Union HQ!
+        This will allow leaving the ranger HQ during
+        mission 15 before completing it fully.
+    """
+
+    display_name = "Remove Roadblocks"
+    valid_keys = [
+        "Protect the Ranger Union HQ!",
+    ]
+
+    default = [
+        "Protect the Ranger Union HQ!",
+    ]
+
+
 @dataclass
 class PokemonRSOAOptions(PerGameCommonOptions):
     goal: Goal
@@ -460,13 +584,16 @@ class PokemonRSOAOptions(PerGameCommonOptions):
 
     field_move_item: FieldMoveItem
     field_move_levels: FieldMoveLevelItem
+    randomize_target_field_move: RandomizeTargetFieldMove
 
     randomize_pokemon: RandomizePokemonEncounters
     randomize_pokemon_etc: RandomizePokemonEtc
     randomize_partners: RandomizePartners
     partner_starters: PartnerStarters
     partners: Partners
-    randomize_target_field_move: RandomizeTargetFieldMove
+    blacklist_random_mons: BlacklistRandomMons
+
+    remove_roadblocks: RemoveRoadblocks
 
     def verify(self, player_name: str):
         errors = []
@@ -495,15 +622,38 @@ OPTION_GROUPS = [
             CaptureRankRankTarget,
         ],
     ),
-    OptionGroup("Level up", [LevelUpType, LevelUpCount, LevelUpIncrement]),
-    OptionGroup("Rank up", [RankUpType, RankUpItemCount, RankUpIncrement]),
+    OptionGroup("Deathlink options", [PokemonRSOADeathLink, DeathlinkDamage]),
     OptionGroup(
-        "Randomization",
+        "Player options",
+        [
+            LevelUpType,
+            LevelUpCount,
+            LevelUpIncrement,
+            RankUpType,
+            RankUpItemCount,
+            RankUpIncrement,
+            StylerModelItem,
+        ],
+    ),
+    OptionGroup(
+        "Field move options",
+        [FieldMoveItem, FieldMoveLevelItem, RandomizeTargetFieldMove],
+    ),
+    OptionGroup(
+        "Pokemon Randomization options",
         [
             RandomizePokemonEncounters,
             RandomizePokemonEtc,
-            RandomizeTargetFieldMove,
+            RandomizePartners,
+            PartnerStarters,
+            Partners,
+            BlacklistRandomMons,
         ],
     ),
-    OptionGroup("Partners", [RandomizePartners, PartnerStarters, Partners]),
+    OptionGroup(
+        "Optional patches",
+        [
+            RemoveRoadblocks,
+        ],
+    ),
 ]

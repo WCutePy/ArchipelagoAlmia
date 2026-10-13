@@ -81,7 +81,11 @@ class PatchMethods:
         opened_zipfile.writestr("procedures.txt", "\n".join(procedures))
         opened_zipfile.writestr(
             "slot_data.json",
-            orjson.dumps(NetUtils.convert_to_base_types(patch.world.fill_slot_data())),
+            orjson.dumps(
+                NetUtils.convert_to_base_types(
+                    patch.world.fill_slot_data(include_patch_only=True)
+                )
+            ),
         )  # for when I need the slot data
 
     @staticmethod

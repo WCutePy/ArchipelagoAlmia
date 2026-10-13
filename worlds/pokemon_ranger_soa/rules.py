@@ -224,6 +224,8 @@ def set_all_rules(world: PokemonRSOA) -> None:
         11: set_mission_11_rules,
         12: set_mission_12_rules,
         13: set_mission_13_rules,
+        14: set_mission_14_rules,
+        15: set_mission_15_rules,
     }
 
     up_to_mission = world.options.mission_clear_target.value
@@ -1289,6 +1291,10 @@ def set_mission_9_rules(world: PokemonRSOA):
             & CanReachLocation(data.species[48].location_capture_name),
         )
 
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.CHARMANDER.event_name),
+        Has(get_mission_event(8)),
+    )
     for loc in [data.locations["QUEST_13"].label, get_quest_event(13)]:
         world.set_rule(
             get_location(world, loc),
@@ -1478,7 +1484,7 @@ def set_mission_10_rules(world: PokemonRSOA):
             # and can beat the vespiqueen but eh, implied is fine
         )
 
-    for event in [PInstanceEvent.SHIELDON, PInstanceEvent.BEEDRILl_2_Q]:
+    for event in [PInstanceEvent.CHIMCHAR, PInstanceEvent.BEEDRILl_2_Q]:
         world.set_rule(
             get_entrance(world, event.event_name),
             Has(get_mission_event(9)),
@@ -1528,6 +1534,7 @@ def set_mission_10_rules(world: PokemonRSOA):
     can_river_flow_2 = all_maps.can_use_field_move(
         FieldMove(FieldMoveCategory.RIVER_FLOW, 2)
     ) & Has(get_mission_event(9))
+
     world.set_rule(get_connection(world, "m027_001", "m027_003"), can_river_flow_2)
 
     world.set_rule(
@@ -1630,6 +1637,14 @@ def set_mission_11_rules(world: PokemonRSOA):
             & all_maps.can_destroy_target("m024_001", 0),
         )
 
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.PIPLUP.event_name),
+        Has(get_mission_event(10)),
+    )
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.HOUNDOOM_Q.event_name),
+        Has(get_mission_event(10)),
+    )
     for loc in [data.locations["QUEST_44"].label, get_quest_event(44)]:
         world.set_rule(
             get_location(world, loc),
@@ -1737,6 +1752,10 @@ def set_mission_12_rules(world: PokemonRSOA):
             Has(get_mission_event(11)) & all_maps.can_destroy_target("m025_001", 5),
         )
 
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.SNOVER.event_name),
+        Has(get_mission_event(11)),
+    )
     for loc in [data.locations["QUEST_39"].label, get_quest_event(39)]:
         world.set_rule(
             get_location(world, loc),
@@ -1771,6 +1790,8 @@ def set_mission_12_rules(world: PokemonRSOA):
     )
     for to in ["m029_005", "m029_003", "m029_007"]:
         world.set_rule(get_connection(world, "m029_002", to), False_())
+
+    world.set_rule(get_connection(world, "m029_006", "m029_008"), False_())
 
     # 006 -> 003 just swim, which you already have
     world.set_rule(
@@ -1819,9 +1840,226 @@ def set_mission_12_rules(world: PokemonRSOA):
             #  strength level or something
         )
 
+    world.set_rule(get_connection(world, "m029_001", "m029_009"), False_())
+
 
 def set_mission_13_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope()
+
+    world.set_rule(
+        get_connection(world, "m029_001", "m030_001"), Has(get_mission_event(12))
+    )
+
+    world.set_rule(
+        get_connection(world, "npc_m010_020", "m029_007"), Has(get_mission_event(12))
+    )
+    for i in ["m201_004", "m201_002"]:
+        world.set_rule(
+            get_connection(world, "m029_007", i), False_()
+        )  # technically realistic, but also useless
+
+    #
+    # world.set_rule(get_connection(world, "m030_001", "m030_002"), False_())
+
+    world.set_rule(
+        get_connection(world, "m030_005", "m030_008"),
+        all_maps.can_destroy_target("m030_005", 2),
+    )
+
+    world.set_rule(
+        get_pokemon_instance(world, "m030_005", 1),
+        all_maps.can_destroy_target("m030_006", 1),
+    )
+
+    world.set_rule(
+        get_connection(world, "m030_005", "m030_009"),
+        all_maps.can_destroy_target("m030_006", 1),
+    )
+
+    # need to use stink
+    # m030_011 becomes open after using stink if you didn't interact
+
+    world.set_rule(get_connection(world, "m030_016", "m030_028"), False_())  # idk
+
+    world.set_rule(
+        get_connection(world, "m030_017", "m030_020"),
+        all_maps.can_destroy_target("m030_018", 1)
+        & all_maps.can_destroy_target("m030_019", 1),
+    )
+    world.set_rule(
+        get_connection(world, "m030_017", "m030_021"),
+        all_maps.can_destroy_target("m030_020", 1),
+    )
+
+    #  there's a bunch of extra connections that shouldn't exist in reality.
+    #  however, I don't care enough to mark those as False_()
+
+    for loc in [data.locations["MISSION_13"].label, get_mission_event(13)]:
+        world.set_rule(
+            get_location(world, loc),
+            True_(),
+            #  strength level or something
+        )
+
+
+def set_mission_14_rules(world: PokemonRSOA):
+    all_maps = MonSelect.get_rules_scope()
+
+    world.set_rule(
+        get_connection(world, "npc_m010_020", "m033_001"), Has(get_mission_event(13))
+    )
+
+    world.set_rule(get_connection(world, "m032_001", "m041_001"), False_())
+
+    cleared_village = all_maps.can_destroy_target("m033_001", 7)
+    for i in range(18):
+        if i in [4, 6, 8, 17, 10]:
+            continue
+        if i in [3, 5, 12, 13, 14, 16, 7]:
+            world.set_rule(
+                get_pokemon_instance(world, "m034_001", i),
+                cleared_village & all_maps.can_destroy_target("m034_001", 0),
+            )
+        else:
+            world.set_rule(get_pokemon_instance(world, "m034_001", i), cleared_village)
+
+    world.set_rule(
+        get_connection(world, "m034_001", "m035_001"),
+        cleared_village & all_maps.can_destroy_target("m034_001", 0),
+    )
+
+    world.set_rule(
+        get_pokemon_instance(world, "m035_001", 2),
+        all_maps.can_use_field_move(FieldMove(FieldMoveCategory.AGILITY, 1)),
+    )
+
+    world.set_rule(
+        get_connection(world, "m035_001", "m036_001"),
+        all_maps.can_use_field_move(FieldMove(FieldMoveCategory.SAND_FILL, 1)),
+    )
+
+    #  you already have SOME drifblim out there, so goodluck!!!
+    world.set_rule(
+        get_connection(world, "m036_012", "m036_009"),
+        all_maps.can_destroy_target("m036_012", 9),
+    )
+
+    world.set_rule(
+        get_connection(world, "m036_011", "m036_018"), False_()
+    )  # UNKNOWN WHEN ENTRY TO REGIS IS ALLOWED
+
+    world.set_rule(
+        get_connection(world, "m036_013", "m036_016"),
+        all_maps.can_destroy_target("m036_013", 0),
+    )
+
+    can_do_quests = CanReachRegion(world.modified_regions["m036_001"].HUMAN_NAME)
+
+    for loc in [data.locations["QUEST_24"].label, get_quest_event(24)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_quest_event(5))
+            & can_do_quests
+            & CanReachLocation(data.species[236].location_capture_name),
+        )
+    world.set_rule(
+        get_pokemon_instance(world, "m029_004", 5),
+        Has(get_quest_event(5)) & can_do_quests,
+    )
+
+    for loc in [data.locations["QUEST_25"].label, get_quest_event(25)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_quest_event(18))
+            & can_do_quests
+            & Has(data.species[240].event_can_capture(form=144))
+            & CanReachLocation(data.species[240].location_capture_name),
+        )
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.SNEASEL.event_name),
+        can_do_quests,
+    )
+    for loc in [data.locations["QUEST_38"].label, get_quest_event(38)]:
+        world.set_rule(get_location(world, loc), can_do_quests)
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.MISDREAVUS.event_name),
+        can_do_quests,
+    )
+    for loc in [data.locations["QUEST_40"].label, get_quest_event(40)]:
+        world.set_rule(get_location(world, loc), can_do_quests)
+
+    for loc in [data.locations["MISSION_14"].label, get_mission_event(14)]:
+        world.set_rule(
+            get_location(world, loc),
+            True_(),
+            #  strength level or something
+        )
+
+
+def set_mission_15_rules(world: PokemonRSOA):
+    all_maps = MonSelect.get_rules_scope()
+
+    # after reporting to the ranger union you can do 4 more quests
+
+    for loc in [data.locations["QUEST_23"].label, get_quest_event(23)]:
+        world.set_rule(get_location(world, loc), Has(get_mission_event(14)))
+        # just walking
+
+    for loc in [data.locations["QUEST_26"].label, get_quest_event(26)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(14))
+            & Has(get_quest_event(14))
+            & Has(data.species[188].event_can_capture(form=54))
+            & CanReachLocation(data.species[188].location_capture_name)
+            & Has(data.species[145].event_can_capture(form=206))
+            & CanReachLocation(data.species[145].location_capture_name),
+        )
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.CLAYDOL_2.event_name),
+        Has(get_mission_event(14)),
+    )
+    for loc in [data.locations["QUEST_27"].label, get_quest_event(27)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(14)),
+            #  just fighting
+        )
+
+    world.set_rule(
+        get_pokemon_instance(world, "m028_003", 2), Has(get_mission_event(14))
+    )
+
+    for loc in [data.locations["QUEST_28"].label, get_quest_event(28)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(14))
+            & Has(data.species[219].event_can_capture(form=403))
+            & CanReachLocation(data.species[219].location_capture_name),
+            #  just fighting
+        )
+
+    for b in [
+        PInstanceEvent.SNEASEL,
+        PInstanceEvent.MISDREAVUS,
+        PInstanceEvent.ELECTIVIRE,
+        PInstanceEvent.GARCHOMP,
+        PInstanceEvent.BIDOOF_8,
+    ]:
+        world.set_rule(
+            get_entrance(world, b.event_name),
+            Has(get_mission_event(14)),
+        )
+
+    for loc in [data.locations["MISSION_15"].label, get_mission_event(15)]:
+        world.set_rule(
+            get_location(world, loc),
+            Has(get_mission_event(14)),
+            #  strength level or something
+        )
 
 
 def set_completion_condition(world) -> None:

@@ -110,6 +110,8 @@ def create_all_locations(
         10: [15, 16, 37],
         11: [17, 18, 19, 44],
         12: [20, 21, 22, 39],
+        14: [24, 25, 38, 40],
+        15: [23, 26, 27, 28],
     }
     for i in range(0, max_mission + 1):
         permitted_quests += quests_table.get(i, [])
@@ -146,7 +148,7 @@ def create_all_locations(
         world.options.field_move_item != world.options.field_move_item.option_vanilla
         and world.get_rule_num() >= 13
     ):
-        region = regions.get("m030_002")
+        region = regions.get("m030_001")
 
         extra_location = PokemonRSOALocation(
             world.player,
@@ -208,9 +210,6 @@ def create_pokemon_locations(
         if i not in world.blacklisted_captures
     ]
 
-    one_count = min(len(available_pool), capture_mons)
-    one_each = world.random.sample(available_pool, one_count)
-
     normal_include = [
         17,
         4,
@@ -233,11 +232,16 @@ def create_pokemon_locations(
         185,  # murkrow for quest
         185,  # murkrow numba 2
         # todo figure out to add floatzel and empoleon, or if those stay at their set spots
+        56,  # floatzel
+        [208, 169],  # empoleon
+        253,  # garchomp for regirock
+        75,  # magmortar for regice
         [222, 216],  # riolu
         [222, 216],  # riolu
         205,  # chingling quest
         [212, 227],  # abomasnow quest
         224,  # torkoal
+        [240, 144],  # cacturne quest
     ]
     crush_3 = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.CRUSH, level=3), 5000
@@ -268,14 +272,21 @@ def create_pokemon_locations(
 
     add_to = world.random.choices([0, 1], weights=[capture_mons, capture_ocean_mons])[0]
     [normal_include, ocean_captures][add_to].append(
-        87,  # lumineon
+        87,  # lumineon quest
+    )
+    add_to = world.random.choices([0, 1], weights=[capture_mons, capture_ocean_mons])[0]
+    [normal_include, ocean_captures][add_to].append(
+        236,  # omastar quest
     )
 
-    for i in normal_include:  # TODO, don't do this like this. # HARDCODED BROWSER IDS
-        one_each.pop(0)
-        one_each.append(i)
+    already_included = {a[0] if isinstance(a, list) else a for a in normal_include}
+    one_options = [i for i in available_pool if i not in already_included]
+    one_count = min(len(one_options), capture_mons - len(normal_include))
+    one_each = world.random.sample(one_options, one_count)
 
-    dupe_captures = world.random.choices(available_pool, k=capture_mons - one_count)
+    one_each = normal_include + one_each
+
+    dupe_captures = world.random.choices(available_pool, k=capture_mons - len(one_each))
     captures = one_each + dupe_captures
 
     if capture_ocean_mons == 0:

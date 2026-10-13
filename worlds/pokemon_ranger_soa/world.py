@@ -228,49 +228,49 @@ class PokemonRSOA(World):
 
         self.blacklisted_captures = {
             238,  # wailord
-            # until I ensure their required field moves are in the pool
+            # until I ensure their required field moves are always in the pool
             114,  # oddish
             115,  # Gloom
             116,  # Vileplume
             41,  # geodude
             42,  # graveler
             31,  # sudowoodo
-            240,  # cacturne
             54,  # torterra
-            248,  # bronzor
             30,  # bonsly
-            136,  # carnivine
             212,  # abomasnow
             # partners
-            26,  # pach
-            27,  # munchlax
-            23,  # starly
-            168,  # chimchar
-            206,  # piplup
-            52,  # turtwig
-            213,  # snorunt
-            161,  # machop
-            80,  # croagunk
-            246,  # hippopotas
-            164,  # mime jr.
-            82,  # kricketot
-            84,  # cranidos
-            220,  # misdreavus
-            251,  # gible
-            244,  # sneasel
-            181,  # shieldon
         }
-
-        # self.blacklisted_captures = {
-        #     browser_number
-        #     for browser_number, species in data.species.items()
-        #     if species.name not in possible_species
-        # }
 
         if self.options.randomize_partners != RandomizePartners.option_vanilla:
             early_place_random_partners(self)
+            # above modifies blacklisted captures
+        elif (
+            self.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla
+        ):
+            self.blacklisted_captures |= {
+                26,  # pach
+                27,  # munchlax
+                23,  # starly
+                168,  # chimchar
+                206,  # piplup
+                52,  # turtwig
+                213,  # snorunt
+                161,  # machop
+                80,  # croagunk
+                246,  # hippopotas
+                164,  # mime jr.
+                82,  # kricketot
+                84,  # cranidos
+                220,  # misdreavus
+                251,  # gible
+                244,  # sneasel
+                181,  # shieldon
+            }
 
         if self.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla:
+            self.blacklisted_captures |= set(
+                self.options.blacklist_random_mons.get_blacklist("wild")
+            )
             early_place_random_restricted(self)
 
     def create_regions(self) -> None:
@@ -384,7 +384,7 @@ class PokemonRSOA(World):
     def create_item(self, name: str) -> items.PokemonRSOAItem:
         return items.create_item_with_correct_classification(self, name)
 
-    def fill_slot_data(self) -> Mapping[str, Any]:
+    def fill_slot_data(self, include_patch_only: bool = False) -> Mapping[str, Any]:
         slot_data = self.options.as_dict(
             "goal",
             "mission_clear_target",
@@ -407,7 +407,12 @@ class PokemonRSOA(World):
             "randomize_partners",
             "partner_starters",
             "partners",
+            "blacklist_random_mons",
         )
+
+        if include_patch_only:
+            slot_data |= self.options.as_dict("remove_roadblocks")
+
         # slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
         slot_data["blacklisted_captures"] = self.blacklisted_captures
         slot_data["seed"] = self.seed  # Needs to be sent to UT
@@ -441,6 +446,7 @@ class PokemonRSOA(World):
         11: 1000000,
         12: 1000000,
         13: 1000000,
+        14: 1000000,
         100: 1000000,
     }
 

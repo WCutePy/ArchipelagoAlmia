@@ -174,13 +174,35 @@ class PInstanceEvent(EventRegistry):
     KINGDRA = InstanceEvent("m029_001", 231, mandatory=True)  # boss
     #
     WAILORD = InstanceEvent(
-        "m029_009", 238, mandatory=True
-    )  # friendship technically past m12
+        "m029_001", 238, mandatory=True
+    )  # friendship technically past m12, but no fight yet
+    JOLTEON = InstanceEvent("m030_008", 99)  #  missable randomized
+    CACNEA_2 = InstanceEvent("m030_009", 239, mandatory=True)
+    SLAKOTH_8 = InstanceEvent("m030_016", 32, mandatory=True)
+    VICTREEBEL = InstanceEvent(
+        "m030_013", 242
+    )  #  missable vanilla and randomized, together with mothim
+    MOTHIM = InstanceEvent("m030_013", 241)  # missable
+    MURKROW = InstanceEvent("m030_012", 185)  # missable together with honchkrow
+    HONCHKROW = InstanceEvent("m030_012", 186)  # missable together with murkrow
+    MR_MIME = InstanceEvent("m030_015", 165, mandatory=True)
+    MOTHIM_2 = InstanceEvent("m030_018", 241, mandatory=True)
+    SKUNTANK_2 = InstanceEvent("m030_019", 145, mandatory=True)
+    MACHAMP_2 = InstanceEvent("m030_020", 163, mandatory=True)
+    GLISCOR = InstanceEvent("m030_022", 129, mandatory=True)  # boss
+    #
+    CRESSELIA = InstanceEvent("m036_017", 254, mandatory=True)  # boss
+    SNEASEL = InstanceEvent("m028_009", 244)  # q
+    MISDREAVUS = InstanceEvent("m023_005", 220)  # q
+    #
+    MAGNEZONE = InstanceEvent("m036_016", 64, mandatory=True)  # boss
+    CLAYDOL_2 = InstanceEvent("m036_009", 250)  # q
+    ELECTIVIRE = InstanceEvent("m017_002", 72, mandatory=True)  # boss
+    GARCHOMP = InstanceEvent("m017_003a", 253, mandatory=True)  # boss
+    BIDOOF_8 = InstanceEvent("m017_007", 4, mandatory=True)
 
     """Partners"""
     MACHOP = InstanceEvent("m041_001", 161)
-    MISDREAVUS = InstanceEvent("m041_001", 220)
-    SNEASEL = InstanceEvent("m041_001", 244)
     STARLY = InstanceEvent("m041_001", 23)
     PACHIRISU = InstanceEvent("m041_001", 26)
     GIBLE = InstanceEvent("m041_001", 251)

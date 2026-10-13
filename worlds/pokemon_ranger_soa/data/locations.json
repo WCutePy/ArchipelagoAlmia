@@ -105,7 +105,7 @@
   },
   "MISSION_13": {
     "label": "Mission 13: Reveal the Hideout's Secrets!",
-    "parent_region": "m041_001",
+    "parent_region": "m030_022",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -113,7 +113,7 @@
   },
   "MISSION_14": {
     "label": "Mission 14: Get the Yellow Gem!",
-    "parent_region": "m041_001",
+    "parent_region": "m036_017",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -121,7 +121,7 @@
   },
   "MISSION_15": {
     "label": "Mission 15: Protect the Ranger Union HQ!",
-    "parent_region": "m041_001",
+    "parent_region": "m017_007",
     "default_item": null,
     "addresses": null,
     "flag": null,
@@ -313,7 +313,7 @@
   },
     "QUEST_23": {
     "label": "Quest 23: My Precious Fishing Rod",
-    "parent_region": "m041_001",
+    "parent_region": "m010_020",
     "default_item": "Progressive Psychic Defense",
     "addresses": "0x020B2663",
     "flag": 1,
@@ -321,7 +321,7 @@
   },
     "QUEST_24": {
     "label": "Quest 24: Unidentified Fleeing Omastar",
-    "parent_region": "m041_001",
+    "parent_region": "m010_003",
     "default_item": "Progressive Latent Power",
     "addresses": "0x020B2664",
     "flag": 1,
@@ -329,7 +329,7 @@
   },
     "QUEST_25": {
     "label": "Quest 25: Cacturne Research",
-    "parent_region": "m041_001",
+    "parent_region": "m033_001",
     "default_item": "Progressive Grass Defense",
     "addresses": "0x020B2665",
     "flag": 1,
@@ -337,7 +337,7 @@
   },
     "QUEST_26": {
     "label": "Quest 26: Smell of Skuntak & Weezing",
-    "parent_region": "m041_001",
+    "parent_region": "m033_001",
     "default_item": "Progressive Dark Defense",
     "addresses": "0x020B2666",
     "flag": 1,
@@ -345,7 +345,7 @@
   },
   "QUEST_27": {
     "label": "Quest 27: Capture Gigaremo Units",
-    "parent_region": "m041_001",
+    "parent_region": "m036_009",
     "default_item": "Progressive Ghost Defense",
     "addresses": "0x020B2667",
     "flag": 1,
@@ -353,7 +353,7 @@
   },
     "QUEST_28": {
     "label": "Quest 28: Elaine's Favorite",
-    "parent_region": "m041_001",
+    "parent_region": "m004_001",
     "default_item": "Combo Bonus",
     "addresses": "0x020B2668",
     "flag": 1,
@@ -433,7 +433,7 @@
   },
     "QUEST_38": {
     "label": "Quest 38: Mischeivous Sneasel",
-    "parent_region": "m041_001",
+    "parent_region": "m023_005",
     "default_item": "Partner Pokemon - Sneasel",
     "addresses": "0x020B2672",
     "flag": 1,
@@ -449,7 +449,7 @@
   },
     "QUEST_40": {
     "label": "Quest 40: Misdreavus Mischief Mystery",
-    "parent_region": "m041_001",
+    "parent_region": "m023_005",
     "default_item": "Partner Pokemon - Misdreavus",
     "addresses": "0x020B2674",
     "flag": 1,
@@ -614,5 +614,10 @@
     "addresses": "0x020B2689",
     "flag": 1,
     "category": "quest"
+  },
+  "EXTRA_1": {
+    "label": "Reach Oil Field Hideout",
+    "parent_region": "m030_001",
+    "category": "extra"
   }
 }

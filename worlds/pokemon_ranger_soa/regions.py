@@ -161,9 +161,9 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
 
     regions["m019_002"].connect(regions["m020_001"], "m019_002 -> m020_001")
     regions["m029_001"].connect(
-        regions["m030_001"], "Oil Field Hideout"
+        regions["m030_001"], "m029_001 -> m030_001"
     )  # TODO, connect to proper region
-    regions["m029_001"].connect(regions["m029_009"], "Wailord fight")
+    regions["m029_001"].connect(regions["m029_009"], "m029_001 -> m029_009")
 
     for event in PInstanceEvent.events():
         if event not in full_map.event_mon:

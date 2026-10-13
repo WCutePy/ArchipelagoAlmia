@@ -365,8 +365,8 @@ def patch(
     """Allows re-entering Sea of Wailord before completing mission 13"""
     FIELD_MAP_PATCHES["m010_020"] += [
         (86, 0x00_00_00_11),
-        (87, 0x02_05_0A_04),
-        (88, 0x08370101),
+        (87, 0x02_05_A0_04),
+        (88, 0x08_37_01_01),
         (89, 0x08_9B_00_01),
         (90, 0x00_00_00_12),
         (91, 0x00_25_00_10),
@@ -374,7 +374,37 @@ def patch(
         (93, 0x00_01_02_08),
         (95, 0x00_00_00_11),
         (96, 0x02_05_A0_02),
+        (97, 0x08_37_01_01),
+        (98, 0x08_9B_00_01),
+        (99, 0x00_00_00_12),
+        (100, 0x00_35_00_10),
+        (101, 0x00_10_00_16),
+        (102, 0x00_01_02_08),
+        (104, 0x00_00_00_11),
+        (105, 0x02_05_A0_00),
+        (106, 0x08_37_01_01),
+        (107, 0x08_9B_00_01),
+        (108, 0x00_00_00_12),
+        (109, 0x00_36_00_10),
+        (110, 0x00_10_00_16),
+        (111, 0x00_04_02_08),
     ]
+
+    """Mission 13"""
+    """Allows leaving the Oil Field Hideout when Isaac is following you"""
+    EVENTRECT_PATCHES["EventRect030004"] += [
+        # 	PUSHRESULT 		; @22
+        (22, 0x00_00_00_10)
+    ]
+
+    """Mission 15"""
+    if "Protect the Ranger Union HQ!" in slot_data.get("remove_roadblocks", []):
+        EVENTRECT_PATCHES["EventRect017003"] += [
+            # 	PUSHRESULT 		; @134
+            (134, 0x00_01_00_10),
+            #  PUSHRESULT 		; @151
+            (151, 0x00_00_00_10),
+        ]
 
     """partner patches"""
 
@@ -519,6 +549,18 @@ def patch(
             (671, snover << 16 | 0x10)
         ]
 
+        sneasel = 323
+        QUEST_PATCHES["q038"] += [
+            # PUSH 99		; @536
+            (536, sneasel << 16 | 0x10)
+        ]
+
+        misdreavus = 323
+        QUEST_PATCHES["q040"] += [
+            #  PUSH 92		; @799
+            (799, misdreavus << 16 | 0x10)
+        ]
+
     unlock_partner_as_items = True  # TODO make option!
     if unlock_partner_as_items:
 
@@ -552,6 +594,16 @@ def patch(
         QUEST_PATCHES["q039"] += [
             # 	PUSH 1		; @1257
             (1257, 0x00_D1_00_08)
+        ]
+
+        QUEST_PATCHES["q038"] += [
+            # 	PUSH 1		; @1050
+            (1050, 0x00_D2_00_08)
+        ]
+
+        QUEST_PATCHES["q040"] += [
+            #  PUSH 1		; @1449
+            (1449, 0x00_D2_00_08)
         ]
 
     early_staraptor = True

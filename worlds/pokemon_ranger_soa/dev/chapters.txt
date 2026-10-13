@@ -38,3 +38,9 @@
 0x34 - 52 - Post mission 11, entered ranger union
 0x35 - 53 - Left ranger union, Mission 12
 0x36 - 54 - Mission 13, oil field hideout
+0x37 - 55 - Haruba Village
+0x38 - 56 - Mission 14, Hippowdon Temple
+0x39 - 57 - Next day screen
+0x40 - 58 - Ranger union, inbetween time
+0x41 - 59 - Ranger union moving down stairs, Mission 15
+0x42 - 60 - Left Ranger Union, Mission 16
