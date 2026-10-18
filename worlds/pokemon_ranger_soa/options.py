@@ -545,18 +545,37 @@ class RemoveRoadblocks(OptionSet):
     This option allows removing roadblocks in the game
     that are not required to be removed, but may be preferred
 
+    - Out of logic surf Vien Forest
+        In a randomized game, will allow accessing the west
+        part of Vien Forest before mission 10 out of logic.
+        Can be used to allow a little extra gameplay.
+        If the goal does not equal or exceed mission 10, no
+        unique mons are placed there.
+    - Out of logic surf Almia Castle
+        In a randomized game, will allow accessing all the way into
+        Almia Castle before mission 10 out of logic.
+        Is just painful. Don't do this.
+        If the goal does not equal or exceed mission 10, no
+        unique mons are placed there.
     - Protect the Ranger Union HQ!
         This will allow leaving the ranger HQ during
         mission 15 before completing it fully.
+    - Earlier save spots Altru Building
+        This moves the save spot on the outside to the right,
+        allowing saving before fighting Magmortar
     """
 
     display_name = "Remove Roadblocks"
     valid_keys = [
+        "Out of logic surf Vien Forest",
+        "Out of logic surf Almia Castle",
         "Protect the Ranger Union HQ!",
+        "Earlier save spots Altru Building",
     ]
 
     default = [
         "Protect the Ranger Union HQ!",
+        "Earlier save spots Altru Building",
     ]
 
 

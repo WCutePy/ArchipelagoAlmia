@@ -129,7 +129,7 @@
   },
   "MISSION_16": {
     "label": "Mission 16: Execute Operation Brighton!",
-    "parent_region": "m041_001",
+    "parent_region": "m039_010a",
     "default_item": null,
     "addresses": null,
     "flag": null,

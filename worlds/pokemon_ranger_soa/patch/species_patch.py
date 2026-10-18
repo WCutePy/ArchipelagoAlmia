@@ -12,7 +12,7 @@ import NetUtils
 from ..apnds.rom import Rom
 from ..apnds.lz import compress, decompress
 from ..data import data
-from ..options import RandomizePartners
+from ..options import RandomizePartners, FieldMoveItem
 
 if TYPE_CHECKING:
     from ..rom import PokemonRSOAPatch
@@ -106,6 +106,12 @@ def write_patch(
             orjson.dumps(world.modified_partners),
         )
 
+    if world.modified_npc_mon_to:
+        opened_zipfile.writestr(
+            "npc_mon_to.txt",
+            orjson.dumps({str(k): v for k, v in world.modified_npc_mon_to.items()}),
+        )
+
     # opened_zipfile.writestr(
     #     "species.json",
     #     orjson.dumps({str(form_id): p.to_dict() for form_id, p in patches.items()}),
@@ -155,6 +161,8 @@ def patch(
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
 
+    slot_data = orjson.loads(prsoa_patch_instance.get_file("slot_data.json"))
+
     # species_file = prsoa_patch_instance.files["species.json"]
     # data = orjson.loads(species_file)
     #
@@ -171,10 +179,18 @@ def patch(
     #
     #     struct.pack_into("<H", form_file, base_a, form_patch.national_id)
 
+    field_move_item = slot_data.get("field_move_item", None)
+    if field_move_item and field_move_item != FieldMoveItem.option_vanilla:
+        clone_form_to_form_id(rom, form_file, 173, 328)
+        clone_form_to_form_id(rom, form_file, 14, 329)
+
     partners = prsoa_patch_instance.files.get("partners.txt")
     if partners:
         partners = orjson.loads(partners)
-        for i in range(0, len(partners)):
+        clone_until = len(partners)
+        if slot_data.get("randomize_partners") == RandomizePartners.option_starter_only:
+            clone_until = min(3, len(partners))
+        for i in range(0, clone_until):
             pokemon = data.species[partners[i]]
             from_form_id = list(pokemon.forms.keys())[0]
             clone_form_to_form_id(rom, form_file, from_form_id, 311 + i)
@@ -183,5 +199,11 @@ def patch(
         pokemon_to_npc_sprite(rom, data.species[starly].national_id, 111)
         pokemon_to_npc_sprite(rom, data.species[pach].national_id, 112)
         pokemon_to_npc_sprite(rom, data.species[munchlax].national_id, 113)
+
+    npc_mon_to = prsoa_patch_instance.files.get("npc_mon_to.txt")
+    if npc_mon_to:
+        npc_mon_to = orjson.loads(npc_mon_to)
+        for npc_id, national in npc_mon_to.items():
+            pokemon_to_npc_sprite(rom, national, int(npc_id))
 
     rom.files[form_file_name] = bytes(form_file)

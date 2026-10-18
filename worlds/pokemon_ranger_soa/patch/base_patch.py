@@ -8,6 +8,7 @@ from .map_patch import CompactMapData
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
 from ..data import data
+from ..options import RandomizePartners
 
 if TYPE_CHECKING:
     from ..rom import PokemonRSOAPatch
@@ -360,6 +361,23 @@ def patch(
         (12749, 0x08_8D_01_01),
         # (12751, 0x00_10_00_10)
     ]
+
+    """mission 10"""
+    """To prevent significant chunks of the map being available for exploration, while
+        still requiring to do it all over again when missions have progressed.
+    """
+
+    if "Out of logic surf Vien Forest" not in slot_data.get("remove_roadblocks", []):
+        file_name = "/data/Script/field/eventrect/er009/EventRect009400.fsb"
+        from ._data import EventRect009400
+
+        rom.files[file_name] = EventRect009400
+
+    if "Out of logic surf Almia Castle" not in slot_data.get("remove_roadblocks", []):
+        file_name = "/data/Script/field/eventrect/er015/EventRect015400.fsb"
+        from ._data import EventRect015400
+
+        rom.files[file_name] = EventRect015400
 
     """mission 13"""
     """Allows re-entering Sea of Wailord before completing mission 13"""
@@ -768,9 +786,12 @@ def code_patch(
         ]
         code_bytes = bytes.fromhex("".join(ARM_INSTRUCTION_BYTES))
 
-        partner_ids = list(range(311, 311 + min(len(partners), 18))) + [0] * max(
-            0, 18 - len(partners)
-        )  # because imagine making this match any length of partners, has to be exactly 18.
+        if slot_data.get("randomize_partners") == RandomizePartners.option_starter_only:
+            partner_ids = [311, 312, 313] + partners[3:]
+        else:
+            partner_ids = list(range(311, 311 + min(len(partners), 18))) + [0] * max(
+                0, 18 - len(partners)
+            )  # because imagine making this match any length of partners, has to be exactly 18.
         table_bytes = struct.pack(
             "<18H",
             *partner_ids,

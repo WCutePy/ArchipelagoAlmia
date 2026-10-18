@@ -163,7 +163,7 @@ class PInstanceEvent(EventRegistry):
     MONFERNO_2 = InstanceEvent("m019_011", 169, mandatory=True)  # m11
     INFERNAPE = InstanceEvent("m019_011", 170, mandatory=True)  # m11 boss
     HEATRAN = InstanceEvent("m019_012", 228, mandatory=True)  # m11 boss
-    #
+    # m12
     SNOVER = InstanceEvent("m019_005", 211)  # q
     SEADRA = InstanceEvent("m029_001", 230, mandatory=True)  # m12 with horsea_2
     HORSEA_2 = InstanceEvent("m029_001", 229, mandatory=True)  # m12 with seadra
@@ -172,7 +172,7 @@ class PInstanceEvent(EventRegistry):
     HUNTAIL = InstanceEvent("m029_003", 232, mandatory=True)  # together with gorebyss
     GOREBYSS = InstanceEvent("m029_003", 233, mandatory=True)  # together with huntail
     KINGDRA = InstanceEvent("m029_001", 231, mandatory=True)  # boss
-    #
+    # m13
     WAILORD = InstanceEvent(
         "m029_001", 238, mandatory=True
     )  # friendship technically past m12, but no fight yet
@@ -190,31 +190,89 @@ class PInstanceEvent(EventRegistry):
     SKUNTANK_2 = InstanceEvent("m030_019", 145, mandatory=True)
     MACHAMP_2 = InstanceEvent("m030_020", 163, mandatory=True)
     GLISCOR = InstanceEvent("m030_022", 129, mandatory=True)  # boss
-    #
+    # m14
     CRESSELIA = InstanceEvent("m036_017", 254, mandatory=True)  # boss
     SNEASEL = InstanceEvent("m028_009", 244)  # q
     MISDREAVUS = InstanceEvent("m023_005", 220)  # q
-    #
+    # m15
     MAGNEZONE = InstanceEvent("m036_016", 64, mandatory=True)  # boss
     CLAYDOL_2 = InstanceEvent("m036_009", 250)  # q
     ELECTIVIRE = InstanceEvent("m017_002", 72, mandatory=True)  # boss
     GARCHOMP = InstanceEvent("m017_003a", 253, mandatory=True)  # boss
     BIDOOF_8 = InstanceEvent("m017_007", 4, mandatory=True)
+    # m16
+    YANMEGA = InstanceEvent("m014_002", 119, mandatory=True)  # boss
+    WEEZING = InstanceEvent("m038_001", 188, mandatory=True)  # with skuntank
+    SKUNTANK = InstanceEvent("m038_001", 145, mandatory=True)  # with weezing
+    SHIFTRY = InstanceEvent("m038_001", 35, mandatory=True)  # with nuzleaf_2
+    NUZLEAF_2 = InstanceEvent("m038_001", 34, mandatory=True)  # with shiftry
+    PRIMEAPE = InstanceEvent("m038_002", 127)  # in elevator, very missable
+    ELECTRODE = InstanceEvent("m038_002", 77)  # in elevator, very missable
+    DUSCLOPS_2 = InstanceEvent("m038_002", 191, mandatory=True)  # also evelator
+    GABITE_3 = InstanceEvent("m038_019", 252, mandatory=True)
+    GENGAR_2 = InstanceEvent("m038_019", 19, mandatory=True)
+    MAMOSWINE = InstanceEvent("m030_019", 202, mandatory=True)
+    BRONZONG = InstanceEvent("m038_009", 249, mandatory=True)  # with claydol
+    CLAYDOL = InstanceEvent("m038_009", 250, mandatory=True)  # with bronzong
+    AGGRON = InstanceEvent("m038_011", 133, mandatory=True)  # with tyranitar
+    TYRANITAR = InstanceEvent("m038_011", 122, mandatory=True)  # with aggron
+    MISMAGIUS = InstanceEvent("m038_007", 221, mandatory=True)  # with banette
+    BANETTE = InstanceEvent("m038_007", 148, mandatory=True)  # with mismagius
+    ESPEON = InstanceEvent("m038_006", 101, mandatory=True)  # with umbreon
+    UMBREON = InstanceEvent("m038_006", 102, mandatory=True)  # with espeon
+    BLAZIKEN_2 = InstanceEvent("m038_003", 255, mandatory=True)
+    SPINARAK_5 = InstanceEvent("m038_012", 155, mandatory=True)
+    ALAKAZAM = InstanceEvent(
+        "m038_016", 184, mandatory=True
+    )  # with sceptile and luxray
+    SCEPTILE = InstanceEvent(
+        "m038_016", 243, mandatory=True
+    )  # with alakazam and luxray
+    LUXRAY = InstanceEvent("m038_016", 51, mandatory=True)
+    SKORUPI_3 = InstanceEvent("m038_012", 173, mandatory=True)
+    BRONZOR_3 = InstanceEvent("m038_012", 248, mandatory=True)
+    BELLOSSOM_3 = InstanceEvent("m038_012", 117, mandatory=True)
+    CACTURNE_3 = InstanceEvent("m038_012", 240, mandatory=True)
+    VAPOREON = InstanceEvent(
+        "m038_012", 98, mandatory=True
+    )  # with jolteon_f10 and flareon
+    JOLTEON_F10 = InstanceEvent(
+        "m038_012", 99, mandatory=True
+    )  # with vaporeon and flareon
+    FLAREON = InstanceEvent(
+        "m038_012", 100, mandatory=True
+    )  # with vaporeon and jolteon f10
+    SCIZOR = InstanceEvent("m038_018", 217, mandatory=True)  # with gardevoir
+    GARDEVOIR = InstanceEvent("m038_018", 159, mandatory=True)  # with scizor
+    RHYPERIOR = InstanceEvent("m039_004a", 151, mandatory=True)  # boss
+    MAGMORTAR = InstanceEvent("m039_006a", 75, mandatory=True)  # boss
+    GALLADE = InstanceEvent("m039_002", 160, mandatory=True)  # boss
+    RHYPERIOR_AGAIN = InstanceEvent(
+        "m039_002", 151, mandatory=True
+    )  # with magmortar and gallade
+    MAGMORTAR_AGAIN = InstanceEvent(
+        "m039_002", 75, mandatory=True
+    )  # with rhyperior and gallade
+    GALLADE_AGAIN = InstanceEvent(
+        "m039_002", 160, mandatory=True
+    )  # with rhyperior and magmortar
+    BIDOOF_TOWER = InstanceEvent("m039_010a", 4, mandatory=True)
+    DUSKNOIR = InstanceEvent("m039_010a", 192, mandatory=True)  # boss
+    DARKRAI = InstanceEvent("m039_010a", 257, mandatory=True)  # boss, technically b
 
-    """Partners"""
-    MACHOP = InstanceEvent("m041_001", 161)
-    STARLY = InstanceEvent("m041_001", 23)
-    PACHIRISU = InstanceEvent("m041_001", 26)
-    GIBLE = InstanceEvent("m041_001", 251)
-    MUNCHLAX = InstanceEvent("m041_001", 27)
-    HIPPOPOTAS = InstanceEvent("m041_001", 246)
-
-    """DLC?"""
-    DARKRAI = InstanceEvent("m041_001", 257, False)
-    REGIGIGAS = InstanceEvent("m036_019", 267)
-    DIALGA = InstanceEvent("m041_001", 435)
-    PALKIA = InstanceEvent("m041_001", 436)
-    SHAYMIN = InstanceEvent("m041_001", 437)
+    # """Partners"""
+    # MACHOP = InstanceEvent("m041_001", 161)
+    # STARLY = InstanceEvent("m041_001", 23)
+    # PACHIRISU = InstanceEvent("m041_001", 26)
+    # GIBLE = InstanceEvent("m041_001", 251)
+    # MUNCHLAX = InstanceEvent("m041_001", 27)
+    # HIPPOPOTAS = InstanceEvent("m041_001", 246)
+    #
+    # """DLC?"""
+    # REGIGIGAS = InstanceEvent("m036_019", 267)
+    # DIALGA = InstanceEvent("m041_001", 435)
+    # PALKIA = InstanceEvent("m041_001", 436)
+    # SHAYMIN = InstanceEvent("m041_001", 437)
 
     @classmethod
     def events(cls):

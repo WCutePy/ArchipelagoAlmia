@@ -1,0 +1,44 @@
+
+evententer:
+    SYSCALL 2, 155, 0		;getchapter @16
+    PUSHRESULT 		; @17
+	PUSH 46		; @18
+	IS_GE 		; @19
+	JZ loc_21		; @20
+	PUSHSTRING 0		; @8
+	SYSCALL 0, 3, 1		;debug_printf @9
+	PUSHSTRING 23		; @10
+	PUSH 21		; @11
+	SYSCALL 14, 8, 2		;sc14_unk_0x0008 @12
+	PUSH 0		; @13
+	SETFIELD20 		; @14
+
+loc_15:
+	PUSH 1		; @15
+	JZ loc_21		; @16
+	PUSH 0		; @17
+	SETFIELD20 		; @18
+	JMP loc_21		; @19
+	.dw -393208		;JMP loc_15
+
+loc_21:
+	PUSH 0		; @21
+	RETURN 1, 2		; @22
+
+eventleave:
+	PUSHSTRING 35		; @23
+	SYSCALL 0, 3, 1		;debug_printf @24
+	SYSCALL 14, 9, 0		;sc14_unk_0x0009 @25
+	PUSH 0		; @26
+	RETURN 1, 2		; @27
+
+;Functions:
+.func evententer
+.func eventleave
+
+;Symbols:
+
+;Strings:
+.asciiz "EventRectEnter 015400\0a"		;23
+.asciiz "a015Ride004"		;35
+.asciiz "EventRectLeave 015400\0a"		;58

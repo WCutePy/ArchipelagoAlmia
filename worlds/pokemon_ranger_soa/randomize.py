@@ -7,7 +7,13 @@ from BaseClasses import ItemClassification, CollectionState
 from Fill import fill_restrictive
 from .data import SpeciesData, data, FieldMove, Party, FieldMoveCategory
 from .items import PokemonRSOAItem
-from .options import RandomizePartners, partner_blacklist, RandomizePokemonEtc
+from .options import (
+    RandomizePartners,
+    partner_blacklist,
+    RandomizePokemonEtc,
+    RandomizePokemonEncounters,
+    FieldMoveItem,
+)
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -119,15 +125,18 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
         52,  # turtwig
         213,  # snorunt
         244,  # sneasel
+        220,  # misdreavus
         #
         161,  # machop
         246,  # hippopotas
-        220,  # misdreavus
         251,  # gible
     ]
     if starters_only:
         world.blacklisted_captures |= set(vanilla_partners_in_some_order)
-        world.modified_partners = starters + vanilla_partners_in_some_order
+        world.modified_partners = starters + [
+            list(data.species[i].forms.keys())[0]
+            for i in vanilla_partners_in_some_order
+        ]
         return
     # kricketot
     place_npc(world, ("m008_006", 8), 314)
@@ -186,6 +195,32 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
 
 
 def early_place_random_restricted(world: PokemonRSOA) -> None:
+    """place special crush 1 and cut 1 in school"""
+    if world.options.field_move_item != FieldMoveItem.option_vanilla:
+        bidoof = 328
+        zubat = 329
+    else:
+        max_health = 100
+        bidoof = form_options_by_criteria(
+            world, FieldMove(category=FieldMoveCategory.CRUSH, level=1), max_health
+        )
+        zubat = form_options_by_criteria(
+            world, FieldMove(category=FieldMoveCategory.CUT, level=1), max_health
+        )
+
+    options = {
+        "m001_004": [1],
+        "m001_006": [0],
+        "m001_008": [0, 1, 2, 3, 4],
+    }
+    out = apply_place_on_random(world, options, bidoof)
+    options[out[0]].remove(out[1])
+    options["m001_004"] += [0]
+    options |= {
+        "m001_007": [0, 1, 2, 3],
+    }
+    apply_place_on_random(world, options, zubat)
+
     """place surf in puel sea"""
     options = {"m011_004": [1, 2, 3]}
     apply_place_on_random(world, options, 0x06A)
@@ -499,9 +534,11 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
 
 
 def copy_over_map_pokemon(
-    world: PokemonRSOA, from_: str, to: str, mapping: Optional[Dict[int, int]]
+    world: PokemonRSOA, from_: str, to: str, mapping: Optional[Dict[int, int]] = None
 ) -> None:
     from_map = world.modified_regions[from_]
+    if from_map.modified is False:
+        return
     to_map = world.modified_regions[to]
     if not mapping and len(from_map.POKEMON_SPAWN.keys()) != len(
         to_map.POKEMON_SPAWN.keys()
@@ -533,6 +570,7 @@ def copy_over_spawn_to_npc(
 
 
 def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
+    copy_over_map_pokemon(world, "m001_006", "m001_006", {1: 0})
 
     m009_001a_to_m009_001b = {
         0: 0,
@@ -571,78 +609,18 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
         0: 0,
         1: 1,
         2: 2,
-        3: 3,  # NOT actually a match vanilla
+        3: 3,  # NOT actually a match vanilla (but irrelevant if not randoized)
         4: 7,
         5: 5,
         6: 8,
     }
     copy_over_map_pokemon(world, "m029_002", "m029_008", m029_002_to_m029_008)
 
-    return
+    copy_over_map_pokemon(world, "m039_003a", "m039_003b")
+    copy_over_map_pokemon(world, "m039_005a", "m039_005b")
+    copy_over_map_pokemon(world, "m039_007a", "m039_007b")
 
-
-def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
-    groups: List[List[Tuple[str, int]]] = [
-        # --- mission interactions
-        # consider making the drifloon groups the same???
-        [
-            ("m201_001", 2),
-            ("m201_001", 3),
-            ("m201_001", 4),
-            ("m201_001", 5),
-        ],  # m8 drifloon water
-        [("m018_001", i) for i in range(0, 5)],  # m8 drifloon boyleland
-        [("m019_013", 0), ("m019_013", 1)],  # m8 drifloon left side
-        # ---
-        [("m020_014", 1)],  # m8 kidnapped magmar
-        [("m020_014", 2), ("m020_009", 2), ("m001_014", 6)],  # m8 kidnapped pikachu
-        [
-            ("m019_002", 6),
-            ("m019_002", 7),
-            ("m019_002", 8),
-            ("m020_014", 3),
-            ("m020_014", 4),
-            ("m020_013", 5),
-            ("m020_009", 2),
-        ],  # m8 kidnapped charmander
-        [
-            ("m019_002", 9),
-            ("m019_002", 10),
-            ("m019_002", 11),
-            ("m020_014", 5),
-            ("m020_014", 6),
-        ],  # m8 kidnapped slugma
-        [("m020_014", 7), ("m020_014", 8)],  # m8 kidnapped stunky
-        [("m020_008", 0)],  # m8 gliscor fly away
-        [("m015_001", 11)],  # q12 budew
-        [("m018_001", 22)],  # spinned around bidoof
-        [("m026_001", 8), ("m025_001", 4), ("m025_002", 2)],  # cutscene empoleon
-        [
-            ("m029_001", 1),
-            ("m030_010", 7),
-            ("m030_022", 1),
-            ("m029_010", 2),
-        ],  # m12 & m13 wailmer
-        [*[("m033_001", i) for i in range(13, 18)]],  # m14 hippopotas
-    ]
-
-    groups += [
-        # --- partners
-        [
-            ("m020_006", 2),
-            ("m020_009", 8),
-            ("m001_014", 8),
-        ],  # m8 barlow Makuhita
-        #  skipped out on the Wendy Staraptor, as it's flying, requires testing for sprites!!!
-        [
-            ("m017_004", 13),
-            ("m036_001", 0),
-            ("m036_012", 1),
-            ("m036_011", 2),
-            ("m036_016", 5),
-        ],  # m9 keith Buizel
-        [("m023_014", 12)],  # m9 sven Luxray
-    ]
+    """from here are purely cosmetic changes, which have npc mons matched to wild mons"""
 
     if world.modified_regions["m020_013"].modified:
         #  purugly and vulpix
@@ -671,7 +649,121 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
 
         copy_over_spawn_to_npc(world, "m020_013", 8, "m001_014", 9)
 
-    #  consider copying over the helped empoleon to the wild empoleon?
+    if (
+        world.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla
+        and world.get_rule_num() >= 16
+    ):
+        for i in [1, 2, 3, 4]:
+            j = world.random.randint(0, 17)
+            copy_over_spawn_to_npc(world, "m021_001", j, "m021_001", i)
+
+        #    for i in [1, 2, 3, 4]:
+        #        j = world.random.randint(0, 17)
+        #        copy_over_spawn_to_npc(world, "m010_022", j, "m010_022", i)
+        ## not sure about these as these are likely also used for the wall!
+
+        for i in [12, 13, 14, 15]:
+            j = world.random.randint(0, 13)
+            copy_over_spawn_to_npc(world, "m026_001", j, "m026_001", i)
+        #  16 is abomasnow and is more npc, so changed with that setting
+
+        for i in [12, 13, 14, 15]:
+            j = world.random.randint(0, 13)
+            copy_over_spawn_to_npc(world, "m026_001", j, "m026_001", i)
+
+    return
+
+
+def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
+    mission_goal = world.get_rule_num()
+    groups: List[List[Tuple[str, int]]] = []
+
+    if mission_goal >= 8:
+        # consider making the drifloon groups the same???
+        groups += [
+            [
+                ("m201_001", 2),
+                ("m201_001", 3),
+                ("m201_001", 4),
+                ("m201_001", 5),
+            ],  # m8 drifloon water
+            [("m018_001", i) for i in range(0, 5)],  # m8 drifloon boyleland
+            [("m019_013", 0), ("m019_013", 1)],  # m8 drifloon left side
+            # ---
+            [("m020_014", 1)],  # m8 kidnapped magmar
+            [("m020_014", 2), ("m020_009", 2), ("m001_014", 6)],  # m8 kidnapped pikachu
+            [
+                ("m019_002", 6),
+                ("m019_002", 7),
+                ("m019_002", 8),
+                ("m020_014", 3),
+                ("m020_014", 4),
+                ("m020_013", 5),
+                ("m020_009", 2),
+            ],  # m8 kidnapped charmander
+            [
+                ("m019_002", 9),
+                ("m019_002", 10),
+                ("m019_002", 11),
+                ("m020_014", 5),
+                ("m020_014", 6),
+            ],  # m8 kidnapped slugma
+            [("m020_014", 7), ("m020_014", 8)],  # m8 kidnapped stunky
+            [("m020_008", 0)],  # m8 gliscor fly away
+        ]
+
+        groups += [
+            # --- partners
+            [
+                ("m020_006", 2),
+                ("m020_009", 8),
+                ("m001_014", 8),
+            ],  # m8 barlow Makuhita
+        ]
+    #  skipped out on the Wendy Staraptor, as it's flying :c
+    if mission_goal >= 9:
+        groups += [
+            [("m015_001", 11)],  # q12 budew
+            [("m018_001", 22)],  # spinned around bidoof
+        ]
+        keith_buizel = [
+            ("m017_004", 13),
+        ]
+        if mission_goal >= 14:
+            keith_buizel += [
+                ("m036_001", 0),
+                ("m036_012", 1),
+                ("m036_011", 2),
+                ("m036_016", 5),
+            ]
+        groups += [
+            # --- partners
+            keith_buizel,
+            [("m023_014", 12)],  # m9 sven Luxray
+        ]
+    if mission_goal >= 10:
+        groups += [
+            [("m026_001", 8), ("m025_001", 4), ("m025_002", 2)],  # cutscene empoleon
+        ]
+        #  consider copying the wild empoleon over the helped empoleon?
+    if mission_goal >= 12:
+        groups += [
+            [
+                ("m029_001", 1),
+                ("m030_010", 7),
+                ("m030_022", 1),
+                ("m029_010", 2),
+            ],  # m12 & m13 wailmer
+        ]
+    if mission_goal >= 14:
+        groups += [
+            [*[("m033_001", i) for i in range(13, 18)]],  # m14 hippopotas
+        ]
+    if mission_goal >= 16:
+        groups += [
+            [("m021_002", 4)],  # m16 girafarig
+            [("m034_001", 4), ("m034_001", 5), ("m034_001", 6)],  # m16 more hippopotas
+        ]
 
     pokemon = world.random.choices(
         [i for i in world.modified_species.keys() if i != 238], k=len(groups)
@@ -681,3 +773,8 @@ def apply_randomize_npc_pokemon(world: PokemonRSOA) -> None:
         form_id = list(world.modified_species[mon].forms.keys())[0]
         for place in group:
             place_npc(world, place, form_id)
+
+    #  would randomize the abomasnow in the end cutscene, but crasehs game!
+    # if world.get_rule_num() >= 16:
+    #     mon = world.random.choice(pokemon)
+    #     world.modified_npc_mon_to[156] = world.modified_species[mon].national_id

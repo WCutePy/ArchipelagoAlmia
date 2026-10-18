@@ -6,6 +6,8 @@ from collections import defaultdict
 from typing import TYPE_CHECKING, Dict, Any, List, Optional
 from dataclasses import dataclass
 
+from orjson import orjson
+
 from ..apnds.rom import Rom
 from ..apnds.narc import Narc
 from ..apnds.lz import compress, decompress
@@ -66,7 +68,7 @@ def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
 
     objects = data.get(0x04, [])
     triggers = data.get(0x07, {})
-    npc = data.get(0x08, [])
+    npc = data.get(0x08, {})
     pokemon = data.get(0x09, [])
 
     layer_type_index = defaultdict(int)
@@ -117,12 +119,25 @@ def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
                     offset += 4
 
             elif npc and layer_type == 0x08:
-                offset = 8 + 6  # ? not sure if that's the right one
+                offset = 8  # ? not sure if that's the right one
                 entry_count = (len(layer_data) - 8) // 11
                 for _ in range(entry_count):
-                    struct.pack_into("<H", layer_data, offset, npc[layer_type_index[8]])
-                    offset += 11
+                    index = layer_type_index[8]
                     layer_type_index[8] += 1
+                    entry = npc.get(index, {})
+                    if not entry:
+                        offset += 11
+                        continue
+                    if "x" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["x"])
+                    offset += 2
+                    if "y" in entry:
+                        struct.pack_into("<H", layer_data, offset, entry["y"])
+                    offset += 2
+                    offset += 2
+                    struct.pack_into("<H", layer_data, offset, entry["id"])
+
+                    offset += 5
             elif pokemon and layer_type == 0x09:
                 entry_count = (len(layer_data) - 8) // 10
                 offset = 8 + 6
@@ -146,7 +161,7 @@ def patch_map(rom: Rom, map_name: str, data: Dict[int, Any]) -> None:
     logging.warning(f"Patched map: {map_name}")
 
 
-def add_map_base_patches(map_name: str, data: Dict[int, Any]) -> None:
+def add_map_base_patches(map_name: str, data: Dict[int, Any], slot_data) -> None:
     """Mission 4, anti softlock if you enter the west of
     pueltown through the east of pueltown clearing the center gigaremo
     It would be better to patch the wall in m010_022 in the first place,
@@ -159,12 +174,19 @@ def add_map_base_patches(map_name: str, data: Dict[int, Any]) -> None:
                 "height": 64,
             }
         }
+        return
+
+    if map_name == "m038_018" and "Earlier save spots Altru Building" in slot_data.get(
+        "remove_roadblocks", []
+    ):
+        data[0x08] |= {8: {"id": 92, "x": 430, "y": 180}}
+        return
 
 
 @dataclass
 class CompactMapData:
     objects: List[int]
-    npcs: List[int]
+    npcs: Dict[int, Dict[str, Any]]
     pokemon: List[int]
 
     @classmethod
@@ -181,6 +203,7 @@ class CompactMapData:
         offset += num_objects * 2
 
         npcs = list(struct.unpack_from(f"<{num_npc}H", data, offset))
+        npcs = {i: {"id": npc} for i, npc in enumerate(npcs)}
         offset += num_npc * 2
 
         pokemon = list(struct.unpack_from(f"<{num_pokemon}H", data, offset))
@@ -203,6 +226,8 @@ def patch(
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
 
+    slot_data = orjson.loads(prsoa_patch_instance.get_file("slot_data.json"))
+
     for file_name, file_data in prsoa_patch_instance.files.items():
         if not file_name.startswith("map/m"):
             continue
@@ -218,6 +243,6 @@ def patch(
             continue
 
         data = {0x04: map_data.objects, 0x08: map_data.npcs, 0x09: map_data.pokemon}
-        add_map_base_patches(map_name, data)
+        add_map_base_patches(map_name, data, slot_data)
 
         patch_map(rom, map_name, data)

@@ -71,12 +71,9 @@ class PatchMethods:
             procedures.append("map_patch")
             map_patch.write_patch(patch, opened_zipfile)
 
-        if (
-            patch.world.options.randomize_partners
-            != RandomizePokemonEncounters.option_vanilla
-        ):
-            procedures.append("species_patch")
-            species_patch.write_patch(patch, opened_zipfile)
+        # could add more refined conditions in the future!!!
+        procedures.append("species_patch")
+        species_patch.write_patch(patch, opened_zipfile)
 
         opened_zipfile.writestr("procedures.txt", "\n".join(procedures))
         opened_zipfile.writestr(

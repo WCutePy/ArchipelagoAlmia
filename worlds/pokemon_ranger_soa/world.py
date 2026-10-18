@@ -159,6 +159,7 @@ class PokemonRSOA(World):
     modified_regions: Dict[str, MapData]
     modified_species: Dict[int, SpeciesData]  # browser id - SpeciesData
     modified_partners: List[int]  # browser id
+    modified_npc_mon_to: Dict[int, int]  # npc_id national_id
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
     # topology_present = True
@@ -172,6 +173,8 @@ class PokemonRSOA(World):
         self.capture_groups = CaptureGroups()
 
         self.exclude_field_moves = set()
+        self.modified_partners = []
+        self.modified_npc_mon_to = {}
 
         self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
 
@@ -272,6 +275,13 @@ class PokemonRSOA(World):
                 self.options.blacklist_random_mons.get_blacklist("wild")
             )
             early_place_random_restricted(self)
+
+        if (
+            self.get_rule_num() >= 16
+            and "Earlier save spots Altru Building"
+            in self.options.remove_roadblocks.value
+        ):
+            self.modified_regions["m038_018"].modified = True
 
     def create_regions(self) -> None:
         all_regions = regions.create_and_connect_regions(self)
@@ -443,10 +453,12 @@ class PokemonRSOA(World):
         8: 8700,
         9: 10000,
         10: 12800,
-        11: 1000000,
-        12: 1000000,
-        13: 1000000,
-        14: 1000000,
+        11: 14000,  # not necessary
+        12: 16100,
+        13: 19600,
+        14: 19600,
+        15: 24000,
+        16: 1000000,
         100: 1000000,
     }
 

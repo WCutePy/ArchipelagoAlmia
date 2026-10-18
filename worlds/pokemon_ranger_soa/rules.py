@@ -226,6 +226,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
         13: set_mission_13_rules,
         14: set_mission_14_rules,
         15: set_mission_15_rules,
+        16: set_mission_16_rules,
     }
 
     up_to_mission = world.options.mission_clear_target.value
@@ -1215,7 +1216,7 @@ def set_mission_8_rules(world: PokemonRSOA):
     can_airlift_twice = can_airlift & Has(data.species[142].event_can_capture(), 2)
 
     for i in range(8):
-        if i in [0, 2]:
+        if i in [0, 2, 3]:
             continue
         world.set_rule(get_pokemon_instance(world, "m019_003", i), can_airlift_twice)
 
@@ -2058,6 +2059,164 @@ def set_mission_15_rules(world: PokemonRSOA):
         world.set_rule(
             get_location(world, loc),
             Has(get_mission_event(14)),
+            #  strength level or something
+        )
+
+
+def set_mission_16_rules(world: PokemonRSOA):
+    all_maps = MonSelect.get_rules_scope()
+
+    for b in [
+        PInstanceEvent.YANMEGA,
+        PInstanceEvent.SKUNTANK,
+        PInstanceEvent.WEEZING,
+        PInstanceEvent.SHIFTRY,
+        PInstanceEvent.NUZLEAF_2,
+    ]:
+        world.set_rule(
+            get_entrance(world, b.event_name),
+            Has(get_mission_event(15)),
+        )
+
+    world.set_rule(
+        get_connection(world, "m038_001", "m038_002"),
+        Has(get_mission_event(15)),
+    )
+
+    move_up_floor = (
+        CanReachRegion(world.modified_regions["m038_009"].HUMAN_NAME)
+        & all_maps.can_destroy_target("m038_011", 2)
+        & CanReachRegion(
+            world.modified_regions["m038_006"].HUMAN_NAME
+        )  # and use flash there!
+        & CanReachRegion(world.modified_regions["m038_007"].HUMAN_NAME)
+    )
+    for p in [PInstanceEvent.AGGRON, PInstanceEvent.TYRANITAR]:
+        world.set_rule(
+            get_entrance(world, p.event_name),
+            all_maps.can_destroy_target("m038_011", 2),
+        )
+
+    world.set_rule(
+        get_connection(world, "m038_003", "m038_009"),
+        all_maps.can_destroy_target("m038_003", 11),
+    )
+
+    for to in ["m038_007", "m038_006", "m038_011", "m038_009"]:
+        world.set_rule(get_connection(world, "m038_009", to), False_())
+    for to in ["m038_006", "m038_011", "m038_007"]:
+        world.set_rule(get_connection(world, "m038_007", to), False_())
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.BLAZIKEN_2.event_name), move_up_floor
+    )
+    world.set_rule(get_connection(world, "m038_003", "m038_008"), move_up_floor)
+    world.set_rule(get_connection(world, "m038_003", "m038_012"), move_up_floor)
+
+    f10_left_target = all_maps.can_destroy_target("m038_015", 1)
+
+    world.set_rule(get_pokemon_instance(world, "m038_015", 0), f10_left_target)
+
+    world.set_rule(get_pokemon_instance(world, "m038_012", 0), f10_left_target)
+
+    world.set_rule(
+        get_connection(world, "m038_012", "m038_016"),
+        f10_left_target,  # and a fuck ass long cutscene
+    )
+
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.SKORUPI_3.event_name), f10_left_target
+    )
+    world.set_rule(
+        get_entrance(world, PInstanceEvent.BRONZOR_3.event_name), f10_left_target
+    )
+
+    f10_right_target = all_maps.can_destroy_target("m038_005", 1)
+    world.set_rule(
+        get_pokemon_instance(world, "m038_005", 0),
+        f10_right_target,  # and use flash,
+    )
+
+    can_go_outside = f10_left_target & f10_right_target
+
+    for p in [
+        PInstanceEvent.BELLOSSOM_3,
+        PInstanceEvent.CACTURNE_3,
+        PInstanceEvent.VAPOREON,
+        PInstanceEvent.JOLTEON_F10,
+        PInstanceEvent.FLAREON,
+    ]:
+        world.set_rule(
+            get_entrance(world, p.event_name),
+            can_go_outside,
+        )
+
+    world.set_rule(get_connection(world, "m038_012", "m038_018"), can_go_outside)
+
+    world.set_rule(
+        get_connection(world, "m039_003a", "m039_005a"),
+        all_maps.can_destroy_target("m039_004a", 0),
+    )
+
+    world.set_rule(
+        get_connection(world, "m039_005a", "m039_007a"),
+        all_maps.can_destroy_target("m039_006a", 0),
+    )
+
+    world.set_rule(
+        get_connection(world, "m039_007a", "m039_002"),
+        all_maps.can_destroy_target("m039_008a", 1),
+    )
+
+    for from_, to in [
+        ("m039_001", "m039_003b"),
+        ("m039_003a", "m039_004b"),
+        ("m039_003a", "m039_005b"),
+        ("m039_004a", "m039_003b"),
+        ("m039_005a", "m039_003b"),
+        ("m039_005a", "m039_006b"),
+        ("m039_005a", "m039_007b"),
+        ("m039_006a", "m039_005b"),
+        ("m039_007a", "m039_005b"),
+        ("m039_007a", "m039_008b"),
+        ("m039_008a", "m039_007b"),
+        ("m039_002", "m039_007b"),
+    ]:
+        world.set_rule(get_connection(world, from_, to), False_())
+
+    for to in [
+        "m034_001",
+        "m017_007",
+        "m019_007",
+        "m035_001",
+        "m039_010b",
+        "m039_011b",
+        "m039_012",
+    ]:
+        world.set_rule(get_connection(world, "m039_009", to), False_())
+
+    for to in [
+        "m026_001",
+        "m039_011b",
+        "m039_013",
+        "m039_012",
+        "m034_001",
+        "m019_007",
+        "m008_001",
+        "m010_022",
+        "m009_012",
+        "m004_001",
+        "m039_014",
+        "m014_004",
+        "m009_016",
+        "m039_010b",
+    ]:
+        world.set_rule(get_connection(world, "m039_010b", to), False_())
+
+    for loc in [data.locations["MISSION_16"].label, get_mission_event(16)]:
+        world.set_rule(
+            get_location(world, loc),
+            True_(),
             #  strength level or something
         )
 

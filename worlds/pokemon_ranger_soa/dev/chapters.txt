@@ -43,4 +43,13 @@
 0x39 - 57 - Next day screen
 0x40 - 58 - Ranger union, inbetween time
 0x41 - 59 - Ranger union moving down stairs, Mission 15
-0x42 - 60 - Left Ranger Union, Mission 16
+0x42 - 60 - Left Ranger Union, pre Mission 16
+0x43 - 61 - Entered Altru Building, Mission 16
+0x44 - 62 - Enter Altru Tower
+0x45 - 63 - Disabled third generator, cutscene
+0x46 - 64 - Cutscene finished, going to roof
+0x47 - 65 - Cutscene when Darkrai
+0x48 - 66 - Fight Darkrai
+0x49 - 67 - Game complete cutscene
+0x4A - 68 - End credit
+0x4B - 69 - Postgame

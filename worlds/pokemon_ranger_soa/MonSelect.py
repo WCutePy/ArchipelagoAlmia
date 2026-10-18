@@ -311,6 +311,8 @@ class MonSelect:
                 "m020_002": [*range(0, 13)],
                 "m020_016": [0],
                 "m015_002": [0, 1, 2, 3, 4],
+                "m038_019": [],  # can't get back to elevator shoot
+                "m038_018": [0],  # magmortar npc as wild
             }
         )
 
@@ -359,6 +361,7 @@ class MonSelect:
                 ],  # this is to make sure the field move is present. Make different!
                 "m001_011": [0, 1, 2, 3],
                 "m001_013": [0],
+                "m001_001": [5],  # needs to match up to the slakoth encounter
                 "m006_001": [5],  # zubat can be randomized when
                 # randomizing the event encounter attached
                 "m011_005": [5],  # sharpedo
@@ -366,6 +369,7 @@ class MonSelect:
                 "m021_001": [6, 14],  # Vespiquen and combee that show up in the quest
                 "m035_001": [2],  # hippowdon
                 "m036_017": [0],  # cresselia
+                "m038_018": [0],  # magmortar npc as wild
             },
         )
 
@@ -433,6 +437,7 @@ class MonSelect:
             13: cls.goal_mission_13,
             14: cls.goal_mission_14,
             15: cls.goal_mission_15,
+            16: cls.goal_mission_16,
         }
         return goals[cls.world.get_rule_num()]()
 
@@ -645,7 +650,7 @@ class MonSelect:
             "m020_016": [],
         }
 
-        base.exclude["m019_003"] = [0]
+        base.exclude["m019_003"] = [0, 3]
         base.exclude["m019_001"] = [0, 4]
         base.exclude["m020_013"] = [0]
 
@@ -827,7 +832,7 @@ class MonSelect:
             "m019_011": [0],
         }
 
-        del base.exclude["m019_003"]
+        base.exclude["m019_003"].remove(0)
         del base.exclude["m019_001"]
 
         base.event_mon += [
@@ -974,4 +979,78 @@ class MonSelect:
             PInstanceEvent.ELECTIVIRE,
             PInstanceEvent.GARCHOMP,
         ]
+        return base
+
+    @classmethod
+    def goal_mission_16(cls) -> MonSelect:
+        base = cls.goal_mission_15()
+
+        base.include |= {
+            "m038_019": [],
+            "m038_010": [],
+            "m038_003": [],
+            "m038_006": [],
+            "m038_011": [],
+            "m038_009": [],
+            "m038_007": [],
+            "m038_012": [],
+            "m038_015": [],
+            "m038_005": [],
+            "m039_001": [],
+            "m039_003a": [],
+            "m039_004a": [],
+            "m039_005a": [],
+            "m039_006a": [],
+            "m039_007a": [],
+            "m039_008a": [],
+            "m039_002": [],
+            "m039_009": [],
+        }
+
+        base.exclude |= {}
+
+        base.event_mon += [
+            PInstanceEvent.YANMEGA,
+            PInstanceEvent.SKUNTANK,
+            PInstanceEvent.WEEZING,
+            PInstanceEvent.SHIFTRY,
+            PInstanceEvent.NUZLEAF_2,
+            PInstanceEvent.PRIMEAPE,
+            PInstanceEvent.ELECTRODE,
+            PInstanceEvent.DUSCLOPS_2,
+            PInstanceEvent.GABITE_3,
+            PInstanceEvent.GENGAR_2,
+            PInstanceEvent.MAMOSWINE,
+            PInstanceEvent.BRONZONG,
+            PInstanceEvent.CLAYDOL,
+            PInstanceEvent.AGGRON,
+            PInstanceEvent.TYRANITAR,
+            PInstanceEvent.MISMAGIUS,
+            PInstanceEvent.BANETTE,
+            PInstanceEvent.ESPEON,
+            PInstanceEvent.UMBREON,
+            PInstanceEvent.BLAZIKEN_2,
+            PInstanceEvent.SPINARAK_5,
+            PInstanceEvent.ALAKAZAM,
+            PInstanceEvent.SCEPTILE,
+            PInstanceEvent.LUXRAY,
+            PInstanceEvent.SKORUPI_3,
+            PInstanceEvent.BRONZOR_3,
+            PInstanceEvent.BELLOSSOM_3,
+            PInstanceEvent.CACTURNE_3,
+            PInstanceEvent.VAPOREON,
+            PInstanceEvent.JOLTEON_F10,
+            PInstanceEvent.FLAREON,
+            PInstanceEvent.SCIZOR,
+            PInstanceEvent.GARDEVOIR,
+            PInstanceEvent.RHYPERIOR,
+            PInstanceEvent.MAGMORTAR,
+            PInstanceEvent.GALLADE,
+            PInstanceEvent.RHYPERIOR_AGAIN,
+            PInstanceEvent.MAGMORTAR_AGAIN,
+            PInstanceEvent.GALLADE_AGAIN,
+            PInstanceEvent.BIDOOF_TOWER,
+            PInstanceEvent.DUSKNOIR,
+        ]
+
         return base
