@@ -191,14 +191,13 @@ def patch(
         if slot_data.get("randomize_partners") == RandomizePartners.option_starter_only:
             clone_until = min(3, len(partners))
         for i in range(0, clone_until):
-            pokemon = data.species[partners[i]]
-            from_form_id = list(pokemon.forms.keys())[0]
+            from_form_id = partners[i]
             clone_form_to_form_id(rom, form_file, from_form_id, 311 + i)
 
         starly, pach, munchlax, *_ = partners
-        pokemon_to_npc_sprite(rom, data.species[starly].national_id, 111)
-        pokemon_to_npc_sprite(rom, data.species[pach].national_id, 112)
-        pokemon_to_npc_sprite(rom, data.species[munchlax].national_id, 113)
+        pokemon_to_npc_sprite(rom, data.form_id_to_species[starly].national_id, 111)
+        pokemon_to_npc_sprite(rom, data.form_id_to_species[pach].national_id, 112)
+        pokemon_to_npc_sprite(rom, data.form_id_to_species[munchlax].national_id, 113)
 
     npc_mon_to = prsoa_patch_instance.files.get("npc_mon_to.txt")
     if npc_mon_to:

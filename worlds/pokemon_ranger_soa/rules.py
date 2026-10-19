@@ -145,6 +145,9 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
         #  TODO the fieldmove rules currently DO NOT account that a pokemon can not use
         #   their field move at all with the adequate level field move item unlock
+        real_field_move = FieldMove(
+            category=pokemon.field_move.category, level=start_level
+        )
         for j in range(1, start_level + 1):
             field_move = FieldMove(category=pokemon.field_move.category, level=j)
             current_rule = field_move_rules.get(field_move, None)
@@ -155,35 +158,47 @@ def set_all_rules(world: PokemonRSOA) -> None:
                 normal_destroy = full_map.can_destroy_target_type(target_id)
                 ocean_destroy = full_map.can_destroy_target_type(target_id, Party.OCEAN)
 
-                field_move_rules[field_move][0] |= normal_destroy & Or(
-                    *[
-                        Has("power_level", count=form.friendship_gauge)
-                        & Has(pokemon.event_can_capture(form=form_id))
-                        for form_id, form in pokemon.forms.items()
-                    ]
+                field_move_rules[field_move][0] |= (
+                    normal_destroy
+                    & Or(
+                        *[
+                            Has("power_level", count=form.friendship_gauge)
+                            & Has(pokemon.event_can_capture(form=form_id))
+                            for form_id, form in pokemon.forms.items()
+                        ]
+                    )
+                    & has_field_move_item(world, real_field_move)
                 )
 
-                field_move_rules[field_move][1] |= ocean_destroy & Or(
-                    *[
-                        Has("power_level", count=form.friendship_gauge)
-                        & Has(pokemon.event_can_capture(Party.OCEAN, form=form_id))
-                        for form_id, form in pokemon.forms.items()
-                    ]
+                field_move_rules[field_move][1] |= (
+                    ocean_destroy
+                    & Or(
+                        *[
+                            Has("power_level", count=form.friendship_gauge)
+                            & Has(pokemon.event_can_capture(Party.OCEAN, form=form_id))
+                            for form_id, form in pokemon.forms.items()
+                        ]
+                    )
+                    & has_field_move_item(world, real_field_move)
                 )
 
             else:
                 for form_id, form in pokemon.forms.items():
-                    field_move_rules[field_move][0] |= Has(
-                        "power_level", count=form.friendship_gauge
-                    ) & Has(pokemon.event_can_capture(form=form_id))
+                    field_move_rules[field_move][0] |= (
+                        Has("power_level", count=form.friendship_gauge)
+                        & Has(pokemon.event_can_capture(form=form_id))
+                        & has_field_move_item(world, real_field_move)
+                    )
 
-                    field_move_rules[field_move][1] |= Has(
-                        "power_level", count=form.friendship_gauge
-                    ) & Has(pokemon.event_can_capture(Party.OCEAN, form=form_id))
+                    field_move_rules[field_move][1] |= (
+                        Has("power_level", count=form.friendship_gauge)
+                        & Has(pokemon.event_can_capture(Party.OCEAN, form=form_id))
+                        & has_field_move_item(world, real_field_move)
+                    )
 
     for field_move, pokemon_rules in field_move_rules.items():
         for i, party in enumerate([Party.DEFAULT, Party.OCEAN]):
-            field_move_rule = pokemon_rules[i] & has_field_move_item(world, field_move)
+            field_move_rule = pokemon_rules[i]
             # if field_move == FieldMove(FieldMoveCategory.CRUSH, 4):
             #     print(field_move, field_move_rule)
 
