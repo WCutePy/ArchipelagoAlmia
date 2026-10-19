@@ -1,0 +1,752 @@
+[
+    {
+        "label": "Progressive Grass Defense",
+        "item_id": 1,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 0,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Water Defense",
+        "item_id": 2,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 2,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Electric Defense",
+        "item_id": 3,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 4,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Fire Defense",
+        "item_id": 4,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 6,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Fighting Defense",
+        "item_id": 5,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 8,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Poison Defense",
+        "item_id": 6,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 10,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Psychic Defense",
+        "item_id": 7,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 12,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Bug Defense",
+        "item_id": 8,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 14,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Ground Defense",
+        "item_id": 9,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 16,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Flying Defense",
+        "item_id": 10,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 18,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Dark Defense",
+        "item_id": 11,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 20,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Rock Defense",
+        "item_id": 12,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 18,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Ghost Defense",
+        "item_id": 13,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 24,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Ice Defense",
+        "item_id": 14,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 26,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Normal Defense",
+        "item_id": 15,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 28,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Steel Defense",
+        "item_id": 16,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 30,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Dragon Defense",
+        "item_id": 17,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 32,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Time Assist",
+        "item_id": 18,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 34,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Latent Power",
+        "item_id": 19,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 36,
+        "copies": 2
+    },
+    {
+        "label": "Combo Bonus",
+        "item_id": 20,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "unique"
+        ],
+        "bit_offset": 38,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Recovery",
+        "item_id": 21,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 40,
+        "copies": 2
+    },
+    {
+        "label": "Energy Plus",
+        "item_id": 22,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "unique"
+        ],
+        "bit_offset": 42,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Power Plus",
+        "item_id": 23,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive",
+            "power_level"
+        ],
+        "bit_offset": 44,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Long Line",
+        "item_id": 24,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "progressive"
+        ],
+        "bit_offset": 46,
+        "copies": 2
+    },
+    {
+        "label": "Supreme Defense",
+        "item_id": 25,
+        "classification": 10,
+        "item_categories": [
+            "styler_upgrade",
+            "unique"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+
+    {
+        "label": "Partner Pokemon - Chimchar",
+        "item_id": 101,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 1,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Piplup",
+        "item_id": 102,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 2,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Turtwig",
+        "item_id": 103,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 3,
+        "copies": 1
+    },
+
+    {
+        "label": "Partner Pokemon - Pachirisu",
+        "item_id": 104,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 4,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Snorunt",
+        "item_id": 105,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 5,
+        "copies": 1
+    },
+
+    {
+        "label": "Partner Pokemon - Machop",
+        "item_id": 106,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 6,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Croagunk",
+        "item_id": 107,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 7,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Hippopotas",
+        "item_id": 108,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 8,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Mime Jr.",
+        "item_id": 109,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 10,
+        "copies": 1
+    },
+
+    {
+        "label": "Partner Pokemon - Kricketot",
+        "item_id": 110,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 11,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Cranidos",
+        "item_id": 111,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 12,
+        "copies": 1
+    },
+
+    {
+        "label": "Partner Pokemon - Misdreavus",
+        "item_id": 112,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 13,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Gible",
+        "item_id": 113,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 14,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Sneasel",
+        "item_id": 114,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 15,
+        "copies": 1
+    },
+    {
+        "label": "Partner Pokemon - Shieldon",
+        "item_id": 115,
+        "classification": 10,
+        "item_categories": [
+            "partner"
+        ],
+        "bit_offset": 16,
+        "copies": 1
+    },
+
+    {
+        "label": "Progressive Power",
+        "item_id": 1001,
+        "classification": 9,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Energy",
+        "item_id": 1002,
+        "classification": 9,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Attributes",
+        "item_id": 1003,
+        "classification": 9,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Styler",
+        "item_id": 1004,
+        "classification": 2,
+        "item_categories": [
+            "player_attributes",
+            "progressive"
+        ],
+        "bit_offset": 5,
+        "copies": 2
+    },
+    {
+        "label": "Progressive Rank",
+        "item_id": 1005,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "player_attributes"
+        ],
+        "bit_offset": null,
+        "copies": 10
+    },
+    {
+        "label": "Progressive Cut Unlock",
+        "item_id": 10001,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Crush Unlock",
+        "item_id": 10002,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Psy Power Unlock",
+        "item_id": 10003,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Tackle Unlock",
+        "item_id": 10004,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Electrify Unlock",
+        "item_id": 10005,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Soak Unlock",
+        "item_id": 10006,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Burn Unlock",
+        "item_id": 10007,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Tunnel Unlock",
+        "item_id": 10008,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive Recharge Unlock",
+        "item_id": 10009,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Agility Unlock",
+        "item_id": 10010,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Fly Unlock",
+        "item_id": 10011,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Teleport Unlock",
+        "item_id": 10012,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Rain Dance Unlock",
+        "item_id": 10013,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Demist Unlock",
+        "item_id": 10014,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Flash Unlock",
+        "item_id": 10015,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Airlift Unlock",
+        "item_id": 10016,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Elevate Unlock",
+        "item_id": 10017,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Stink Unlock",
+        "item_id": 10018,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Sand Fill Unlock",
+        "item_id": 10019,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Progressive River Flow Unlock",
+        "item_id": 10021,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Magma Flow Unlock",
+        "item_id": 10022,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Swim Unlock",
+        "item_id": 10023,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+        {
+        "label": "Dark Power Unlock",
+        "item_id": 10024,
+        "classification": 1,
+        "item_categories": [
+            "progressive",
+            "field_move"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    },
+    {
+        "label": "Woah. This is worthless!",
+        "item_id": 100000,
+        "classification": 0,
+        "item_categories": [
+            "filler"
+        ],
+        "bit_offset": null,
+        "copies": 1
+    }
+]

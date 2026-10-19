@@ -1,0 +1,1056 @@
+from __future__ import annotations
+
+from enum import StrEnum
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    Union,
+    Optional,
+    List,
+    TypeAlias,
+    Iterable,
+    Sized,
+    ClassVar,
+    Any,
+)
+from collections import defaultdict
+from dataclasses import field, dataclass
+from rule_builder.rules import (
+    Has,
+    Rule,
+    HasAllCounts,
+    True_,
+    CanReachLocation,
+    CanReachRegion,
+    False_,
+    HasFromList,
+    HasFromListUnique,
+)
+
+from .data import (
+    data,
+    ItemCategory,
+    FieldMove,
+    LocationCategory,
+    pokemon_to_target_id,
+    FieldMoveCategory,
+    MapData,
+    Party,
+    sanitize_map_name,
+)
+from .events import (
+    PREvent,
+    get_instance_base,
+    get_instance_capture,
+    get_instance_target,
+    get_loading_zone_name,
+    get_instance_browser,
+    PInstanceEvent,
+    get_mission_event,
+    get_quest_event,
+    get_instance_missable,
+)
+from .options import FieldMoveItem, Goal, RandomizePokemonEncounters
+
+if TYPE_CHECKING:
+    from .world import PokemonRSOA
+
+"""
+TODO, create randomizer functions,
+for now a non exhaustive list of potential script moved/spawned pokémon.
+
+school tutorial:
+ - running bidoof (might not be on the map)
+ - 4 ghastly basement (on map!
+ - slakoth from tree (likely on map)
+ - tangrowth during graduation (not on map)
+
+nabiki beach
+ - starter partners
+
+mission 2 marine cave
+ - entrance zubat attacking you (on map)
+ - circle running (on map)
+
+quest 1
+ - milktank
+
+mission 3
+ - 4 budew that jump out
+ - maybe happiny related
+"""
+
+
+def get_party_type(map_name: str) -> Party:
+    if map_name[:4] in ["m011", "m029"]:
+        return Party.OCEAN
+    return Party.DEFAULT
+
+
+def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
+    if world.options.field_move_item == FieldMoveItem.option_vanilla:
+        return True_()
+
+    return Has(
+        field_move.category.item_name,
+        1,
+    )
+
+
+@dataclass
+class MonSelect:
+    world: ClassVar[Optional[PokemonRSOA]]
+    include: Dict[str, List] = field(default_factory=dict)
+    exclude: Dict[str, List] = field(default_factory=dict)
+    event_mon: List[PInstanceEvent] = field(default_factory=list)
+    events: List[PREvent] = field(default_factory=list)
+
+    include_one_time: bool = False
+    include_missable: bool = False
+
+    @staticmethod
+    def add_to(to: Dict[str, List], to_add: Dict[str, List]):
+        for key, values in to_add.items():
+            if key in to and not to[key]:
+                continue
+            elif not values:
+                to[key] = values
+            to.setdefault(key, []).extend(values)
+
+    def region_included(
+        self, region_name: str, region_data: Optional[MapData] = None
+    ) -> bool:
+        """
+        If the map should be excluded for the current set
+        of includes and excludes.
+        """
+        if region_data:
+            blacklisted = any(
+                w in region_data.HUMAN_NAME
+                for w in [
+                    "DLC",
+                    "-UNK",
+                    "-UNUSED",
+                    "ALTRU_TOWER-SKY-BLUE",
+                    "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
+                    "VIENTOWN-RANGER_STATION_BACKROOM",
+                    "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
+                ]
+                if not (w == "-UNK" and "m009" in region_name)
+            )
+            if blacklisted:
+                return False
+
+        if self.exclude and (
+            len(self.exclude.get(region_name, [1])) == 0
+            or any(
+                region_name.startswith(e.lower())
+                for e in self.exclude
+                if "_" not in e and not self.exclude.get(region_name, [])
+            )
+        ):
+            return False
+
+        include_region: bool = next(
+            (
+                self.include[i]
+                for i in self.include
+                if region_name.startswith(i.lower())
+            ),
+            False,
+        )
+        if self.include and include_region is False:
+            return False
+        return True
+
+    def instance_included(
+        self, region_name: str, i: int, instance_type: Optional[str] = "pokemon"
+    ) -> bool:
+
+        if self.exclude and i in self.exclude.get(region_name, []):
+            return False
+
+        if self.include:
+            base_region = region_name.split("_")[0].lower()
+            if base_region in self.include:
+                return True
+
+            include_region = self.include.get(region_name, [-1])
+            if len(include_region) > 0 and i not in include_region:
+                return False
+
+        return True
+
+    def event_mon_included(self, event: PInstanceEvent):
+        return True
+
+    def access_field_move(
+        self,
+        field_move: FieldMove,
+    ) -> Rule:
+        pokemon_rules = False_()
+        for region_name, region_data in self.world.modified_regions.items():
+            region_name = region_name.lower()
+
+            if not self.region_included(region_name, region_data):
+                continue
+            include_region: Sized
+
+            for i, spawn_data in region_data.POKEMON_SPAWN.items():
+
+                if not self.instance_included(region_name, i):
+                    continue
+
+                if not self.include_missable and spawn_data.missable:
+                    continue
+                if not self.include_one_time and spawn_data.one_time:
+                    continue
+
+                species = data.form_id_to_species[spawn_data.SPECIES_ID]
+                if species.field_move.satisfies(field_move):
+                    if self.include_missable and spawn_data.missable:
+                        pokemon_rules |= CanReachLocation(
+                            get_instance_missable(region_name, i)
+                        )
+                    elif self.include_one_time and spawn_data.one_time:
+                        pokemon_rules |= CanReachLocation(
+                            get_instance_browser(region_name, i)
+                        )
+                    else:
+                        pokemon_rules |= CanReachLocation(
+                            get_instance_capture(region_name, i)
+                        )
+
+        return pokemon_rules
+
+    def can_destroy_target(
+        self,
+        map_name: Union[str, int],
+        i: int,
+        on_self: bool = False,
+    ) -> Rule:
+        """
+        TODO, reconsider if it's necessary to have a field move restriction to target events
+        and instead handle it here fully, for now leaving as is, some minor duplication of
+        logic is here right now, as being able to use field move item is inhernt from
+        Has(target)
+
+        MUST be exhausted directly, as include and exclude are expected to be expanded over
+        its use
+        """
+        map_name = sanitize_map_name(map_name)
+        target = get_instance_target(map_name, i)
+
+        field_move = data.target_field_move_requirements[
+            self.world.modified_regions[map_name].TARGETS[i].TARGET_ID
+        ]
+
+        party: Party = get_party_type(map_name)
+
+        base = Has(field_move.event_can_use_field_move_party(party)) & Has(target)
+
+        # CanReachRegion(
+        #             data.regions[map_name].HUMAN_NAME
+        #         )
+        return base
+
+        # if not self.include and not self.exclude:
+        #
+        #
+        # return has_field_move_item(self.world, field_move) & self.access_field_move(
+        #     field_move
+        # )
+
+    def can_destroy_target_type(
+        self, target_id: int, party: Party = Party.DEFAULT
+    ) -> Rule:
+        """
+        The int of the target
+
+        any len 0 iterable in MonSelect evaluates to the whole map.
+        any len >=1 iterable accounts only the specified members in the iterable
+        """
+        field_move: FieldMove = data.target_field_move_requirements[target_id]
+        return Has(field_move.event_can_use_field_move_party(party))
+
+        # if not self.include and not self.exclude:
+        #     return Has(field_move.event_can_use_field_move)
+        #
+        # return has_field_move_item(self.world, field_move) & self.access_field_move(
+        #     field_move
+        # )
+
+    def can_use_field_move(
+        self, field_move: FieldMove, party: Party = Party.DEFAULT
+    ) -> Rule:
+        return Has(field_move.event_can_use_field_move_party(party))
+        # if not self.include and not self.exclude:
+        #
+        #
+        # return has_field_move_item(self.world, field_move) & self.access_field_move(
+        #     field_move
+        # )
+
+    @classmethod
+    def full_map(cls) -> MonSelect:
+        return MonSelect()
+
+    @classmethod
+    def missable(cls) -> MonSelect:
+        m = MonSelect(
+            include={
+                "m001_004": [0, 1],
+                "m001_006": [0, 1],
+                "m001_007": [0, 1, 2, 3],
+                "m001_008": [0, 1, 2, 3, 4],
+                "m001_011": [0, 1, 2, 3],  # technically not missable but one time
+                "m009_002": [12, 14, 15],  # should be correct with logic
+                "m009_010": [0, 1, 2, 3, 4],  # salamence is likely not missable
+                # and if the script can use some random number generator, none are missable.
+                "m020_001": [*range(0, 5)],
+                "m020_002": [*range(0, 13)],
+                "m020_016": [0],
+                "m015_002": [0, 1, 2, 3, 4],
+                "m038_019": [],  # can't get back to elevator shoot
+                "m038_018": [0],  # magmortar npc as wild
+            }
+        )
+
+        if cls.world.get_rule_num() == 6:
+            m.include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
+
+        if cls.world.get_rule_num() >= 9:
+            if (
+                cls.world.options.randomize_pokemon
+                != RandomizePokemonEncounters.option_vanilla
+            ):
+                m.include["m022_001"] = [0]
+
+        return m
+
+    @classmethod
+    def browser_before_capture(cls) -> MonSelect:
+        return MonSelect(
+            include={
+                "m006_001": [*range(0, 7)],
+                "m010_001": [*range(0, 7)],
+                "m010_002": [0, 1, 2, 4, 5, 6, 7, 8, 9],
+                "m010_003": [
+                    14,
+                    13,
+                    12,
+                    10,
+                    9,
+                ],
+                "m010_022": [0, 1, 2, 3, 4, 5, 7, 8],
+                "m016_002": [
+                    *range(0, 14)
+                ],  # except the cherrim but does it ever spawn at all?
+            }
+        )
+
+    @classmethod
+    def randomize_false(cls) -> MonSelect:
+        m = MonSelect(
+            include={
+                "m001_006": [0, 1],  # make it so these are random just
+                # more appropriate in the future (pichu)
+                "m001_008": [
+                    0,
+                    3,
+                ],  # this is to make sure the field move is present. Make different!
+                "m001_011": [0, 1, 2, 3],
+                "m001_013": [0],
+                "m001_001": [5],  # needs to match up to the slakoth encounter
+                "m006_001": [5],  # zubat can be randomized when
+                # randomizing the event encounter attached
+                "m011_005": [5],  # sharpedo
+                "m016_004": [2],  # rampardos (could be random already techn)
+                "m021_001": [6, 14],  # Vespiquen and combee that show up in the quest
+                "m035_001": [2],  # hippowdon
+                "m036_017": [0],  # cresselia
+                "m038_018": [0],  # magmortar npc as wild
+            },
+        )
+
+        STARAPTOR = {
+            "m003_001": [0],
+            "m007_001": [2],
+            "m009_004": [0],
+            "m009_012": [3],
+            "m014_001": [0],
+            "m017_001": [0],
+            "m018_001": [3],
+            "m021_001": [11],
+            "m021_002": [0],
+            "m022_002": [1],
+            "m025_001": [0],
+            "m027_001": [1],
+            "m027_002": [3],
+            "m027_005": [3],
+            "m030_002": [0],
+            "m034_001": [17],
+            "m035_001": [1],
+            "m041_002": [0],
+        }
+
+        m.add_to(m.include, STARAPTOR)
+
+        DODUO = {
+            "m001_001": [2],
+            "m003_001": [3],
+            "m007_001": [0],
+            "m009_012": [0],
+            "m010_003": [15],
+            "m015_001": [0, 1],
+            "m017_001": [1],
+            "m021_001": [9],
+            "m035_001": [3],
+        }
+        m.add_to(m.include, DODUO)
+
+        EMPOLEON = {
+            "m027_002": [9],
+        }
+        m.add_to(m.include, EMPOLEON)
+        return m
+
+    @classmethod
+    def get_rules_scope(cls) -> MonSelect:
+        """
+        Go through the rules to determine the currently
+        applicable MonSelect instance
+        """
+        goals = {
+            0: cls.goal_school,
+            2: cls.goal_marine_cave,
+            3: cls.goal_forest_fire,
+            4: cls.goal_mission_4,
+            5: cls.goal_mission_5,
+            6: cls.goal_mission_6,
+            7: cls.goal_mission_7,
+            8: cls.goal_mission_8,
+            9: cls.goal_mission_9,
+            10: cls.goal_mission_10,
+            11: cls.goal_mission_11,
+            12: cls.goal_mission_12,
+            13: cls.goal_mission_13,
+            14: cls.goal_mission_14,
+            15: cls.goal_mission_15,
+            16: cls.goal_mission_16,
+        }
+        return goals[cls.world.get_rule_num()]()
+
+    @classmethod
+    def goal_school(cls) -> MonSelect:
+        """
+        Goal: capture cutscene Tangrowth
+
+        Possibly reachable instances:
+
+        missions: 1
+        quests: 0
+        Missable_pokemon: 17
+        Unique Browser Captures: 34
+        Browser Instances: 3
+        Capture Instances: 33
+
+        if ship is included
+        missable_locations:
+        browser_locations:
+        capture_locations:
+        """
+
+        return MonSelect(
+            include={"m001": [], "m003": [], "m007": []},
+            exclude={
+                "m001_001": [2],
+                "m001_002": [6, 12],
+                "m001_011": [5],
+                "m001_013": [],
+                "m001_014": [],
+                "m003_001": [0, 3],
+                "m007_001": [0, 2],
+            },
+            event_mon=[
+                PInstanceEvent.TUT_BIDOOF,
+                PInstanceEvent.TIM_BIDOOF,
+                PInstanceEvent.TANGROWTH,
+                PInstanceEvent.SLAKOTH,
+            ],
+            events=[PREvent.SCHOOL_COMPLETE_NIGHT, PREvent.SCHOOL_COLLECT_STYLERS],
+        )
+
+    @classmethod
+    def goal_marine_cave(cls) -> MonSelect:
+        """
+
+        Unique Browser Captures: 57
+        Browser Instances: 1
+        Capture Instances: 56
+        """
+        base = cls.goal_school()
+        base.include |= {
+            "m005_001b": [],
+            "m006": [],
+        }
+        return base
+
+    @classmethod
+    def goal_forest_fire(cls) -> MonSelect:
+        base = cls.goal_marine_cave()
+        base.include |= {
+            "m009_002": [],
+            "m009_001a": [],
+            "m009_009": [],
+            "m009_004": [8],
+        }
+        base.exclude |= {"m009_009": [2, 3]}
+
+        base.event_mon += [PInstanceEvent.MILTANK, PInstanceEvent.BUDEW_4]
+        base.events += [PREvent.GIVE_HAPPINY_TO_MIMI]
+        return base
+
+    @classmethod
+    def goal_mission_4(cls) -> MonSelect:
+        base = cls.goal_forest_fire()
+        base.include |= {
+            "m009_001b": [2, 3, 4, 8],  # rest is copied over
+            "m009_008": [],
+            "m009_010": [],
+            "m009_011": [],
+            "m009_012": [1, 2],
+            "m010_001": [],  # center
+            "m010_002": [],  # east
+            "m010_003": [
+                14,
+                13,
+                12,
+                10,
+                9,
+                ## after clearing
+                6,
+                2,
+                1,
+                3,
+                0,
+                5,
+                7,
+                # missing: 4, 8, 11, 15, 16, 17
+                # on completed save has: 11, 15
+            ],  # port
+            "m010_007": [],
+            "m010_016": [],
+            "m010_022": [],
+        }
+
+        base.exclude |= {"m010_002": [3], "m010_022": [6]}
+        if (
+            cls.world.options.randomize_pokemon
+            == RandomizePokemonEncounters.option_vanilla
+        ):
+            base.exclude["m009_008"] = [
+                4,
+                5,
+            ]  # TODO drop this when achievable in vanilla.
+        base.event_mon += [
+            PInstanceEvent.RATATA_4,
+            PInstanceEvent.TOXICROAK,
+        ]
+        base.events += [PREvent.RESCUE_PUELTOWN]
+        return base
+
+    @classmethod
+    def goal_mission_5(cls) -> MonSelect:
+        base = cls.goal_mission_4()
+
+        base.include |= {
+            "m011_001": [],
+            "m011_002": [],
+            "m011_003": [],
+            "m011_004": [],
+            "m011_005": [5],
+        }
+
+        base.event_mon += [
+            PInstanceEvent.KRICKETOT,
+            PInstanceEvent.CRANIDOS,
+            PInstanceEvent.WARTORTLE_WITH_CRANIDOS,
+        ]
+        return base
+
+    @classmethod
+    def goal_mission_6(cls) -> MonSelect:
+        base = cls.goal_mission_5()
+
+        base.include |= {
+            "m015_001": [],
+            "m015_004": [],
+            "m016": [],  # FOR NOW
+            "m017_004": [],  # for target event
+            "m017_006": [],
+        }
+        base.include["m011_005"] = []  # all are now available
+        base.include["m010_003"] += [11]  # quest eevee
+
+        base.exclude |= {
+            "m015_001": [0, 1],  # doduo
+            "m015_004": [7],  # floatzel
+            "m016_003": [0],  # aerodactyl
+            "m016_002": [2],  # cherrim, could not find that one
+            "m016_004": [2],  # rampardos only becomes accessible later.
+        }
+
+        base.event_mon += [PInstanceEvent.RAMPARDOS]
+        return base
+
+    @classmethod
+    def goal_mission_7(cls) -> MonSelect:
+        base = cls.goal_mission_6()
+
+        base.exclude["m009_009"].remove(2)  # ambipom
+
+        # doduo
+        del base.exclude["m001_001"]  # doduo
+        base.exclude["m003_001"].remove(3)
+        base.exclude["m007_001"].remove(0)
+        base.include["m009_012"].append(0)
+        base.include["m010_003"].append(15)
+        del base.exclude["m015_001"]  # doduo
+        del base.exclude["m001_011"]  # ghastly TODO
+
+        base.event_mon += [
+            PInstanceEvent.TURTWIG,
+            PInstanceEvent.CROAGUNK,
+            PInstanceEvent.CARNIVINE_2,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_8(cls) -> MonSelect:
+        base = cls.goal_mission_7()
+
+        base.include |= {
+            "m018_001": [1, 2],
+            "m019_001": [],
+            "m019_013": [],
+            "m019_003": [],  #
+            "m019_004": [],  #
+            "m019_002": [],
+            "m019_016": [],
+            "m019_010": [],
+            "m020_001": [],
+            "m020_002": [],
+            "m020_013": [],
+            "m020_003": [],
+            "m020_007": [],
+            "m020_004": [],
+            "m020_011": [],
+            "m020_016": [],
+        }
+
+        base.exclude["m019_003"] = [0, 3]
+        base.exclude["m019_001"] = [0, 4]
+        base.exclude["m020_013"] = [0]
+
+        base.event_mon += [
+            PInstanceEvent.SLUGMA,
+            PInstanceEvent.MAGCARGO,
+            PInstanceEvent.KANGASKHAN,
+            PInstanceEvent.NUMEL_3,
+            PInstanceEvent.MIME_JR,
+            PInstanceEvent.MAREEP_3,
+            PInstanceEvent.MAGCARGO_3,
+            PInstanceEvent.RHYHORN_2,
+            PInstanceEvent.STUNKY_3,
+            PInstanceEvent.DRAPION,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_9(cls) -> MonSelect:
+        base = cls.goal_mission_8()
+
+        base.include |= {
+            "m020_010": [0],
+            "m020_014": [0, 1],
+            "m021_001": [],
+            "m021_002": [],
+            "m022_001": [],
+            # post koffing_3, 2, 5, 4, 3, 1, 8, 10, 0
+            "m022_003": [],
+            "m022_002": [1],
+            "m023_001": [],
+            "m023_002": [],
+            "m023_003": [],
+            "m023_004": [],
+            "m023_005": [],
+            "m023_006": [],
+            "m023_007": [],
+            "m023_008": [],
+            "m023_009": [],
+            "m023_010": [],
+            "m023_011": [],
+            "m023_012": [],
+            "m023_013": [],
+            "m023_015": [],
+            "m023_016": [],
+        }
+
+        if (
+            cls.world.options.randomize_pokemon
+            == RandomizePokemonEncounters.option_vanilla
+        ):
+            base.exclude["m023_010"] = []
+            base.exclude["m023_016"] = []
+
+        del base.exclude["m001_002"]  # charmander are now present from the ship
+        # staraptor's are now available
+        del base.exclude["m003_001"]
+        del base.exclude["m007_001"]
+        base.include["m009_012"] = []
+        base.include["m014_001"] = []
+        base.include["m017_001"] = (
+            []
+        )  # unknown when the doduo here spawns atm, at latest now
+        base.include["m018_001"].append(3)
+
+        base.exclude |= {
+            "m021_001": [6],
+            "m022_003": [1],
+            "m023_014": [],  # idk when this spawns
+        }  # vespiqueen, probably quest related
+
+        base.event_mon += [
+            PInstanceEvent.SHIELDON,
+            PInstanceEvent.CHARMANDER,
+            PInstanceEvent.MURKROW_3,
+            PInstanceEvent.KOFFING_3,
+            PInstanceEvent.MURKROW_2,
+            PInstanceEvent.KOFFING_2,
+            PInstanceEvent.SPIRITOMB,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_10(cls) -> MonSelect:
+        base = cls.goal_mission_9()
+
+        base.include |= {
+            "m009_003": [],
+            "m009_004": [],
+            "m009_006": [],
+            "m024_001": [],
+            "m024_002": [],
+            "m024_003": [],
+            "m024_004": [],
+            "m024_005": [],
+            "m024_006": [],
+            "m024_007": [],
+            "m025_001": [],
+            "m026_001": [],
+            "m027_001": [],
+            "m027_002": [],
+            "m028_006": [],
+            "m028_001": [],
+            "m028_002": [],
+            "m028_004": [],
+            "m028_005": [],
+            "m028_012": [],
+            "m028_013": [],
+            "m028_009": [],
+            "m028_010": [],
+            "m028_018": [],
+            "m028_019": [],
+            "m028_020": [],
+            "m028_003": [],
+            "m028_017": [],
+            "m028_024": [],
+            "m028_016": [],
+            "m028_011": [],
+        }
+
+        base.exclude |= {
+            "m009_003": [],
+            "m009_004": [11, 12],
+            "m024_001": [5],
+            "m027_002": [7],
+            "m028_006": [],
+            "m028_003": [2],
+            "m028_026": [0],
+            "m028_022a": [],
+            "m028_022b": [],
+            "m028_023": [],  # lucario
+        }
+
+        del base.exclude["m010_002"]  # murkrow
+        del base.exclude["m010_022"]  # murkrow
+        del base.exclude["m021_001"]  # vespiqueen
+        # floatzel
+        del base.exclude["m009_009"]
+        del base.exclude["m015_004"]
+
+        if (
+            cls.world.options.randomize_pokemon
+            == RandomizePokemonEncounters.option_vanilla
+        ):
+            base.exclude["m009_006"] = []
+            base.exclude["m028_024"] = [0]
+
+        base.event_mon += [
+            PInstanceEvent.CHIMCHAR,
+            PInstanceEvent.BEEDRILl_2_Q,
+            PInstanceEvent.GOLBAT_3,
+            PInstanceEvent.HOUNDOOM,
+            PInstanceEvent.HOUNDOUR_4,
+            PInstanceEvent.SEEDOT_8,
+            PInstanceEvent.FROSLASS,
+            PInstanceEvent.LUCARIO,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_11(cls) -> MonSelect:
+        base = cls.goal_mission_10()
+
+        base.include |= {
+            "m019_005": [],
+            "m019_015": [],
+            "m019_006": [],
+            "m019_014": [],
+            "m019_007": [],
+            "m019_011": [],
+        }
+
+        base.exclude |= {
+            "m019_006": [0],
+            "m019_007": [8, 9, 10],
+            "m019_011": [0],
+        }
+
+        base.exclude["m019_003"].remove(0)
+        del base.exclude["m019_001"]
+
+        base.event_mon += [
+            PInstanceEvent.PIPLUP,
+            PInstanceEvent.HOUNDOOM_Q,
+            PInstanceEvent.CHATOT_5,
+            PInstanceEvent.BAGON_3,
+            PInstanceEvent.SHELGON,
+            PInstanceEvent.MONFERNO_2,
+            PInstanceEvent.INFERNAPE,
+            PInstanceEvent.HEATRAN,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_12(cls) -> MonSelect:
+        base = cls.goal_mission_11()
+
+        base.include |= {
+            "m029_001": [],
+            "m029_002": [],
+            "m029_003": [],
+            "m029_004": [],
+        }
+
+        base.exclude["m029_004"] = [5]
+
+        base.event_mon += [
+            PInstanceEvent.SNOVER,
+            PInstanceEvent.HORSEA_2,
+            PInstanceEvent.SEADRA,
+            PInstanceEvent.FINNEON_4,
+            PInstanceEvent.STARMIE_3,
+            PInstanceEvent.HUNTAIL,
+            PInstanceEvent.GOREBYSS,
+            PInstanceEvent.KINGDRA,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_13(cls) -> MonSelect:
+        base = cls.goal_mission_12()
+
+        base.include |= {
+            "m029_007": [0, 3, 5],
+            "m029_008": [4, 6],
+            "m029_005": [],
+            "m030_002": [],
+            "m030_004": [],
+            "m030_006": [],
+            "m030_005": [],
+            "m030_007": [],
+            "m030_008": [],
+            "m030_010": [],
+            "m030_011": [],
+            "m030_017": [],
+            "m030_018": [],
+            "m030_019": [],
+            "m030_020": [],
+            "m030_021": [],
+        }
+
+        base.exclude |= {
+            "m030_022": [],
+        }
+
+        base.event_mon += [
+            PInstanceEvent.WAILORD,
+            PInstanceEvent.JOLTEON,
+            PInstanceEvent.CACNEA_2,
+            PInstanceEvent.SLAKOTH_8,
+            PInstanceEvent.VICTREEBEL,
+            PInstanceEvent.MOTHIM,
+            PInstanceEvent.MURKROW,
+            PInstanceEvent.HONCHKROW,
+            PInstanceEvent.MR_MIME,
+            PInstanceEvent.MOTHIM_2,
+            PInstanceEvent.SKUNTANK_2,
+            PInstanceEvent.MACHAMP_2,
+            PInstanceEvent.GLISCOR,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_14(cls) -> MonSelect:
+        base = cls.goal_mission_13()
+
+        base.include |= {
+            "m032_001": [],
+            "m033_001": [],  # for event...
+            "m034_001": [],  # unsure if 0x5
+            "m035_001": [],
+            "m036_001": [],
+            "m036_004": [],
+            "m036_021": [],
+            "m036_005": [],
+            "m036_007": [],  # randomized drifblim L
+            "m036_012": [],
+            "m036_015": [],
+            "m036_009": [],
+            "m036_011": [],
+            "m036_020": [],
+            "m036_013": [],
+            "m036_014": [],
+            "m036_016": [],
+        }
+
+        base.exclude |= {
+            "m034_001": [10],  # flygon
+            "m036_009": [3],  # dusknoir
+            "m036_013": [0],  # garchomp
+            "m036_017": [],  # cresselia
+        }
+
+        del base.exclude["m029_004"]  # quest omanyte
+
+        base.event_mon += [
+            PInstanceEvent.CRESSELIA,
+            PInstanceEvent.SNEASEL,
+            PInstanceEvent.MISDREAVUS,
+            PInstanceEvent.ELECTIVIRE,
+            PInstanceEvent.GARCHOMP,
+            PInstanceEvent.BIDOOF_8,
+        ]
+
+        return base
+
+    @classmethod
+    def goal_mission_15(cls) -> MonSelect:
+        base = cls.goal_mission_14()
+
+        base.include |= {}
+
+        base.exclude |= {}
+
+        del base.exclude["m028_003"]  # dragonair
+
+        base.event_mon += [
+            PInstanceEvent.MAGNEZONE,
+            PInstanceEvent.CLAYDOL_2,
+            PInstanceEvent.ELECTIVIRE,
+            PInstanceEvent.GARCHOMP,
+        ]
+        return base
+
+    @classmethod
+    def goal_mission_16(cls) -> MonSelect:
+        base = cls.goal_mission_15()
+
+        base.include |= {
+            "m038_019": [],
+            "m038_010": [],
+            "m038_003": [],
+            "m038_006": [],
+            "m038_011": [],
+            "m038_009": [],
+            "m038_007": [],
+            "m038_012": [],
+            "m038_015": [],
+            "m038_005": [],
+            "m039_001": [],
+            "m039_003a": [],
+            "m039_004a": [],
+            "m039_005a": [],
+            "m039_006a": [],
+            "m039_007a": [],
+            "m039_008a": [],
+            "m039_002": [],
+            "m039_009": [],
+        }
+
+        base.exclude |= {}
+
+        base.event_mon += [
+            PInstanceEvent.YANMEGA,
+            PInstanceEvent.SKUNTANK,
+            PInstanceEvent.WEEZING,
+            PInstanceEvent.SHIFTRY,
+            PInstanceEvent.NUZLEAF_2,
+            PInstanceEvent.PRIMEAPE,
+            PInstanceEvent.ELECTRODE,
+            PInstanceEvent.DUSCLOPS_2,
+            PInstanceEvent.GABITE_3,
+            PInstanceEvent.GENGAR_2,
+            PInstanceEvent.MAMOSWINE,
+            PInstanceEvent.BRONZONG,
+            PInstanceEvent.CLAYDOL,
+            PInstanceEvent.AGGRON,
+            PInstanceEvent.TYRANITAR,
+            PInstanceEvent.MISMAGIUS,
+            PInstanceEvent.BANETTE,
+            PInstanceEvent.ESPEON,
+            PInstanceEvent.UMBREON,
+            PInstanceEvent.BLAZIKEN_2,
+            PInstanceEvent.SPINARAK_5,
+            PInstanceEvent.ALAKAZAM,
+            PInstanceEvent.SCEPTILE,
+            PInstanceEvent.LUXRAY,
+            PInstanceEvent.SKORUPI_3,
+            PInstanceEvent.BRONZOR_3,
+            PInstanceEvent.BELLOSSOM_3,
+            PInstanceEvent.CACTURNE_3,
+            PInstanceEvent.VAPOREON,
+            PInstanceEvent.JOLTEON_F10,
+            PInstanceEvent.FLAREON,
+            PInstanceEvent.SCIZOR,
+            PInstanceEvent.GARDEVOIR,
+            PInstanceEvent.RHYPERIOR,
+            PInstanceEvent.MAGMORTAR,
+            PInstanceEvent.GALLADE,
+            PInstanceEvent.RHYPERIOR_AGAIN,
+            PInstanceEvent.MAGMORTAR_AGAIN,
+            PInstanceEvent.GALLADE_AGAIN,
+            PInstanceEvent.BIDOOF_TOWER,
+            PInstanceEvent.DUSKNOIR,
+        ]
+
+        return base

@@ -1,0 +1,51 @@
+Header information:
+0x00    Game title                      POKE RANGER2
+0x0C    Game code                       YP2E (NTR-YP2E-USA)
+0x10    Maker code                      01 (Nintendo)
+0x12    Unit code                       0x00
+0x13    Device type                     0x00
+0x14    Device capacity                 0x09 (512 Mbit)
+0x15    reserved 1                      00000000000000
+0x1E    ROM version                     0x00
+0x1F    reserved 2                      0x00
+0x20    ARM9 ROM offset                 0x4000
+0x24    ARM9 entry address              0x2000800
+0x28    ARM9 RAM address                0x2000000
+0x2C    ARM9 code size                  0x8F9D8
+0x30    ARM7 ROM offset                 0x19F400
+0x34    ARM7 entry address              0x2380000
+0x38    ARM7 RAM address                0x2380000
+0x3C    ARM7 code size                  0x2768C
+0x40    File name table offset          0x1C6C00
+0x44    File name table size            0x1F368
+0x48    FAT offset                      0x1E6000
+0x4C    FAT size                        0xF080
+0x50    ARM9 overlay offset             0x93A00
+0x54    ARM9 overlay size               0x3C0
+0x58    ARM7 overlay offset             0x0
+0x5C    ARM7 overlay size               0x0
+0x60    ROM control info 1              0x00416657
+0x64    ROM control info 2              0x081808F8
+0x68    Icon/title offset               0x1F5200
+0x6C    Secure area CRC                 0x4A05 (OK, decrypted)
+0x6E    ROM control info 3              0x0D7E
+0x70    ARM9 ?                          0x2000AAC
+0x74    ARM7 ?                          0x2380188
+0x78    Magic 1                         0x00000000
+0x7C    Magic 2                         0x00000000
+0x80    Application end offset          0x0345A064
+0x84    ROM header size                 0x00004000
+0x88    ?                               0x00004BA0
+0x15C   Logo CRC                        0xCF56 (OK)
+0x15E   Header CRC                      0xFE78 (OK)
+0x1BC   ?                               0x40000000
+
+Banner CRC:                             0xFB6D (OK)
+English banner text, line 1:            Pok_mon Ranger
+English banner text, line 2:            Shadows of Almia
+English banner text, line 3:            Nintendo
+
+ARM9 footer found.
+
+Security data CRC (0x1000-0x2FFF)  0x6FFF
+Segment3 CRC (0x3000-0x3FFF)       0x0000 (INVALID)

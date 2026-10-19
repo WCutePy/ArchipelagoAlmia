@@ -1,0 +1,199 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Dict, List, Tuple, Set, Optional
+
+from BaseClasses import Entrance, Region, ItemClassification
+
+from .data import (
+    data,
+    SpeciesData,
+    PokemonSpawnEntry,
+    FieldMove,
+    MapData,
+    FieldMoveCategory,
+    Party,
+)
+from .events import (
+    PInstanceEvent,
+    PREvent,
+    get_instance_target,
+    get_instance_base,
+    get_instance_browser,
+    get_instance_capture,
+    get_instance_missable,
+)
+from .locations import create_event_location
+from .options import RandomizePokemonEncounters
+from .MonSelect import MonSelect, get_party_type
+
+if TYPE_CHECKING:
+    from .world import PokemonRSOA
+
+
+def attach_pokemon_encounter(
+    world: PokemonRSOA,
+    instance_name: str,
+    spawn_data: PokemonSpawnEntry,
+    connect_to: Region,
+) -> Region:
+    pokemon_region = Region(instance_name, world.player, world.multiworld)
+    connect_to.connect(pokemon_region, instance_name)
+    species: SpeciesData = data.form_id_to_species.get(spawn_data.SPECIES_ID, None)
+    if species is None:
+        raise ValueError(
+            f"no species is given for\n{instance_name=}, {spawn_data=}, {connect_to=}"
+        )
+    place_locked = False
+    if (
+        world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla
+        or not spawn_data.randomize
+    ):
+        place_locked = True
+
+    map_name = instance_name.split(".")[0]
+    party = get_party_type(map_name)
+
+    if spawn_data.missable:
+        browser_name = get_instance_missable(instance_name)
+        item_name = species.event_missable(form=spawn_data.SPECIES_ID)
+    elif spawn_data.one_time:
+        browser_name = get_instance_browser(instance_name)
+        item_name = species.event_add_to_browser(form=spawn_data.SPECIES_ID)
+        if place_locked:
+            world.capture_groups.one_time_ids.add(species.browser_id)
+    else:
+        browser_name = get_instance_capture(instance_name)
+        item_name = species.event_can_capture(party=party, form=spawn_data.SPECIES_ID)
+        if place_locked:
+            if party == Party.OCEAN:
+                world.capture_groups.ocean_ids_used.add(species.browser_id)
+            else:
+                world.capture_groups.default_ids_used.add(species.browser_id)
+
+    loc = create_event_location(
+        world,
+        browser_name,
+        pokemon_region,
+        event_item_name=item_name,
+        place_locked=place_locked,
+    )
+
+    if spawn_data.browser_before_capture:
+        browser_name = get_instance_browser(instance_name)
+        item_name = species.event_add_to_browser(form=spawn_data.SPECIES_ID)
+        browser_loc = create_event_location(
+            world,
+            browser_name,
+            pokemon_region,
+            event_item_name=item_name,
+            place_locked=place_locked,
+        )
+        if not place_locked:
+            world.capture_groups.browser_before_capture.append((loc, browser_loc))
+
+    if place_locked:
+        return pokemon_region
+
+    if spawn_data.missable:
+        world.capture_groups.missable.append(loc)
+    elif spawn_data.one_time:
+        world.capture_groups.browser.append(loc)
+    else:
+        world.capture_groups.append_capture(loc, party)
+
+    return pokemon_region
+
+
+def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
+    regions: Dict[str, Region] = {}
+
+    connections: List[Tuple[str, str, str]] = []
+
+    """Logic chain"""
+    MonSelect.world = world
+    full_map = MonSelect.get_rules_scope()
+
+    for region_name, region_data in world.modified_regions.items():
+
+        new_region = Region(region_data.HUMAN_NAME, world.player, world.multiworld)
+
+        regions[region_name] = new_region
+
+        for exit_name in region_data.EXITS:
+            region_exit = exit_name.split("-> ")[1].split(".")[0]
+            connections.append((exit_name, region_name, region_exit))
+
+        if not full_map.region_included(region_name, region_data):
+            continue
+
+        for i, target_data in region_data.TARGETS.items():
+            field_move = data.target_field_move_requirements[target_data.TARGET_ID]
+            if field_move.category == FieldMoveCategory.NONE:
+                continue
+
+            event_name = get_instance_target(region_name, i)
+
+            target_location = create_event_location(world, event_name, new_region)
+
+        for i, spawn_data in region_data.POKEMON_SPAWN.items():
+            if not full_map.instance_included(region_name, i):
+                continue
+            pokemon_instance = get_instance_base(region_name, i)
+
+            p_region = attach_pokemon_encounter(
+                world, pokemon_instance, spawn_data, new_region
+            )
+            if p_region is None:
+                continue
+            regions[pokemon_instance] = p_region
+
+    for name, source, dest in connections:
+        source = regions.get(source, None)
+        dest = regions.get(dest, None)
+        if source is None or dest is None:
+            continue
+        source.connect(dest, name)
+
+    regions["Overworld"] = Region("Overworld", world.player, world.multiworld)
+    regions["Overworld"].connect(regions["m001_013"], "Start Game")
+
+    """Additional connections that behave different"""
+
+    regions["m019_002"].connect(regions["m020_001"], "m019_002 -> m020_001")
+    regions["m029_001"].connect(
+        regions["m030_001"], "m029_001 -> m030_001"
+    )  # TODO, connect to proper region
+    regions["m029_001"].connect(regions["m029_009"], "m029_001 -> m029_009")
+
+    for event in PInstanceEvent.events():
+        if event not in full_map.event_mon:
+            continue
+
+        pokemon = data.species[event.browser_id]
+
+        p_region = attach_pokemon_encounter(
+            world,
+            event.event_name,
+            PokemonSpawnEntry(
+                SPECIES_ID=list(pokemon.forms.keys())[0],
+                SPECIES_NAME=pokemon.name,
+                SPAWN_FLAG=-1,
+                one_time=event.one_time,
+                randomize=False,
+            ),
+            regions[event.map_name],
+        )
+        regions[event.event_name] = p_region
+        if event.one_time:
+            world.capture_groups.one_time_ids.add(pokemon.browser_id)
+        else:
+            raise ValueError("not yet supported to have not one time events")
+
+    regions["Events"] = Region("Events", world.player, world.multiworld)
+    regions["Overworld"].connect(regions["Events"], "Events region")
+    for event in PREvent:
+        if event not in full_map.events:
+            continue
+        create_event_location(world, event.event_name, regions[event.map_name])
+
+    return regions

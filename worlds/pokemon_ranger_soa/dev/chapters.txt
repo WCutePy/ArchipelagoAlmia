@@ -1,0 +1,55 @@
+
+
+
+0x0D - 13 - One day internship
+0x0E - 14 - Letter n about graduation
+0x0F - 15 - Graduation day
+0x14 - 20 - Post graduation letter
+0x15 - 21 - First day as ranger, mission 1
+0x10 - 22 - Mission 1 completed backroom card
+0x11 - 23 - Mission 2 marine cave
+0x12 - 24 - Mission 2 clear, quest 1
+0x13 - 25 - M2,M3 next day screen
+0x1A - 26 - Mission 3: Forest fire
+0x1B - 27 - After mission 3 back in ranger base, ranger rank 2 promotion
+0x1C - 28 - Mission 4
+0x1D - 29 - Post mission 4 complete, bring ollie
+0x1E - 30 - Post mission 5 lowered bridge
+0x1F - 31 - Entered Ranger Union
+0x20 - 32 - Day transition after gigaremo showcase
+0x21 - 33 - Mission 6
+0x22 - 34 - Post mission 6 next day screen
+0x24 - 36 - Mission 7
+0x25 - 37 - Post mission 7 next day screen
+0x26 - 38 - Mission 8
+0x27 - 39 - Enter cargo ship m8
+0x28 - 40 - Post mission 8 next day screen
+0x29 - 41 - Post mission 8
+0x2A - 42 - Post mission 8 in ranger union screen
+0x2B - 43 - Mission 9
+0x2C - 44 - Next day screen
+0x2D - 45 - Pre mission 10, brighton
+0x2E - 46 - Pre mission 10, crysta cave
+0x2F - 47 - Next day screen
+0x30 - 48 - Mission 10
+0x31 - 49 - Next day screen
+0x32 - 50 - Blue gem section
+0x33 - 51 - Left ranger union, Mission 11
+0x34 - 52 - Post mission 11, entered ranger union
+0x35 - 53 - Left ranger union, Mission 12
+0x36 - 54 - Mission 13, oil field hideout
+0x37 - 55 - Haruba Village
+0x38 - 56 - Mission 14, Hippowdon Temple
+0x39 - 57 - Next day screen
+0x40 - 58 - Ranger union, inbetween time
+0x41 - 59 - Ranger union moving down stairs, Mission 15
+0x42 - 60 - Left Ranger Union, pre Mission 16
+0x43 - 61 - Entered Altru Building, Mission 16
+0x44 - 62 - Enter Altru Tower
+0x45 - 63 - Disabled third generator, cutscene
+0x46 - 64 - Cutscene finished, going to roof
+0x47 - 65 - Cutscene when Darkrai
+0x48 - 66 - Fight Darkrai
+0x49 - 67 - Game complete cutscene
+0x4A - 68 - End credit
+0x4B - 69 - Postgame

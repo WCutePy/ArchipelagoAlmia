@@ -1,0 +1,140 @@
+from __future__ import annotations
+
+from typing import Dict, FrozenSet, Optional, TYPE_CHECKING, List, Tuple
+
+from BaseClasses import ItemClassification, Item
+from .data import data, BASE_OFFSET, ItemCategory
+
+if TYPE_CHECKING:
+    from .world import PokemonRSOA
+
+
+class PokemonRSOAItem(Item):
+    game: str = "PokemonRangerSOA"
+    tags: Tuple[ItemCategory]
+
+    def __init__(
+        self,
+        name: str,
+        classification: ItemClassification,
+        code: Optional[int],
+        player: int,
+    ) -> None:
+        super().__init__(name, classification, code, player)
+
+        if code is None:
+            self.tags = (ItemCategory.EVENT,)
+        else:
+            self.tags = data.items[reverse_offset_item_value(code)].item_categories
+
+
+def offset_item_value(item_value: int) -> int:
+    """
+    Returns the AP item id (code) for a given item value
+    """
+    return item_value + BASE_OFFSET
+
+
+def reverse_offset_item_value(item_id: int) -> int:
+    """
+    Returns the item value for a given AP item id (code)
+    """
+    return item_id - BASE_OFFSET
+
+
+def create_item_label_to_code_map() -> Dict[str, int]:
+    """
+    Creates a map from item labels to their AP item id (code)
+    """
+    label_to_code_map: Dict[str, int] = {}
+    for item_value, attributes in data.items.items():
+        label_to_code_map[attributes.label] = offset_item_value(item_value)
+
+    return label_to_code_map
+
+
+def get_item_classification(item_code: int) -> ItemClassification:
+    """
+    Returns the item classification for a given AP item id (code)
+    """
+    return data.items[reverse_offset_item_value(item_code)].classification
+
+
+def create_item_with_correct_classification(
+    world: PokemonRSOA, name: str
+) -> PokemonRSOAItem:
+    item_id = world.item_name_to_id[name]
+    offset_id = reverse_offset_item_value(item_id)
+    classification = data.items[offset_id].classification
+
+    return PokemonRSOAItem(name, classification, item_id, world.player)
+
+
+def create_all_items(world: PokemonRSOA) -> None:
+
+    itempool: List[Item] = []
+
+    if world.options.field_move_item != world.options.field_move_item.option_vanilla:
+        for i, item in data.items.items():
+            if ItemCategory.FIELD_MOVE not in item.item_categories:
+                continue
+            new_item = world.create_item(item.label)
+            itempool.append(new_item)
+
+    print(f"{sum(1 for a in world.multiworld.get_locations(world.player))=}")
+    print(f"{len(
+        world.multiworld.get_unfilled_locations(world.player)
+    )=}")
+    print(f"{len(world.capture_groups)=}")
+
+    number_of_items = len(itempool)
+    number_of_unfilled_locations = len(
+        world.multiworld.get_unfilled_locations(world.player)
+    ) - len(world.capture_groups)
+
+    #  Something is wrong with these calculations
+    #  And also vanilla vs randomized needs different methods to
+    #  do these calculations ;.;
+    print(f"printing: {number_of_unfilled_locations}")
+
+    print(f"{number_of_items=}")
+    print(f"{number_of_unfilled_locations=}")
+    print(f"{len(world.capture_groups)=}")
+
+    needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
+    print(f"{needed_number_of_filler_items=}")
+
+    # if not world.options.level_up_type.option_vanilla:
+    #     items = []
+    #     if world.options.level_up_type.option_separate:
+    #         items = ["Progressive Power", "Progressive Energy"]
+    #     else:
+    #         items = ["Progressive Attributes"]
+    #
+    #     for label in items:
+    #         for i in range(world.options.level_up_count):
+    #             new_item = world.create_item(label)
+    #             itempool.append(new_item)
+    #             needed_number_of_filler_items -= 1
+    #
+    # for i, item in data.items.items():
+    #     if ItemCategory.STYLER_UPGRADE in item.item_categories:
+    #
+    #         for j in range(item.copies):
+    #             if not needed_number_of_filler_items:
+    #                 break
+    #
+    #             new_item = world.create_item(item.label)
+    #             itempool.append(new_item)
+    #             needed_number_of_filler_items -= 1
+    #
+    #     if not needed_number_of_filler_items:
+    #         break
+    #
+    while needed_number_of_filler_items:
+
+        item = world.create_filler()
+        itempool.append(item)
+
+        needed_number_of_filler_items -= 1
+    world.multiworld.itempool += itempool

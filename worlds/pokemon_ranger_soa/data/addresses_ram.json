@@ -1,0 +1,84 @@
+[
+    {
+        "label": "RECEIVED_ITEM_ADDRESS",
+        "address": ["0x020BA302"],
+        "bit_length": 24
+    },
+    {
+        "label": "BROWSER_TABLE_ADDRESS",
+        "address": ["0x020BA2DD"],
+        "bit_length": null
+    },
+    {
+        "label": "BROWSER_RANK_TABLE_ADDRESS",
+        "address": ["0x020BA551"],
+        "bit_length": null
+    },
+    {
+        "label": "QUEST_TABLE_ADDRESS",
+        "address": ["0x020B264D"],
+        "bit_length": null
+    },
+    {
+        "label": "STYLUS_UPGRADE_TABLE_ADDRESS",
+        "address": ["0x020BAE7C"],
+        "bit_length": null
+    },
+    {
+        "label": "PARTNER_POKEMON_TABLE_ADDRESS",
+        "address": ["0x020BAE68"],
+        "bit_length": null
+    },
+    {
+        "label": "POKE_ID_TABLE_ADDRESS",
+        "address": ["0x02237168"],
+        "bit_length": null
+    },
+    {
+        "label": "INSTRUCTION_LEVEL_UP_HEALTH_UP",
+        "address": ["0x02139638"],
+        "bit_length": 32
+    },
+    {
+        "label": "GAME_STATE",
+        "address": ["0x0208A3B8"],
+        "bit_length": 8
+    },
+    {
+        "label": "STYLUS_LEVEL",
+        "address": ["0x020BAE7B"],
+        "bit_length": 8
+    },
+    {
+        "label": "MAX_HEALTH",
+        "address": ["0x020B26A2"],
+        "bit_length": 8
+    },
+    {
+        "label": "CURRENT_HEALTH",
+        "address": ["0x020B26A1"],
+        "bit_length": 8
+    },
+    {
+        "label": "CURRENT_STYLER_AND_RANK",
+        "address": [
+            "0x020B26A3"
+        ],
+        "bit_length": 4
+    },
+    {
+        "label": "CURRENT_MISSION",
+        "address": ["0x020B263A"],
+        "bit_length": 8
+    },
+    {
+        "label": "CURRENT_ROOM_ID",
+        "address": ["0x020B263A"],
+        "bit_length": 16
+    },
+    {
+        "label": "PARTNER_POKEMON_ADDRESS",
+        "address": ["0x020BAEA4"],
+        "bit_length": 192
+    }
+]

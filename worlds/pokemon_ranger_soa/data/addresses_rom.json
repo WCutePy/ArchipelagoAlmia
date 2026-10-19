@@ -1,0 +1,47 @@
+[
+  {
+      "label": "POKE_ID_TABLE_ADDRESS",
+      "address": ["0x2BF1A28"],
+      "bit_length": 32,
+      "descriptor": "address"
+  },
+
+  {
+        "label": "INSTRUCTION_LEVEL_UP_STYLER_LEVEL_UP",
+        "address": ["0x1A0D4"],
+        "bit_length": 32,
+        "descriptor": "nop"
+    },
+    {
+        "label": "INSTRUCTION_LEVEL_UP_MAX_HEALTH_UP",
+        "address": ["0x1A0FC"],
+        "bit_length": 32,
+        "descriptor": "nop"
+    },
+    {
+        "label": "INSTRUCTION_STYLER_MODEL_SET",
+        "address": ["0x1D11C", "0x1D130", "0x1D138"],
+        "bit_length": 32,
+        "descriptor": "nop"
+    },
+    {
+        "label": "INSTRUCTION_RANGER_RANK_SET",
+        "address": ["0x1D018", "0x1D034", "0x1D050", "0x1D06C",
+            "0x1D088", "0x1D0A4", "0x1D0C0",
+            "0x1D0DC", "0x1D0F4", "0x1D104"],
+        "bit_length": 32,
+        "descriptor": "nop"
+    },
+    {
+        "label": "INSTRUCTION_STYLER_UPGRADE_SET",
+        "address": ["0x1AC8C"],
+        "bit_length": 32,
+        "descriptor": "nop"
+    },
+    {
+        "label": "INSTRUCTION_PARTNER_FARM_SET",
+        "address": ["0x367D0"],
+        "bit_length": 32,
+        "descriptor": "nop"
+    }
+]

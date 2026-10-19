@@ -1,0 +1,5996 @@
+[
+    {
+        "name": "Charmander",
+        "label": "CHARMANDER",
+        "browser_id": 137,
+        "national_id": 4,
+        "forms": {
+            "1": {
+                "hex_form_id": "1",
+                "friendship_gauge": 720
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "browser_offset": 0,
+        "browser_flag": 1,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Charmeleon",
+        "label": "CHARMELEON",
+        "browser_id": 138,
+        "national_id": 5,
+        "forms": {
+            "2": {
+                "hex_form_id": "2",
+                "friendship_gauge": 2000
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "browser_offset": 0,
+        "browser_flag": 3,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Squirtle",
+        "label": "SQUIRTLE",
+        "browser_id": 11,
+        "national_id": 7,
+        "forms": {
+            "3": {
+                "hex_form_id": "3",
+                "friendship_gauge": 77
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 0,
+        "browser_flag": 7,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Wartortle",
+        "label": "WARTORTLE",
+        "browser_id": 12,
+        "national_id": 8,
+        "forms": {
+            "4": {
+                "hex_form_id": "4",
+                "friendship_gauge": 187
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 1,
+        "browser_flag": 1,
+        "browser_rank_offset": 1,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Blastoise",
+        "label": "BLASTOISE",
+        "browser_id": 13,
+        "national_id": 9,
+        "forms": {
+            "5": {
+                "hex_form_id": "5",
+                "friendship_gauge": 850
+            }
+        },
+        "field_move": {
+            "category": 13,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 1,
+        "browser_flag": 3,
+        "browser_rank_offset": 1,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Weedle",
+        "label": "WEEDLE",
+        "browser_id": 57,
+        "national_id": 13,
+        "forms": {
+            "6": {
+                "hex_form_id": "6",
+                "friendship_gauge": 195
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 8,
+        "browser_offset": 2,
+        "browser_flag": 3,
+        "browser_rank_offset": 2,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Beedrill",
+        "label": "BEEDRILL",
+        "browser_id": 58,
+        "national_id": 15,
+        "forms": {
+            "7": {
+                "hex_form_id": "7",
+                "friendship_gauge": 225
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "browser_offset": 2,
+        "browser_flag": 7,
+        "browser_rank_offset": 2,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Rattata",
+        "label": "RATTATA",
+        "browser_id": 67,
+        "national_id": 19,
+        "forms": {
+            "8": {
+                "hex_form_id": "8",
+                "friendship_gauge": 92
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 3,
+        "browser_flag": 7,
+        "browser_rank_offset": 3,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Raticate",
+        "label": "RATICATE",
+        "browser_id": 68,
+        "national_id": 20,
+        "forms": {
+            "9": {
+                "hex_form_id": "9",
+                "friendship_gauge": 720
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 4,
+        "browser_flag": 1,
+        "browser_rank_offset": 4,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Spearow",
+        "label": "SPEAROW",
+        "browser_id": 112,
+        "national_id": 21,
+        "forms": {
+            "10": {
+                "hex_form_id": "A",
+                "friendship_gauge": 320
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "browser_offset": 4,
+        "browser_flag": 3,
+        "browser_rank_offset": 4,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Fearow",
+        "label": "FEAROW",
+        "browser_id": 113,
+        "national_id": 22,
+        "forms": {
+            "11": {
+                "hex_form_id": "B",
+                "friendship_gauge": 2500
+            },
+            "275": {
+                "hex_form_id": "113",
+                "friendship_gauge": 6000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 2,
+        "browser_offset": 4,
+        "browser_flag": 5,
+        "browser_rank_offset": 4,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pikachu",
+        "label": "PIKACHU",
+        "browser_id": 2,
+        "national_id": 25,
+        "forms": {
+            "12": {
+                "hex_form_id": "C",
+                "friendship_gauge": 645
+            },
+            "309": {
+                "hex_form_id": "135",
+                "friendship_gauge": 60
+            }
+        },
+        "field_move": {
+            "category": 9,
+            "level": 3
+        },
+        "poke_assist": 4,
+        "browser_offset": 5,
+        "browser_flag": 3,
+        "browser_rank_offset": 5,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Raichu",
+        "label": "RAICHU",
+        "browser_id": 3,
+        "national_id": 26,
+        "forms": {
+            "13": {
+                "hex_form_id": "D",
+                "friendship_gauge": 1540
+            }
+        },
+        "field_move": {
+            "category": 9,
+            "level": 4
+        },
+        "poke_assist": 4,
+        "browser_offset": 5,
+        "browser_flag": 5,
+        "browser_rank_offset": 5,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Sandshrew",
+        "label": "SANDSHREW",
+        "browser_id": 194,
+        "national_id": 27,
+        "forms": {
+            "14": {
+                "hex_form_id": "E",
+                "friendship_gauge": 1144
+            }
+        },
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 11,
+        "browser_offset": 5,
+        "browser_flag": 7,
+        "browser_rank_offset": 5,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Sandslash",
+        "label": "SANDSLASH",
+        "browser_id": 195,
+        "national_id": 28,
+        "forms": {
+            "15": {
+                "hex_form_id": "F",
+                "friendship_gauge": 3250
+            }
+        },
+        "field_move": {
+            "category": 8,
+            "level": 1
+        },
+        "poke_assist": 11,
+        "browser_offset": 6,
+        "browser_flag": 1,
+        "browser_rank_offset": 6,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Vulpix",
+        "label": "VULPIX",
+        "browser_id": 171,
+        "national_id": 37,
+        "forms": {
+            "16": {
+                "hex_form_id": "10",
+                "friendship_gauge": 946
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "browser_offset": 8,
+        "browser_flag": 3,
+        "browser_rank_offset": 8,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Ninetales",
+        "label": "NINETALES",
+        "browser_id": 172,
+        "national_id": 38,
+        "forms": {
+            "17": {
+                "hex_form_id": "11",
+                "friendship_gauge": 3920
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 4
+        },
+        "poke_assist": 9,
+        "browser_offset": 8,
+        "browser_flag": 5,
+        "browser_rank_offset": 8,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Jigglypuff",
+        "label": "JIGGLYPUFF",
+        "browser_id": 203,
+        "national_id": 39,
+        "forms": {
+            "18": {
+                "hex_form_id": "12",
+                "friendship_gauge": 1302
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 8,
+        "browser_flag": 7,
+        "browser_rank_offset": 8,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Wigglytuff",
+        "label": "WIGGLYTUFF",
+        "browser_id": 204,
+        "national_id": 40,
+        "forms": {
+            "19": {
+                "hex_form_id": "13",
+                "friendship_gauge": 1750
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 9,
+        "browser_flag": 1,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Zubat",
+        "label": "ZUBAT",
+        "browser_id": 14,
+        "national_id": 41,
+        "forms": {
+            "20": {
+                "hex_form_id": "14",
+                "friendship_gauge": 84
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "browser_offset": 9,
+        "browser_flag": 3,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Golbat",
+        "label": "GOLBAT",
+        "browser_id": 15,
+        "national_id": 42,
+        "forms": {
+            "21": {
+                "hex_form_id": "15",
+                "friendship_gauge": 1240
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "browser_offset": 9,
+        "browser_flag": 5,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Oddish",
+        "label": "ODDISH",
+        "browser_id": 114,
+        "national_id": 43,
+        "forms": {
+            "22": {
+                "hex_form_id": "16",
+                "friendship_gauge": 312
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "browser_offset": 9,
+        "browser_flag": 7,
+        "browser_rank_offset": 9,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Gloom",
+        "label": "GLOOM",
+        "browser_id": 115,
+        "national_id": 44,
+        "forms": {
+            "23": {
+                "hex_form_id": "17",
+                "friendship_gauge": 912
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 10,
+        "browser_flag": 1,
+        "browser_rank_offset": 10,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Vileplume",
+        "label": "VILEPLUME",
+        "browser_id": 116,
+        "national_id": 45,
+        "forms": {
+            "24": {
+                "hex_form_id": "18",
+                "friendship_gauge": 2500
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 13,
+        "browser_offset": 10,
+        "browser_flag": 3,
+        "browser_rank_offset": 10,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mankey",
+        "label": "MANKEY",
+        "browser_id": 126,
+        "national_id": 56,
+        "forms": {
+            "25": {
+                "hex_form_id": "19",
+                "friendship_gauge": 384
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 10,
+        "browser_offset": 13,
+        "browser_flag": 1,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Primeape",
+        "label": "PRIMEAPE",
+        "browser_id": 127,
+        "national_id": 57,
+        "forms": {
+            "26": {
+                "hex_form_id": "1A",
+                "friendship_gauge": 3750
+            },
+            "272": {
+                "hex_form_id": "110",
+                "friendship_gauge": 3750
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 10,
+        "browser_offset": 13,
+        "browser_flag": 3,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Growlithe",
+        "label": "GROWLITHE",
+        "browser_id": 65,
+        "national_id": 58,
+        "forms": {
+            "27": {
+                "hex_form_id": "1B",
+                "friendship_gauge": 252
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "browser_offset": 13,
+        "browser_flag": 5,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Arcanine",
+        "label": "ARCANINE",
+        "browser_id": 66,
+        "national_id": 59,
+        "forms": {
+            "28": {
+                "hex_form_id": "1C",
+                "friendship_gauge": 3150
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 4
+        },
+        "poke_assist": 9,
+        "browser_offset": 13,
+        "browser_flag": 7,
+        "browser_rank_offset": 13,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Abra",
+        "label": "ABRA",
+        "browser_id": 183,
+        "national_id": 63,
+        "forms": {
+            "29": {
+                "hex_form_id": "1D",
+                "friendship_gauge": 735
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 14,
+        "browser_flag": 7,
+        "browser_rank_offset": 14,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Alakazam",
+        "label": "ALAKAZAM",
+        "browser_id": 184,
+        "national_id": 65,
+        "forms": {
+            "30": {
+                "hex_form_id": "1E",
+                "friendship_gauge": 3900
+            },
+            "265": {
+                "hex_form_id": "109",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 12,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 15,
+        "browser_flag": 3,
+        "browser_rank_offset": 15,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Machop",
+        "label": "MACHOP",
+        "browser_id": 161,
+        "national_id": 66,
+        "forms": {
+            "31": {
+                "hex_form_id": "1F",
+                "friendship_gauge": 3500
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 10,
+        "browser_offset": 15,
+        "browser_flag": 5,
+        "browser_rank_offset": 15,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Machoke",
+        "label": "MACHOKE",
+        "browser_id": 162,
+        "national_id": 67,
+        "forms": {
+            "32": {
+                "hex_form_id": "20",
+                "friendship_gauge": 1161
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 10,
+        "browser_offset": 15,
+        "browser_flag": 7,
+        "browser_rank_offset": 15,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Machamp",
+        "label": "MACHAMP",
+        "browser_id": 163,
+        "national_id": 68,
+        "forms": {
+            "33": {
+                "hex_form_id": "21",
+                "friendship_gauge": 5250
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 10,
+        "browser_offset": 16,
+        "browser_flag": 1,
+        "browser_rank_offset": 16,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Victreebel",
+        "label": "VICTREEBEL",
+        "browser_id": 242,
+        "national_id": 71,
+        "forms": {
+            "34": {
+                "hex_form_id": "22",
+                "friendship_gauge": 3600
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 16,
+        "browser_flag": 7,
+        "browser_rank_offset": 16,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tentacruel",
+        "label": "TENTACRUEL",
+        "browser_id": 234,
+        "national_id": 73,
+        "forms": {
+            "35": {
+                "hex_form_id": "23",
+                "friendship_gauge": 5130
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 17,
+        "browser_flag": 3,
+        "browser_rank_offset": 17,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Geodude",
+        "label": "GEODUDE",
+        "browser_id": 41,
+        "national_id": 74,
+        "forms": {
+            "36": {
+                "hex_form_id": "24",
+                "friendship_gauge": 126
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 6,
+        "browser_offset": 17,
+        "browser_flag": 5,
+        "browser_rank_offset": 17,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Graveler",
+        "label": "GRAVELER",
+        "browser_id": 42,
+        "national_id": 75,
+        "forms": {
+            "37": {
+                "hex_form_id": "25",
+                "friendship_gauge": 700
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 6,
+        "browser_offset": 17,
+        "browser_flag": 7,
+        "browser_rank_offset": 17,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Golem",
+        "label": "GOLEM",
+        "browser_id": 43,
+        "national_id": 76,
+        "forms": {
+            "38": {
+                "hex_form_id": "26",
+                "friendship_gauge": 4550
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 6,
+        "browser_offset": 18,
+        "browser_flag": 1,
+        "browser_rank_offset": 18,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Ponyta",
+        "label": "PONYTA",
+        "browser_id": 176,
+        "national_id": 77,
+        "forms": {
+            "39": {
+                "hex_form_id": "27",
+                "friendship_gauge": 980
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "browser_offset": 18,
+        "browser_flag": 3,
+        "browser_rank_offset": 18,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Rapidash",
+        "label": "RAPIDASH",
+        "browser_id": 177,
+        "national_id": 78,
+        "forms": {
+            "40": {
+                "hex_form_id": "28",
+                "friendship_gauge": 1274
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "browser_offset": 18,
+        "browser_flag": 5,
+        "browser_rank_offset": 18,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Magnemite",
+        "label": "MAGNEMITE",
+        "browser_id": 62,
+        "national_id": 81,
+        "forms": {
+            "41": {
+                "hex_form_id": "29",
+                "friendship_gauge": 180
+            }
+        },
+        "field_move": {
+            "category": 9,
+            "level": 2
+        },
+        "poke_assist": 4,
+        "browser_offset": 19,
+        "browser_flag": 3,
+        "browser_rank_offset": 19,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magneton",
+        "label": "MAGNETON",
+        "browser_id": 63,
+        "national_id": 82,
+        "forms": {
+            "42": {
+                "hex_form_id": "2A",
+                "friendship_gauge": 1900
+            }
+        },
+        "field_move": {
+            "category": 9,
+            "level": 5
+        },
+        "poke_assist": 4,
+        "browser_offset": 19,
+        "browser_flag": 5,
+        "browser_rank_offset": 19,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Doduo",
+        "label": "DODUO",
+        "browser_id": 134,
+        "national_id": 84,
+        "forms": {
+            "43": {
+                "hex_form_id": "2B",
+                "friendship_gauge": 330
+            }
+        },
+        "field_move": {
+            "category": 10,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 20,
+        "browser_flag": 1,
+        "browser_rank_offset": 20,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Dodrio",
+        "label": "DODRIO",
+        "browser_id": 135,
+        "national_id": 85,
+        "forms": {
+            "44": {
+                "hex_form_id": "2C",
+                "friendship_gauge": 1750
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 20,
+        "browser_flag": 3,
+        "browser_rank_offset": 20,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Muk",
+        "label": "MUK",
+        "browser_id": 152,
+        "national_id": 89,
+        "forms": {
+            "45": {
+                "hex_form_id": "2D",
+                "friendship_gauge": 1800
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 13,
+        "browser_offset": 21,
+        "browser_flag": 3,
+        "browser_rank_offset": 21,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gastly",
+        "label": "GASTLY",
+        "browser_id": 17,
+        "national_id": 92,
+        "forms": {
+            "46": {
+                "hex_form_id": "2E",
+                "friendship_gauge": 40
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "browser_offset": 22,
+        "browser_flag": 1,
+        "browser_rank_offset": 22,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Haunter",
+        "label": "HAUNTER",
+        "browser_id": 18,
+        "national_id": 93,
+        "forms": {
+            "47": {
+                "hex_form_id": "2F",
+                "friendship_gauge": 1400
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 14,
+        "browser_offset": 22,
+        "browser_flag": 3,
+        "browser_rank_offset": 22,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gengar",
+        "label": "GENGAR",
+        "browser_id": 19,
+        "national_id": 94,
+        "forms": {
+            "48": {
+                "hex_form_id": "30",
+                "friendship_gauge": 5200
+            },
+            "274": {
+                "hex_form_id": "112",
+                "friendship_gauge": 7000
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "browser_offset": 22,
+        "browser_flag": 5,
+        "browser_rank_offset": 22,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Drowzee",
+        "label": "DROWZEE",
+        "browser_id": 166,
+        "national_id": 96,
+        "forms": {
+            "49": {
+                "hex_form_id": "31",
+                "friendship_gauge": 817
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "browser_offset": 23,
+        "browser_flag": 1,
+        "browser_rank_offset": 23,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Hypno",
+        "label": "HYPNO",
+        "browser_id": 167,
+        "national_id": 97,
+        "forms": {
+            "50": {
+                "hex_form_id": "32",
+                "friendship_gauge": 1300
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "browser_offset": 23,
+        "browser_flag": 3,
+        "browser_rank_offset": 23,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Voltorb",
+        "label": "VOLTORB",
+        "browser_id": 76,
+        "national_id": 100,
+        "forms": {
+            "51": {
+                "hex_form_id": "33",
+                "friendship_gauge": 252
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "browser_offset": 24,
+        "browser_flag": 1,
+        "browser_rank_offset": 24,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Electrode",
+        "label": "ELECTRODE",
+        "browser_id": 77,
+        "national_id": 101,
+        "forms": {
+            "52": {
+                "hex_form_id": "34",
+                "friendship_gauge": 5000
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "browser_offset": 24,
+        "browser_flag": 3,
+        "browser_rank_offset": 24,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Koffing",
+        "label": "KOFFING",
+        "browser_id": 187,
+        "national_id": 109,
+        "forms": {
+            "53": {
+                "hex_form_id": "35",
+                "friendship_gauge": 980
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 13,
+        "browser_offset": 26,
+        "browser_flag": 3,
+        "browser_rank_offset": 26,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Weezing",
+        "label": "WEEZING",
+        "browser_id": 188,
+        "national_id": 110,
+        "forms": {
+            "54": {
+                "hex_form_id": "36",
+                "friendship_gauge": 1750
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 13,
+        "browser_offset": 26,
+        "browser_flag": 5,
+        "browser_rank_offset": 26,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Rhyhorn",
+        "label": "RHYHORN",
+        "browser_id": 149,
+        "national_id": 111,
+        "forms": {
+            "55": {
+                "hex_form_id": "37",
+                "friendship_gauge": 1140
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 11,
+        "browser_offset": 26,
+        "browser_flag": 7,
+        "browser_rank_offset": 26,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Rhydon",
+        "label": "RHYDON",
+        "browser_id": 150,
+        "national_id": 112,
+        "forms": {
+            "56": {
+                "hex_form_id": "38",
+                "friendship_gauge": 4800
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 11,
+        "browser_offset": 27,
+        "browser_flag": 1,
+        "browser_rank_offset": 27,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kangaskhan",
+        "label": "KANGASKHAN",
+        "browser_id": 146,
+        "national_id": 115,
+        "forms": {
+            "57": {
+                "hex_form_id": "39",
+                "friendship_gauge": 1292
+            },
+            "277": {
+                "hex_form_id": "115",
+                "friendship_gauge": 13000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 27,
+        "browser_flag": 7,
+        "browser_rank_offset": 27,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Horsea",
+        "label": "HORSEA",
+        "browser_id": 229,
+        "national_id": 116,
+        "forms": {
+            "58": {
+                "hex_form_id": "3A",
+                "friendship_gauge": 2090
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 28,
+        "browser_flag": 1,
+        "browser_rank_offset": 28,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Seadra",
+        "label": "SEADRA",
+        "browser_id": 230,
+        "national_id": 117,
+        "forms": {
+            "59": {
+                "hex_form_id": "3B",
+                "friendship_gauge": 2375
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "browser_offset": 28,
+        "browser_flag": 3,
+        "browser_rank_offset": 28,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Staryu",
+        "label": "STARYU",
+        "browser_id": 94,
+        "national_id": 120,
+        "forms": {
+            "60": {
+                "hex_form_id": "3C",
+                "friendship_gauge": 288
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 29,
+        "browser_flag": 1,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Starmie",
+        "label": "STARMIE",
+        "browser_id": 95,
+        "national_id": 121,
+        "forms": {
+            "61": {
+                "hex_form_id": "3D",
+                "friendship_gauge": 2375
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "browser_offset": 29,
+        "browser_flag": 3,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mr. Mime",
+        "label": "MR. MIME",
+        "browser_id": 165,
+        "national_id": 122,
+        "forms": {
+            "62": {
+                "hex_form_id": "3E",
+                "friendship_gauge": 2520
+            }
+        },
+        "field_move": {
+            "category": 12,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 29,
+        "browser_flag": 5,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Scyther",
+        "label": "SCYTHER",
+        "browser_id": 216,
+        "national_id": 123,
+        "forms": {
+            "63": {
+                "hex_form_id": "3F",
+                "friendship_gauge": 1680
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 8,
+        "browser_offset": 29,
+        "browser_flag": 7,
+        "browser_rank_offset": 29,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Jynx",
+        "label": "JYNX",
+        "browser_id": 210,
+        "national_id": 124,
+        "forms": {
+            "64": {
+                "hex_form_id": "40",
+                "friendship_gauge": 1680
+            }
+        },
+        "field_move": {
+            "category": 12,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 30,
+        "browser_flag": 1,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Electabuzz",
+        "label": "ELECTABUZZ",
+        "browser_id": 71,
+        "national_id": 125,
+        "forms": {
+            "65": {
+                "hex_form_id": "41",
+                "friendship_gauge": 2070
+            }
+        },
+        "field_move": {
+            "category": 15,
+            "level": 1
+        },
+        "poke_assist": 7,
+        "browser_offset": 30,
+        "browser_flag": 3,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magmar",
+        "label": "MAGMAR",
+        "browser_id": 74,
+        "national_id": 126,
+        "forms": {
+            "66": {
+                "hex_form_id": "42",
+                "friendship_gauge": 1140
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "browser_offset": 30,
+        "browser_flag": 5,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pinsir",
+        "label": "PINSIR",
+        "browser_id": 123,
+        "national_id": 127,
+        "forms": {
+            "67": {
+                "hex_form_id": "43",
+                "friendship_gauge": 1500
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "browser_offset": 30,
+        "browser_flag": 7,
+        "browser_rank_offset": 30,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tauros",
+        "label": "TAUROS",
+        "browser_id": 179,
+        "national_id": 128,
+        "forms": {
+            "68": {
+                "hex_form_id": "44",
+                "friendship_gauge": 800
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 31,
+        "browser_flag": 1,
+        "browser_rank_offset": 31,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Eevee",
+        "label": "EEVEE",
+        "browser_id": 97,
+        "national_id": 133,
+        "forms": {
+            "69": {
+                "hex_form_id": "45",
+                "friendship_gauge": 210
+            },
+            "281": {
+                "hex_form_id": "119",
+                "friendship_gauge": 7000
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 32,
+        "browser_flag": 3,
+        "browser_rank_offset": 32,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Vaporeon",
+        "label": "VAPOREON",
+        "browser_id": 98,
+        "national_id": 134,
+        "forms": {
+            "70": {
+                "hex_form_id": "46",
+                "friendship_gauge": 2900
+            },
+            "283": {
+                "hex_form_id": "11B",
+                "friendship_gauge": 8500
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "browser_offset": 32,
+        "browser_flag": 5,
+        "browser_rank_offset": 32,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Jolteon",
+        "label": "JOLTEON",
+        "browser_id": 99,
+        "national_id": 135,
+        "forms": {
+            "71": {
+                "hex_form_id": "47",
+                "friendship_gauge": 3780
+            },
+            "284": {
+                "hex_form_id": "11C",
+                "friendship_gauge": 8500
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "browser_offset": 32,
+        "browser_flag": 7,
+        "browser_rank_offset": 32,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Flareon",
+        "label": "FLAREON",
+        "browser_id": 100,
+        "national_id": 136,
+        "forms": {
+            "72": {
+                "hex_form_id": "48",
+                "friendship_gauge": 1920
+            },
+            "282": {
+                "hex_form_id": "11A",
+                "friendship_gauge": 8500
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "browser_offset": 33,
+        "browser_flag": 1,
+        "browser_rank_offset": 33,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Omanyte",
+        "label": "OMANYTE",
+        "browser_id": 235,
+        "national_id": 138,
+        "forms": {
+            "73": {
+                "hex_form_id": "49",
+                "friendship_gauge": 2185
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 33,
+        "browser_flag": 5,
+        "browser_rank_offset": 33,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Omastar",
+        "label": "OMASTAR",
+        "browser_id": 236,
+        "national_id": 139,
+        "forms": {
+            "74": {
+                "hex_form_id": "4A",
+                "friendship_gauge": 6300
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "browser_offset": 33,
+        "browser_flag": 7,
+        "browser_rank_offset": 33,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dratini",
+        "label": "DRATINI",
+        "browser_id": 218,
+        "national_id": 147,
+        "forms": {
+            "75": {
+                "hex_form_id": "4B",
+                "friendship_gauge": 1610
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 18,
+        "browser_offset": 35,
+        "browser_flag": 7,
+        "browser_rank_offset": 35,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Spinarak",
+        "label": "SPINARAK",
+        "browser_id": 155,
+        "national_id": 167,
+        "forms": {
+            "76": {
+                "hex_form_id": "4C",
+                "friendship_gauge": 903
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 8,
+        "browser_offset": 40,
+        "browser_flag": 7,
+        "browser_rank_offset": 40,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ariados",
+        "label": "ARIADOS",
+        "browser_id": 156,
+        "national_id": 168,
+        "forms": {
+            "77": {
+                "hex_form_id": "4D",
+                "friendship_gauge": 3510
+            },
+            "289": {
+                "hex_form_id": "121",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 8,
+        "browser_offset": 41,
+        "browser_flag": 1,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Crobat",
+        "label": "CROBAT",
+        "browser_id": 16,
+        "national_id": 169,
+        "forms": {
+            "78": {
+                "hex_form_id": "4E",
+                "friendship_gauge": 3750
+            },
+            "263": {
+                "hex_form_id": "107",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 2,
+        "browser_offset": 41,
+        "browser_flag": 3,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Chinchou",
+        "label": "CHINCHOU",
+        "browser_id": 88,
+        "national_id": 170,
+        "forms": {
+            "79": {
+                "hex_form_id": "4F",
+                "friendship_gauge": 260
+            }
+        },
+        "field_move": {
+            "category": 9,
+            "level": 2
+        },
+        "poke_assist": 4,
+        "browser_offset": 41,
+        "browser_flag": 5,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Lanturn",
+        "label": "LANTURN",
+        "browser_id": 89,
+        "national_id": 171,
+        "forms": {
+            "80": {
+                "hex_form_id": "50",
+                "friendship_gauge": 1900
+            }
+        },
+        "field_move": {
+            "category": 9,
+            "level": 4
+        },
+        "poke_assist": 4,
+        "browser_offset": 41,
+        "browser_flag": 7,
+        "browser_rank_offset": 41,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Pichu",
+        "label": "PICHU",
+        "browser_id": 1,
+        "national_id": 172,
+        "forms": {
+            "81": {
+                "hex_form_id": "51",
+                "friendship_gauge": 66
+            },
+            "302": {
+                "hex_form_id": "12E",
+                "friendship_gauge": 66
+            }
+        },
+        "field_move": {
+            "category": 9,
+            "level": 1
+        },
+        "poke_assist": 4,
+        "browser_offset": 42,
+        "browser_flag": 1,
+        "browser_rank_offset": 42,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Mareep",
+        "label": "MAREEP",
+        "browser_id": 105,
+        "national_id": 179,
+        "forms": {
+            "82": {
+                "hex_form_id": "52",
+                "friendship_gauge": 860
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 1
+        },
+        "poke_assist": 7,
+        "browser_offset": 43,
+        "browser_flag": 7,
+        "browser_rank_offset": 43,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Flaaffy",
+        "label": "FLAAFFY",
+        "browser_id": 106,
+        "national_id": 180,
+        "forms": {
+            "83": {
+                "hex_form_id": "53",
+                "friendship_gauge": 1274
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "browser_offset": 44,
+        "browser_flag": 1,
+        "browser_rank_offset": 44,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Ampharos",
+        "label": "AMPHAROS",
+        "browser_id": 107,
+        "national_id": 181,
+        "forms": {
+            "84": {
+                "hex_form_id": "54",
+                "friendship_gauge": 3900
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "browser_offset": 44,
+        "browser_flag": 3,
+        "browser_rank_offset": 44,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Bellossom",
+        "label": "BELLOSSOM",
+        "browser_id": 117,
+        "national_id": 182,
+        "forms": {
+            "85": {
+                "hex_form_id": "55",
+                "friendship_gauge": 2600
+            },
+            "270": {
+                "hex_form_id": "10E",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "browser_offset": 44,
+        "browser_flag": 5,
+        "browser_rank_offset": 44,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Sudowoodo",
+        "label": "SUDOWOODO",
+        "browser_id": 31,
+        "national_id": 185,
+        "forms": {
+            "86": {
+                "hex_form_id": "56",
+                "friendship_gauge": 1176
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 6,
+        "browser_offset": 45,
+        "browser_flag": 3,
+        "browser_rank_offset": 45,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Aipom",
+        "label": "AIPOM",
+        "browser_id": 108,
+        "national_id": 190,
+        "forms": {
+            "87": {
+                "hex_form_id": "57",
+                "friendship_gauge": 281
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 46,
+        "browser_flag": 5,
+        "browser_rank_offset": 46,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Yanma",
+        "label": "YANMA",
+        "browser_id": 118,
+        "national_id": 193,
+        "forms": {
+            "88": {
+                "hex_form_id": "58",
+                "friendship_gauge": 300
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "browser_offset": 47,
+        "browser_flag": 3,
+        "browser_rank_offset": 47,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Espeon",
+        "label": "ESPEON",
+        "browser_id": 101,
+        "national_id": 196,
+        "forms": {
+            "89": {
+                "hex_form_id": "59",
+                "friendship_gauge": 3250
+            },
+            "285": {
+                "hex_form_id": "11D",
+                "friendship_gauge": 8500
+            }
+        },
+        "field_move": {
+            "category": 12,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 48,
+        "browser_flag": 1,
+        "browser_rank_offset": 48,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Umbreon",
+        "label": "UMBREON",
+        "browser_id": 102,
+        "national_id": 197,
+        "forms": {
+            "90": {
+                "hex_form_id": "5A",
+                "friendship_gauge": 2900
+            },
+            "286": {
+                "hex_form_id": "11E",
+                "friendship_gauge": 18000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "browser_offset": 48,
+        "browser_flag": 3,
+        "browser_rank_offset": 48,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Murkrow",
+        "label": "MURKROW",
+        "browser_id": 185,
+        "national_id": 198,
+        "forms": {
+            "91": {
+                "hex_form_id": "5B",
+                "friendship_gauge": 1488
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 16,
+        "browser_offset": 48,
+        "browser_flag": 5,
+        "browser_rank_offset": 48,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Misdreavus",
+        "label": "MISDREAVUS",
+        "browser_id": 220,
+        "national_id": 200,
+        "forms": {
+            "92": {
+                "hex_form_id": "5C",
+                "friendship_gauge": 3400
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 14,
+        "browser_offset": 49,
+        "browser_flag": 1,
+        "browser_rank_offset": 49,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Girafarig",
+        "label": "GIRAFARIG",
+        "browser_id": 178,
+        "national_id": 203,
+        "forms": {
+            "93": {
+                "hex_form_id": "5D",
+                "friendship_gauge": 860
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "browser_offset": 49,
+        "browser_flag": 7,
+        "browser_rank_offset": 49,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Pineco",
+        "label": "PINECO",
+        "browser_id": 110,
+        "national_id": 204,
+        "forms": {
+            "94": {
+                "hex_form_id": "5E",
+                "friendship_gauge": 338
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 8,
+        "browser_offset": 50,
+        "browser_flag": 1,
+        "browser_rank_offset": 50,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Forretress",
+        "label": "FORRETRESS",
+        "browser_id": 111,
+        "national_id": 205,
+        "forms": {
+            "95": {
+                "hex_form_id": "5F",
+                "friendship_gauge": 1716
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 12,
+        "browser_offset": 50,
+        "browser_flag": 3,
+        "browser_rank_offset": 50,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gligar",
+        "label": "GLIGAR",
+        "browser_id": 128,
+        "national_id": 207,
+        "forms": {
+            "96": {
+                "hex_form_id": "60",
+                "friendship_gauge": 448
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "browser_offset": 50,
+        "browser_flag": 7,
+        "browser_rank_offset": 50,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Qwilfish",
+        "label": "QWILFISH",
+        "browser_id": 92,
+        "national_id": 211,
+        "forms": {
+            "97": {
+                "hex_form_id": "61",
+                "friendship_gauge": 450
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 51,
+        "browser_flag": 7,
+        "browser_rank_offset": 51,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Scizor",
+        "label": "SCIZOR",
+        "browser_id": 217,
+        "national_id": 212,
+        "forms": {
+            "98": {
+                "hex_form_id": "62",
+                "friendship_gauge": 4050
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 4
+        },
+        "poke_assist": 12,
+        "browser_offset": 52,
+        "browser_flag": 1,
+        "browser_rank_offset": 52,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Sneasel",
+        "label": "SNEASEL",
+        "browser_id": 244,
+        "national_id": 215,
+        "forms": {
+            "99": {
+                "hex_form_id": "63",
+                "friendship_gauge": 1960
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 16,
+        "browser_offset": 52,
+        "browser_flag": 7,
+        "browser_rank_offset": 52,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Slugma",
+        "label": "SLUGMA",
+        "browser_id": 140,
+        "national_id": 218,
+        "forms": {
+            "100": {
+                "hex_form_id": "64",
+                "friendship_gauge": 792
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "browser_offset": 53,
+        "browser_flag": 5,
+        "browser_rank_offset": 53,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Magcargo",
+        "label": "MAGCARGO",
+        "browser_id": 141,
+        "national_id": 219,
+        "forms": {
+            "101": {
+                "hex_form_id": "65",
+                "friendship_gauge": 1140
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "browser_offset": 53,
+        "browser_flag": 7,
+        "browser_rank_offset": 53,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Swinub",
+        "label": "SWINUB",
+        "browser_id": 200,
+        "national_id": 220,
+        "forms": {
+            "102": {
+                "hex_form_id": "66",
+                "friendship_gauge": 1364
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "browser_offset": 54,
+        "browser_flag": 1,
+        "browser_rank_offset": 54,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Piloswine",
+        "label": "PILOSWINE",
+        "browser_id": 201,
+        "national_id": 221,
+        "forms": {
+            "103": {
+                "hex_form_id": "67",
+                "friendship_gauge": 4030
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "browser_offset": 54,
+        "browser_flag": 3,
+        "browser_rank_offset": 54,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Corsola",
+        "label": "CORSOLA",
+        "browser_id": 93,
+        "national_id": 222,
+        "forms": {
+            "104": {
+                "hex_form_id": "68",
+                "friendship_gauge": 500
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 54,
+        "browser_flag": 5,
+        "browser_rank_offset": 54,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Delibird",
+        "label": "DELIBIRD",
+        "browser_id": 209,
+        "national_id": 225,
+        "forms": {
+            "105": {
+                "hex_form_id": "69",
+                "friendship_gauge": 1584
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "browser_offset": 55,
+        "browser_flag": 3,
+        "browser_rank_offset": 55,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mantine",
+        "label": "MANTINE",
+        "browser_id": 91,
+        "national_id": 226,
+        "forms": {
+            "106": {
+                "hex_form_id": "6A",
+                "friendship_gauge": 300
+            }
+        },
+        "field_move": {
+            "category": 23,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 55,
+        "browser_flag": 5,
+        "browser_rank_offset": 55,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Skarmory",
+        "label": "SKARMORY",
+        "browser_id": 189,
+        "national_id": 227,
+        "forms": {
+            "107": {
+                "hex_form_id": "6B",
+                "friendship_gauge": 1715
+            }
+        },
+        "field_move": {
+            "category": 14,
+            "level": 1
+        },
+        "poke_assist": 12,
+        "browser_offset": 55,
+        "browser_flag": 7,
+        "browser_rank_offset": 55,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Houndour",
+        "label": "HOUNDOUR",
+        "browser_id": 153,
+        "national_id": 228,
+        "forms": {
+            "108": {
+                "hex_form_id": "6C",
+                "friendship_gauge": 946
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 16,
+        "browser_offset": 56,
+        "browser_flag": 1,
+        "browser_rank_offset": 56,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Houndoom",
+        "label": "HOUNDOOM",
+        "browser_id": 154,
+        "national_id": 229,
+        "forms": {
+            "109": {
+                "hex_form_id": "6D",
+                "friendship_gauge": 2112
+            },
+            "292": {
+                "hex_form_id": "124",
+                "friendship_gauge": 9500
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 2
+        },
+        "poke_assist": 16,
+        "browser_offset": 56,
+        "browser_flag": 3,
+        "browser_rank_offset": 56,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Tyrogue",
+        "label": "TYROGUE",
+        "browser_id": 61,
+        "national_id": 236,
+        "forms": {
+            "110": {
+                "hex_form_id": "6E",
+                "friendship_gauge": 231
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 10,
+        "browser_offset": 58,
+        "browser_flag": 1,
+        "browser_rank_offset": 58,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Elekid",
+        "label": "ELEKID",
+        "browser_id": 70,
+        "national_id": 239,
+        "forms": {
+            "111": {
+                "hex_form_id": "6F",
+                "friendship_gauge": 231
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "browser_offset": 58,
+        "browser_flag": 7,
+        "browser_rank_offset": 58,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Magby",
+        "label": "MAGBY",
+        "browser_id": 73,
+        "national_id": 240,
+        "forms": {
+            "112": {
+                "hex_form_id": "70",
+                "friendship_gauge": 231
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "browser_offset": 59,
+        "browser_flag": 1,
+        "browser_rank_offset": 59,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Miltank",
+        "label": "MILTANK",
+        "browser_id": 46,
+        "national_id": 241,
+        "forms": {
+            "113": {
+                "hex_form_id": "71",
+                "friendship_gauge": 294
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 59,
+        "browser_flag": 3,
+        "browser_rank_offset": 59,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Larvitar",
+        "label": "LARVITAR",
+        "browser_id": 120,
+        "national_id": 246,
+        "forms": {
+            "114": {
+                "hex_form_id": "72",
+                "friendship_gauge": 416
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 6,
+        "browser_offset": 60,
+        "browser_flag": 5,
+        "browser_rank_offset": 60,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pupitar",
+        "label": "PUPITAR",
+        "browser_id": 121,
+        "national_id": 247,
+        "forms": {
+            "115": {
+                "hex_form_id": "73",
+                "friendship_gauge": 1300
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 11,
+        "browser_offset": 60,
+        "browser_flag": 7,
+        "browser_rank_offset": 60,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tyranitar",
+        "label": "TYRANITAR",
+        "browser_id": 122,
+        "national_id": 248,
+        "forms": {
+            "116": {
+                "hex_form_id": "74",
+                "friendship_gauge": 8750
+            },
+            "279": {
+                "hex_form_id": "117",
+                "friendship_gauge": 15000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 16,
+        "browser_offset": 61,
+        "browser_flag": 1,
+        "browser_rank_offset": 61,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Sceptile",
+        "label": "SCEPTILE",
+        "browser_id": 243,
+        "national_id": 254,
+        "forms": {
+            "117": {
+                "hex_form_id": "75",
+                "friendship_gauge": 2730
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "browser_offset": 62,
+        "browser_flag": 5,
+        "browser_rank_offset": 62,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Blaziken",
+        "label": "BLAZIKEN",
+        "browser_id": 255,
+        "national_id": 257,
+        "forms": {
+            "118": {
+                "hex_form_id": "76",
+                "friendship_gauge": 3750
+            },
+            "273": {
+                "hex_form_id": "111",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "browser_offset": 63,
+        "browser_flag": 3,
+        "browser_rank_offset": 63,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Seedot",
+        "label": "SEEDOT",
+        "browser_id": 33,
+        "national_id": 273,
+        "forms": {
+            "119": {
+                "hex_form_id": "77",
+                "friendship_gauge": 180
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "browser_offset": 67,
+        "browser_flag": 3,
+        "browser_rank_offset": 67,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Nuzleaf",
+        "label": "NUZLEAF",
+        "browser_id": 34,
+        "national_id": 274,
+        "forms": {
+            "120": {
+                "hex_form_id": "78",
+                "friendship_gauge": 1127
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 67,
+        "browser_flag": 5,
+        "browser_rank_offset": 67,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Shiftry",
+        "label": "SHIFTRY",
+        "browser_id": 35,
+        "national_id": 275,
+        "forms": {
+            "121": {
+                "hex_form_id": "79",
+                "friendship_gauge": 4800
+            },
+            "261": {
+                "hex_form_id": "105",
+                "friendship_gauge": 10000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "browser_offset": 67,
+        "browser_flag": 7,
+        "browser_rank_offset": 67,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Taillow",
+        "label": "TAILLOW",
+        "browser_id": 6,
+        "national_id": 276,
+        "forms": {
+            "122": {
+                "hex_form_id": "7A",
+                "friendship_gauge": 56
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "browser_offset": 68,
+        "browser_flag": 1,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Swellow",
+        "label": "SWELLOW",
+        "browser_id": 7,
+        "national_id": 277,
+        "forms": {
+            "123": {
+                "hex_form_id": "7B",
+                "friendship_gauge": 600
+            },
+            "276": {
+                "hex_form_id": "114",
+                "friendship_gauge": 7000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "browser_offset": 68,
+        "browser_flag": 3,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Wingull",
+        "label": "WINGULL",
+        "browser_id": 78,
+        "national_id": 278,
+        "forms": {
+            "124": {
+                "hex_form_id": "7C",
+                "friendship_gauge": 252
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 68,
+        "browser_flag": 5,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Pelipper",
+        "label": "PELIPPER",
+        "browser_id": 79,
+        "national_id": 279,
+        "forms": {
+            "125": {
+                "hex_form_id": "7D",
+                "friendship_gauge": 1920
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 3
+        },
+        "poke_assist": 5,
+        "browser_offset": 68,
+        "browser_flag": 7,
+        "browser_rank_offset": 68,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ralts",
+        "label": "RALTS",
+        "browser_id": 157,
+        "national_id": 280,
+        "forms": {
+            "126": {
+                "hex_form_id": "7E",
+                "friendship_gauge": 774
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 69,
+        "browser_flag": 1,
+        "browser_rank_offset": 69,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kirlia",
+        "label": "KIRLIA",
+        "browser_id": 158,
+        "national_id": 281,
+        "forms": {
+            "127": {
+                "hex_form_id": "7F",
+                "friendship_gauge": 1200
+            }
+        },
+        "field_move": {
+            "category": 12,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 69,
+        "browser_flag": 3,
+        "browser_rank_offset": 69,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gardevoir",
+        "label": "GARDEVOIR",
+        "browser_id": 159,
+        "national_id": 282,
+        "forms": {
+            "128": {
+                "hex_form_id": "80",
+                "friendship_gauge": 3900
+            },
+            "260": {
+                "hex_form_id": "104",
+                "friendship_gauge": 12000
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 15,
+        "browser_offset": 69,
+        "browser_flag": 5,
+        "browser_rank_offset": 69,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Slakoth",
+        "label": "SLAKOTH",
+        "browser_id": 32,
+        "national_id": 287,
+        "forms": {
+            "129": {
+                "hex_form_id": "81",
+                "friendship_gauge": 88
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 70,
+        "browser_flag": 7,
+        "browser_rank_offset": 70,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ninjask",
+        "label": "NINJASK",
+        "browser_id": 180,
+        "national_id": 291,
+        "forms": {
+            "130": {
+                "hex_form_id": "82",
+                "friendship_gauge": 490
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "browser_offset": 71,
+        "browser_flag": 7,
+        "browser_rank_offset": 71,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Makuhita",
+        "label": "MAKUHITA",
+        "browser_id": 28,
+        "national_id": 296,
+        "forms": {
+            "131": {
+                "hex_form_id": "83",
+                "friendship_gauge": 989
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 10,
+        "browser_offset": 73,
+        "browser_flag": 1,
+        "browser_rank_offset": 73,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Hariyama",
+        "label": "HARIYAMA",
+        "browser_id": 29,
+        "national_id": 297,
+        "forms": {
+            "132": {
+                "hex_form_id": "84",
+                "friendship_gauge": 2320
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 10,
+        "browser_offset": 73,
+        "browser_flag": 3,
+        "browser_rank_offset": 73,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Nosepass",
+        "label": "NOSEPASS",
+        "browser_id": 44,
+        "national_id": 299,
+        "forms": {
+            "133": {
+                "hex_form_id": "85",
+                "friendship_gauge": 252
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 6,
+        "browser_offset": 73,
+        "browser_flag": 7,
+        "browser_rank_offset": 73,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Sableye",
+        "label": "SABLEYE",
+        "browser_id": 193,
+        "national_id": 302,
+        "forms": {
+            "134": {
+                "hex_form_id": "86",
+                "friendship_gauge": 1334
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 16,
+        "browser_offset": 74,
+        "browser_flag": 5,
+        "browser_rank_offset": 74,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Mawile",
+        "label": "MAWILE",
+        "browser_id": 130,
+        "national_id": 303,
+        "forms": {
+            "135": {
+                "hex_form_id": "87",
+                "friendship_gauge": 480
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 12,
+        "browser_offset": 74,
+        "browser_flag": 7,
+        "browser_rank_offset": 74,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Aron",
+        "label": "ARON",
+        "browser_id": 131,
+        "national_id": 304,
+        "forms": {
+            "136": {
+                "hex_form_id": "88",
+                "friendship_gauge": 416
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 12,
+        "browser_offset": 75,
+        "browser_flag": 1,
+        "browser_rank_offset": 75,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Lairon",
+        "label": "LAIRON",
+        "browser_id": 132,
+        "national_id": 305,
+        "forms": {
+            "137": {
+                "hex_form_id": "89",
+                "friendship_gauge": 1710
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 12,
+        "browser_offset": 75,
+        "browser_flag": 3,
+        "browser_rank_offset": 75,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Aggron",
+        "label": "AGGRON",
+        "browser_id": 133,
+        "national_id": 306,
+        "forms": {
+            "138": {
+                "hex_form_id": "8A",
+                "friendship_gauge": 7200
+            },
+            "278": {
+                "hex_form_id": "116",
+                "friendship_gauge": 14000
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 4
+        },
+        "poke_assist": 12,
+        "browser_offset": 75,
+        "browser_flag": 5,
+        "browser_rank_offset": 75,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Roselia",
+        "label": "ROSELIA",
+        "browser_id": 9,
+        "national_id": 315,
+        "forms": {
+            "139": {
+                "hex_form_id": "8B",
+                "friendship_gauge": 228
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 77,
+        "browser_flag": 7,
+        "browser_rank_offset": 77,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Numel",
+        "label": "NUMEL",
+        "browser_id": 124,
+        "national_id": 322,
+        "forms": {
+            "140": {
+                "hex_form_id": "8C",
+                "friendship_gauge": 448
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 1
+        },
+        "poke_assist": 11,
+        "browser_offset": 79,
+        "browser_flag": 5,
+        "browser_rank_offset": 79,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Camerupt",
+        "label": "CAMERUPT",
+        "browser_id": 125,
+        "national_id": 323,
+        "forms": {
+            "141": {
+                "hex_form_id": "8D",
+                "friendship_gauge": 3720
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "browser_offset": 79,
+        "browser_flag": 7,
+        "browser_rank_offset": 79,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Torkoal",
+        "label": "TORKOAL",
+        "browser_id": 224,
+        "national_id": 324,
+        "forms": {
+            "142": {
+                "hex_form_id": "8E",
+                "friendship_gauge": 1600
+            }
+        },
+        "field_move": {
+            "category": 22,
+            "level": 1
+        },
+        "poke_assist": 9,
+        "browser_offset": 80,
+        "browser_flag": 1,
+        "browser_rank_offset": 80,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Cacnea",
+        "label": "CACNEA",
+        "browser_id": 239,
+        "national_id": 331,
+        "forms": {
+            "143": {
+                "hex_form_id": "8F",
+                "friendship_gauge": 2400
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "browser_offset": 81,
+        "browser_flag": 7,
+        "browser_rank_offset": 81,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Cacturne",
+        "label": "CACTURNE",
+        "browser_id": 240,
+        "national_id": 332,
+        "forms": {
+            "144": {
+                "hex_form_id": "90",
+                "friendship_gauge": 3125
+            },
+            "290": {
+                "hex_form_id": "122",
+                "friendship_gauge": 9000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 16,
+        "browser_offset": 82,
+        "browser_flag": 1,
+        "browser_rank_offset": 82,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Altaria",
+        "label": "ALTARIA",
+        "browser_id": 260,
+        "national_id": 334,
+        "forms": {
+            "145": {
+                "hex_form_id": "91",
+                "friendship_gauge": 7000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 18,
+        "browser_offset": 82,
+        "browser_flag": 5,
+        "browser_rank_offset": 82,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Claydol",
+        "label": "CLAYDOL",
+        "browser_id": 250,
+        "national_id": 344,
+        "forms": {
+            "146": {
+                "hex_form_id": "92",
+                "friendship_gauge": 3380
+            },
+            "271": {
+                "hex_form_id": "10F",
+                "friendship_gauge": 3380
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 15,
+        "browser_offset": 85,
+        "browser_flag": 1,
+        "browser_rank_offset": 85,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Shuppet",
+        "label": "SHUPPET",
+        "browser_id": 147,
+        "national_id": 353,
+        "forms": {
+            "147": {
+                "hex_form_id": "93",
+                "friendship_gauge": 648
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "browser_offset": 87,
+        "browser_flag": 3,
+        "browser_rank_offset": 87,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Banette",
+        "label": "BANETTE",
+        "browser_id": 148,
+        "national_id": 354,
+        "forms": {
+            "148": {
+                "hex_form_id": "94",
+                "friendship_gauge": 3120
+            },
+            "291": {
+                "hex_form_id": "123",
+                "friendship_gauge": 8500
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 2
+        },
+        "poke_assist": 14,
+        "browser_offset": 87,
+        "browser_flag": 5,
+        "browser_rank_offset": 87,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Duskull",
+        "label": "DUSKULL",
+        "browser_id": 190,
+        "national_id": 355,
+        "forms": {
+            "149": {
+                "hex_form_id": "95",
+                "friendship_gauge": 1196
+            },
+            "239": {
+                "hex_form_id": "EF",
+                "friendship_gauge": 1196
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "browser_offset": 87,
+        "browser_flag": 7,
+        "browser_rank_offset": 87,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dusclops",
+        "label": "DUSCLOPS",
+        "browser_id": 191,
+        "national_id": 356,
+        "forms": {
+            "150": {
+                "hex_form_id": "96",
+                "friendship_gauge": 2835
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "browser_offset": 88,
+        "browser_flag": 1,
+        "browser_rank_offset": 88,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Absol",
+        "label": "ABSOL",
+        "browser_id": 256,
+        "national_id": 359,
+        "forms": {
+            "151": {
+                "hex_form_id": "97",
+                "friendship_gauge": 4500
+            },
+            "268": {
+                "hex_form_id": "10C",
+                "friendship_gauge": 10000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 4
+        },
+        "poke_assist": 16,
+        "browser_offset": 88,
+        "browser_flag": 7,
+        "browser_rank_offset": 88,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Snorunt",
+        "label": "SNORUNT",
+        "browser_id": 213,
+        "national_id": 361,
+        "forms": {
+            "152": {
+                "hex_form_id": "98",
+                "friendship_gauge": 1680
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "browser_offset": 89,
+        "browser_flag": 3,
+        "browser_rank_offset": 89,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Glalie",
+        "label": "GLALIE",
+        "browser_id": 214,
+        "national_id": 362,
+        "forms": {
+            "153": {
+                "hex_form_id": "99",
+                "friendship_gauge": 2030
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "browser_offset": 89,
+        "browser_flag": 5,
+        "browser_rank_offset": 89,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Spheal",
+        "label": "SPHEAL",
+        "browser_id": 197,
+        "national_id": 363,
+        "forms": {
+            "154": {
+                "hex_form_id": "9A",
+                "friendship_gauge": 1364
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 17,
+        "browser_offset": 89,
+        "browser_flag": 7,
+        "browser_rank_offset": 89,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Sealeo",
+        "label": "SEALEO",
+        "browser_id": 198,
+        "national_id": 364,
+        "forms": {
+            "155": {
+                "hex_form_id": "9B",
+                "friendship_gauge": 1612
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 17,
+        "browser_offset": 90,
+        "browser_flag": 1,
+        "browser_rank_offset": 90,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Walrein",
+        "label": "WALREIN",
+        "browser_id": 199,
+        "national_id": 365,
+        "forms": {
+            "156": {
+                "hex_form_id": "9C",
+                "friendship_gauge": 4200
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "browser_offset": 90,
+        "browser_flag": 3,
+        "browser_rank_offset": 90,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Huntail",
+        "label": "HUNTAIL",
+        "browser_id": 232,
+        "national_id": 367,
+        "forms": {
+            "157": {
+                "hex_form_id": "9D",
+                "friendship_gauge": 2300
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "browser_offset": 90,
+        "browser_flag": 7,
+        "browser_rank_offset": 90,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Gorebyss",
+        "label": "GOREBYSS",
+        "browser_id": 233,
+        "national_id": 368,
+        "forms": {
+            "158": {
+                "hex_form_id": "9E",
+                "friendship_gauge": 2400
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 15,
+        "browser_offset": 91,
+        "browser_flag": 1,
+        "browser_rank_offset": 91,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Bagon",
+        "label": "BAGON",
+        "browser_id": 225,
+        "national_id": 371,
+        "forms": {
+            "159": {
+                "hex_form_id": "9F",
+                "friendship_gauge": 1840
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 18,
+        "browser_offset": 91,
+        "browser_flag": 7,
+        "browser_rank_offset": 91,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Shelgon",
+        "label": "SHELGON",
+        "browser_id": 226,
+        "national_id": 372,
+        "forms": {
+            "160": {
+                "hex_form_id": "A0",
+                "friendship_gauge": 2160
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 18,
+        "browser_offset": 92,
+        "browser_flag": 1,
+        "browser_rank_offset": 92,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Turtwig",
+        "label": "TURTWIG",
+        "browser_id": 52,
+        "national_id": 387,
+        "forms": {
+            "161": {
+                "hex_form_id": "A1",
+                "friendship_gauge": 1075
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 1,
+        "browser_offset": 95,
+        "browser_flag": 7,
+        "browser_rank_offset": 95,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Grotle",
+        "label": "GROTLE",
+        "browser_id": 53,
+        "national_id": 388,
+        "forms": {
+            "162": {
+                "hex_form_id": "A2",
+                "friendship_gauge": 750
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 96,
+        "browser_flag": 1,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Torterra",
+        "label": "TORTERRA",
+        "browser_id": 54,
+        "national_id": 389,
+        "forms": {
+            "163": {
+                "hex_form_id": "A3",
+                "friendship_gauge": 6500
+            },
+            "296": {
+                "hex_form_id": "128",
+                "friendship_gauge": 25000
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 4
+        },
+        "poke_assist": 1,
+        "browser_offset": 96,
+        "browser_flag": 3,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Chimchar",
+        "label": "CHIMCHAR",
+        "browser_id": 168,
+        "national_id": 390,
+        "forms": {
+            "164": {
+                "hex_form_id": "A4",
+                "friendship_gauge": 1300
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 9,
+        "browser_offset": 96,
+        "browser_flag": 5,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Monferno",
+        "label": "MONFERNO",
+        "browser_id": 169,
+        "national_id": 391,
+        "forms": {
+            "165": {
+                "hex_form_id": "A5",
+                "friendship_gauge": 1700
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 2
+        },
+        "poke_assist": 9,
+        "browser_offset": 96,
+        "browser_flag": 7,
+        "browser_rank_offset": 96,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Infernape",
+        "label": "INFERNAPE",
+        "browser_id": 170,
+        "national_id": 392,
+        "forms": {
+            "166": {
+                "hex_form_id": "A6",
+                "friendship_gauge": 8000
+            },
+            "298": {
+                "hex_form_id": "12A",
+                "friendship_gauge": 21000
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 3
+        },
+        "poke_assist": 9,
+        "browser_offset": 97,
+        "browser_flag": 1,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Piplup",
+        "label": "PIPLUP",
+        "browser_id": 206,
+        "national_id": 393,
+        "forms": {
+            "167": {
+                "hex_form_id": "A7",
+                "friendship_gauge": 1750
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 5,
+        "browser_offset": 97,
+        "browser_flag": 3,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Prinplup",
+        "label": "PRINPLUP",
+        "browser_id": 207,
+        "national_id": 394,
+        "forms": {
+            "168": {
+                "hex_form_id": "A8",
+                "friendship_gauge": 1488
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 97,
+        "browser_flag": 5,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Empoleon",
+        "label": "EMPOLEON",
+        "browser_id": 208,
+        "national_id": 395,
+        "forms": {
+            "169": {
+                "hex_form_id": "A9",
+                "friendship_gauge": 1350
+            },
+            "297": {
+                "hex_form_id": "129",
+                "friendship_gauge": 23000
+            }
+        },
+        "field_move": {
+            "category": 21,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 97,
+        "browser_flag": 7,
+        "browser_rank_offset": 97,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Starly",
+        "label": "STARLY",
+        "browser_id": 23,
+        "national_id": 396,
+        "forms": {
+            "170": {
+                "hex_form_id": "AA",
+                "friendship_gauge": 170
+            },
+            "257": {
+                "hex_form_id": "101",
+                "friendship_gauge": 4500
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 2,
+        "browser_offset": 98,
+        "browser_flag": 1,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Staravia",
+        "label": "STARAVIA",
+        "browser_id": 24,
+        "national_id": 397,
+        "forms": {
+            "171": {
+                "hex_form_id": "AB",
+                "friendship_gauge": 480
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "browser_offset": 98,
+        "browser_flag": 3,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Staraptor",
+        "label": "STARAPTOR",
+        "browser_id": 25,
+        "national_id": 398,
+        "forms": {
+                "172": {
+                "hex_form_id": "AC",
+                "friendship_gauge": 777
+            }
+        },
+        "field_move": {
+            "category": 11,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "browser_offset": 98,
+        "browser_flag": 5,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Bidoof",
+        "label": "BIDOOF",
+        "browser_id": 4,
+        "national_id": 399,
+        "forms": {
+            "173": {
+                "hex_form_id": "AD",
+                "friendship_gauge": 0
+            },
+            "301": {
+                "hex_form_id": "12D",
+                "friendship_gauge": 66
+            },
+            "310": {
+                "hex_form_id": "136",
+                "friendship_gauge": 198
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 98,
+        "browser_flag": 7,
+        "browser_rank_offset": 98,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Bibarel",
+        "label": "BIBAREL",
+        "browser_id": 5,
+        "national_id": 400,
+        "forms": {
+            "174": {
+                "hex_form_id": "AE",
+                "friendship_gauge": 480
+            },
+            "300": {
+                "hex_form_id": "12C",
+                "friendship_gauge": 480
+            },
+            "303": {
+                "hex_form_id": "12F",
+                "friendship_gauge": 480
+            },
+            "304": {
+                "hex_form_id": "130",
+                "friendship_gauge": 480
+            },
+            "305": {
+                "hex_form_id": "131",
+                "friendship_gauge": 480
+            },
+            "306": {
+                "hex_form_id": "132",
+                "friendship_gauge": 480
+            },
+            "307": {
+                "hex_form_id": "133",
+                "friendship_gauge": 480
+            },
+            "308": {
+                "hex_form_id": "134",
+                "friendship_gauge": 480
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 99,
+        "browser_flag": 1,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kricketot",
+        "label": "KRICKETOT",
+        "browser_id": 82,
+        "national_id": 401,
+        "forms": {
+            "175": {
+                "hex_form_id": "AF",
+                "friendship_gauge": 420
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 8,
+        "browser_offset": 99,
+        "browser_flag": 3,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Kricketune",
+        "label": "KRICKETUNE",
+        "browser_id": 83,
+        "national_id": 402,
+        "forms": {
+            "176": {
+                "hex_form_id": "B0",
+                "friendship_gauge": 1650
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 8,
+        "browser_offset": 99,
+        "browser_flag": 5,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Shinx",
+        "label": "SHINX",
+        "browser_id": 49,
+        "national_id": 403,
+        "forms": {
+            "177": {
+                "hex_form_id": "B1",
+                "friendship_gauge": 140
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 1
+        },
+        "poke_assist": 7,
+        "browser_offset": 99,
+        "browser_flag": 7,
+        "browser_rank_offset": 99,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Luxio",
+        "label": "LUXIO",
+        "browser_id": 50,
+        "national_id": 404,
+        "forms": {
+            "178": {
+                "hex_form_id": "B2",
+                "friendship_gauge": 1978
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 2
+        },
+        "poke_assist": 7,
+        "browser_offset": 100,
+        "browser_flag": 1,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Luxray",
+        "label": "LUXRAY",
+        "browser_id": 51,
+        "national_id": 405,
+        "forms": {
+            "179": {
+                "hex_form_id": "B3",
+                "friendship_gauge": 6090
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "browser_offset": 100,
+        "browser_flag": 3,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Budew",
+        "label": "BUDEW",
+        "browser_id": 8,
+        "national_id": 406,
+        "forms": {
+            "180": {
+                "hex_form_id": "B4",
+                "friendship_gauge": 66
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "browser_offset": 100,
+        "browser_flag": 5,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Roserade",
+        "label": "ROSERADE",
+        "browser_id": 10,
+        "national_id": 407,
+        "forms": {
+            "181": {
+                "hex_form_id": "B5",
+                "friendship_gauge": 6000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "browser_offset": 100,
+        "browser_flag": 7,
+        "browser_rank_offset": 100,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Cranidos",
+        "label": "CRANIDOS",
+        "browser_id": 84,
+        "national_id": 408,
+        "forms": {
+            "182": {
+                "hex_form_id": "B6",
+                "friendship_gauge": 420
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 6,
+        "browser_offset": 101,
+        "browser_flag": 1,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Shieldon",
+        "label": "SHIELDON",
+        "browser_id": 181,
+        "national_id": 410,
+        "forms": {
+            "183": {
+                "hex_form_id": "B7",
+                "friendship_gauge": 640
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 12,
+        "browser_offset": 101,
+        "browser_flag": 5,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Bastiodon",
+        "label": "BASTIODON",
+        "browser_id": 182,
+        "national_id": 411,
+        "forms": {
+            "184": {
+                "hex_form_id": "B8",
+                "friendship_gauge": 4000
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 3
+        },
+        "poke_assist": 12,
+        "browser_offset": 101,
+        "browser_flag": 7,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Mothim",
+        "label": "MOTHIM",
+        "browser_id": 241,
+        "national_id": 414,
+        "forms": {
+            "185": {
+                "hex_form_id": "B9",
+                "friendship_gauge": 2500
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 2,
+        "browser_offset": 102,
+        "browser_flag": 5,
+        "browser_rank_offset": 102,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Combee",
+        "label": "COMBEE",
+        "browser_id": 59,
+        "national_id": 415,
+        "forms": {
+            "186": {
+                "hex_form_id": "BA",
+                "friendship_gauge": 140
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "browser_offset": 102,
+        "browser_flag": 7,
+        "browser_rank_offset": 102,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Vespiquen",
+        "label": "VESPIQUEN",
+        "browser_id": 60,
+        "national_id": 416,
+        "forms": {
+            "187": {
+                "hex_form_id": "BB",
+                "friendship_gauge": 1560
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 8,
+        "browser_offset": 103,
+        "browser_flag": 1,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Pachirisu",
+        "label": "PACHIRISU",
+        "browser_id": 26,
+        "national_id": 417,
+        "forms": {
+            "188": {
+                "hex_form_id": "BC",
+                "friendship_gauge": 170
+            },
+            "258": {
+                "hex_form_id": "102",
+                "friendship_gauge": 5000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 7,
+        "browser_offset": 103,
+        "browser_flag": 3,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Buizel",
+        "label": "BUIZEL",
+        "browser_id": 55,
+        "national_id": 418,
+        "forms": {
+            "189": {
+                "hex_form_id": "BD",
+                "friendship_gauge": 135
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 103,
+        "browser_flag": 5,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Floatzel",
+        "label": "FLOATZEL",
+        "browser_id": 56,
+        "national_id": 419,
+        "forms": {
+            "190": {
+                "hex_form_id": "BE",
+                "friendship_gauge": 1000
+            }
+        },
+        "field_move": {
+            "category": 21,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 103,
+        "browser_flag": 7,
+        "browser_rank_offset": 103,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Cherubi",
+        "label": "CHERUBI",
+        "browser_id": 47,
+        "national_id": 420,
+        "forms": {
+            "191": {
+                "hex_form_id": "BF",
+                "friendship_gauge": 185
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 1,
+        "browser_offset": 104,
+        "browser_flag": 1,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Cherrim",
+        "label": "CHERRIM",
+        "browser_id": 48,
+        "national_id": 421,
+        "forms": {
+            "192": {
+                "hex_form_id": "C0",
+                "friendship_gauge": 1161
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 104,
+        "browser_flag": 3,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Shellos",
+        "label": "SHELLOS",
+        "browser_id": 37,
+        "national_id": 422,
+        "forms": {
+            "193": {
+                "hex_form_id": "C1",
+                "friendship_gauge": 105
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 104,
+        "browser_flag": 5,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Gastrodon",
+        "label": "GASTRODON",
+        "browser_id": 38,
+        "national_id": 423,
+        "forms": {
+            "194": {
+                "hex_form_id": "C2",
+                "friendship_gauge": 560
+            }
+        },
+        "field_move": {
+            "category": 6,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 104,
+        "browser_flag": 7,
+        "browser_rank_offset": 104,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Ambipom",
+        "label": "AMBIPOM",
+        "browser_id": 109,
+        "national_id": 424,
+        "forms": {
+            "195": {
+                "hex_form_id": "C3",
+                "friendship_gauge": 1350
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 105,
+        "browser_flag": 1,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Drifloon",
+        "label": "DRIFLOON",
+        "browser_id": 142,
+        "national_id": 425,
+        "forms": {
+            "196": {
+                "hex_form_id": "C4",
+                "friendship_gauge": 500
+            }
+        },
+        "field_move": {
+            "category": 16,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "browser_offset": 105,
+        "browser_flag": 3,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Drifblim",
+        "label": "DRIFBLIM",
+        "browser_id": 143,
+        "national_id": 426,
+        "forms": {
+            "197": {
+                "hex_form_id": "C5",
+                "friendship_gauge": 800
+            },
+            "267": {
+                "hex_form_id": "10B",
+                "friendship_gauge": 10000
+            }
+        },
+        "field_move": {
+            "category": 17,
+            "level": 1
+        },
+        "poke_assist": 14,
+        "browser_offset": 105,
+        "browser_flag": 5,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Buneary",
+        "label": "BUNEARY",
+        "browser_id": 20,
+        "national_id": 427,
+        "forms": {
+            "198": {
+                "hex_form_id": "C6",
+                "friendship_gauge": 71
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 105,
+        "browser_flag": 7,
+        "browser_rank_offset": 105,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Lopunny",
+        "label": "LOPUNNY",
+        "browser_id": 21,
+        "national_id": 428,
+        "forms": {
+            "199": {
+                "hex_form_id": "C7",
+                "friendship_gauge": 1716
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 106,
+        "browser_flag": 1,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Mismagius",
+        "label": "MISMAGIUS",
+        "browser_id": 221,
+        "national_id": 429,
+        "forms": {
+            "200": {
+                "hex_form_id": "C8",
+                "friendship_gauge": 3220
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "browser_offset": 106,
+        "browser_flag": 3,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Honchkrow",
+        "label": "HONCHKROW",
+        "browser_id": 186,
+        "national_id": 430,
+        "forms": {
+            "201": {
+                "hex_form_id": "C9",
+                "friendship_gauge": 3000
+            },
+            "262": {
+                "hex_form_id": "106",
+                "friendship_gauge": 8500
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 16,
+        "browser_offset": 106,
+        "browser_flag": 5,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Glameow",
+        "label": "GLAMEOW",
+        "browser_id": 39,
+        "national_id": 431,
+        "forms": {
+            "202": {
+                "hex_form_id": "CA",
+                "friendship_gauge": 112
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 106,
+        "browser_flag": 7,
+        "browser_rank_offset": 106,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Purugly",
+        "label": "PURUGLY",
+        "browser_id": 40,
+        "national_id": 432,
+        "forms": {
+            "203": {
+                "hex_form_id": "CB",
+                "friendship_gauge": 2300
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 3,
+        "browser_offset": 107,
+        "browser_flag": 1,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Chingling",
+        "label": "CHINGLING",
+        "browser_id": 205,
+        "national_id": 433,
+        "forms": {
+            "204": {
+                "hex_form_id": "CC",
+                "friendship_gauge": 2100
+            }
+        },
+        "field_move": {
+            "category": 12,
+            "level": 1
+        },
+        "poke_assist": 15,
+        "browser_offset": 107,
+        "browser_flag": 3,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Stunky",
+        "label": "STUNKY",
+        "browser_id": 144,
+        "national_id": 434,
+        "forms": {
+            "205": {
+                "hex_form_id": "CD",
+                "friendship_gauge": 648
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 13,
+        "browser_offset": 107,
+        "browser_flag": 5,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Skuntank",
+        "label": "SKUNTANK",
+        "browser_id": 145,
+        "national_id": 435,
+        "forms": {
+            "206": {
+                "hex_form_id": "CE",
+                "friendship_gauge": 3380
+            }
+        },
+        "field_move": {
+            "category": 18,
+            "level": 1
+        },
+        "poke_assist": 13,
+        "browser_offset": 107,
+        "browser_flag": 7,
+        "browser_rank_offset": 107,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Bronzor",
+        "label": "BRONZOR",
+        "browser_id": 248,
+        "national_id": 436,
+        "forms": {
+            "207": {
+                "hex_form_id": "CF",
+                "friendship_gauge": 2990
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 12,
+        "browser_offset": 108,
+        "browser_flag": 1,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Bronzong",
+        "label": "BRONZONG",
+        "browser_id": 249,
+        "national_id": 437,
+        "forms": {
+            "208": {
+                "hex_form_id": "D0",
+                "friendship_gauge": 3900
+            },
+            "264": {
+                "hex_form_id": "108",
+                "friendship_gauge": 3900
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 12,
+        "browser_offset": 108,
+        "browser_flag": 3,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Bonsly",
+        "label": "BONSLY",
+        "browser_id": 30,
+        "national_id": 438,
+        "forms": {
+            "209": {
+                "hex_form_id": "D1",
+                "friendship_gauge": 84
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 6,
+        "browser_offset": 108,
+        "browser_flag": 5,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Mime Jr.",
+        "label": "MIME JR.",
+        "browser_id": 164,
+        "national_id": 439,
+        "forms": {
+            "210": {
+                "hex_form_id": "D2",
+                "friendship_gauge": 1204
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 15,
+        "browser_offset": 108,
+        "browser_flag": 7,
+        "browser_rank_offset": 108,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Happiny",
+        "label": "HAPPINY",
+        "browser_id": 22,
+        "national_id": 440,
+        "forms": {
+            "211": {
+                "hex_form_id": "D3",
+                "friendship_gauge": 100
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 3,
+        "browser_offset": 109,
+        "browser_flag": 1,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Chatot",
+        "label": "CHATOT",
+        "browser_id": 69,
+        "national_id": 441,
+        "forms": {
+            "212": {
+                "hex_form_id": "D4",
+                "friendship_gauge": 210
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 1
+        },
+        "poke_assist": 2,
+        "browser_offset": 109,
+        "browser_flag": 3,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gible",
+        "label": "GIBLE",
+        "browser_id": 251,
+        "national_id": 443,
+        "forms": {
+            "213": {
+                "hex_form_id": "D5",
+                "friendship_gauge": 3000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 18,
+        "browser_offset": 109,
+        "browser_flag": 7,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Gabite",
+        "label": "GABITE",
+        "browser_id": 252,
+        "national_id": 444,
+        "forms": {
+            "214": {
+                "hex_form_id": "D6",
+                "friendship_gauge": 2600
+            },
+            "266": {
+                "hex_form_id": "10A",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 18,
+        "browser_offset": 110,
+        "browser_flag": 1,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Munchlax",
+        "label": "MUNCHLAX",
+        "browser_id": 27,
+        "national_id": 446,
+        "forms": {
+            "215": {
+                "hex_form_id": "D7",
+                "friendship_gauge": 180
+            },
+            "259": {
+                "hex_form_id": "103",
+                "friendship_gauge": 5000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 3,
+        "browser_offset": 110,
+        "browser_flag": 5,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Riolu",
+        "label": "RIOLU",
+        "browser_id": 222,
+        "national_id": 447,
+        "forms": {
+            "216": {
+                "hex_form_id": "D8",
+                "friendship_gauge": 1750
+            },
+            "240": {
+                "hex_form_id": "F0",
+                "friendship_gauge": 1750
+            },
+            "299": {
+                "hex_form_id": "12B",
+                "friendship_gauge": 1750
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 10,
+        "browser_offset": 110,
+        "browser_flag": 7,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Hippopotas",
+        "label": "HIPPOPOTAS",
+        "browser_id": 246,
+        "national_id": 449,
+        "forms": {
+            "217": {
+                "hex_form_id": "D9",
+                "friendship_gauge": 3200
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 11,
+        "browser_offset": 111,
+        "browser_flag": 3,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Hippowdon",
+        "label": "HIPPOWDON",
+        "browser_id": 247,
+        "national_id": 450,
+        "forms": {
+            "218": {
+                "hex_form_id": "DA",
+                "friendship_gauge": 9000
+            }
+        },
+        "field_move": {
+            "category": 19,
+            "level": 1
+        },
+        "poke_assist": 11,
+        "browser_offset": 111,
+        "browser_flag": 5,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Skorupi",
+        "label": "SKORUPI",
+        "browser_id": 173,
+        "national_id": 451,
+        "forms": {
+            "219": {
+                "hex_form_id": "DB",
+                "friendship_gauge": 2875
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 13,
+        "browser_offset": 111,
+        "browser_flag": 7,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Croagunk",
+        "label": "CROAGUNK",
+        "browser_id": 80,
+        "national_id": 453,
+        "forms": {
+            "220": {
+                "hex_form_id": "DC",
+                "friendship_gauge": 640
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 13,
+        "browser_offset": 112,
+        "browser_flag": 3,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Toxicroak",
+        "label": "TOXICROAK",
+        "browser_id": 81,
+        "national_id": 454,
+        "forms": {
+            "221": {
+                "hex_form_id": "DD",
+                "friendship_gauge": 1440
+            },
+            "243": {
+                "hex_form_id": "F3",
+                "friendship_gauge": 24000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 13,
+        "browser_offset": 112,
+        "browser_flag": 5,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Carnivine",
+        "label": "CARNIVINE",
+        "browser_id": 136,
+        "national_id": 455,
+        "forms": {
+            "222": {
+                "hex_form_id": "DE",
+                "friendship_gauge": 680
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 112,
+        "browser_flag": 7,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Finneon",
+        "label": "FINNEON",
+        "browser_id": 86,
+        "national_id": 456,
+        "forms": {
+            "223": {
+                "hex_form_id": "DF",
+                "friendship_gauge": 240
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 113,
+        "browser_flag": 1,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Lumineon",
+        "label": "LUMINEON",
+        "browser_id": 87,
+        "national_id": 457,
+        "forms": {
+            "224": {
+                "hex_form_id": "E0",
+                "friendship_gauge": 910
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 113,
+        "browser_flag": 3,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Mantyke",
+        "label": "MANTYKE",
+        "browser_id": 90,
+        "national_id": 458,
+        "forms": {
+            "225": {
+                "hex_form_id": "E1",
+                "friendship_gauge": 312
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 1
+        },
+        "poke_assist": 5,
+        "browser_offset": 113,
+        "browser_flag": 5,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Snover",
+        "label": "SNOVER",
+        "browser_id": 211,
+        "national_id": 459,
+        "forms": {
+            "226": {
+                "hex_form_id": "E2",
+                "friendship_gauge": 2460
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 17,
+        "browser_offset": 113,
+        "browser_flag": 7,
+        "browser_rank_offset": 113,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Abomasnow",
+        "label": "ABOMASNOW",
+        "browser_id": 212,
+        "national_id": 460,
+        "forms": {
+            "227": {
+                "hex_form_id": "E3",
+                "friendship_gauge": 3960
+            },
+            "269": {
+                "hex_form_id": "10D",
+                "friendship_gauge": 14000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "browser_offset": 114,
+        "browser_flag": 1,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Weavile",
+        "label": "WEAVILE",
+        "browser_id": 245,
+        "national_id": 461,
+        "forms": {
+            "228": {
+                "hex_form_id": "E4",
+                "friendship_gauge": 9000
+            },
+            "256": {
+                "hex_form_id": "100",
+                "friendship_gauge": 12000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 4
+        },
+        "poke_assist": 16,
+        "browser_offset": 114,
+        "browser_flag": 3,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Lickilicky",
+        "label": "LICKILICKY",
+        "browser_id": 175,
+        "national_id": 463,
+        "forms": {
+            "229": {
+                "hex_form_id": "E5",
+                "friendship_gauge": 1720
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 3,
+        "browser_offset": 114,
+        "browser_flag": 7,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Tangrowth",
+        "label": "TANGROWTH",
+        "browser_id": 36,
+        "national_id": 465,
+        "forms": {
+            "230": {
+                "hex_form_id": "E6",
+                "friendship_gauge": 350
+            },
+            "280": {
+                "hex_form_id": "118",
+                "friendship_gauge": 20000
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 1,
+        "browser_offset": 115,
+        "browser_flag": 3,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Togekiss",
+        "label": "TOGEKISS",
+        "browser_id": 261,
+        "national_id": 468,
+        "forms": {
+            "231": {
+                "hex_form_id": "E7",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 3,
+        "browser_offset": 116,
+        "browser_flag": 1,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Leafeon",
+        "label": "LEAFEON",
+        "browser_id": 103,
+        "national_id": 470,
+        "forms": {
+            "232": {
+                "hex_form_id": "E8",
+                "friendship_gauge": 8500
+            },
+            "287": {
+                "hex_form_id": "11F",
+                "friendship_gauge": 18000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 3
+        },
+        "poke_assist": 1,
+        "browser_offset": 116,
+        "browser_flag": 5,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Glaceon",
+        "label": "GLACEON",
+        "browser_id": 104,
+        "national_id": 471,
+        "forms": {
+            "233": {
+                "hex_form_id": "E9",
+                "friendship_gauge": 7900
+            },
+            "288": {
+                "hex_form_id": "120",
+                "friendship_gauge": 18000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 17,
+        "browser_offset": 116,
+        "browser_flag": 7,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Porygon-Z",
+        "label": "PORYGON-Z",
+        "browser_id": 262,
+        "national_id": 474,
+        "forms": {
+            "234": {
+                "hex_form_id": "EA",
+                "friendship_gauge": 8200
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 3,
+        "browser_offset": 117,
+        "browser_flag": 5,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Probopass",
+        "label": "PROBOPASS",
+        "browser_id": 45,
+        "national_id": 476,
+        "forms": {
+            "235": {
+                "hex_form_id": "EB",
+                "friendship_gauge": 5500
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 6,
+        "browser_offset": 118,
+        "browser_flag": 1,
+        "browser_rank_offset": 118,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Sharpedo",
+        "label": "SHARPEDO",
+        "browser_id": 96,
+        "national_id": 319,
+        "forms": {
+            "237": {
+                "hex_form_id": "ED",
+                "friendship_gauge": 910
+            },
+            "406": {
+                "hex_form_id": "196",
+                "friendship_gauge": 910
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 5,
+        "browser_offset": 78,
+        "browser_flag": 7,
+        "browser_rank_offset": 78,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Wailmer",
+        "label": "WAILMER",
+        "browser_id": 237,
+        "national_id": 320,
+        "forms": {
+            "238": {
+                "hex_form_id": "EE",
+                "friendship_gauge": 8000
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 2
+        },
+        "poke_assist": 5,
+        "browser_offset": 79,
+        "browser_flag": 1,
+        "browser_rank_offset": 79,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Lucario",
+        "label": "LUCARIO",
+        "browser_id": 223,
+        "national_id": 448,
+        "forms": {
+            "241": {
+                "hex_form_id": "F1",
+                "friendship_gauge": 9000
+            },
+            "245": {
+                "hex_form_id": "F5",
+                "friendship_gauge": 9000
+            },
+            "412": {
+                "hex_form_id": "19C",
+                "friendship_gauge": 32000
+            },
+            "429": {
+                "hex_form_id": "1AD",
+                "friendship_gauge": 32000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 10,
+        "browser_offset": 111,
+        "browser_flag": 1,
+        "browser_rank_offset": 111,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Wailord",
+        "label": "WAILORD",
+        "browser_id": 238,
+        "national_id": 321,
+        "forms": {
+            "242": {
+                "hex_form_id": "F2",
+                "friendship_gauge": 100
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 5,
+        "browser_offset": 79,
+        "browser_flag": 3,
+        "browser_rank_offset": null,
+        "browser_rank_flag": null
+    },
+    {
+        "name": "Spiritomb",
+        "label": "SPIRITOMB",
+        "browser_id": 196,
+        "national_id": 442,
+        "forms": {
+            "244": {
+                "hex_form_id": "F4",
+                "friendship_gauge": 8700
+            },
+            "410": {
+                "hex_form_id": "19A",
+                "friendship_gauge": 30000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 14,
+        "browser_offset": 109,
+        "browser_flag": 5,
+        "browser_rank_offset": 109,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Heatran",
+        "label": "HEATRAN",
+        "browser_id": 228,
+        "national_id": 485,
+        "forms": {
+            "246": {
+                "hex_form_id": "F6",
+                "friendship_gauge": 12800
+            },
+            "424": {
+                "hex_form_id": "1A8",
+                "friendship_gauge": 34000
+            },
+            "430": {
+                "hex_form_id": "1AE",
+                "friendship_gauge": 34000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 9,
+        "browser_offset": 120,
+        "browser_flag": 3,
+        "browser_rank_offset": 120,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Cresselia",
+        "label": "CRESSELIA",
+        "browser_id": 254,
+        "national_id": 488,
+        "forms": {
+            "247": {
+                "hex_form_id": "F7",
+                "friendship_gauge": 19600
+            },
+            "426": {
+                "hex_form_id": "1AA",
+                "friendship_gauge": 36000
+            },
+            "431": {
+                "hex_form_id": "1AF",
+                "friendship_gauge": 36000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 15,
+        "browser_offset": 121,
+        "browser_flag": 1,
+        "browser_rank_offset": 121,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Yanmega",
+        "label": "YANMEGA",
+        "browser_id": 119,
+        "national_id": 469,
+        "forms": {
+            "248": {
+                "hex_form_id": "F8",
+                "friendship_gauge": 4500
+            },
+            "418": {
+                "hex_form_id": "1A2",
+                "friendship_gauge": 16000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 8,
+        "browser_offset": 116,
+        "browser_flag": 3,
+        "browser_rank_offset": 116,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Gliscor",
+        "label": "GLISCOR",
+        "browser_id": 129,
+        "national_id": 472,
+        "forms": {
+            "249": {
+                "hex_form_id": "F9",
+                "friendship_gauge": 16100
+            },
+            "419": {
+                "hex_form_id": "1A3",
+                "friendship_gauge": 16000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 2,
+        "browser_offset": 117,
+        "browser_flag": 1,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Mamoswine",
+        "label": "MAMOSWINE",
+        "browser_id": 202,
+        "national_id": 473,
+        "forms": {
+            "250": {
+                "hex_form_id": "FA",
+                "friendship_gauge": 9000
+            },
+            "420": {
+                "hex_form_id": "1A4",
+                "friendship_gauge": 20000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 11,
+        "browser_offset": 117,
+        "browser_flag": 3,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Rhyperior",
+        "label": "RHYPERIOR",
+        "browser_id": 151,
+        "national_id": 464,
+        "forms": {
+            "251": {
+                "hex_form_id": "FB",
+                "friendship_gauge": 17000
+            },
+            "415": {
+                "hex_form_id": "19F",
+                "friendship_gauge": 6500
+            },
+            "439": {
+                "hex_form_id": "1B7",
+                "friendship_gauge": 20000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 11,
+        "browser_offset": 115,
+        "browser_flag": 1,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Flygon",
+        "label": "FLYGON",
+        "browser_id": 259,
+        "national_id": 330,
+        "forms": {
+            "252": {
+                "hex_form_id": "FC",
+                "friendship_gauge": 14000
+            },
+            "407": {
+                "hex_form_id": "197",
+                "friendship_gauge": 30000
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 4
+        },
+        "poke_assist": 18,
+        "browser_offset": 81,
+        "browser_flag": 5,
+        "browser_rank_offset": 81,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Salamence",
+        "label": "SALAMENCE",
+        "browser_id": 227,
+        "national_id": 373,
+        "forms": {
+            "253": {
+                "hex_form_id": "FD",
+                "friendship_gauge": 16500
+            },
+            "408": {
+                "hex_form_id": "198",
+                "friendship_gauge": 35000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 18,
+        "browser_offset": 92,
+        "browser_flag": 3,
+        "browser_rank_offset": 92,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Charizard",
+        "label": "CHARIZARD",
+        "browser_id": 139,
+        "national_id": 6,
+        "forms": {
+            "254": {
+                "hex_form_id": "FE",
+                "friendship_gauge": 15000
+            },
+            "401": {
+                "hex_form_id": "191",
+                "friendship_gauge": 40000
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 4
+        },
+        "poke_assist": 9,
+        "browser_offset": 0,
+        "browser_flag": 5,
+        "browser_rank_offset": 0,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Drapion",
+        "label": "DRAPION",
+        "browser_id": 174,
+        "national_id": 452,
+        "forms": {
+            "255": {
+                "hex_form_id": "FF",
+                "friendship_gauge": 7800
+            },
+            "413": {
+                "hex_form_id": "19D",
+                "friendship_gauge": 22000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 13,
+        "browser_offset": 112,
+        "browser_flag": 1,
+        "browser_rank_offset": 112,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Garchomp",
+        "label": "GARCHOMP",
+        "browser_id": 253,
+        "national_id": 445,
+        "forms": {
+            "293": {
+                "hex_form_id": "125",
+                "friendship_gauge": 10000
+            },
+            "411": {
+                "hex_form_id": "19B",
+                "friendship_gauge": 13000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 5
+        },
+        "poke_assist": 18,
+        "browser_offset": 110,
+        "browser_flag": 3,
+        "browser_rank_offset": 110,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magmortar",
+        "label": "MAGMORTAR",
+        "browser_id": 75,
+        "national_id": 467,
+        "forms": {
+            "294": {
+                "hex_form_id": "126",
+                "friendship_gauge": 15300
+            },
+            "417": {
+                "hex_form_id": "1A1",
+                "friendship_gauge": 6200
+            },
+            "440": {
+                "hex_form_id": "1B8",
+                "friendship_gauge": 24000
+            }
+        },
+        "field_move": {
+            "category": 7,
+            "level": 5
+        },
+        "poke_assist": 9,
+        "browser_offset": 115,
+        "browser_flag": 7,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Electivire",
+        "label": "ELECTIVIRE",
+        "browser_id": 72,
+        "national_id": 466,
+        "forms": {
+            "295": {
+                "hex_form_id": "127",
+                "friendship_gauge": 13050
+            },
+            "416": {
+                "hex_form_id": "1A0",
+                "friendship_gauge": 25000
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "browser_offset": 115,
+        "browser_flag": 5,
+        "browser_rank_offset": 115,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Aerodactyl",
+        "label": "AERODACTYL",
+        "browser_id": 258,
+        "national_id": 142,
+        "forms": {
+            "402": {
+                "hex_form_id": "192",
+                "friendship_gauge": 10000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 2,
+        "browser_offset": 34,
+        "browser_flag": 5,
+        "browser_rank_offset": 34,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Dragonair",
+        "label": "DRAGONAIR",
+        "browser_id": 219,
+        "national_id": 148,
+        "forms": {
+            "403": {
+                "hex_form_id": "193",
+                "friendship_gauge": 6250
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 3
+        },
+        "poke_assist": 18,
+        "browser_offset": 36,
+        "browser_flag": 1,
+        "browser_rank_offset": 36,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Kingdra",
+        "label": "KINGDRA",
+        "browser_id": 231,
+        "national_id": 230,
+        "forms": {
+            "404": {
+                "hex_form_id": "194",
+                "friendship_gauge": 10000
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 18,
+        "browser_offset": 56,
+        "browser_flag": 5,
+        "browser_rank_offset": 56,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Celebi",
+        "label": "CELEBI",
+        "browser_id": 263,
+        "national_id": 251,
+        "forms": {
+            "405": {
+                "hex_form_id": "195",
+                "friendship_gauge": 12000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 1,
+        "browser_offset": 61,
+        "browser_flag": 7,
+        "browser_rank_offset": 61,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Rampardos",
+        "label": "RAMPARDOS",
+        "browser_id": 85,
+        "national_id": 409,
+        "forms": {
+            "409": {
+                "hex_form_id": "199",
+                "friendship_gauge": 3200
+            }
+        },
+        "field_move": {
+            "category": 4,
+            "level": 5
+        },
+        "poke_assist": 6,
+        "browser_offset": 101,
+        "browser_flag": 3,
+        "browser_rank_offset": 101,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Magnezone",
+        "label": "MAGNEZONE",
+        "browser_id": 64,
+        "national_id": 462,
+        "forms": {
+            "414": {
+                "hex_form_id": "19E",
+                "friendship_gauge": 14000
+            }
+        },
+        "field_move": {
+            "category": 5,
+            "level": 3
+        },
+        "poke_assist": 7,
+        "browser_offset": 114,
+        "browser_flag": 5,
+        "browser_rank_offset": 114,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Gallade",
+        "label": "GALLADE",
+        "browser_id": 160,
+        "national_id": 475,
+        "forms": {
+            "421": {
+                "hex_form_id": "1A5",
+                "friendship_gauge": 11900
+            },
+            "438": {
+                "hex_form_id": "1B6",
+                "friendship_gauge": 5800
+            }
+        },
+        "field_move": {
+            "category": 1,
+            "level": 5
+        },
+        "poke_assist": 10,
+        "browser_offset": 117,
+        "browser_flag": 7,
+        "browser_rank_offset": 117,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dusknoir",
+        "label": "DUSKNOIR",
+        "browser_id": 192,
+        "national_id": 477,
+        "forms": {
+            "422": {
+                "hex_form_id": "1A6",
+                "friendship_gauge": 18000
+            }
+        },
+        "field_move": {
+            "category": 3,
+            "level": 3
+        },
+        "poke_assist": 14,
+        "browser_offset": 118,
+        "browser_flag": 3,
+        "browser_rank_offset": 118,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Froslass",
+        "label": "FROSLASS",
+        "browser_id": 215,
+        "national_id": 478,
+        "forms": {
+            "423": {
+                "hex_form_id": "1A7",
+                "friendship_gauge": 7500
+            }
+        },
+        "field_move": {
+            "category": 2,
+            "level": 4
+        },
+        "poke_assist": 17,
+        "browser_offset": 118,
+        "browser_flag": 5,
+        "browser_rank_offset": 118,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Regigigas",
+        "label": "REGIGIGAS",
+        "browser_id": 267,
+        "national_id": 486,
+        "forms": {
+            "425": {
+                "hex_form_id": "1A9",
+                "friendship_gauge": 36000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 3,
+        "browser_offset": 120,
+        "browser_flag": 5,
+        "browser_rank_offset": 120,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Darkrai",
+        "label": "DARKRAI",
+        "browser_id": 257,
+        "national_id": 491,
+        "forms": {
+            "427": {
+                "hex_form_id": "1AB",
+                "friendship_gauge": 24000
+            },
+            "428": {
+                "hex_form_id": "1AC",
+                "friendship_gauge": 24000
+            }
+        },
+        "field_move": {
+            "category": 24,
+            "level": 1
+        },
+        "poke_assist": 16,
+        "browser_offset": 121,
+        "browser_flag": 7,
+        "browser_rank_offset": 121,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Regirock",
+        "label": "REGIROCK",
+        "browser_id": 264,
+        "national_id": 377,
+        "forms": {
+            "432": {
+                "hex_form_id": "1B0",
+                "friendship_gauge": 25000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 6,
+        "browser_offset": 93,
+        "browser_flag": 3,
+        "browser_rank_offset": 93,
+        "browser_rank_flag": 2
+    },
+    {
+        "name": "Regice",
+        "label": "REGICE",
+        "browser_id": 265,
+        "national_id": 378,
+        "forms": {
+            "433": {
+                "hex_form_id": "1B1",
+                "friendship_gauge": 25000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 17,
+        "browser_offset": 93,
+        "browser_flag": 5,
+        "browser_rank_offset": 93,
+        "browser_rank_flag": 4
+    },
+    {
+        "name": "Registeel",
+        "label": "REGISTEEL",
+        "browser_id": 266,
+        "national_id": 379,
+        "forms": {
+            "434": {
+                "hex_form_id": "1B2",
+                "friendship_gauge": 25000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 12,
+        "browser_offset": 93,
+        "browser_flag": 7,
+        "browser_rank_offset": 93,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Dialga",
+        "label": "DIALGA",
+        "browser_id": 435,
+        "national_id": 483,
+        "forms": {
+            "435": {
+                "hex_form_id": "1B3",
+                "friendship_gauge": 36000
+            },
+            "441": {
+                "hex_form_id": "1B9",
+                "friendship_gauge": 36000
+            },
+            "442": {
+                "hex_form_id": "1BA",
+                "friendship_gauge": 36000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 18,
+        "browser_offset": 119,
+        "browser_flag": 7,
+        "browser_rank_offset": 119,
+        "browser_rank_flag": 6
+    },
+    {
+        "name": "Palkia",
+        "label": "PALKIA",
+        "browser_id": 436,
+        "national_id": 484,
+        "forms": {
+            "436": {
+                "hex_form_id": "1B4",
+                "friendship_gauge": 36000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 18,
+        "browser_offset": 120,
+        "browser_flag": 1,
+        "browser_rank_offset": 120,
+        "browser_rank_flag": 0
+    },
+    {
+        "name": "Shaymin",
+        "label": "SHAYMIN",
+        "browser_id": 437,
+        "national_id": 492,
+        "forms": {
+            "437": {
+                "hex_form_id": "1B5",
+                "friendship_gauge": 36000
+            }
+        },
+        "field_move": {
+            "category": 0,
+            "level": 0
+        },
+        "poke_assist": 1,
+        "browser_offset": 122,
+        "browser_flag": 1,
+        "browser_rank_offset": 122,
+        "browser_rank_flag": 0
+    }
+]
