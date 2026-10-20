@@ -210,39 +210,74 @@ def create_pokemon_locations(
         if i not in world.blacklisted_captures
     ]
 
-    normal_include = [
+    normal_include = []
+
+    normal_include += [
         17,
         4,
         14,
         13,
         22,
-        59,  # combee quest
-        [97, 69],  # eevee quest
-        114,  # oddish quest
-        109,  # ambipom
-        44,  # nosepass
-        142,  # drifloon
-        142,  # drifloon numba 2!
-        48,  # cherrim
-        152,  # muk quest
-        [143, 197],  # drifblim
-        194,  # sandshrew tunnel
-        145,  # skuntank stink
-        160,  # gallade for registeel
-        185,  # murkrow for quest
-        185,  # murkrow numba 2
-        # todo figure out to add floatzel and empoleon, or if those stay at their set spots
-        56,  # floatzel
-        [208, 169],  # empoleon
-        253,  # garchomp for regirock
-        75,  # magmortar for regice
-        [222, 216],  # riolu
-        [222, 216],  # riolu
-        205,  # chingling quest
-        [212, 227],  # abomasnow quest
-        224,  # torkoal
-        [240, 144],  # cacturne quest
     ]
+
+    mission_goal = world.get_rule_num()
+    if mission_goal >= 4:
+        normal_include += [
+            59,  # combee quest
+        ]
+    if mission_goal >= 6:
+        normal_include += [
+            [97, 69],  # eevee quest q8
+        ]
+    if mission_goal >= 7:
+        normal_include += [
+            114,  # oddish quest q9
+            109,  # ambipom q7
+            44,  # nosepass q6
+        ]
+    if mission_goal >= 8:
+        normal_include += [
+            142,  # drifloon
+            142,  # drifloon numba 2!
+        ]
+    if mission_goal >= 9:
+        normal_include += [
+            48,  # cherrim
+            152,  # muk quest
+            [143, 197],  # drifblim for going up and specific type for quest
+            194,  # sandshrew tunnel (could be tossup with sandslash
+            145,  # skuntank stink
+            160,  # gallade for registeel
+        ]
+    if mission_goal >= 10:
+        normal_include += [
+            185,  # murkrow for quest q15
+            185,  # murkrow numba 2 q15
+            56,  # floatzel
+            [208, 169],  # empoleon
+            253,  # garchomp for regirock
+            75,  # magmortar for regice
+            [222, 216],  # riolu
+            [222, 216],  # riolu
+        ]
+    if mission_goal >= 11:
+        normal_include += [
+            205,  # chingling quest q17
+            [212, 227],  # abomasnow quest q18
+            224,  # torkoal
+        ]
+    if mission_goal >= 12:
+        pass
+        #  3 driflibm already exist
+    if mission_goal >= 14:
+        normal_include += [
+            [240, 144],  # cacturne quest q25
+        ]
+    if mission_goal >= 15:
+        if 145 not in normal_include:  # skuntank for q26
+            normal_include += [145]
+        normal_include += [188]  # weezing quest q26
+
     crush_3 = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.CRUSH, level=3), 5000
     )
@@ -295,6 +330,7 @@ def create_pokemon_locations(
         available_pool, k=capture_ocean_mons - len(ocean_captures)
     )
 
+    world.random.shuffle(captures)
     for i in captures:
         if isinstance(i, list):
             i, form = i
@@ -316,6 +352,7 @@ def create_pokemon_locations(
         world.capture_groups.capture.append(new_item)
         world.capture_groups.default_ids_used.add(i)
 
+    world.random.shuffle(ocean_captures)
     for i in ocean_captures:
         mon = data.species[i]
         choices = list(mon.forms.keys())

@@ -267,27 +267,28 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     world.set_rule(get_connection(world, "m001_002", "m001_014"), False_())
 
     """School first night"""
-    has_crate_field_move = has_field_move_item(
-        world, data.target_field_move_requirements[27]
-    )
-    has_gate_field_move = has_field_move_item(
-        world, data.target_field_move_requirements[37]
-    )
-
-    world.set_rule(
-        get_pokemon_instance(world, "m001_004", 0),
-        has_crate_field_move,  # crate
-    )
-
-    for i in [0, 1, 2, 3]:
-        world.set_rule(
-            get_pokemon_instance(world, "m001_007", i),
-            has_crate_field_move,  # crate
-        )
-
+    # has_crate_field_move = has_field_move_item(
+    #     world, data.target_field_move_requirements[27]
+    # )
+    # has_gate_field_move = has_field_move_item(
+    #     world, data.target_field_move_requirements[37]
+    # )
+    #
+    # world.set_rule(
+    #     get_pokemon_instance(world, "m001_004", 0),
+    #     has_crate_field_move,  # crate
+    # )
+    #
+    # for i in [0, 1, 2, 3]:
+    #     world.set_rule(
+    #         get_pokemon_instance(world, "m001_007", i),
+    #         has_crate_field_move,  # crate
+    #     )
+    #
     world.set_rule(
         get_location(world, PREvent.SCHOOL_COLLECT_STYLERS.event_name),
-        has_crate_field_move,  # crate
+        # has_crate_field_move,  # crate
+        True_(),
     )
 
     # basement access
@@ -298,18 +299,15 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         )
     world.set_rule(
         get_location(world, PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
-        has_crate_field_move & has_gate_field_move,  # crate
+        # has_crate_field_move & has_gate_field_move,  # crate
+        True_(),
     )
 
-    world.set_rule(
-        get_pokemon_instance(world, "m001_011", 4),
-        has_crate_field_move,  # crate
-    )
-    for i in [0, 1, 2, 3]:
-        world.set_rule(
-            get_pokemon_instance(world, "m001_011", i),
-            Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
-        )
+    # for i in [0, 1, 2, 3]:
+    #     world.set_rule(
+    #         get_pokemon_instance(world, "m001_011", i),
+    #         Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
+    #     )
 
     # world.set_rule(
     #     get_pokemon_instance(world, "m001_011", 5), False_()

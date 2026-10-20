@@ -192,7 +192,7 @@
     "category": "quest"
   },
   "QUEST_08": {
-    "label": "Quest 08: Eeve for Marital Bliss",
+    "label": "Quest 08: Eevee for Marital Bliss",
     "parent_region": "m010_001",
     "default_item": "Progressive Steel Defense",
     "addresses": "0x020B2654",

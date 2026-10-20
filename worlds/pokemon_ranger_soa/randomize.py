@@ -196,30 +196,34 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
 
 def early_place_random_restricted(world: PokemonRSOA) -> None:
     """place special crush 1 and cut 1 in school"""
-    if world.options.field_move_item != FieldMoveItem.option_vanilla:
-        bidoof = 328
-        zubat = 329
-    else:
-        max_health = 100
-        bidoof = form_options_by_criteria(
-            world, FieldMove(category=FieldMoveCategory.CRUSH, level=1), max_health
-        )
-        zubat = form_options_by_criteria(
-            world, FieldMove(category=FieldMoveCategory.CUT, level=1), max_health
-        )
+    # if world.options.field_move_item != FieldMoveItem.option_vanilla:
+    #     bidoof = 328
+    #     zubat = 329
+    # else:
+    #     max_health = 100
+    #     bidoof = world.random.choice(
+    #         form_options_by_criteria(
+    #             world, FieldMove(category=FieldMoveCategory.CRUSH, level=1), max_health
+    #         )
+    #     )
+    #     zubat = world.random.choice(
+    #         form_options_by_criteria(
+    #             world, FieldMove(category=FieldMoveCategory.CUT, level=1), max_health
+    #         )
+    #     )
 
-    options = {
-        "m001_004": [1],
-        "m001_006": [0],
-        "m001_008": [0, 1, 2, 3, 4],
-    }
-    out = apply_place_on_random(world, options, bidoof)
-    options[out[0]].remove(out[1])
-    options["m001_004"] += [0]
-    options |= {
-        "m001_007": [0, 1, 2, 3],
-    }
-    apply_place_on_random(world, options, zubat)
+    # options = {
+    #     "m001_004": [1],
+    #     "m001_006": [0],
+    #     "m001_008": [0, 1, 2, 3, 4],
+    # }
+    # out = apply_place_on_random(world, options, bidoof)
+    # options[out[0]].remove(out[1])
+    # options["m001_004"] += [0]
+    # options |= {
+    #     "m001_007": [0, 1, 2, 3],
+    # }
+    # apply_place_on_random(world, options, zubat)
 
     """place surf in puel sea"""
     options = {"m011_004": [1, 2, 3]}
@@ -463,6 +467,8 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
             continue
         state_default.collect(loc.item, True)
 
+    print(len(party.items))
+
     fill_restrictive(
         world.multiworld,
         state_default,
@@ -472,6 +478,13 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
         swap=True,
         name="Randomize Pokémon - Default",
     )
+
+    if len(party.items) > 0:
+        for loc, item in zip(
+            party.locations,
+            party.items,
+        ):
+            loc.item = item
 
     party = world.capture_groups.capture_ocean
     if len(party) > 0:
@@ -497,7 +510,6 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
 
     for cap_loc, browser_loc in world.capture_groups.browser_before_capture:
         cap_loc = world.multiworld.get_location(cap_loc.name, world.player)
-
         item_name = cap_loc.item.name.replace("CAN_CAPTURE", "ADD_TO_BROWSER")
         assert "ADD_TO_BROWSER" in item_name
         browser_loc.item = PokemonRSOAItem(

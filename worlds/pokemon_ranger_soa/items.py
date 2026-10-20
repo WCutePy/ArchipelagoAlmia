@@ -81,11 +81,11 @@ def create_all_items(world: PokemonRSOA) -> None:
             new_item = world.create_item(item.label)
             itempool.append(new_item)
 
-    print(f"{sum(1 for a in world.multiworld.get_locations(world.player))=}")
-    print(f"{len(
-        world.multiworld.get_unfilled_locations(world.player)
-    )=}")
-    print(f"{len(world.capture_groups)=}")
+    # print(f"{sum(1 for a in world.multiworld.get_locations(world.player))=}")
+    # print(f"{len(
+    #     world.multiworld.get_unfilled_locations(world.player)
+    # )=}")
+    # print(f"{len(world.capture_groups)=}")
 
     number_of_items = len(itempool)
     number_of_unfilled_locations = len(
@@ -95,14 +95,14 @@ def create_all_items(world: PokemonRSOA) -> None:
     #  Something is wrong with these calculations
     #  And also vanilla vs randomized needs different methods to
     #  do these calculations ;.;
-    print(f"printing: {number_of_unfilled_locations}")
-
-    print(f"{number_of_items=}")
-    print(f"{number_of_unfilled_locations=}")
-    print(f"{len(world.capture_groups)=}")
+    # print(f"printing: {number_of_unfilled_locations}")
+    #
+    # print(f"{number_of_items=}")
+    # print(f"{number_of_unfilled_locations=}")
+    # print(f"{len(world.capture_groups)=}")
 
     needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
-    print(f"{needed_number_of_filler_items=}")
+    # print(f"{needed_number_of_filler_items=}")
 
     # if not world.options.level_up_type.option_vanilla:
     #     items = []
