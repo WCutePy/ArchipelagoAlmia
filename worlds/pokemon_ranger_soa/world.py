@@ -436,9 +436,7 @@ class PokemonRSOA(World):
         return slot_data
 
     def get_rule_num(self) -> int:
-        if self.options.goal == Goal.option_mission_clear:
-            return self.options.mission_clear_target.value
-        raise ValueError("Unsupported yaml goal")
+        return self.options.get_rule_num()
 
     mission_affinities = {
         -1: 150,

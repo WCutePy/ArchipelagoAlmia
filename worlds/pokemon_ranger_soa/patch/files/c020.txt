@@ -1,0 +1,202 @@
+
+ctestscript:
+	PUSH 0		; @8
+	RETURN 1, 0		; @9
+
+c020first:
+	SYSCALL 2, 248, 0		;hide_ui @1118
+	SYSCALL 2, 250, 0		;sc2_unk_0x00fa @1119
+	PUSH 0		; @1136
+	PUSH 0		; @1137
+	SYSCALL 2, 48, 2		;sc2_unk_0x0030 @1138
+	PUSH 0		; @1139
+    SYSCALL 2, 314, 1		;set_top_screen_to_logo
+    PUSH -1		; @834
+	PUSH 0		; @835
+	PUSH 0		; @836
+	PUSH 50		; @837
+	SYSCALL 2, 115, 4		;setplayerspawn @838
+	PUSHSTRING 0		; @335
+	SYSCALL 2, 116, 1		;strcpy2debugbuffer2 @336
+	RETURN 0, 0		; @343
+
+c020second:
+	ALLOC 10;
+	PUSH 0		; @376
+	PUSH 212		; @377
+	PUSH 335		; @378
+	SYSCALL 2, 37, 3		;move_camera @379
+	push32 33759232;
+    SYSCALL 2, 54, 1		;
+	push32 33759236;
+	SETVAR -1;
+	push32 33759237;
+	SETVAR -2;
+    push32 33759242;
+    SETVAR -3;
+    GETVAR -1;
+    SYSCALL 2, 55, 1		;set_object_displayed @1054
+    PUSH 242;
+    PUSH 296;
+    GETVAR -1;
+    SYSCALL 2, 64, 3		;set_object_location @320
+    PUSH 0;
+    GETVAR -1;
+    SYSCALL 2, 48, 2;
+    GETVAR -2;
+    SYSCALL 2, 55, 1		;set_object_displayed @1054
+    PUSH 242;
+    PUSH 380;
+    GETVAR -2;
+    SYSCALL 2, 64, 3		;set_object_location @320
+    push 0;
+    GETVAR -3;
+    SYSCALL 2, 48, 2;
+    GETVAR -3;
+    SYSCALL 2, 55, 1		;set_object_displayed @1054
+    PUSH 266;
+    PUSH 333;
+    GETVAR -3;
+    SYSCALL 2, 64, 3		;set_object_location @320
+
+
+loc_visuals:
+	SYSCALL 2, 251, 0		;sc2_unk_0x00fa @1119
+	PUSH 30		; @1141
+	SYSCALL 2, 108, 1		;screen_fade_in_black @835
+
+loc_a:
+	SYSCALL 2, 111, 0		;sc2_unk_0x006f @1143
+	PUSHRESULT 		; @1144
+	JNZW loc_a		; @1145
+	PUSH 1		; @1153
+	PUSH 0		; @1154
+	PUSH 1		; @1155
+	PUSH 2		; @1156
+	SYSCALL 2, 24, 4		;printmsg @1157
+loc_a2:
+	SYSCALL 2, 25, 0		;waitmsg @1158
+	PUSHRESULT 		; @1159
+	JNZW loc_a2		; @1160
+
+	PUSH 60		; @376
+	PUSH 242		; @377
+	PUSH -30;
+	ADD;
+	PUSH 296		; @378
+	SYSCALL 2, 37, 3		;move_camera @379
+	GETVAR -1;
+	SYSCALL 2, 192, 1		;startglow @321
+loc_a3:
+	SYSCALL 2, 35, 0		;waityesno @4517
+	PUSHRESULT 		; @4518
+	JNZW loc_a3		; @4519
+	SYSCALL 2, 26, 0		;closemsg @4520
+
+    PUSH 9		; @538
+	SYSCALL 2, 252, 1		;sc2_unk_0x00fc @539
+
+	SYSCALL 2, 36, 0		;getyesno @4525
+	PUSHRESULT 		; @4526
+	PUSH 0		; @4527
+	IS_EQ 		; @4528
+	JZ loc_b		; @4529e
+	PUSH 16		; @961
+	SYSCALL 2, 173, 1		;orr_partner_pokemon @962
+    JMP loc_continue;
+loc_b:
+	GETVAR -1;
+	SYSCALL 2, 193, 1		;stopglow @1787
+    PUSH 1		; @1153
+	PUSH 0		; @1154
+	PUSH 2		; @1155
+	PUSH 2		; @1156
+	SYSCALL 2, 24, 4		;printmsg @1157
+	PUSH 60		; @376
+	PUSH 242		; @377
+	PUSH -30;
+	ADD;
+	PUSH 380		; @378
+	SYSCALL 2, 37, 3		;move_camera @379
+	GETVAR -2;
+	SYSCALL 2, 192, 1		;startglow @321
+loc_b2:
+	SYSCALL 2, 25, 0		;waitmsg @1158
+	PUSHRESULT 		; @1159
+	JNZW loc_b2		; @1160
+loc_b3:
+	SYSCALL 2, 35, 0		;waityesno @4517
+	PUSHRESULT 		; @4518
+	JNZW loc_b3		; @4519
+	SYSCALL 2, 26, 0		;closemsg @4520
+
+
+	SYSCALL 2, 36, 0		;getyesno @4525
+	PUSHRESULT 		; @4526
+	PUSH 0		; @4527
+	IS_EQ 		; @4528
+	JZ loc_c		; @
+	PUSH 512		; @961
+	SYSCALL 2, 173, 1		;orr_partner_pokemon @962
+    JMP loc_continue;
+loc_c:
+	GETVAR -2;
+	SYSCALL 2, 193, 1		;stopglow @1787
+    PUSH 1		; @1153
+	PUSH 0		; @1154
+	PUSH 3		; @1155
+	PUSH 2		; @1156
+	SYSCALL 2, 24, 4		;printmsg @1157
+	PUSH 60		; @376
+    PUSH 266;
+    PUSH -30;
+	ADD;
+    PUSH 333;
+	SYSCALL 2, 37, 3		;move_camera @379
+	GETVAR -3;
+	SYSCALL 2, 192, 1		;startglow @321
+loc_c2:
+	SYSCALL 2, 25, 0		;waitmsg @1158
+	PUSHRESULT 		; @1159
+	JNZW loc_c2		; @1160
+loc_c3:
+	SYSCALL 2, 35, 0		;waityesno @4517
+	PUSHRESULT 		; @4518
+	JNZW loc_c3		; @4519
+	SYSCALL 2, 26, 0		;closemsg @4520
+	SYSCALL 2, 36, 0		;getyesno @4525
+	PUSHRESULT 		; @4526
+	PUSH 0		; @4527
+	IS_EQ 		; @4528
+	JZ loc_d		; @4529e
+	PUSH 1		; @961
+	SYSCALL 2, 173, 1		;orr_partner_pokemon @962
+    JMP loc_continue;
+loc_d:
+	GETVAR -3;
+	SYSCALL 2, 193, 1		;stopglow @1787
+    PUSH 1		; @1153
+	PUSH 0		; @1154
+	PUSH 4		; @1155
+	PUSH 2		; @1156
+	SYSCALL 2, 24, 4		;printmsg @1157
+loc_d2:
+	SYSCALL 2, 25, 0		;waitmsg @1158
+	PUSHRESULT 		; @1159
+	JNZW loc_d2		; @1160
+	JMP loc_a ;
+loc_continue:
+	PUSH 21		; @13
+	SYSCALL 2, 129, 1		;sc2_unk_0x0081 @14
+	PUSH 0		; @15
+	RETURN 1, 0		; @16
+
+;Functions:
+.func c020first
+.func ctestscript
+.func c020second
+
+;Symbols:
+
+;Strings:
+.asciiz "c020Second"		;11

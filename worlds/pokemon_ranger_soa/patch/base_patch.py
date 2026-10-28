@@ -127,6 +127,27 @@ def patch(
 
     EDITED_MES = defaultdict(lambda: defaultdict(dict))
 
+    """Skip school"""
+    if "Skip School" in slot_data.get("remove_roadblocks", []):
+        from ._data import c016
+        from ._data import c020
+
+        c006 = bytearray(rom.files[f"/data/Script/chapter/c006.fsb"])
+        struct.pack_into("<I", c006, 4 * 12, 0x00_14_00_10)
+        rom.files[f"/data/Script/chapter/c006.fsb"] = bytes(c006)
+        rom.files[f"/data/Script/chapter/c016.fsb"] = c016
+        rom.files[f"/data/Script/chapter/c020.fsb"] = c020
+
+        mes = message_file_to_json(rom, "chapter", "chapter020_mes_us")
+
+        mes[1] = (
+            "Hi new ranger.[E]Which Pokémon do you fancy?[E]Starly, Pachirichu or Munchlax?[E]Will you choose Pachirichu?[Q]"
+        )
+        mes[2] = "How about Starly?[Q]"
+        mes[3] = "Alright alright, Munchlax![Q]"
+        mes[4] = "Come on now! Let's try this again."
+        json_to_mes(rom, mes, "chapter", "chapter020_mes_us")
+
     """School gate"""
     EVENTRECT_PATCHES |= {
         # school gate top
@@ -793,7 +814,7 @@ def code_patch(
                 0, 18 - len(partners)
             )  # because imagine making this match any length of partners, has to be exactly 18.
         table_bytes = struct.pack(
-            "<18H",
+            f"<{len(partner_ids)}H",
             *partner_ids,
         )
 

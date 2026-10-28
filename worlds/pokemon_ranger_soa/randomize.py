@@ -666,7 +666,7 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
         and world.get_rule_num() >= 16
     ):
         for i in [1, 2, 3, 4]:
-            j = world.random.randint(0, 17)
+            j = world.random.randint(0, 16)
             copy_over_spawn_to_npc(world, "m021_001", j, "m021_001", i)
 
         #    for i in [1, 2, 3, 4]:
@@ -675,13 +675,14 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
         ## not sure about these as these are likely also used for the wall!
 
         for i in [12, 13, 14, 15]:
-            j = world.random.randint(0, 13)
+            j = world.random.randint(0, 12)
             copy_over_spawn_to_npc(world, "m026_001", j, "m026_001", i)
         #  16 is abomasnow and is more npc, so changed with that setting
 
-        for i in [12, 13, 14, 15]:
-            j = world.random.randint(0, 13)
-            copy_over_spawn_to_npc(world, "m026_001", j, "m026_001", i)
+        # am i missing one???
+        # for i in [12, 13, 14, 15]:
+        #     j = world.random.randint(0, 13)
+        #     copy_over_spawn_to_npc(world, "m026_001", j, "m026_001", i)
 
     return
 

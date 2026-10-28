@@ -460,8 +460,7 @@ class MonSelect:
         browser_locations:
         capture_locations:
         """
-
-        return MonSelect(
+        m = MonSelect(
             include={"m001": [], "m003": [], "m007": []},
             exclude={
                 "m001_001": [2],
@@ -480,6 +479,10 @@ class MonSelect:
             ],
             events=[PREvent.SCHOOL_COMPLETE_NIGHT, PREvent.SCHOOL_COLLECT_STYLERS],
         )
+
+        if "Skip School" in cls.world.options.remove_roadblocks.value:
+            m.event_mon = []
+        return m
 
     @classmethod
     def goal_marine_cave(cls) -> MonSelect:

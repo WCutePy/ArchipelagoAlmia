@@ -544,7 +544,12 @@ class RemoveRoadblocks(OptionSet):
     """
     This option allows removing roadblocks in the game
     that are not required to be removed, but may be preferred
-
+    - Skip School
+        Will skip the entire school section.
+        Shaves at least 40 minutes of dialogue and textboxes
+        off your playthrough. Does not change logic, and has school
+        checks stay in logic. You choose your partner upon new game.
+        Randomized reduces the location count by a couple for early goals.
     - Out of logic surf Vien Forest
         In a randomized game, will allow accessing the west
         part of Vien Forest before mission 10 out of logic.
@@ -560,13 +565,17 @@ class RemoveRoadblocks(OptionSet):
     - Protect the Ranger Union HQ!
         This will allow leaving the ranger HQ during
         mission 15 before completing it fully.
+        Makes your life a little easier and prevents
+        you from a soft softlock by being bad.
     - Earlier save spots Altru Building
         This moves the save spot on the outside to the right,
-        allowing saving before fighting Magmortar
+        allowing saving before fighting Magmortar.
+        Only matters when playing with deathlink.
     """
 
     display_name = "Remove Roadblocks"
     valid_keys = [
+        "Skip School",
         "Out of logic surf Vien Forest",
         "Out of logic surf Almia Castle",
         "Protect the Ranger Union HQ!",
@@ -574,6 +583,7 @@ class RemoveRoadblocks(OptionSet):
     ]
 
     default = [
+        "Skip School",
         "Protect the Ranger Union HQ!",
         "Earlier save spots Altru Building",
     ]
@@ -614,8 +624,17 @@ class PokemonRSOAOptions(PerGameCommonOptions):
 
     remove_roadblocks: RemoveRoadblocks
 
+    def get_rule_num(self):
+        if self.goal == Goal.option_mission_clear:
+            return self.mission_clear_target.value
+        raise ValueError("Unsupported yaml goal")
+
     def verify(self, player_name: str):
         errors = []
+        if "Skip School" in self.remove_roadblocks.value and self.get_rule_num() == 0:
+            errors.append(
+                f"Skipping school is not compatible with beating school as goal!"
+            )
 
         if len(self.partners.value) > (18 - len(self.partner_starters.value)):
             errors.append(
