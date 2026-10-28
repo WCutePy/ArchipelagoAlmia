@@ -78,7 +78,6 @@ loc_a2:
 	SYSCALL 2, 25, 0		;waitmsg @1158
 	PUSHRESULT 		; @1159
 	JNZW loc_a2		; @1160
-
 	PUSH 60		; @376
 	PUSH 242		; @377
 	PUSH -30;
@@ -93,9 +92,6 @@ loc_a3:
 	JNZW loc_a3		; @4519
 	SYSCALL 2, 26, 0		;closemsg @4520
 
-    PUSH 9		; @538
-	SYSCALL 2, 252, 1		;sc2_unk_0x00fc @539
-
 	SYSCALL 2, 36, 0		;getyesno @4525
 	PUSHRESULT 		; @4526
 	PUSH 0		; @4527
@@ -103,6 +99,8 @@ loc_a3:
 	JZ loc_b		; @4529e
 	PUSH 16		; @961
 	SYSCALL 2, 173, 1		;orr_partner_pokemon @962
+    PUSH 417		; @4328
+	SYSCALL 2, 20, 1		;set_pokemon_captured @4329
     JMP loc_continue;
 loc_b:
 	GETVAR -1;
@@ -138,6 +136,8 @@ loc_b3:
 	JZ loc_c		; @
 	PUSH 512		; @961
 	SYSCALL 2, 173, 1		;orr_partner_pokemon @962
+	PUSH 396		; @4328
+	SYSCALL 2, 20, 1		;set_pokemon_captured @4329
     JMP loc_continue;
 loc_c:
 	GETVAR -2;
@@ -171,6 +171,8 @@ loc_c3:
 	JZ loc_d		; @4529e
 	PUSH 1		; @961
 	SYSCALL 2, 173, 1		;orr_partner_pokemon @962
+	PUSH 446		; @4328
+	SYSCALL 2, 20, 1		;set_pokemon_captured @4329
     JMP loc_continue;
 loc_d:
 	GETVAR -3;
@@ -187,7 +189,7 @@ loc_d2:
 	JMP loc_a ;
 loc_continue:
 	PUSH 21		; @13
-	SYSCALL 2, 129, 1		;sc2_unk_0x0081 @14
+	; SYSCALL 2, 129, 1		;sc2_unk_0x0081 @14
 	PUSH 0		; @15
 	RETURN 1, 0		; @16
 

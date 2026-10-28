@@ -55,7 +55,7 @@ def patch_script_add_doduo(rom: Rom, file_name: str, locations: list[int]):
         print(f"{offset:08X}: {instruction:08X}")
 
 
-def message_file_to_json(rom, category: str, name: str) -> dict:
+def message_file_to_json(rom, category: str, name: str) -> dict[int, str]:
     """
     Adapted from ra23mes by SombrAbsol
     """
@@ -134,6 +134,7 @@ def patch(
 
         c006 = bytearray(rom.files[f"/data/Script/chapter/c006.fsb"])
         struct.pack_into("<I", c006, 4 * 12, 0x00_14_00_10)
+
         rom.files[f"/data/Script/chapter/c006.fsb"] = bytes(c006)
         rom.files[f"/data/Script/chapter/c016.fsb"] = c016
         rom.files[f"/data/Script/chapter/c020.fsb"] = c020
@@ -141,11 +142,37 @@ def patch(
         mes = message_file_to_json(rom, "chapter", "chapter020_mes_us")
 
         mes[1] = (
-            "Hi new ranger.[E]Which Pokémon do you fancy?[E]Starly, Pachirichu or Munchlax?[E]Will you choose Pachirichu?[Q]"
+            "What is your favourite of the three?[E]Starly, Pachirichu or Munchlax?[E]Will you choose Pachirichu?[Q]"
         )
         mes[2] = "How about Starly?[Q]"
         mes[3] = "Alright alright, Munchlax![Q]"
         mes[4] = "Come on now! Let's try this again."
+
+        partners = prsoa_patch_instance.files.get("partners.txt")
+        if partners:
+            partners = orjson.loads(partners)
+
+            starly, pach, munch, *_ = [data.form_id_to_species[i] for i in partners]
+
+            """TODO verify accuracy whenever you change c020"""
+            CHAPTER_PATCHES["c020"] += [
+                #  PUSH 417                ; @99
+                (99, pach.national_id << 16 | 0x10),
+                #  PUSH 396                ; @131
+                (131, starly.national_id << 16 | 0x10),
+                #  PUSH 446                ; @163
+                (163, munch.national_id << 16 | 0x10),
+            ]
+
+            mes[1] = (
+                mes[1]
+                .replace("Starly", starly.name)
+                .replace("Pachirichu", pach.name)
+                .replace("Munchlax", munch.name)
+            )
+            mes[2] = mes[2].replace("Starly", starly.name)
+            mes[3] = mes[3].replace("Munchlax", munch.name)
+
         json_to_mes(rom, mes, "chapter", "chapter020_mes_us")
 
     """School gate"""
