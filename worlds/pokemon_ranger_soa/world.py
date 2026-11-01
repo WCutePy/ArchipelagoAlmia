@@ -274,8 +274,12 @@ class PokemonRSOA(World):
             self.blacklisted_captures |= set(
                 self.options.blacklist_random_mons.get_blacklist("wild")
             )
-            early_place_random_restricted(self)
-
+            mon_placers = early_place_random_restricted(self)
+            for m_placer in mon_placers:
+                m_placer.finish_unresolved(
+                    max_health=self.mission_affinities[self.get_rule_num()]
+                )
+                del m_placer
         if (
             self.get_rule_num() >= 16
             and "Earlier save spots Altru Building"

@@ -378,11 +378,12 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         CanReachRegion(world.modified_regions["m005_001a"].HUMAN_NAME),
     )
 
-    world.set_rule(
-        get_entrance(world, PInstanceEvent.TANGROWTH.event_name),
-        # CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
-        Has(get_mission_event(0)),
-    )
+    if not world.options.get_skip_school():
+        world.set_rule(
+            get_entrance(world, PInstanceEvent.TANGROWTH.event_name),
+            # CanReachRegion(data.regions["m005_001a"].HUMAN_NAME),
+            Has(get_mission_event(0)),
+        )
 
     for from_ in [
         "m001_002",
@@ -488,7 +489,7 @@ def set_mission_3_rules(world: PokemonRSOA):
         get_connection(world, "m004_001", "m009_002"), Has(get_mission_event(2))
     )
 
-    burning_log = all_maps.can_destroy_target_type(72)
+    burning_log = all_maps.can_destroy_target("m009_002", 5)  # arbitrary log
     completed_mimi = Has(PREvent.GIVE_HAPPINY_TO_MIMI.event_name)
 
     mimi_rule = CanReachRegion(world.modified_regions["m009_002"].HUMAN_NAME)
@@ -507,6 +508,10 @@ def set_mission_3_rules(world: PokemonRSOA):
     )
     world.set_rule(
         get_pokemon_instance(world, "m009_002", 0x14),
+        all_maps.can_destroy_target_type(72),
+    )
+    world.set_rule(
+        get_pokemon_instance(world, "m009_002", 0x15),
         all_maps.can_destroy_target_type(72) & burning_log,
     )
 
@@ -526,7 +531,6 @@ def set_mission_3_rules(world: PokemonRSOA):
         0x9,  # cherubi
         0xA,  # cherubi
         0xD,  # wartortle
-        0x15,  # beedrill
     ]:
         world.set_rule(
             get_pokemon_instance(world, "m009_002", i),
@@ -637,7 +641,7 @@ def set_mission_4_rules(world: PokemonRSOA):
 
     fallen_tree = all_maps.can_destroy_target("m009_008", 1)
     # Vanilla these are not achievable during mission 4.
-    # Randomized these could be
+    # Randomized these should be
     try:
         for i in [4, 5]:
             world.set_rule(get_pokemon_instance(world, "m009_008", i), fallen_tree)
@@ -816,7 +820,7 @@ def set_mission_4_rules(world: PokemonRSOA):
         world.set_rule(
             get_location(world, loc),
             Has(PREvent.RESCUE_PUELTOWN.event_name)
-            & all_maps.can_destroy_target_type(27),
+            & all_maps.can_destroy_target("m009_011", 0),
         )
 
     for loc in [data.locations["MISSION_04"].label, get_mission_event(4)]:
@@ -1137,6 +1141,9 @@ def set_mission_7_rules(world: PokemonRSOA):
         ("m015_001", 1),
         ("m010_003", 15),
         ("m009_012", 0),
+        ("m007_001", 0),
+        ("m003_001", 3),
+        ("m001_001", 2),
     ]:
         world.set_rule(
             get_pokemon_instance(world, map_name, i), Has(get_mission_event(6))

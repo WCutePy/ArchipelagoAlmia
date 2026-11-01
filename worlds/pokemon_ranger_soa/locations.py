@@ -212,34 +212,13 @@ def create_pokemon_locations(
 
     normal_include = []
 
-    normal_include += [
-        17,
-        4,
-        14,
-        13,
-        22,
-    ]
+    # normal_include += [
+    #     17,  # ghastly, why???
+    #     4,
+    #     14,  # zubat
+    # ]
 
     mission_goal = world.get_rule_num()
-    if mission_goal >= 4:
-        normal_include += [
-            59,  # combee quest
-        ]
-    if mission_goal >= 6:
-        normal_include += [
-            [97, 69],  # eevee quest q8
-        ]
-    if mission_goal >= 7:
-        normal_include += [
-            114,  # oddish quest q9
-            109,  # ambipom q7
-            44,  # nosepass q6
-        ]
-    if mission_goal >= 8:
-        normal_include += [
-            142,  # drifloon
-            142,  # drifloon numba 2!
-        ]
     if mission_goal >= 9:
         normal_include += [
             48,  # cherrim

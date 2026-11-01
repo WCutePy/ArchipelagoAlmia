@@ -629,9 +629,12 @@ class PokemonRSOAOptions(PerGameCommonOptions):
             return self.mission_clear_target.value
         raise ValueError("Unsupported yaml goal")
 
+    def get_skip_school(self):
+        return "Skip School" in self.remove_roadblocks.value
+
     def verify(self, player_name: str):
         errors = []
-        if "Skip School" in self.remove_roadblocks.value and self.get_rule_num() == 0:
+        if self.get_skip_school() and self.get_rule_num() == 0:
             errors.append(
                 f"Skipping school is not compatible with beating school as goal!"
             )

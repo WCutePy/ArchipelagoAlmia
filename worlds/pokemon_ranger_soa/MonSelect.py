@@ -12,6 +12,7 @@ from typing import (
     Sized,
     ClassVar,
     Any,
+    Tuple,
 )
 from collections import defaultdict
 from dataclasses import field, dataclass
@@ -97,6 +98,76 @@ def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
     )
 
 
+def add_to(to: Dict[str, List], to_add: Dict[str, List]):
+    for key, values in to_add.items():
+        if key in to and not to[key]:
+            continue
+        elif not values:
+            to[key] = values
+        to.setdefault(key, []).extend(values)
+
+
+def add_to_normal(to: Dict[str, List], to_add: Dict[str, List]):
+    for key, values in to_add.items():
+        to.setdefault(key, []).extend(values)
+
+
+def get_required_fieldmove(world: PokemonRSOA, map_name: str, index: int) -> FieldMove:
+    return data.target_field_move_requirements[
+        world.modified_regions[map_name].TARGETS[index].TARGET_ID
+    ]
+
+
+def apply_place_on_random(
+    world: PokemonRSOA,
+    options: Dict[str, List[int]],
+    form_id: int,
+    exclude: List[Tuple[str, int]] = None,
+) -> Tuple[str, int]:
+    options = [(key, value) for key, values in options.items() for value in values]
+    if exclude:
+        options = [i for i in options if i not in exclude]
+    if len(options) == 1:
+        option = options[0]
+    else:
+        option = world.random.choice(options)
+    map_name, index = option
+    spawn = world.modified_regions[map_name].POKEMON_SPAWN[index]
+    spawn.set_form(form_id)
+    spawn.randomize = False
+    world.modified_regions[map_name].modified = True
+    return option
+
+
+def form_options_by_criteria(
+    world: PokemonRSOA, field_move: FieldMove, health: int, exact: bool = True
+):
+    options = []
+    lowest_form = None
+    lowest_health: int | None = None
+
+    for species in world.modified_species.values():
+        if field_move.category != species.field_move.category:
+            continue
+        if exact and field_move.level != species.field_move.level:
+            continue
+        elif not exact and species.field_move.level < field_move.level:
+            continue
+        for form, form_data in species.forms.items():
+            if lowest_form is None or lowest_health > form_data.friendship_gauge:
+                lowest_form = form
+                lowest_health = form_data.friendship_gauge
+            if species.browser_id in world.blacklisted_captures:
+                continue  # ensures that if all applicable mons are blacklisted it returns the lowest health
+            if form_data.friendship_gauge > health:
+                continue
+            options.append(form)
+
+    if options:
+        return options
+    return [lowest_form]
+
+
 @dataclass
 class MonSelect:
     world: ClassVar[Optional[PokemonRSOA]]
@@ -107,15 +178,6 @@ class MonSelect:
 
     include_one_time: bool = False
     include_missable: bool = False
-
-    @staticmethod
-    def add_to(to: Dict[str, List], to_add: Dict[str, List]):
-        for key, values in to_add.items():
-            if key in to and not to[key]:
-                continue
-            elif not values:
-                to[key] = values
-            to.setdefault(key, []).extend(values)
 
     def region_included(
         self, region_name: str, region_data: Optional[MapData] = None
@@ -241,9 +303,7 @@ class MonSelect:
         map_name = sanitize_map_name(map_name)
         target = get_instance_target(map_name, i)
 
-        field_move = data.target_field_move_requirements[
-            self.world.modified_regions[map_name].TARGETS[i].TARGET_ID
-        ]
+        field_move = get_required_fieldmove(self.world, map_name, i)
 
         party: Party = get_party_type(map_name)
 
@@ -307,7 +367,7 @@ class MonSelect:
                 "m009_002": [12, 14, 15],  # should be correct with logic
                 "m009_010": [0, 1, 2, 3, 4],  # salamence is likely not missable
                 # and if the script can use some random number generator, none are missable.
-                "m020_001": [*range(0, 5)],
+                "m020_001": [*range(0, 7)],
                 "m020_002": [*range(0, 13)],
                 "m020_016": [0],
                 "m015_002": [0, 1, 2, 3, 4],
@@ -394,7 +454,7 @@ class MonSelect:
             "m041_002": [0],
         }
 
-        m.add_to(m.include, STARAPTOR)
+        add_to(m.include, STARAPTOR)
 
         DODUO = {
             "m001_001": [2],
@@ -407,12 +467,12 @@ class MonSelect:
             "m021_001": [9],
             "m035_001": [3],
         }
-        m.add_to(m.include, DODUO)
+        add_to(m.include, DODUO)
 
         EMPOLEON = {
             "m027_002": [9],
         }
-        m.add_to(m.include, EMPOLEON)
+        add_to(m.include, EMPOLEON)
         return m
 
     @classmethod
@@ -461,7 +521,11 @@ class MonSelect:
         capture_locations:
         """
         m = MonSelect(
-            include={"m001": [], "m003": [], "m007": []},
+            include={
+                "m001": [],
+                "m003": [],
+                "m007": [],
+            },
             exclude={
                 "m001_001": [2],
                 "m001_002": [6, 12],
@@ -480,7 +544,7 @@ class MonSelect:
             events=[PREvent.SCHOOL_COMPLETE_NIGHT, PREvent.SCHOOL_COLLECT_STYLERS],
         )
 
-        if "Skip School" in cls.world.options.remove_roadblocks.value:
+        if cls.world.options.get_skip_school():
             m.event_mon = []
         return m
 
@@ -650,7 +714,7 @@ class MonSelect:
             "m020_007": [],
             "m020_004": [],
             "m020_011": [],
-            "m020_016": [],
+            "m020_016": [],  # is this correct??? TODO
         }
 
         base.exclude["m019_003"] = [0, 3]
@@ -1057,3 +1121,101 @@ class MonSelect:
         ]
 
         return base
+
+
+@dataclass
+class MonPlacer:
+    world: PokemonRSOA
+    added_moves: set[FieldMove] = field(default_factory=set)
+    added_forms: set[int] = field(default_factory=set)
+    requires_move: defaultdict[FieldMove, list[tuple[str, int]]] = field(
+        default_factory=lambda: defaultdict(list)
+    )
+    all_maps: defaultdict[str, list[int]] = field(
+        default_factory=lambda: defaultdict(list)
+    )
+    requires_forms_one: List[int] = field(default_factory=list)
+    requires_forms_dupe: List[int] = field(default_factory=list)
+
+    def add_requires(self, fieldmove: FieldMove, spots: list[tuple[str, int]]):
+        if fieldmove in self.added_moves:
+            return
+        self.requires_move[fieldmove] += spots
+
+    def get_requires(self, map_name: str, index: int) -> Optional[FieldMove]:
+        for fieldmove, mons in self.requires_move.items():
+            for map_o, i_o in mons:
+                if i_o == index and map_o == map_name:
+                    return fieldmove
+        return None
+
+    def place_random(
+        self,
+        fieldmove: Optional[FieldMove] = None,
+        form_id: Optional[int] = None,
+        max_health: int = 100,
+        ignore_dupe=True,
+    ):
+        to_exclude: list = []
+        if fieldmove:
+            if ignore_dupe and fieldmove in self.added_moves:
+                return
+            for i in range(fieldmove.level, 6):
+                to_exclude += self.requires_move.get(
+                    FieldMove(fieldmove.category, i), []
+                )
+            options = form_options_by_criteria(self.world, fieldmove, max_health)
+            form_id = self.world.random.choice(options)
+        if ignore_dupe and form_id and form_id in self.added_forms:
+            return
+        if not form_id:
+            raise ValueError("No fieldmove or form id was passed")
+
+        out = apply_place_on_random(
+            self.world, self.all_maps, form_id, exclude=to_exclude
+        )
+        self.all_maps[out[0]].remove(out[1])
+        self.added_forms.add(form_id)
+
+        added_moves = [fieldmove] if fieldmove is not None else []
+        while requires := self.get_requires(out[0], out[1]):
+            for i in range(requires.level, 6):
+                to_exclude += self.requires_move.get(
+                    FieldMove(requires.category, i), []
+                )
+            other_options = form_options_by_criteria(self.world, requires, max_health)
+            other_form_id = self.world.random.choice(other_options)
+            out = apply_place_on_random(
+                self.world, self.all_maps, other_form_id, exclude=to_exclude
+            )
+            self.all_maps[out[0]].remove(out[1])
+            self.added_forms.add(other_form_id)
+            if requires is None:
+                raise ValueError(f"{added_moves=}, {requires=}")
+            added_moves += [requires]
+        for new_move in added_moves:
+            for j in range(1, new_move.level + 1):
+                lesser = FieldMove(category=new_move.category, level=j)
+                self.added_moves.add(lesser)
+
+            for key in list(self.requires_move.keys()):
+                if new_move.satisfies(key):
+                    del self.requires_move[key]
+
+    def finish_unresolved(self, max_health=100000):
+        field_moves = self.requires_move.keys()
+        for i in range(1, 6):
+            subset = [f for f in field_moves if f.level == i]
+            self.world.random.shuffle(subset)  # idk how much this matters
+            for j in subset:
+                self.place_random(fieldmove=j, max_health=max_health)
+
+        assert not self.requires_move
+
+        for form_id in self.requires_forms_one:
+            self.place_random(form_id=form_id)
+        self.requires_forms_one.clear()
+
+        for form_id in self.requires_forms_dupe:
+            self.place_random(form_id=form_id, ignore_dupe=False)
+        self.requires_forms_dupe.clear()
