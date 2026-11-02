@@ -706,22 +706,46 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     if mission_goal <= 9:
         return maps, sea
 
-    maps.all_maps |= {
-        "m023_014": [0, 1, 2],
-    }
+    maps.requires_forms_one.append(91)  # fetch murkrow quest 15
+    maps.requires_forms_dupe.append(91)  # fetch murkrow quest 15
 
-    """mission 10"""
+    max_health = world.mission_affinities[9]
+    to_add = {
+        "m023_014": [0, 1, 2],
+        "m010_002": [3],
+        "m010_022": [6],
+        "m021_001": [6],
+        "m009_009": [3],
+        "m015_004": [7],
+    }
+    add_to_normal(maps.all_maps, to_add)
+
+    maps.place_random(
+        fieldmove=FieldMove(FieldMoveCategory.RIVER_FLOW, 1), max_health=max_health
+    )
+
+    """Vien forest west"""
+    to_add = {
+        "m009_003": [0, 1, 4, 5, 6, 7, 8, 10, 11],
+        "m009_004": [*range(0, 11)],
+        "m009_006": [0],
+    }
+    add_to_normal(maps.all_maps, to_add)
+    maps.add_requires(get_required_fieldmove(world, "m009_006", 0), [("m009_006", 0)])
+
     options = {"m009_004": [3, 5, 7, 9]}  # also 0 for staraptor
     floatzel = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.RIVER_FLOW, level=1), max_health
     )
     out = apply_place_on_random(world, options, world.random.choice(floatzel))
+    maps.all_maps[out[0]].remove(out[1])
 
     options = {
         "m009_003": [0, 1, 4, 5, 6, 7, 8, 10, 11],
         "m009_004": [1, 2, 4, 6, 10],
     }
     out = apply_place_on_random(world, options, world.random.choice(floatzel))
+    maps.all_maps[out[0]].remove(out[1])
 
     """crysta cave"""
     base_options = {
@@ -730,16 +754,45 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m024_004": [0, 1],
         "m024_005": [0],
     }
+    add_to_normal(maps.all_maps, base_options)
+
     out = apply_place_on_random(world, base_options, world.random.choice(floatzel))
+    maps.all_maps[out[0]].remove(out[1])
 
     options = {"m024_001": [3, 4, 6]}
+    add_to_normal(maps.all_maps, options)
+
     out = apply_place_on_random(world, options, world.random.choice(floatzel))
+    maps.all_maps[out[0]].remove(out[1])
 
     options = {
         "m024_003": [0],
         "m024_006": [0],
     }
+    add_to_normal(maps.all_maps, options)
+
     out = apply_place_on_random(world, options, world.random.choice(floatzel))
+    maps.all_maps[out[0]].remove(out[1])
+
+    solid_ice = get_required_fieldmove(world, "m024_004", 1)
+    maps.place_random(fieldmove=solid_ice, max_health=max_health)
+
+    maps.all_maps |= {
+        "m024_007": [0, 1, 2, 3, 4],
+        "m026_001": [*range(0, 13)],
+        "m027_001": [0],
+    }
+
+    snow_tree = get_required_fieldmove(world, "m026_001", 2)
+    maps.add_requires(snow_tree, [("m026_001", 11), ("m026_001", 12)])
+
+    maps.place_random(
+        fieldmove=FieldMove(FieldMoveCategory.RIVER_FLOW, 2), max_health=max_health
+    )
+
+    maps.all_maps |= {
+        "m027_002": [0, 1, 2, 4, 5, 6, 8],
+    }
 
     empoleon = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.RIVER_FLOW, level=2), max_health
@@ -748,11 +801,70 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m027_002": [5, 8],
     }
     out = apply_place_on_random(world, options, world.random.choice(empoleon))
+    maps.all_maps[out[0]].remove(out[1])
 
     options = {
         "m027_002": [0, 1, 2, 4, 6],  # exclude staraptor 3
     }
     out = apply_place_on_random(world, options, world.random.choice(empoleon))
+    maps.all_maps[out[0]].remove(out[1])
+
+    torch_1 = get_required_fieldmove(world, "m027_002", 1)
+    maps.place_random(fieldmove=torch_1, max_health=max_health)
+
+    maps.all_maps |= {
+        "m028_006": [0, 1],
+        "m028_001": [0, 1, 2, 3, 4],
+        "m028_002": [0, 1],
+        "m028_004": [0, 1],
+        "m028_005": [0, 1, 2],
+        "m028_012": [0, 1],
+        "m028_013": [0],
+        "m028_009": [0, 1, 2],
+        "m028_010": [0, 1],
+        "m028_011": [1, 2],
+    }
+    maps.add_requires(
+        get_required_fieldmove(world, "m028_013", 1),
+        [
+            ("m028_009", 0),
+            ("m028_009", 1),
+            ("m028_009", 2),
+            ("m028_010", 0),
+            ("m028_010", 1),
+        ],
+    )
+
+    big_iceee = get_required_fieldmove(world, "m028_001", 1)
+    maps.place_random(fieldmove=big_iceee, max_health=max_health)
+
+    maps.all_maps["m028_011"] += [0]
+    maps.all_maps |= {
+        "m028_018": [1],
+        "m028_019": [0, 1, 2, 3],
+        "m028_020": [0],
+        "m028_003": [0, 1, 3],
+        "m028_017": [0, 1],
+    }
+
+    second_toch = get_required_fieldmove(world, "m028_017", 1)
+    maps.place_random(fieldmove=second_toch, max_health=max_health)
+    maps.all_maps |= {
+        "m028_014": [0, 1],
+    }
+    maps.add_requires(get_required_fieldmove(world, "m028_024", 1), [("m028_024", 0)])
+
+    door_3 = get_required_fieldmove(world, "m028_020", 2)
+    maps.place_random(fieldmove=door_3, max_health=max_health)
+
+    maps.all_maps["m028_018"] += [0, 2]
+    maps.all_maps |= {"m028_016": [0, 1]}
+
+    maps.place_random(form_id=216)  # fetch riolu
+    maps.place_random(form_id=216, ignore_dupe=False)  # fetch riolu
+
+    if mission_goal <= 10:
+        return maps, sea
 
     """mission 11"""
     max_health = 5000

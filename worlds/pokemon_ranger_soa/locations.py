@@ -219,26 +219,6 @@ def create_pokemon_locations(
     # ]
 
     mission_goal = world.get_rule_num()
-    if mission_goal >= 9:
-        normal_include += [
-            48,  # cherrim
-            152,  # muk quest
-            [143, 197],  # drifblim for going up and specific type for quest
-            194,  # sandshrew tunnel (could be tossup with sandslash
-            145,  # skuntank stink
-            160,  # gallade for registeel
-        ]
-    if mission_goal >= 10:
-        normal_include += [
-            185,  # murkrow for quest q15
-            185,  # murkrow numba 2 q15
-            56,  # floatzel
-            [208, 169],  # empoleon
-            253,  # garchomp for regirock
-            75,  # magmortar for regice
-            [222, 216],  # riolu
-            [222, 216],  # riolu
-        ]
     if mission_goal >= 11:
         normal_include += [
             205,  # chingling quest q17

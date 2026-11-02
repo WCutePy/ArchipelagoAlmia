@@ -1489,17 +1489,17 @@ def set_mission_9_rules(world: PokemonRSOA):
 def set_mission_10_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope()
 
+    for map_name, i in [("m010_002", 3), ("m010_022", 6), ("m021_001", 6)]:
+        world.set_rule(
+            get_pokemon_instance(world, map_name, i), Has(get_mission_event(9))
+        )
+
     for loc in [data.locations["QUEST_15"].label, get_quest_event(15)]:
         world.set_rule(
             get_location(world, loc),
             Has(get_mission_event(9))
             & Has(data.species[185].event_can_capture(form=91), 2)
             & CanReachLocation(data.species[185].location_capture_name),
-        )
-
-    for map_name, i in [("m010_002", 3), ("m010_022", 6), ("m021_001", 6)]:
-        world.set_rule(
-            get_pokemon_instance(world, map_name, i), Has(get_mission_event(9))
         )
 
     for loc in [data.locations["QUEST_16"].label, get_quest_event(16)]:
