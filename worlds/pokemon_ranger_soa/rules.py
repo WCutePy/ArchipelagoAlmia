@@ -87,8 +87,6 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
 
 
 def set_all_rules(world: PokemonRSOA) -> None:
-    MonSelect.world = world
-
     # print(world.multiworld.regions.)
     full_map = MonSelect.get_rules_scope()
 
@@ -250,8 +248,6 @@ def set_all_rules(world: PokemonRSOA) -> None:
             rule_func(world)
 
     set_completion_condition(world)
-
-    MonSelect.world = None
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
@@ -1420,11 +1416,10 @@ def set_mission_9_rules(world: PokemonRSOA):
         all_maps.can_destroy_target("m023_009", 0),
     )
 
-    for i in []:
-        world.set_rule(
-            get_pokemon_instance(world, "m023_013", i),
-            all_maps.can_destroy_target("m023_011", 0),
-        )
+    world.set_rule(
+        get_connection(world, "m023_011", "m023_012"),
+        all_maps.can_destroy_target("m023_011", 1),
+    )
 
     south_b1 = CanReachRegion(world.modified_regions["m023_013"].HUMAN_NAME)
     world.set_rule(get_pokemon_instance(world, "m023_006", 3), south_b1)
@@ -1442,6 +1437,15 @@ def set_mission_9_rules(world: PokemonRSOA):
         get_connection(world, "m023_013", "m023_014"),
         access_stink_cutscene_room,
     )
+
+    try:
+        for i in [0, 1, 2]:
+            world.set_rule(
+                get_pokemon_instance(world, "m023_014", i), Has(get_mission_event(9))
+            )
+
+    except:
+        ...
 
     world.set_rule(
         get_pokemon_instance(world, "m023_013", 1),

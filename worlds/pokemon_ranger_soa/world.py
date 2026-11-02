@@ -279,6 +279,8 @@ class PokemonRSOA(World):
                 m_placer.finish_unresolved(
                     max_health=self.mission_affinities[self.get_rule_num()]
                 )
+
+                print(m_placer.added_forms)
                 del m_placer
         if (
             self.get_rule_num() >= 16
@@ -309,6 +311,37 @@ class PokemonRSOA(World):
         if self.options.randomize_pokemon_etc != RandomizePokemonEtc.option_vanilla:
             apply_randomize_npc_pokemon(self)
             randomized = True
+
+        rules_scope = MonSelect.get_rules_scope()
+        for map_name, data_ in self.modified_regions.items():
+            if not rules_scope.region_included(map_name, data_):
+                continue
+            for i, mon in data_.POKEMON_SPAWN.items():
+                if mon.missable:
+                    continue
+                if (map_name, i) in [
+                    ("m001_011", 0),
+                    ("m001_011", 1),
+                    ("m001_011", 2),
+                    ("m001_011", 3),
+                    ("m001_001", 5),
+                    ("m001_006", 0),
+                    ("m001_006", 1),
+                    ("m006_001", 5),
+                ]:
+                    continue
+                if (
+                    mon.SPECIES_NAME not in ["Doduo", "Bidoof", "Staraptor"]
+                    and mon.randomize is False
+                ):
+                    print(
+                        map_name,
+                        i,
+                        mon.SPECIES_NAME,
+                        data.form_id_to_species[mon.SPECIES_ID].field_move,
+                    )
+
+        MonSelect.world = None
 
         if randomized:
             import json

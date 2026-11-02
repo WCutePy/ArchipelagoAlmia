@@ -384,7 +384,7 @@ class MonSelect:
                 cls.world.options.randomize_pokemon
                 != RandomizePokemonEncounters.option_vanilla
             ):
-                m.include["m022_001"] = [0]
+                m.include["m022_001"] = [0, 8, 10]
 
         return m
 
@@ -787,7 +787,6 @@ class MonSelect:
         base.exclude |= {
             "m021_001": [6],
             "m022_003": [1],
-            "m023_014": [],  # idk when this spawns
         }  # vespiqueen, probably quest related
 
         base.event_mon += [
@@ -807,6 +806,7 @@ class MonSelect:
         base = cls.goal_mission_9()
 
         base.include |= {
+            "m023_014": [],
             "m009_003": [],
             "m009_004": [],
             "m009_006": [],
@@ -1157,6 +1157,7 @@ class MonPlacer:
         ignore_dupe=True,
     ):
         to_exclude: list = []
+        added_moves = []
         if fieldmove:
             if ignore_dupe and fieldmove in self.added_moves:
                 return
@@ -1166,9 +1167,15 @@ class MonPlacer:
                 )
             options = form_options_by_criteria(self.world, fieldmove, max_health)
             form_id = self.world.random.choice(options)
-        if ignore_dupe and form_id and form_id in self.added_forms:
-            return
-        if not form_id:
+            added_moves += [fieldmove]
+        elif form_id:
+            if ignore_dupe and form_id in self.added_forms:
+                return
+            form_fieldmove = self.world.modified_species[
+                data.form_id_to_species[form_id].browser_id
+            ].field_move
+            added_moves += [form_fieldmove]
+        else:
             raise ValueError("No fieldmove or form id was passed")
 
         out = apply_place_on_random(
@@ -1177,7 +1184,6 @@ class MonPlacer:
         self.all_maps[out[0]].remove(out[1])
         self.added_forms.add(form_id)
 
-        added_moves = [fieldmove] if fieldmove is not None else []
         while requires := self.get_requires(out[0], out[1]):
             for i in range(requires.level, 6):
                 to_exclude += self.requires_move.get(
@@ -1219,3 +1225,11 @@ class MonPlacer:
         for form_id in self.requires_forms_dupe:
             self.place_random(form_id=form_id, ignore_dupe=False)
         self.requires_forms_dupe.clear()
+
+    def remove_if(self, map_name: str, index: int, form_id: Optional[int] = None):
+        try:
+            self.all_maps[map_name].remove(index)
+            if form_id:
+                self.added_forms.add(form_id)
+        except:
+            return

@@ -211,7 +211,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     # bonsly
     maps.add_requires(get_required_fieldmove(world, "m001_002", 3), [("m001_002", 7)])
     # tangrowth
-    maps.add_requires(get_required_fieldmove(world, "m001_001", 0), [("m001_002", 7)])
+    maps.add_requires(get_required_fieldmove(world, "m001_001", 0), [("m001_015", 0)])
 
     if mission_goal <= 0:
         return (maps,)
@@ -247,6 +247,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     maps.place_random(fieldmove=burning_log, max_health=world.mission_affinities[2])
 
     maps.all_maps["m009_002"] += [0, 1, 3, 6, 7, 9, 10, 13, 16, 17, 18, 20, 21]
+    maps.add_requires(tree_fieldmove, [("m009_002", 21)])
 
     maps.place_random(form_id=211)  # fetch happiny!
 
@@ -300,7 +301,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         maps.all_maps |= {
             "m010_022": [0, 1, 2, 3, 4, 5, 7, 8],
         }
-    if choice == 1:
+    if choice == 2:
         maps.place_random(fieldmove=red_gigaremo_middle, max_health=max_health)
         maps.all_maps |= {
             "m010_001": [0, 1, 2, 3, 4, 5],
@@ -311,6 +312,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
             "m010_022": [0, 1, 2, 3, 4, 5, 7, 8],
         }
         maps.all_maps["m010_001"] += [6]
+    print("choice made mission 4:", choice)
 
     maps.all_maps["m010_007"] = [0]
     maps.place_random(fieldmove=green_gigaremo_right, max_health=max_health)
@@ -420,7 +422,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     if mission_goal <= 7:
         return maps, sea
 
-    maps.all_maps |= {"m018_001": [0, 1], "m019_001": [1, 6, 7, 8], "m019_013": [0, 1]}
+    maps.all_maps |= {"m018_001": [1, 2], "m019_001": [1, 6, 7, 8], "m019_013": [0, 1]}
 
     airlift = FieldMove(FieldMoveCategory.AIRLIFT, level=1)
     maps.place_random(
@@ -435,7 +437,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     )
 
     to_add = {
-        "m019_003": [1, 3, 4, 5, 6, 7],
+        "m019_003": [1, 4, 5, 6, 7],
         "m019_004": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         "m019_010": [0],
         "m019_016": [0, 1, 2],
@@ -446,26 +448,24 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
 
     """volcano cave drifloon"""
     options = {
-        "m019_003": [1, 3, 4, 5, 6, 7],
+        "m019_003": [1, 4, 5, 6, 7],
         "m019_004": [1, 3, 4, 5, 6, 9],
     }
     out = apply_place_on_random(world, options, 0x0C4)
-    try:
-        maps.all_maps[out[0]].remove(out[1])
-    except:
-        raise ValueError(f"{out}\n{maps.all_maps}")
+    maps.remove_if(*out, form_id=0x0C4)
     options = {
         "m019_004": [2, 7, 8],
         "m019_016": [0, 1, 2],
     }
     out = apply_place_on_random(world, options, 0x0C4)
-    maps.all_maps[out[0]].remove(out[1])
+    maps.remove_if(*out, form_id=0x0C4)
 
     crush_2_rock = get_required_fieldmove(world, "m019_004", 2)
     maps.place_random(fieldmove=crush_2_rock, max_health=world.mission_affinities[7])
 
     """place the whole ship required section"""
-    adding_to_later = {
+    temp = MonPlacer(world)
+    temp.all_maps = {
         "m020_013": [*range(1, 13)],
         "m020_003": [0, 1, 2, 3, 4],
         "m020_007": [0, 1, 2],
@@ -487,7 +487,8 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m020_002": [*range(0, 13)],  # all
         # m020_016 when those ralts??
     }
-    out = apply_place_on_random(world, options, world.random.choice(form_options))
+    electrify_2 = world.random.choice(form_options)
+    out = apply_place_on_random(world, options, electrify_2)
     options[out[0]].remove(out[1])
     form_options = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.CRUSH, level=2), max_health
@@ -501,10 +502,10 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     tackle_2_options = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.TACKLE, level=2), max_health
     )
-    out = apply_place_on_random(world, options, world.random.choice(tackle_2_options))
+    tackle_2 = world.random.choice(tackle_2_options)
+    out = apply_place_on_random(world, options, tackle_2)
     options[out[0]].remove(out[1])
-    if out[0] in adding_to_later:
-        adding_to_later[out[0]].remove(out[1])
+    temp.remove_if(*out, form_id=tackle_2)
 
     options["m020_013"] += [1, 2, 4, 5, 6, 8, 10, 11, 12]
     options |= {
@@ -516,20 +517,21 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     cut_2_options = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.CUT, level=2), max_health
     )
-    out = apply_place_on_random(world, options, world.random.choice(cut_2_options))
+    cut_2 = world.random.choice(cut_2_options)
+    out = apply_place_on_random(world, options, cut_2)
     options[out[0]].remove(out[1])
-    if out[0] in adding_to_later:
-        adding_to_later[out[0]].remove(out[1])
-    out = apply_place_on_random(world, options, world.random.choice(recharge_options_2))
+    temp.remove_if(*out, form_id=cut_2)
+
+    recharge_2 = world.random.choice(recharge_options_2)
+    out = apply_place_on_random(world, options, recharge_2)
     options[out[0]].remove(out[1])
-    if out[0] in adding_to_later:
-        adding_to_later[out[0]].remove(out[1])
+    temp.remove_if(*out, form_id=recharge_2)
 
     options |= {"m020_011": [0, 1]}
-    out = apply_place_on_random(world, options, world.random.choice(recharge_options_1))
+    recharge_1 = world.random.choice(recharge_options_1)
+    out = apply_place_on_random(world, options, recharge_1)
     options[out[0]].remove(out[1])
-    if out[0] in adding_to_later:
-        adding_to_later[out[0]].remove(out[1])
+    temp.remove_if(*out, form_id=recharge_1)
 
     #  cut 2 counts for the rope cut 1
     flash = form_options_by_criteria(
@@ -538,9 +540,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     flash_mon = world.random.choice(flash)
     assert flash_mon == 65  # has to be electabuzz for now without script changes
     out = apply_place_on_random(world, options, flash_mon)
-    options[out[0]].remove(out[1])
-    if out[0] in adding_to_later:
-        adding_to_later[out[0]].remove(out[1])
+    temp.remove_if(*out, form_id=flash_mon)
 
     if world.options.randomize_pokemon_etc != RandomizePokemonEtc.option_vanilla:
         place_npc(world, ("m001_014", 5), flash_mon)
@@ -550,34 +550,109 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
 
     last_one = {"m020_016": [0]}
     out = apply_place_on_random(world, last_one, world.random.choice(tackle_2_options))
-    if out[0] in adding_to_later:
-        adding_to_later[out[0]].remove(out[1])
 
     if mission_goal <= 8:
         return maps, sea
 
-    add_to_normal(maps.all_maps, adding_to_later)
-
-    """mission 9 drifblim"""
     max_health = 5000
-    options = {
-        "m023_006": [0, 1, 2],
-        "m023_007": [0, 1],
+
+    add_to_normal(maps.all_maps, temp.all_maps)
+    maps.added_forms |= temp.added_forms
+    #  TODO, make these count for field moves too!!!
+    del temp
+
+    maps.add_requires(get_required_fieldmove(world, "m001_002", 2), [])  # quest 10
+    maps.requires_forms_one.append(192)  # fetch cherrim quest 12
+    maps.add_requires(get_required_fieldmove(world, "m019_002", 4), [])  # quest 13
+    maps.add_requires(get_required_fieldmove(world, "m019_002", 5), [])  # quest 13
+    maps.requires_forms_one.append(45)  # fetch muk quest 14
+
+    maps.all_maps |= {
+        "m020_010": [0],
+        "m020_014": [0, 1],
+        "m021_001": [i for i in range(0, 17) if i not in [6, 9, 11]],
+        "m021_002": [1, 2, 3, 4, 5, 6, 7],
+        "m022_001": [i for i in range(1, 19) if i not in [8, 10]],
+        "m022_003": [0, 2, 3],
     }
+    maps.all_maps["m001_002"] += [6, 12]
+    maps.add_requires(
+        tree_fieldmove, [("m021_001", 14), ("m021_001", 15), ("m021_001", 16)]
+    )
+    maps.add_requires(
+        get_required_fieldmove(world, "m022_001", 6),
+        [("m022_003", 0), ("m022_003", 2), ("m022_003", 3)],
+    )
+
+    maps.place_random(
+        fieldmove=FieldMove(FieldMoveCategory.DEMIST, 1), max_health=max_health
+    )
+
+    tackle_3 = get_required_fieldmove(world, "m022_002", 1)
+    maps.place_random(fieldmove=tackle_3, max_health=max_health)
+
+    maps.all_maps |= {
+        "m023_001": [0, 1, 2, 3],
+        "m023_002": [0],
+        "m023_003": [0, 1],
+        "m023_004": [0, 1, 2],
+        "m023_005": [0],
+    }
+    maps.add_requires(FieldMove(FieldMoveCategory.ELEVATE, 1), [("m023_002", 0)])
+    maps.add_requires(get_required_fieldmove(world, "m023_003", 0), [("m023_005", 0)])
+
     elevate_users = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.ELEVATE, level=1), max_health
     )
     elevate_users = [197]  # because of the quest that only takes one type of driblim...
-    out = apply_place_on_random(world, options, world.random.choice(elevate_users))
+    place = world.random.choice(elevate_users)
+
+    maps.place_random(FieldMove(FieldMoveCategory.FLASH, 1), max_health=max_health)
+    tunnel = get_required_fieldmove(world, "m023_004", 0)
+    maps.place_random(fieldmove=tunnel, max_health=max_health)
+
+    maps.all_maps |= {
+        "m023_006": [0, 1, 2],  # add umbreon later
+        "m023_008": [0],
+        "m023_007": [0, 1],
+    }
+    maps.add_requires(get_required_fieldmove(world, "m023_006", 0), [("m023_008", 0)])
+
+    options = {
+        "m023_006": [0, 1, 2],
+        "m023_007": [0, 1],
+    }
+    out = apply_place_on_random(world, options, place)
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+    maps.all_maps[out[0]].remove(out[1])
+
+    crush_2_rock_2 = get_required_fieldmove(world, "m023_007", 0)
+    maps.place_random(fieldmove=crush_2_rock_2, max_health=max_health)
+
+    maps.all_maps |= {
+        "m023_009": [0, 1, 2],
+    }
+    tunnel_again = get_required_fieldmove(world, "m023_009", 0)
+    maps.place_random(fieldmove=tunnel_again, max_health=max_health)
+
+    maps.all_maps |= {
+        "m023_011": [0, 1, 2, 3, 4, 5, 6, 7],
+        "m023_013": [2, 4, 3],
+        "m023_012": [0],
+        "m023_010": [0],
+    }
+    maps.all_maps["m023_006"] += [3]
+    maps.add_requires(get_required_fieldmove(world, "m023_011", 1), [("m023_012", 0)])
+    maps.add_requires(get_required_fieldmove(world, "m023_006", 1), [("m023_010", 0)])
 
     # m023_011 - 7, 0, 4
     # m023_013 - 2, 4, 3
-
+    """placing drifblim!"""
     m023_013 = [2, 3, 4]
     options = {"m023_013": m023_013}
     out = apply_place_on_random(world, options, world.random.choice(elevate_users))
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+    maps.all_maps[out[0]].remove(out[1])
     m023_013.remove(out[1])
 
     options = {
@@ -586,18 +661,54 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     crush_2 = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.CRUSH, level=2), max_health
     )
+    """TODO IMPORTANT!!!, when randomizing fieldmove, 
+    this needs to stay an already before mandatory required fieldmove
+    else this turns into a softlock :)
+    """
     out = apply_place_on_random(world, options, world.random.choice(crush_2))
     options[out[0]].remove(out[1])
+    maps.all_maps[out[0]].remove(out[1])
 
     options["m023_011"] += [0, 4, 7]
     options["m023_013"] = m023_013
 
     out = apply_place_on_random(world, options, world.random.choice(elevate_users))
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+    maps.all_maps[out[0]].remove(out[1])
 
-    options = {"m023_015": [0, 1]}
+    tunnel_again = get_required_fieldmove(world, "m023_011", 0)
+    maps.place_random(fieldmove=tunnel_again, max_health=max_health)
+
+    maps.all_maps["m023_013"] += [1]
+
+    tackle_3_again = get_required_fieldmove(world, "m023_013", 0)
+    maps.place_random(fieldmove=tackle_3_again, max_health=max_health)
+
+    maps.all_maps["m023_013"] += [0]
+
+    maps.place_random(
+        fieldmove=FieldMove(FieldMoveCategory.STINK, 1), max_health=max_health
+    )
+
+    maps.all_maps |= {
+        "m023_015": [0, 1],
+        "m023_016": [0],
+    }
+    maps.add_requires(get_required_fieldmove(world, "m023_016", 0), [("m023_016", 0)])
+
+    options = {
+        "m023_015": [0, 1],
+    }
     out = apply_place_on_random(world, options, world.random.choice(elevate_users))
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+    maps.all_maps[out[0]].remove(out[1])
+
+    if mission_goal <= 9:
+        return maps, sea
+
+    maps.all_maps |= {
+        "m023_014": [0, 1, 2],
+    }
 
     """mission 10"""
     options = {"m009_004": [3, 5, 7, 9]}  # also 0 for staraptor

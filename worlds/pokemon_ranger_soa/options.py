@@ -289,12 +289,17 @@ class RandomizePokemonEncounters(Choice):
     story/quest encounters.
     Not all wild or static encounters are necessarily included
     at the time due to technical limitations.
+
+    mostly bidoof is a meme option that will turn most wild
+    encounters into a bidoof, leaving only minimal placements
+    to beat the story and most quests. This will limit the possible locations severely.
     """
 
     auto_display_name = True
 
     option_vanilla = 0
     option_full_random = 1
+    option_mostly_bidoof = 2
 
     default = option_full_random
 

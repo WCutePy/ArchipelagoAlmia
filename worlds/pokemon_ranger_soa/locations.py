@@ -309,6 +309,13 @@ def create_pokemon_locations(
         available_pool, k=capture_ocean_mons - len(ocean_captures)
     )
 
+    if (
+        world.options.randomize_pokemon
+        == RandomizePokemonEncounters.option_mostly_bidoof
+    ):
+        captures = len(captures) * [4]
+        ocean_captures = len(ocean_captures) * [4]
+
     world.random.shuffle(captures)
     for i in captures:
         if isinstance(i, list):
