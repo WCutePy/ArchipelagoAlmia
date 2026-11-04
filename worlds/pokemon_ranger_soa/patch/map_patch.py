@@ -213,10 +213,13 @@ class CompactMapData:
     @classmethod
     def from_map_name(
         cls, prsoa_patch_instance: "PokemonRSOAPatch", map_name: str
-    ) -> "CompactMapData":
-        file_name = f"map/{map_name}.bin"
-        patch_file = prsoa_patch_instance.get_file(file_name)
-        return cls.from_bytes(patch_file)
+    ) -> Optional["CompactMapData"]:
+        try:
+            file_name = f"map/{map_name}.bin"
+            patch_file = prsoa_patch_instance.get_file(file_name)
+            return cls.from_bytes(patch_file)
+        except KeyError:
+            return None
 
 
 def patch(

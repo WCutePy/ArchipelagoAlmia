@@ -221,8 +221,6 @@ def create_pokemon_locations(
     mission_goal = world.get_rule_num()
     if mission_goal >= 11:
         normal_include += [
-            205,  # chingling quest q17
-            [212, 227],  # abomasnow quest q18
             224,  # torkoal
         ]
     if mission_goal >= 12:

@@ -168,8 +168,12 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     for event in PInstanceEvent.events():
         if event not in full_map.event_mon:
             continue
-
-        pokemon = data.species[event.browser_id]
+        if event.form_id:
+            pokemon = world.modified_species[
+                data.form_id_to_species[event.form_id].browser_id
+            ]
+        else:
+            pokemon = world.modified_species[event.browser_id]
 
         p_region = attach_pokemon_encounter(
             world,

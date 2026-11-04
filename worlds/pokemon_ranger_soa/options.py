@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 
 from BaseClasses import PlandoOptions
@@ -640,8 +641,9 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     def verify(self, player_name: str):
         errors = []
         if self.get_skip_school() and self.get_rule_num() == 0:
-            errors.append(
-                f"Skipping school is not compatible with beating school as goal!"
+            self.remove_roadblocks.value.remove("Skip School")
+            logging.warning(
+                f"Player {player_name} Set goal to school and skip school. School will not be skipped."
             )
 
         if len(self.partners.value) > (18 - len(self.partner_starters.value)):

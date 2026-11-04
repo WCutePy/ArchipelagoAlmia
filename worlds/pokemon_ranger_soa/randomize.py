@@ -14,6 +14,7 @@ from .MonSelect import (
     add_to_normal,
 )
 from .data import SpeciesData, data, FieldMove, Party, FieldMoveCategory
+from .events import PInstanceEvent
 from .items import PokemonRSOAItem
 from .options import (
     RandomizePartners,
@@ -64,6 +65,9 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
             partners.remove(c)
         starters += choices
 
+    starters = [list(data.species[i].forms.keys())[0] for i in starters]
+    partners = [list(data.species[i].forms.keys())[0] for i in partners]
+
     world.random.shuffle(starters)
     world.random.shuffle(partners)
 
@@ -104,18 +108,22 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     # kricketot
     place_npc(world, ("m008_006", 8), 314)
     place_npc(world, ("m008_006", 12), 314)
+    PInstanceEvent.KRICKETOT.form_id = partners[0]
 
     # cranidos
     place_npc(world, ("m008_006", 9), 315)
     place_npc(world, ("m016_003", 1), 315)
+    PInstanceEvent.CRANIDOS.form_id = partners[1]
 
     # turtwig
     place_npc(world, ("m008_008", 0), 316)
     place_npc(world, ("m004_007", 0), 316)
+    PInstanceEvent.TURTWIG.form_id = partners[2]
 
     # croagunk
     place_npc(world, ("m008_008", 2), 317)
     place_npc(world, ("m002_001", 9), 317)
+    PInstanceEvent.CROAGUNK.form_id = partners[3]
 
     # mime jr
     place_npc(world, ("m008_008", 4), 318)
@@ -127,30 +135,37 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     place_npc(world, ("m020_014", 0), 318)
     place_npc(world, ("m020_016", 1), 318)
     place_npc(world, ("m018_001", 21), 318)  # post capture and such
+    PInstanceEvent.MIME_JR.form_id = partners[4]
 
     # shieldon
     place_npc(world, ("m008_006", 9), 319)
     place_npc(world, ("m016_003", 1), 319)
+    PInstanceEvent.SHIELDON.form_id = partners[5]
 
     # chimchar
     place_npc(world, ("m008_008", 1), 320)
     place_npc(world, ("m022_001", 4), 320)
+    PInstanceEvent.CHIMCHAR.form_id = partners[6]
 
     # piplup
     place_npc(world, ("m008_008", 7), 321)
     place_npc(world, ("m026_001", 10), 321)
+    PInstanceEvent.PIPLUP.form_id = partners[7]
 
     # snover
     place_npc(world, ("m008_008", 3), 322)
     place_npc(world, ("m019_005", 1), 322)
+    PInstanceEvent.SNOVER.form_id = partners[8]
 
     # sneasel
     place_npc(world, ("m008_006", 3), 323)
     place_npc(world, ("m028_009", 1), 323)
+    PInstanceEvent.SNEASEL.form_id = partners[9]
 
     # misdreavus
     place_npc(world, ("m008_006", 7), 324)
     place_npc(world, ("m023_005", 0), 324)
+    PInstanceEvent.MISDREAVUS.form_id = partners[10]
 
     ...
     #  TODO change the partner encounter events
@@ -194,7 +209,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     maps = MonPlacer(world)
     maps.all_maps |= {
         #  mission 0, 1
-        "m001_001": [0, 1, 3, 4, 5],
+        "m001_001": [0, 1, 3, 4],
         "m001_002": [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11],
         "m001_003a": [0, 1, 2],
         "m001_005": [0, 1, 2, 3],
@@ -374,8 +389,8 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     if mission_goal <= 5:
         return maps, sea
     maps.requires_forms_one.append(69)  # fetch eevee quest 08
-    chance = world.random.random()  # fetch lumineon quest 05
-    if chance < 0.5:
+    lumineon_where = world.random.random() < 0.5  # fetch lumineon quest 05
+    if lumineon_where:
         sea.requires_forms_one.append(224)
     else:
         maps.requires_forms_one.append(224)
@@ -445,6 +460,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     add_to_normal(maps.all_maps, to_add)
 
     maps.add_requires(get_required_fieldmove(world, "m019_004", 4), [("m019_010", 0)])
+    print("somehow this one is fucked", get_required_fieldmove(world, "m019_004", 4))
 
     """volcano cave drifloon"""
     options = {
@@ -727,7 +743,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     """Vien forest west"""
     to_add = {
         "m009_003": [0, 1, 4, 5, 6, 7, 8, 10, 11],
-        "m009_004": [*range(0, 11)],
+        "m009_004": [i for i in range(0, 11) if i not in [0, 8]],
         "m009_006": [0],
     }
     add_to_normal(maps.all_maps, to_add)
@@ -850,9 +866,10 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     second_toch = get_required_fieldmove(world, "m028_017", 1)
     maps.place_random(fieldmove=second_toch, max_health=max_health)
     maps.all_maps |= {
-        "m028_014": [0, 1],
+        "m028_024": [0, 1],
     }
     maps.add_requires(get_required_fieldmove(world, "m028_024", 1), [("m028_024", 0)])
+    #  could also just rework that one spot can be in multiple requires if I want to
 
     door_3 = get_required_fieldmove(world, "m028_020", 2)
     maps.place_random(fieldmove=door_3, max_health=max_health)
@@ -865,9 +882,28 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
 
     if mission_goal <= 10:
         return maps, sea
-
     """mission 11"""
-    max_health = 5000
+
+    maps.requires_forms_one.append(204)  # fetch chingling quest 17
+    maps.requires_forms_one.append(227)  # fetch abomasnow quest 18
+    maps.add_requires(get_required_fieldmove(world, "m024_004", 2), [])  # quest 19
+
+    max_health = world.mission_affinities[10]
+
+    maps.all_maps |= {
+        "m019_005": [6],
+    }
+    maps.place_random(FieldMove(FieldMoveCategory.MAGMA_FLOW, 1), max_health)
+
+    to_add = {
+        "m019_005": [1, 2, 3, 4, 5, 7],
+        "m019_017": [0, 1, 2],
+        "m019_001": [0, 4],
+        "m019_003": [0],
+        "m019_015": [0],
+    }
+    add_to_normal(maps.all_maps, to_add)
+
     torkoal = form_options_by_criteria(
         world, FieldMove(category=FieldMoveCategory.MAGMA_FLOW, level=1), max_health
     )
@@ -877,29 +913,396 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m019_017": [0, 1, 2],
     }
     out = apply_place_on_random(world, options, world.random.choice(torkoal))
+    maps.remove_if(*out)
 
     options = {"m019_003": [0], "m019_015": [0]}
     out = apply_place_on_random(world, options, world.random.choice(torkoal))
+    maps.remove_if(*out)
+
+    rock_1 = get_required_fieldmove(world, "m019_005", 0)
+    maps.place_random(fieldmove=rock_1, max_health=max_health)
+    rock_2 = get_required_fieldmove(world, "m019_005", 1)
+    maps.place_random(fieldmove=rock_2, max_health=max_health)
+
+    maps.all_maps["m019_005"] += [0]
+    maps.all_maps |= {
+        "m019_006": [5, 6, 7],
+        "m019_014": [0, 1],
+    }
+
+    fire_wall = get_required_fieldmove(world, "m019_006", 26)
+    maps.place_random(fieldmove=fire_wall, max_health=max_health)
+
+    maps.all_maps["m019_006"] += [1, 2, 3, 4]
+    maps.all_maps |= {
+        "m019_007": [
+            0,
+            3,
+            4,
+            7,
+        ]
+    }
+    rock_1 = get_required_fieldmove(world, "m019_007", 2)
+    maps.place_random(fieldmove=rock_1, max_health=max_health)
+    rock_2 = get_required_fieldmove(world, "m019_007", 1)
+    maps.place_random(fieldmove=rock_2, max_health=max_health)
+    maps.all_maps["m019_007"] += [5, 6]
+    rock_idk = get_required_fieldmove(world, "m019_007", 0)
+    maps.place_random(fieldmove=rock_idk, max_health=max_health)
+    maps.all_maps["m019_007"] += [1, 2]
 
     options = {"m019_007": [5, 6]}
     out = apply_place_on_random(world, options, world.random.choice(torkoal))
+    maps.remove_if(*out)
 
-    cut_3 = form_options_by_criteria(
-        world, FieldMove(category=FieldMoveCategory.CUT, level=3), max_health
+    """DO I REALLY EXPECT THEM TO GO DOWN TO GRAB THEIR DRIFBLIM???"""
+    maps.all_maps |= {"m019_011": [1]}
+
+    if mission_goal <= 11:
+        return maps, sea
+
+    max_health = world.mission_affinities[11]
+
+    # done by not having drifblims field move randomized
+    # maps.requires_forms_one.append()  # fetch drifblim quest 20
+
+    maps.add_requires(get_required_fieldmove(world, "m019_003", 0), [])  # quest 21
+    maps.add_requires(get_required_fieldmove(world, "m025_001", 5), [])  # quest 22
+
+    sea.all_maps |= {
+        "m029_001": [0, 1, 2, 3, 4, 5],
+    }
+
+    crush_4_1 = get_required_fieldmove(world, "m029_001", 5)
+    sea.place_random(fieldmove=crush_4_1, max_health=max_health)
+
+    sea.all_maps |= {
+        "m029_002": [3, 4, 5, 6],
+    }
+    crush_4_2 = get_required_fieldmove(world, "m029_002", 20)
+    sea.place_random(fieldmove=crush_4_2, max_health=max_health)
+
+    sea.all_maps["m029_002"] += [0, 1, 2]
+    # this is where I would put a swim if I was nice
+    sea.all_maps |= {
+        "m029_003": [0, 1, 2, 3, 4, 5, 7, 8, 9],
+    }
+
+    cut_3 = world.random.choice(
+        form_options_by_criteria(
+            world, FieldMove(category=FieldMoveCategory.CUT, level=3), max_health
+        )
     )
     options = {
         "m029_003": [0, 1, 2, 3, 4, 5, 7, 8, 9],
     }
-    out = apply_place_on_random(world, options, world.random.choice(cut_3))
+    out = apply_place_on_random(world, options, cut_3)
+    sea.remove_if(*out, form_id=cut_3)
     #  could have also placed swim, but I'll be nice for once!!!
     #  should probably still place swim in sea of wailord :)
 
-    """mission 14"""
+    cut_3_again_but_i_can_change_it = get_required_fieldmove(world, "m029_003", 3)
+    sea.place_random(fieldmove=cut_3_again_but_i_can_change_it, max_health=max_health)
+
+    sea.all_maps["m029_003"] += [6]
+
+    tackle_4 = get_required_fieldmove(world, "m029_003", 1)
+    sea.place_random(fieldmove=tackle_4, max_health=max_health)
+    sea.all_maps |= {"m029_004": [0, 1, 2, 3, 4, 6, 7]}
+    sea.add_requires(get_required_fieldmove(world, "m029_004", 0), [("m029_004", 0)])
+
+    second_last_pillar = get_required_fieldmove(world, "m029_003", 7)
+    sea.place_random(fieldmove=second_last_pillar, max_health=max_health)
+
+    last_pillar = get_required_fieldmove(world, "m029_001", 17)
+    sea.place_random(fieldmove=last_pillar, max_health=max_health)
+
+    if mission_goal <= 12:
+        return maps, sea
+
+    max_health = world.mission_affinities[12]
+
+    sea.all_maps |= {
+        "m029_007": [0, 3, 5],
+        "m029_008": [4, 6],
+        "m029_005": [0],
+    }
+    maps.all_maps |= {
+        "m030_004": [0],
+        "m030_005": [0, 2],
+        "m030_006": [0, 1],
+        "m030_007": [0, 1, 2],
+        "m030_008": [0, 1, 2, 3],
+    }
+    maps.add_requires(
+        get_required_fieldmove(world, "m030_005", 2),
+        [("m030_008", i) for i in range(4)],
+    )
+
+    electrify_3 = get_required_fieldmove(world, "m030_006", 1)
+    maps.place_random(electrify_3, max_health=max_health)
+
+    maps.all_maps["m030_005"] += [1]
+    maps.all_maps |= {
+        "m030_010": [*range(0, 8)],
+        "m030_011": [0],
+    }
+
+    # idk why I even place this, id never change this one
+    maps.place_random(FieldMove(FieldMoveCategory.STINK, 1), max_health=max_health)
+    maps.all_maps |= {
+        "m030_017": [0, 1, 2, 4, 5, 6, 7],
+        "m030_018": [0],
+    }
+
+    machine_1 = get_required_fieldmove(world, "m030_018", 1)
+    maps.place_random(fieldmove=machine_1, max_health=max_health)
+    machine_1 = get_required_fieldmove(world, "m030_019", 1)
+    maps.place_random(fieldmove=machine_1, max_health=max_health)
+    maps.all_maps["m030_017"] += [3]
+    machine_1 = get_required_fieldmove(world, "m030_020", 1)
+    maps.place_random(fieldmove=machine_1, max_health=max_health)
+
+    maps.all_maps |= {
+        "m030_021": [0],
+    }
+
+    if mission_goal <= 13:
+        return maps, sea
+
+    chance = world.random.random()  # fetch omastar quest 24
+    if chance < 0.5:
+        sea.requires_forms_one.append(74)
+    else:
+        maps.requires_forms_one.append(74)
+    maps.requires_forms_one.append(144)  # fetch cacturne quest 25
+    maps.add_requires(get_required_fieldmove(world, "m009_002", 2), [])  # quest 11
+
+    max_health = world.mission_affinities[13]
+
+    maps.all_maps |= {
+        "m034_001": [4, 6, 8],
+    }
+
+    village = get_required_fieldmove(world, "m033_001", 7)
+    maps.place_random(fieldmove=village, max_health=max_health)
+
+    maps.all_maps["m034_001"] += [0, 1, 2, 9, 15, 18, 19]
+    vine_again = get_required_fieldmove(world, "m034_001", 0)
+    maps.place_random(fieldmove=vine_again, max_health=max_health)
+    maps.all_maps["m034_001"] += [3, 5, 7, 12, 13, 14, 16]
+    maps.all_maps["m035_001"] = [0]
+
+    #  todo if pokemon fieldmoves are randomized and stuff yes place this here
+    # however rn this is troll by adding an hippowdon somewhere.
+
+    # from here the quests are possible, crazy
+    #  Since the omastar spot only becomes accessible once
+    #  you start the omastar quest, and the quest becomes accessible on lumineon capture
+    #  the lumineon can NOT be in m029_004.5
+    #  I could improve my algorithms to add exclude when setting the place forms
+    #  but I don't want or need to right now.
+    if lumineon_where:
+        sea.place_random(form_id=224, ignore_dupe=True)
+    else:
+        maps.place_random(form_id=224, ignore_dupe=True)
+    sea.all_maps["m029_004"] += [5]
+    maps.all_maps |= {
+        "m036_001": [0, 1, 2, 3],
+        "m036_004": [0, 1, 2, 3, 4, 5],
+        "m036_021": [0, 1],
+        "m036_005": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "m036_007": [0],
+    }
+
+    #  they have enough drifblim available right?
+
+    maps.all_maps |= {
+        "m036_012": [0, 1, 2],
+        "m036_015": [0],
+    }
+
+    tunnel_again_again = get_required_fieldmove(world, "m036_012", 9)
+    maps.place_random(fieldmove=tunnel_again_again, max_health=max_health)
+
+    maps.all_maps |= {
+        "m036_009": [0, 1, 2, 4, 5, 6],
+        "m036_011": [0, 1, 2, 3],
+        "m036_020": [0],
+        "m036_013": [1, 2],
+        "m036_014": [0],
+    }
+
+    big_rock = get_required_fieldmove(world, "m036_013", 0)
+    maps.place_random(fieldmove=big_rock, max_health=max_health)
+
+    maps.all_maps |= {
+        "m036_016": [0, 1, 2, 3, 4],
+    }
+
     options = {"m036_016": [0, 1, 2, 3, 4]}
     out = apply_place_on_random(world, options, world.random.choice(elevate_users))
     world.modified_regions[out[0]].POKEMON_SPAWN[out[1]].missable = True
+    maps.remove_if(*out)
 
-    return (maps, sea)
+    if mission_goal <= 14:
+        return maps, sea
+
+    maps.all_maps["m028_003"] += [2]
+
+    maps.requires_forms_one.append(54)  # fetch weezing quest 26
+    maps.requires_forms_one.append(206)  # fetch skuntank quest 26
+    maps.requires_forms_one.append(403)  # fetch dragonair quest 28
+
+    if mission_goal <= 15:
+        return maps, sea
+
+    max_health = world.mission_affinities[15]
+    maps.all_maps |= {
+        "m038_010": [0],
+        "m038_003": [0, 1, 2, 3, 4, 5],
+        "m038_006": [0, 1],
+        "m038_011": [0, 1],
+        "m038_007": [0, 1],
+    }
+
+    # flash already loong exists
+
+    beam_you_already_have = get_required_fieldmove(world, "m038_003", 11)
+    maps.place_random(fieldmove=beam_you_already_have, max_health=max_health)
+    maps.all_maps |= {
+        "m038_009": [0, 1],
+        "m038_012": [1, 2],
+        "m038_015": [1, 2],
+        "m038_005": [1, 2],
+    }
+
+    doesnot_matter = world.random.randint(0, 1)
+    left = get_required_fieldmove(world, "m038_015", 1)
+    right = get_required_fieldmove(world, "m038_005", 1)
+    if doesnot_matter:
+        maps.place_random(fieldmove=left, max_health=max_health)
+        maps.all_maps["m038_015"] += [0]
+        maps.all_maps["m038_012"] += [0]
+        maps.place_random(fieldmove=right, max_health=max_health)
+    else:
+        maps.place_random(fieldmove=right, max_health=max_health)
+        maps.place_random(fieldmove=left, max_health=max_health)
+        maps.all_maps["m038_015"] += [0]
+        maps.all_maps["m038_012"] += [0]
+    maps.all_maps |= {
+        "m039_001": [0, 1, 2, 3],
+        "m039_003a": [0, 1, 2],
+    }
+
+    maps.place_random(
+        fieldmove=get_required_fieldmove(world, "m039_004a", 0), max_health=max_health
+    )
+
+    maps.all_maps |= {
+        "m039_005a": [0, 1, 2],
+    }
+
+    maps.place_random(
+        fieldmove=get_required_fieldmove(world, "m039_006a", 0), max_health=max_health
+    )
+    maps.all_maps |= {
+        "m039_007a": [0, 1, 2],
+    }
+    maps.place_random(
+        fieldmove=get_required_fieldmove(world, "m039_006a", 0), max_health=max_health
+    )
+    maps.all_maps |= {
+        "m039_002": [0, 1],
+        "m039_009": [0],
+    }
+
+    return maps, sea
+
+
+def early_place_random_event_mon(world: PokemonRSOA, maps: MonPlacer):
+    mission_goal = world.get_rule_num()
+    ...  # randomizer parts
+
+    PInstanceEvent.TUT_BIDOOF.form_id = 427
+    PInstanceEvent.SLAKOTH.form_id = 427
+    PInstanceEvent.NIGHT_GHASTLY.form_id = 427
+    PInstanceEvent.TIM_BIDOOF.form_id = 427
+    PInstanceEvent.RATATA_4.form_id = 427
+
+    # TODO ensure uniques of sharpedos form!!!
+    PInstanceEvent.SHARPEDO.form_id = 435
+
+    for i in range(4, 13):
+        place_npc(world, ("m001_002", i), PInstanceEvent.TUT_BIDOOF.form_id)
+    apply_place_on_random(world, {"m001_006": [0]}, PInstanceEvent.NIGHT_PICHU.form_id)
+    apply_place_on_random(world, {"m001_006": [1]}, PInstanceEvent.NIGHT_PICHU.form_id)
+
+    for i in range(0, 4):
+        apply_place_on_random(
+            world, {"m001_011": [i]}, PInstanceEvent.NIGHT_GHASTLY.form_id
+        )
+
+    place_npc(world, ("m001_001", 4), PInstanceEvent.SLAKOTH.form_id)
+    apply_place_on_random(world, {"m001_001": [5]}, PInstanceEvent.SLAKOTH.form_id)
+
+    place_npc(world, ("m001_001", 2), PInstanceEvent.TIM_BIDOOF.form_id)
+    place_npc(world, ("m001_001", 3), PInstanceEvent.TIM_BIDOOF.form_id)
+
+    # if mission_goal <= 0:
+    #     return
+
+    apply_place_on_random(world, {"m006_001": [5]}, PInstanceEvent.CAVE_ZUBAT.form_id)
+    # if mission_goal <= 2:
+    #     return
+    place_npc(world, ("m004_001", 15), PInstanceEvent.MILTANK.form_id)
+    for i in range(12, 16):
+        place_npc(world, ("m009_002", i), PInstanceEvent.BUDEW_4.form_id)
+    # if mission_goal <= 3:
+    #     return
+    for i in range(19, 23):
+        place_npc(world, ("m010_003", i), PInstanceEvent.RATATA_4.form_id)
+    # if mission_goal <= 4:
+    #     return
+    place_npc(world, ("m009_002", 10), PInstanceEvent.WARTORTLE_WITH_CRANIDOS.form_id)
+
+    for i in [
+        ("m011_001", 0),
+        ("m011_002", 0),
+        ("m011_004", 0),
+    ]:
+        place_npc(world, i, PInstanceEvent.SHARPEDO.form_id)
+    apply_place_on_random(world, {"m011_005": [5]}, PInstanceEvent.SHARPEDO.form_id)
+
+    # if mission_goal <= 5:
+    #     return
+    # if mission_goal <= 6:
+    #     return
+
+    place_npc(world, ("m001_005", 18), PInstanceEvent.CARNIVINE_2.form_id)
+    place_npc(world, ("m001_005", 19), PInstanceEvent.CARNIVINE_2.form_id)
+    # if mission_goal <= 7:
+    #     return
+
+    place_npc(world, ("m019_003", 3), PInstanceEvent.SLUGMA.form_id)
+    place_npc(world, ("m019_003", 4), PInstanceEvent.MAGCARGO.form_id)
+    place_npc(world, ("m019_004", 3), PInstanceEvent.KANGASKHAN.form_id)
+    for i in [4, 5, 6]:
+        place_npc(world, ("m019_004", i), PInstanceEvent.NUMEL_3.form_id)
+    for i in [13, 14]:
+        place_npc(world, ("m019_002", i), PInstanceEvent.BEEDRIL_2.form_id)
+    place_npc(world, ("m019_002", 12), PInstanceEvent.GLOOM.form_id)
+    for i in [2, 3]:
+        place_npc(world, ("m020_001", i), PInstanceEvent.MACHOKE_2.form_id)
+    for i in [1, 2, 3]:
+        place_npc(world, ("m020_007", i), PInstanceEvent.MAREEP_3.form_id)
+    for i in [7, 8, 9]:
+        place_npc(world, ("m020_003", i), PInstanceEvent.MAGCARGO_3.form_id)
+    for i in [2, 3, 4, 5]:
+        place_npc(world, ("m020_008", i), PInstanceEvent.RHYHORN_2.form_id)
+    #  YA ONLY FIGHT 2 :C
+    for i in [6, 7, 8]:
+        place_npc(world, ("m020_008", i), PInstanceEvent.STUNKY_3.form_id)
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:

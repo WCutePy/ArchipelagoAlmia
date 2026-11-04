@@ -31,6 +31,7 @@ from .randomize import (
     early_place_random_restricted,
     early_place_random_partners,
     apply_randomize_npc_pokemon,
+    early_place_random_event_mon,
 )
 from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
 from Fill import FillError, fill_restrictive
@@ -158,7 +159,7 @@ class PokemonRSOA(World):
 
     modified_regions: Dict[str, MapData]
     modified_species: Dict[int, SpeciesData]  # browser id - SpeciesData
-    modified_partners: List[int]  # browser id
+    modified_partners: List[int]  # form id
     modified_npc_mon_to: Dict[int, int]  # npc_id national_id
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
@@ -281,6 +282,10 @@ class PokemonRSOA(World):
                 )
 
                 print(m_placer.added_forms)
+
+            early_place_random_event_mon(self, mon_placers[0])
+
+            for m_placer in mon_placers:
                 del m_placer
         if (
             self.get_rule_num() >= 16
@@ -317,17 +322,15 @@ class PokemonRSOA(World):
             if not rules_scope.region_included(map_name, data_):
                 continue
             for i, mon in data_.POKEMON_SPAWN.items():
-                if mon.missable:
-                    continue
                 if (map_name, i) in [
                     ("m001_011", 0),
                     ("m001_011", 1),
                     ("m001_011", 2),
                     ("m001_011", 3),
-                    ("m001_001", 5),
-                    ("m001_006", 0),
-                    ("m001_006", 1),
-                    ("m006_001", 5),
+                    # ("m001_001", 5),
+                    # ("m001_006", 0),
+                    # ("m001_006", 1),
+                    # ("m006_001", 5),
                 ]:
                     continue
                 if (
@@ -339,6 +342,7 @@ class PokemonRSOA(World):
                         i,
                         mon.SPECIES_NAME,
                         data.form_id_to_species[mon.SPECIES_ID].field_move,
+                        mon.missable,
                     )
 
         MonSelect.world = None

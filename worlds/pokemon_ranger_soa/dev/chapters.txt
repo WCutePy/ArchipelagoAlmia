@@ -2,6 +2,12 @@
 
 0x10 - 16 - Intro cutscene pikachu capture
 ...
+0x07 - 7 - Bidoof chase
+0x08 - 8 - Night card
+0x09 - 9 - Night test
+...
+0x12 - 18 - Stolen stylers
+...
 0x0D - 13 - One day internship
 0x0E - 14 - Letter n about graduation
 0x0F - 15 - Graduation day

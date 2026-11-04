@@ -885,6 +885,7 @@ class MonSelect:
 
         base.include |= {
             "m019_005": [],
+            "m019_017": [],
             "m019_015": [],
             "m019_006": [],
             "m019_014": [],
@@ -950,8 +951,8 @@ class MonSelect:
             "m029_005": [],
             "m030_002": [],
             "m030_004": [],
-            "m030_006": [],
             "m030_005": [],
+            "m030_006": [],
             "m030_007": [],
             "m030_008": [],
             "m030_010": [],
@@ -1180,6 +1181,10 @@ class MonPlacer:
         out = apply_place_on_random(
             self.world, self.all_maps, form_id, exclude=to_exclude
         )
+        if fieldmove and fieldmove.category == FieldMoveCategory.RAIN_DANCE:
+            print(fieldmove, out)
+        if form_id == 91:
+            print(form_id, out)
         self.all_maps[out[0]].remove(out[1])
         self.added_forms.add(form_id)
 

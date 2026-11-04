@@ -1861,7 +1861,8 @@ def set_mission_12_rules(world: PokemonRSOA):
         world.set_rule(
             get_location(world, loc),
             all_maps.can_destroy_target("m029_003", 3)
-            & all_maps.can_destroy_target("m029_003", 7),
+            & all_maps.can_destroy_target("m029_003", 7)
+            & all_maps.can_destroy_target("m029_001", 17),
             #  strength level or something
         )
 
@@ -1912,6 +1913,12 @@ def set_mission_13_rules(world: PokemonRSOA):
         & all_maps.can_destroy_target("m030_019", 1),
     )
     world.set_rule(
+        get_pokemon_instance(world, "m030_017", 3),
+        all_maps.can_destroy_target("m030_018", 1)
+        & all_maps.can_destroy_target("m030_019", 1),
+    )
+
+    world.set_rule(
         get_connection(world, "m030_017", "m030_021"),
         all_maps.can_destroy_target("m030_020", 1),
     )
@@ -1938,9 +1945,9 @@ def set_mission_14_rules(world: PokemonRSOA):
 
     cleared_village = all_maps.can_destroy_target("m033_001", 7)
     for i in range(18):
-        if i in [4, 6, 8, 17, 10]:
+        if i in [4, 6, 8, 10, 17]:
             continue
-        if i in [3, 5, 12, 13, 14, 16, 7]:
+        if i in [3, 5, 7, 12, 13, 14, 16]:
             world.set_rule(
                 get_pokemon_instance(world, "m034_001", i),
                 cleared_village & all_maps.can_destroy_target("m034_001", 0),
