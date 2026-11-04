@@ -1304,6 +1304,27 @@ def early_place_random_event_mon(world: PokemonRSOA, maps: MonPlacer):
     for i in [6, 7, 8]:
         place_npc(world, ("m020_008", i), PInstanceEvent.STUNKY_3.form_id)
 
+    # if mission_goal <= 8:
+    #     return
+    for i in [8, 9, 10]:
+        place_npc(world, ("m022_001", i), PInstanceEvent.MURKROW_3.form_id)
+    for i in [11, 12, 13]:
+        place_npc(world, ("m022_001", i), PInstanceEvent.KOFFING_3.form_id)
+    # if mission_goal <= 9:
+    #     return
+    for i in [5, 6]:
+        place_npc(world, ("m022_001", i), PInstanceEvent.BEEDRILl_2_Q.form_id)
+    for i in [1, 2, 3]:
+        place_npc(world, ("m024_004", i), PInstanceEvent.GOLBAT_3.form_id)
+    place_npc(world, ("m026_001", 9), PInstanceEvent.HOUNDOOM.form_id)
+    for i in [3, 4, 5, 6]:
+        place_npc(world, ("m028_001", i), PInstanceEvent.HOUNDOUR_4.form_id)
+    for i in range(4, 12):
+        place_npc(world, ("m028_001", i), PInstanceEvent.SEEDOT_8.form_id)
+
+    # if mission_goal <= 10:
+    #     return
+
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:
     my_progression_items = [
