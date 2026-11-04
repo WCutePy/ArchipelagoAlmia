@@ -1233,8 +1233,20 @@ def early_place_random_event_mon(world: PokemonRSOA, maps: MonPlacer):
     # TODO ensure uniques of sharpedos form!!!
     PInstanceEvent.SHARPEDO.form_id = 435
 
-    for i in range(4, 13):
-        place_npc(world, ("m001_002", i), PInstanceEvent.TUT_BIDOOF.form_id)
+    PInstanceEvent.BIDOOF_TOWER.form_id = PInstanceEvent.BIDOOF_8.form_id
+
+    for event in PInstanceEvent.events():
+        if event.m is None or event.form_id is None:
+            continue
+        # if event.m <= mission_goal:
+        #     continue
+        try:
+            for i in event.i:
+                place_npc(world, (event.map_name, i), event.form_id)
+        except:
+            print(event)
+            raise
+
     apply_place_on_random(world, {"m001_006": [0]}, PInstanceEvent.NIGHT_PICHU.form_id)
     apply_place_on_random(world, {"m001_006": [1]}, PInstanceEvent.NIGHT_PICHU.form_id)
 
@@ -1243,29 +1255,17 @@ def early_place_random_event_mon(world: PokemonRSOA, maps: MonPlacer):
             world, {"m001_011": [i]}, PInstanceEvent.NIGHT_GHASTLY.form_id
         )
 
-    place_npc(world, ("m001_001", 4), PInstanceEvent.SLAKOTH.form_id)
     apply_place_on_random(world, {"m001_001": [5]}, PInstanceEvent.SLAKOTH.form_id)
-
-    place_npc(world, ("m001_001", 2), PInstanceEvent.TIM_BIDOOF.form_id)
-    place_npc(world, ("m001_001", 3), PInstanceEvent.TIM_BIDOOF.form_id)
 
     # if mission_goal <= 0:
     #     return
-
     apply_place_on_random(world, {"m006_001": [5]}, PInstanceEvent.CAVE_ZUBAT.form_id)
     # if mission_goal <= 2:
     #     return
-    place_npc(world, ("m004_001", 15), PInstanceEvent.MILTANK.form_id)
-    for i in range(12, 16):
-        place_npc(world, ("m009_002", i), PInstanceEvent.BUDEW_4.form_id)
     # if mission_goal <= 3:
     #     return
-    for i in range(19, 23):
-        place_npc(world, ("m010_003", i), PInstanceEvent.RATATA_4.form_id)
     # if mission_goal <= 4:
     #     return
-    place_npc(world, ("m009_002", 10), PInstanceEvent.WARTORTLE_WITH_CRANIDOS.form_id)
-
     for i in [
         ("m011_001", 0),
         ("m011_002", 0),
@@ -1278,52 +1278,28 @@ def early_place_random_event_mon(world: PokemonRSOA, maps: MonPlacer):
     #     return
     # if mission_goal <= 6:
     #     return
-
-    place_npc(world, ("m001_005", 18), PInstanceEvent.CARNIVINE_2.form_id)
-    place_npc(world, ("m001_005", 19), PInstanceEvent.CARNIVINE_2.form_id)
     # if mission_goal <= 7:
     #     return
-
-    place_npc(world, ("m019_003", 3), PInstanceEvent.SLUGMA.form_id)
-    place_npc(world, ("m019_003", 4), PInstanceEvent.MAGCARGO.form_id)
-    place_npc(world, ("m019_004", 3), PInstanceEvent.KANGASKHAN.form_id)
-    for i in [4, 5, 6]:
-        place_npc(world, ("m019_004", i), PInstanceEvent.NUMEL_3.form_id)
-    for i in [13, 14]:
-        place_npc(world, ("m019_002", i), PInstanceEvent.BEEDRIL_2.form_id)
-    place_npc(world, ("m019_002", 12), PInstanceEvent.GLOOM.form_id)
-    for i in [2, 3]:
-        place_npc(world, ("m020_001", i), PInstanceEvent.MACHOKE_2.form_id)
-    for i in [1, 2, 3]:
-        place_npc(world, ("m020_007", i), PInstanceEvent.MAREEP_3.form_id)
-    for i in [7, 8, 9]:
-        place_npc(world, ("m020_003", i), PInstanceEvent.MAGCARGO_3.form_id)
-    for i in [2, 3, 4, 5]:
-        place_npc(world, ("m020_008", i), PInstanceEvent.RHYHORN_2.form_id)
-    #  YA ONLY FIGHT 2 :C
-    for i in [6, 7, 8]:
-        place_npc(world, ("m020_008", i), PInstanceEvent.STUNKY_3.form_id)
-
     # if mission_goal <= 8:
     #     return
-    for i in [8, 9, 10]:
-        place_npc(world, ("m022_001", i), PInstanceEvent.MURKROW_3.form_id)
-    for i in [11, 12, 13]:
-        place_npc(world, ("m022_001", i), PInstanceEvent.KOFFING_3.form_id)
     # if mission_goal <= 9:
     #     return
-    for i in [5, 6]:
-        place_npc(world, ("m022_001", i), PInstanceEvent.BEEDRILl_2_Q.form_id)
-    for i in [1, 2, 3]:
-        place_npc(world, ("m024_004", i), PInstanceEvent.GOLBAT_3.form_id)
-    place_npc(world, ("m026_001", 9), PInstanceEvent.HOUNDOOM.form_id)
-    for i in [3, 4, 5, 6]:
-        place_npc(world, ("m028_001", i), PInstanceEvent.HOUNDOUR_4.form_id)
-    for i in range(4, 12):
-        place_npc(world, ("m028_001", i), PInstanceEvent.SEEDOT_8.form_id)
-
     # if mission_goal <= 10:
     #     return
+    # if mission_goal <= 11:
+    #     return
+    # if mission_goal <= 12:
+    #     return
+    # if mission_goal <= 15:
+    #     return
+    world.modified_script_mons |= {
+        "NUZLEAF_2_1": PInstanceEvent.NUZLEAF_2.form_id,
+        "NUZLEAF_2_2": PInstanceEvent.NUZLEAF_2.form_id,
+        "UMBREON": PInstanceEvent.UMBREON.form_id,
+        "BRONZONG": PInstanceEvent.BRONZONG.form_id,
+        "SCEPTILE": PInstanceEvent.SCEPTILE.form_id,
+        "LUXRAY": PInstanceEvent.LUXRAY.form_id,
+    }
 
 
 def apply_randomized_pokemon(world: PokemonRSOA) -> None:

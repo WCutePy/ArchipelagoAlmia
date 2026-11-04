@@ -102,6 +102,10 @@ def list_of_same_patches(change: int, addresses: list[int]) -> list[tuple[int, i
     return [(i, change) for i in addresses]
 
 
+def push_national(form_id: int) -> int:
+    return data.form_id_to_species[form_id].national_id << 16 | 0x10
+
+
 def patch(
     rom: Rom,
     world_package: str,
@@ -736,6 +740,9 @@ def patch(
             ]
 
     if random_pokemon:
+        script_mons = orjson.loads(
+            prsoa_patch_instance.get_file("modified_script_mons.json")
+        )
         m = CompactMapData.from_map_name(prsoa_patch_instance, "m001_002")
         if m:
             bidoof = m.npcs[4]["id"]
@@ -956,6 +963,10 @@ def patch(
                 # PUSH 109		; @2081
                 (2081, m.npcs[9]["id"] << 16 | 0x10),
             ]
+            QUEST_PATCHES["q045"] += [
+                # PUSH 109		; @480
+                (480, m.npcs[11]["id"] << 16 | 0x10),
+            ]
         m = CompactMapData.from_map_name(prsoa_patch_instance, "m028_001")
         if m:
             CHAPTER_PATCHES["c048"] += [
@@ -971,6 +982,308 @@ def patch(
                 # 	PUSH 119		; @3841
                 (3841 + i * 2, m.npcs[4 + i]["id"] << 16 | 0x10)
                 for i in range(8)
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m019_014")
+        if m:
+            CHAPTER_PATCHES["c051"] += [
+                # 	PUSH 212		; @3321
+                (3321 + i * 2, m.npcs[2 + i]["id"] << 16 | 0x10)
+                for i in range(5)
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m019_006")
+        if m:
+            CHAPTER_PATCHES["c051"] += [
+                *[
+                    # 	PUSH 159		; @4046
+                    (4046 + i * 2, m.npcs[2 + i]["id"] << 16 | 0x10)
+                    for i in range(4)
+                ],
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m019_011")
+        if m:
+            CHAPTER_PATCHES["c051"] += [
+                # 	PUSH 165		; @5027
+                (5027 + i * 2, m.npcs[6 + i]["id"] << 16 | 0x10)
+                for i in range(2)
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m029_001")
+        if m:
+            CHAPTER_PATCHES["c053"] += [
+                # PUSH 59		; @3209
+                (3209, m.npcs[4]["id"] << 16 | 0x10),
+                (3211, m.npcs[5]["id"] << 16 | 0x10),
+                (3213, m.npcs[6]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m029_002")
+        if m:
+            CHAPTER_PATCHES["c053"] += [
+                # PUSH 223		; @1579
+                (1579, m.npcs[1]["id"] << 16 | 0x10),
+                (1581, m.npcs[2]["id"] << 16 | 0x10),
+                (1583, m.npcs[3]["id"] << 16 | 0x10),
+                (1585, m.npcs[4]["id"] << 16 | 0x10),
+                # PUSH 61		; @3621
+                (3621, m.npcs[6]["id"] << 16 | 0x10),
+                (3623, m.npcs[7]["id"] << 16 | 0x10),
+                (3625, m.npcs[8]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m029_003")
+        if m:
+            CHAPTER_PATCHES["c053"] += [
+                # PUSH 157		; @2123
+                (2123, m.npcs[2]["id"] << 16 | 0x10),
+                # PUSH 61		; @3621
+                (2125, m.npcs[3]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_008")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 135		; @12745
+                (
+                    12782,
+                    data.form_id_to_species[m.npcs[1]["id"]].national_id << 16 | 0x10,
+                ),
+                # PUSH 71		; @12782
+                (12782, m.npcs[1]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_009")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 331		; @13059
+                (13059, push_national(m.npcs[1]["id"])),
+                # PUSH 143		; @13109
+                (13109, m.npcs[1]["id"] << 16 | 0x10),
+                (13111, m.npcs[2]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_016")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # 	PUSH 129		; @5720
+                (5720, m.npcs[7]["id"] << 16 | 0x10),
+                *[(5722 + i * 2, m.npcs[12 + i]["id"] << 16 | 0x10) for i in range(7)],
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_013")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 34		; @14568
+                (14568, m.npcs[1]["id"] << 16 | 0x10),
+                (14570, m.npcs[2]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_012")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 430		; @14066
+                (14066, push_national(m.npcs[3]["id"])),
+                # PUSH 198		; @14091
+                (14091, push_national(m.npcs[2]["id"])),
+                # PUSH 201		; @14113
+                (14113, m.npcs[3]["id"] << 16 | 0x10),
+                (14115, m.npcs[2]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_015")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 122		; @4059
+                (4059, push_national(m.npcs[5]["id"])),
+                # PUSH 62		; @4109
+                (4109, m.npcs[5]["id"] << 16 | 0x10),
+                (4111, m.npcs[6]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_018")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 185		; @13567
+                (13567, m.npcs[1]["id"] << 16 | 0x10),
+                (13569, m.npcs[2]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_019")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 435		; @14967
+                (14967, push_national(m.npcs[1]["id"])),
+                # PUSH 206		; @14995
+                (14995, m.npcs[1]["id"] << 16 | 0x10),
+                (14997, m.npcs[2]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m030_020")
+        if m:
+            CHAPTER_PATCHES["c054"] += [
+                # PUSH 33		; @15460
+                (15460, m.npcs[1]["id"] << 16 | 0x10),
+                (15462, m.npcs[2]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m036_009")
+        if m:
+            QUEST_PATCHES["q027"] += [
+                # PUSH 344		; @585
+                (585, push_national(m.npcs[1]["id"])),
+                # PUSH 146		; @614
+                (614, m.npcs[1]["id"] << 16 | 0x10),
+                (616, m.npcs[2]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m017_007")
+        if m:
+            CHAPTER_PATCHES["c059"] += [
+                *[
+                    (i, push_national(m.npcs[12]["id"] << 16 | 0x10))
+                    for i in [
+                        4479,
+                        4482,
+                        4758,
+                        4761,
+                        4792,
+                        4795,
+                        4829,
+                        4860,
+                        4863,
+                        4998,
+                        5001,
+                    ]
+                ],
+                # 	PUSH 173		; @5088
+                *[(5088 + i * 2, m.npcs[12 + i]["id"] << 16 | 0x10) for i in range(8)],
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_001")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 110		; @2418
+                (2418, push_national(m.npcs[8]["id"])),
+                # PUSH 435		; @2423
+                (2423, push_national(m.npcs[9]["id"])),
+                # PUSH 54		; @2484
+                (2484, m.npcs[8]["id"] << 16 | 0x10),
+                (2486, m.npcs[9]["id"] << 16 | 0x10),
+                # PUSH 275		; @2795
+                (2795, push_national(m.npcs[7]["id"])),
+                # PUSH 121		; @2839
+                (2839, m.npcs[7]["id"] << 16 | 0x10),
+                (2841, script_mons["NUZLEAF_2_1"] << 16 | 0x10),
+                (2843, script_mons["NUZLEAF_2_2"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_002")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 26		; @5352
+                (5352, m.npcs[2]["id"] << 16 | 0x10),
+                # PUSH 52		; @5355
+                (5355, m.npcs[3]["id"] << 16 | 0x10),
+                # PUSH 45		; @5358
+                (5358, m.npcs[4]["id"] << 16 | 0x10),
+                # PUSH 356		; @6029
+                (6029, push_national(m.npcs[1]["id"])),
+                # PUSH 150		; @6050
+                (6050, m.npcs[1]["id"] << 16 | 0x10),
+                # PUSH 150		; @6050
+                (6052, m.npcs[1]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_019")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 444		; @6497
+                (6497, push_national(m.npcs[4]["id"])),
+                # PUSH 214		; @6525
+                (6525, m.npcs[4]["id"] << 16 | 0x10),
+                (6527, m.npcs[4]["id"] << 16 | 0x10),
+                (6529, m.npcs[4]["id"] << 16 | 0x10),
+                #
+                # PUSH 94		; @7026
+                (7026, push_national(m.npcs[5]["id"])),
+                (7028, push_national(m.npcs[6]["id"])),
+                # PUSH 48		; @7083
+                (7083, m.npcs[5]["id"] << 16 | 0x10),
+                (7085, m.npcs[6]["id"] << 16 | 0x10),
+                #
+                # PUSH 473		; @7634
+                (7634, push_national(m.npcs[7]["id"])),
+                # PUSH 420		; @7662
+                (7662, m.npcs[7]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_006")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 196		; @9762
+                (9762, push_national(m.npcs[1]["id"])),
+                # PUSH 89		; @9783
+                (9783, m.npcs[1]["id"] << 16 | 0x10),
+                (9785, script_mons["UMBREON"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_009")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 437		; @10273
+                (10273, push_national(m.npcs[2]["id"])),
+                # PUSH 208		; @10303
+                (10303, m.npcs[2]["id"] << 16 | 0x10),
+                (10305, script_mons["BRONZONG"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_003")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 257		; @11892
+                (11892, push_national(m.npcs[6]["id"])),
+                # PUSH 118		; @11920
+                (11920, m.npcs[6]["id"] << 16 | 0x10),
+                (11922, m.npcs[6]["id"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_012")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 167		; @13127
+                (13127, push_national(m.npcs[8]["id"])),
+                (13132, push_national(m.npcs[9]["id"])),
+                (13137, push_national(m.npcs[10]["id"])),
+                # 	PUSH 76		; @13170
+                *[(13170 + i * 2, m.npcs[8]["id"] << 16 | 0x10) for i in range(5)],
+                # PUSH 451		; @17672
+                (17672, push_national(m.npcs[11]["id"])),
+                (17677, push_national(m.npcs[12]["id"])),
+                (17682, push_national(m.npcs[13]["id"])),
+                # 	PUSH 219		; @17705
+                *[(17705 + i * 2, m.npcs[11 + i]["id"] << 16 | 0x10) for i in range(3)],
+                # PUSH 436		; @18139
+                (18139, push_national(m.npcs[14]["id"])),
+                (18144, push_national(m.npcs[15]["id"])),
+                (18149, push_national(m.npcs[16]["id"])),
+                # 	PUSH 207		; @18184
+                *[(18184 + i * 2, m.npcs[14 + i]["id"] << 16 | 0x10) for i in range(3)],
+                # PUSH 182		; @19320
+                (19320, push_national(m.npcs[17]["id"])),
+                (19325, push_national(m.npcs[18]["id"])),
+                (19330, push_national(m.npcs[19]["id"])),
+                # 	PUSH 85		; @19357
+                *[(19357 + i * 2, m.npcs[17 + i]["id"] << 16 | 0x10) for i in range(3)],
+                # PUSH 332		; @19836
+                (19836, push_national(m.npcs[20]["id"])),
+                (19841, push_national(m.npcs[21]["id"])),
+                (19846, push_national(m.npcs[22]["id"])),
+                # PUSH 144		; @19877
+                *[(19877 + i * 2, m.npcs[20 + i]["id"] << 16 | 0x10) for i in range(3)],
+                # PUSH 136		; @20370
+                (20370, push_national(m.npcs[20]["id"])),
+                (20375, push_national(m.npcs[21]["id"])),
+                (20380, push_national(m.npcs[22]["id"])),
+                # PUSH 72		; @20409
+                *[(20409 + i * 2, m.npcs[23 + i]["id"] << 16 | 0x10) for i in range(3)],
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_016")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 65		; @16221
+                (16221, push_national(m.npcs[1]["id"])),
+                # PUSH 30		; @16256
+                (16256, m.npcs[1]["id"] << 16 | 0x10),
+                (16258, script_mons["SCEPTILE"] << 16 | 0x10),
+                (16260, script_mons["LUXRAY"] << 16 | 0x10),
+            ]
+        m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_018")
+        if m:
+            CHAPTER_PATCHES["c061"] += [
+                # PUSH 282		; @22689
+                (22689, push_national(m.npcs[7]["id"])),
+                (22694, push_national(m.npcs[6]["id"])),
+                # PUSH 98		; @22732
+                (22732, m.npcs[6]["id"] << 16 | 0x10),
+                (22734, m.npcs[7]["id"] << 16 | 0x10),
             ]
 
     for eventrect, writes in EVENTRECT_PATCHES.items():

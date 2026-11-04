@@ -161,6 +161,7 @@ class PokemonRSOA(World):
     modified_species: Dict[int, SpeciesData]  # browser id - SpeciesData
     modified_partners: List[int]  # form id
     modified_npc_mon_to: Dict[int, int]  # npc_id national_id
+    modified_script_mons: Dict[str, int]  # identifier form_id
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
     # topology_present = True
@@ -176,6 +177,7 @@ class PokemonRSOA(World):
         self.exclude_field_moves = set()
         self.modified_partners = []
         self.modified_npc_mon_to = {}
+        self.modified_script_mons = {}
 
         self.seed = 0  # Just an initialization value, it will properly be set in generate_early()
 

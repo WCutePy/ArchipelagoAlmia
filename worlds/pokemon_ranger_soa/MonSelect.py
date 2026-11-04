@@ -794,8 +794,6 @@ class MonSelect:
             PInstanceEvent.CHARMANDER,
             PInstanceEvent.MURKROW_3,
             PInstanceEvent.KOFFING_3,
-            PInstanceEvent.MURKROW_2,
-            PInstanceEvent.KOFFING_2,
             PInstanceEvent.SPIRITOMB,
         ]
 
@@ -977,7 +975,7 @@ class MonSelect:
             PInstanceEvent.MOTHIM,
             PInstanceEvent.MURKROW,
             PInstanceEvent.HONCHKROW,
-            PInstanceEvent.MR_MIME,
+            PInstanceEvent.MR_MIME_2,
             PInstanceEvent.MOTHIM_2,
             PInstanceEvent.SKUNTANK_2,
             PInstanceEvent.MACHAMP_2,

@@ -21,6 +21,12 @@ def write_patch(
     prsoa_patch_instance: "PokemonRSOAPatch", opened_zipfile: zipfile.ZipFile
 ) -> None:
 
+    if prsoa_patch_instance.world.modified_script_mons:
+        opened_zipfile.writestr(
+            "modified_script_mons.json",
+            orjson.dumps(prsoa_patch_instance.world.modified_script_mons),
+        )
+
     for map_name, map_data in prsoa_patch_instance.world.modified_regions.items():
         if not map_data.modified:
             continue
