@@ -132,7 +132,7 @@ def patch(
     EDITED_MES = defaultdict(lambda: defaultdict(dict))
 
     """Skip school"""
-    if "Skip School" in slot_data.get("remove_roadblocks", []):
+    if "Skip School" in slot_data.get("optional_patches", []):
         from ._data import c016
         from ._data import c020
 
@@ -431,13 +431,13 @@ def patch(
         still requiring to do it all over again when missions have progressed.
     """
 
-    if "Out of logic surf Vien Forest" not in slot_data.get("remove_roadblocks", []):
+    if "Out of logic surf Vien Forest" not in slot_data.get("optional_patches", []):
         file_name = "/data/Script/field/eventrect/er009/EventRect009400.fsb"
         from ._data import EventRect009400
 
         rom.files[file_name] = EventRect009400
 
-    if "Out of logic surf Almia Castle" not in slot_data.get("remove_roadblocks", []):
+    if "Out of logic surf Almia Castle" not in slot_data.get("optional_patches", []):
         file_name = "/data/Script/field/eventrect/er015/EventRect015400.fsb"
         from ._data import EventRect015400
 
@@ -480,7 +480,7 @@ def patch(
     ]
 
     """Mission 15"""
-    if "Protect the Ranger Union HQ!" in slot_data.get("remove_roadblocks", []):
+    if "Protect the Ranger Union HQ!" in slot_data.get("optional_patches", []):
         EVENTRECT_PATCHES["EventRect017003"] += [
             # 	PUSHRESULT 		; @134
             (134, 0x00_01_00_10),
@@ -1125,7 +1125,7 @@ def patch(
         if m:
             CHAPTER_PATCHES["c059"] += [
                 *[
-                    (i, push_national(m.npcs[12]["id"] << 16 | 0x10))
+                    (i, push_national(m.npcs[12]["id"]))
                     for i in [
                         4479,
                         4482,
@@ -1323,21 +1323,14 @@ def code_patch(
     NOP_INSTRUCTION = 0xE3A00000
     patches = []
 
-    """a patch that prevents partner being set to caught"""
-    # This bugs out the tribune quest do to not having one of the three partners unlocked
-    # therefore softlocking the game infinitely
-    # verify impact / coverage
-    # patches.append(
-    #     (0x0327D0, NOP_INSTRUCTION),
-    # )
-
     """instant text speed"""
     # just forces it in, which means no custom text speeds are used anymore
-    patches += [
-        (0xA854, 0xE3A00000),
-        (0xA858, 0xE584009C),
-        (0xA85C, 0xEA000005),
-    ]
+    if "Instant text" in slot_data.get("optional_patches", []):
+        patches += [
+            (0xA854, 0xE3A00000),
+            (0xA858, 0xE584009C),
+            (0xA85C, 0xEA000005),
+        ]
 
     data = bytearray(rom.arm9)
 

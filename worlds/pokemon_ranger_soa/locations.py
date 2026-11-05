@@ -212,67 +212,13 @@ def create_pokemon_locations(
 
     normal_include = []
 
-    # normal_include += [
-    #     17,  # ghastly, why???
-    #     4,
-    #     14,  # zubat
-    # ]
-
-    mission_goal = world.get_rule_num()
-    if mission_goal >= 11:
-        normal_include += [
-            224,  # torkoal
-        ]
-    if mission_goal >= 12:
-        pass
-        #  3 driflibm already exist
-    if mission_goal >= 14:
-        normal_include += [
-            [240, 144],  # cacturne quest q25
-        ]
-    if mission_goal >= 15:
-        if 145 not in normal_include:  # skuntank for q26
-            normal_include += [145]
-        normal_include += [188]  # weezing quest q26
-
-    crush_3 = form_options_by_criteria(
-        world, FieldMove(category=FieldMoveCategory.CRUSH, level=3), 5000
-    )
-
     # maybe move these properly to randomize or some :skull:
-    ocean_captures = [
-        data.form_id_to_species[
-            world.random.choice(
-                form_options_by_criteria(
-                    world, FieldMove(category=FieldMoveCategory.CRUSH, level=1), 1000
-                )
-            )
-        ].browser_id,
-        data.form_id_to_species[
-            world.random.choice(
-                form_options_by_criteria(
-                    world, FieldMove(category=FieldMoveCategory.CUT, level=2), 1000
-                )
-            )
-        ].browser_id,
-        91,  # mantine to swim
-        *[
-            data.form_id_to_species[world.random.choice(crush_3)].browser_id
-            for _ in range(4)
-        ],
+    ocean_captures = []
+
+    #  TODO ensure uniqueness in location count.
+    one_options = [
+        i for i in available_pool if i not in world.capture_groups.get_ids_all
     ]
-
-    add_to = world.random.choices([0, 1], weights=[capture_mons, capture_ocean_mons])[0]
-    [normal_include, ocean_captures][add_to].append(
-        87,  # lumineon quest
-    )
-    add_to = world.random.choices([0, 1], weights=[capture_mons, capture_ocean_mons])[0]
-    [normal_include, ocean_captures][add_to].append(
-        236,  # omastar quest
-    )
-
-    already_included = {a[0] if isinstance(a, list) else a for a in normal_include}
-    one_options = [i for i in available_pool if i not in already_included]
     one_count = min(len(one_options), capture_mons - len(normal_include))
     one_each = world.random.sample(one_options, one_count)
 
@@ -281,8 +227,19 @@ def create_pokemon_locations(
     dupe_captures = world.random.choices(available_pool, k=capture_mons - len(one_each))
     captures = one_each + dupe_captures
 
-    if capture_ocean_mons == 0:
-        ocean_captures.clear()
+    for i in [
+        114,  # oddish
+        115,  # Gloom
+        116,  # Vileplume
+        41,  # geodude
+        42,  # graveler
+        30,  # bonsly
+        31,  # sudowoodo
+        54,  # torterra
+        212,  # abomasnow
+    ]:
+        if i in available_pool:
+            available_pool.remove(i)
     ocean_captures += world.random.choices(
         available_pool, k=capture_ocean_mons - len(ocean_captures)
     )
@@ -364,6 +321,12 @@ def create_pokemon_locations(
         if i not in world.blacklisted_captures
     ]
     missable_items = world.random.choices(missable_options, k=missable_mons)
+    if (
+        world.options.randomize_pokemon
+        == RandomizePokemonEncounters.option_mostly_bidoof
+    ):
+        missable_items = [4] * len(missable_items)
+
     for i in missable_items:
         mon = data.species[i]
         choices = list(mon.forms.keys())

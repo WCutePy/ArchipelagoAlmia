@@ -103,8 +103,8 @@ class PInstanceEvent(EventRegistry):
     TUT_BIDOOF = InstanceEvent(
         "m001_002", 173, i=[*range(4, 13)], m=0, mandatory=True
     )  # quite sure these count for browser
-    NIGHT_PICHU = InstanceEvent("m001_006", 0x051)
-    NIGHT_GHASTLY = InstanceEvent("m001_011", 0x02E)
+    NIGHT_PICHU = InstanceEvent("m001_006", 0x051, m=0)
+    NIGHT_GHASTLY = InstanceEvent("m001_011", 0x02E, m=0)
     SLAKOTH = InstanceEvent(
         "m001_001", 129, i=[4], m=0, mandatory=True
     )  # stolen stylers
@@ -113,10 +113,10 @@ class PInstanceEvent(EventRegistry):
     )  # 2 bidoof that attack Tim when leaving school, fight only 1
     #
     TANGROWTH = InstanceEvent(
-        "m001_003b", browser_id=36, mandatory=True
+        "m001_003b", browser_id=36, mandatory=True, randomize=False
     )  # m0 graduation
     CAVE_ZUBAT = InstanceEvent(
-        "m006_001", 20, mandatory=True
+        "m006_001", 20, m=2, mandatory=True
     )  # m2 spawn that is forced to fight
     MILTANK = InstanceEvent("m004_001", 113, i=[15], m=3, mandatory=True)  # quest 1
     BUDEW_4 = InstanceEvent(
@@ -270,7 +270,7 @@ class PInstanceEvent(EventRegistry):
     SHIFTRY = InstanceEvent(
         "m038_001", 121, i=[7], m=16, mandatory=True
     )  # with nuzleaf_2
-    NUZLEAF_2 = InstanceEvent("m038_001", 120, mandatory=True)  # with shiftry
+    NUZLEAF_2 = InstanceEvent("m038_001", 120, m=16, mandatory=True)  # with shiftry
     PRIMEAPE = InstanceEvent("m038_002", 26, i=[2], m=16)  # in elevator, very missable
     ELECTRODE = InstanceEvent("m038_002", 52, i=[3], m=16)  # in elevator, very missable
     DUSCLOPS_2 = InstanceEvent(
@@ -287,11 +287,11 @@ class PInstanceEvent(EventRegistry):
         "m038_007", 148, mandatory=True, randomize=False
     )  # with mismagius
     ESPEON = InstanceEvent("m038_006", 89, i=[1], m=16, mandatory=True)  # with umbreon
-    UMBREON = InstanceEvent("m038_006", 90, mandatory=True)  # with espeon
+    UMBREON = InstanceEvent("m038_006", 90, m=16, mandatory=True)  # with espeon
     BRONZONG = InstanceEvent(
         "m038_009", 208, i=[2], m=16, mandatory=True
     )  # with claydol
-    CLAYDOL = InstanceEvent("m038_009", 146, mandatory=True)  # with bronzong
+    CLAYDOL = InstanceEvent("m038_009", 146, m=16, mandatory=True)  # with bronzong
     AGGRON = InstanceEvent(
         "m038_011", 138, mandatory=True, randomize=False
     )  # with tyranitar # npc sprite
@@ -304,9 +304,12 @@ class PInstanceEvent(EventRegistry):
         "m038_016", 30, i=[1], m=16, mandatory=True
     )  # with sceptile and luxray
     SCEPTILE = InstanceEvent(
-        "m038_016", 117, mandatory=True
+        "m038_016",
+        117,
+        mandatory=True,
+        m=16,
     )  # with alakazam and luxray
-    LUXRAY = InstanceEvent("m038_016", 179, mandatory=True)
+    LUXRAY = InstanceEvent("m038_016", 179, m=16, mandatory=True)
     SKORUPI_3 = InstanceEvent("m038_012", 219, i=[11, 12, 13], m=16, mandatory=True)
     BRONZOR_3 = InstanceEvent("m038_012", 207, i=[14, 15, 16], m=16, mandatory=True)
     BELLOSSOM_3 = InstanceEvent("m038_012", 85, i=[17, 18, 19], m=16, mandatory=True)

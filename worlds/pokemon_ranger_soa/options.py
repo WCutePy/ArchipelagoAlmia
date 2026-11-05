@@ -254,7 +254,7 @@ class FieldMoveItem(Choice):
     option_vanilla = 0
     option_item = 1
 
-    default = option_item
+    default = option_vanilla
 
 
 class FieldMoveLevelItem(Range):
@@ -546,10 +546,13 @@ class BlacklistRandomMons(OptionDict):
         return species
 
 
-class RemoveRoadblocks(OptionSet):
+class OptionalPatches(OptionSet):
     """
     This option allows removing roadblocks in the game
     that are not required to be removed, but may be preferred
+    - Instant text
+        Changes the text routine so that every line is printed
+        instantly. Speeds up gameplay, removes a little characters of some scenes.
     - Skip School
         Will skip the entire school section.
         Shaves at least 40 minutes of dialogue and textboxes
@@ -579,8 +582,9 @@ class RemoveRoadblocks(OptionSet):
         Only matters when playing with deathlink.
     """
 
-    display_name = "Remove Roadblocks"
+    display_name = "Optional Patches"
     valid_keys = [
+        "Instant text",
         "Skip School",
         "Out of logic surf Vien Forest",
         "Out of logic surf Almia Castle",
@@ -589,6 +593,7 @@ class RemoveRoadblocks(OptionSet):
     ]
 
     default = [
+        "Instant text",
         "Skip School",
         "Protect the Ranger Union HQ!",
         "Earlier save spots Altru Building",
@@ -597,29 +602,29 @@ class RemoveRoadblocks(OptionSet):
 
 @dataclass
 class PokemonRSOAOptions(PerGameCommonOptions):
-    goal: Goal
+    # goal: Goal
     mission_clear_target: MissionClearTarget
-    quest_clear_target: QuestClearTarget
-    capture_count_target: CaptureCountTarget
-    capture_rank_count_target: CaptureRankCountTarget
-    capture_rank_rank_target: CaptureRankRankTarget
+    # quest_clear_target: QuestClearTarget
+    # capture_count_target: CaptureCountTarget
+    # capture_rank_count_target: CaptureRankCountTarget
+    # capture_rank_rank_target: CaptureRankRankTarget
 
-    death_link: PokemonRSOADeathLink
-    death_link_damage: DeathlinkDamage
+    # death_link: PokemonRSOADeathLink
+    # death_link_damage: DeathlinkDamage
 
-    level_up_type: LevelUpType
-    level_up_count: LevelUpCount
-    level_up_increment: LevelUpIncrement
+    # level_up_type: LevelUpType
+    # level_up_count: LevelUpCount
+    # level_up_increment: LevelUpIncrement
 
-    rank_up_type: RankUpType
-    rank_up_count: RankUpItemCount
-    rank_up_increment: RankUpIncrement
+    # rank_up_type: RankUpType
+    # rank_up_count: RankUpItemCount
+    # rank_up_increment: RankUpIncrement
 
-    styler_model_item: StylerModelItem
+    # styler_model_item: StylerModelItem
 
     field_move_item: FieldMoveItem
     field_move_levels: FieldMoveLevelItem
-    randomize_target_field_move: RandomizeTargetFieldMove
+    # randomize_target_field_move: RandomizeTargetFieldMove
 
     randomize_pokemon: RandomizePokemonEncounters
     randomize_pokemon_etc: RandomizePokemonEtc
@@ -628,20 +633,22 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     partners: Partners
     blacklist_random_mons: BlacklistRandomMons
 
-    remove_roadblocks: RemoveRoadblocks
+    optional_patches: OptionalPatches
 
     def get_rule_num(self):
+        return self.mission_clear_target.value
+
         if self.goal == Goal.option_mission_clear:
             return self.mission_clear_target.value
         raise ValueError("Unsupported yaml goal")
 
     def get_skip_school(self):
-        return "Skip School" in self.remove_roadblocks.value
+        return "Skip School" in self.optional_patches.value
 
     def verify(self, player_name: str):
         errors = []
         if self.get_skip_school() and self.get_rule_num() == 0:
-            self.remove_roadblocks.value.remove("Skip School")
+            self.optional_patches.value.remove("Skip School")
             logging.warning(
                 f"Player {player_name} Set goal to school and skip school. School will not be skipped."
             )
@@ -684,10 +691,6 @@ OPTION_GROUPS = [
         ],
     ),
     OptionGroup(
-        "Field move options",
-        [FieldMoveItem, FieldMoveLevelItem, RandomizeTargetFieldMove],
-    ),
-    OptionGroup(
         "Pokemon Randomization options",
         [
             RandomizePokemonEncounters,
@@ -701,7 +704,11 @@ OPTION_GROUPS = [
     OptionGroup(
         "Optional patches",
         [
-            RemoveRoadblocks,
+            OptionalPatches,
         ],
+    ),
+    OptionGroup(
+        "Field move options",
+        [FieldMoveItem, FieldMoveLevelItem, RandomizeTargetFieldMove],
     ),
 ]

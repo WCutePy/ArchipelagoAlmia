@@ -78,11 +78,7 @@ class PatchMethods:
         opened_zipfile.writestr("procedures.txt", "\n".join(procedures))
         opened_zipfile.writestr(
             "slot_data.json",
-            orjson.dumps(
-                NetUtils.convert_to_base_types(
-                    patch.world.fill_slot_data(include_patch_only=True)
-                )
-            ),
+            orjson.dumps(NetUtils.convert_to_base_types(patch.world.fill_slot_data())),
         )  # for when I need the slot data
 
     @staticmethod
@@ -249,7 +245,7 @@ def get_base_rom_path(version: str, file_name: str = "") -> str:
 
 
 class PokemonRangerSOAProcedurePatch(APProcedurePatch, APTokenMixin):
-    game = "PokemonRangerSOA"
+    game = "Pokemon Ranger Shadows of Almia"
     hash = "f957f5784abf9557be086fdb6fdc74cc"
     patch_file_ending = ".apprsoa_old"
     result_file_ending = ".nds"

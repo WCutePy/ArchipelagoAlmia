@@ -12,7 +12,7 @@ from test.hosting import world
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData, SpeciesData, Party, ItemCategory
+from .data import data, MapData, SpeciesData, Party, ItemCategory, FieldMove
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
@@ -136,7 +136,7 @@ class CaptureGroups:
 
 
 class PokemonRSOA(World):
-    game = "PokemonRangerSOA"
+    game = "Pokemon Ranger Shadows of Almia"
     web = PokemonRangerSOAWebWorld()
 
     settings_key = "pokemon_ranger_soa_settings"
@@ -164,6 +164,7 @@ class PokemonRSOA(World):
     modified_script_mons: Dict[str, int]  # identifier form_id
 
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
+
     # topology_present = True
 
     def __init__(self, multiworld, player):
@@ -240,12 +241,12 @@ class PokemonRSOA(World):
             116,  # Vileplume
             41,  # geodude
             42,  # graveler
+            30,  # bonsly
             31,  # sudowoodo
             54,  # torterra
-            30,  # bonsly
             212,  # abomasnow
-            # partners
         }
+        rule_num = self.get_rule_num()
 
         if self.options.randomize_partners != RandomizePartners.option_vanilla:
             early_place_random_partners(self)
@@ -274,25 +275,46 @@ class PokemonRSOA(World):
             }
 
         if self.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla:
-            self.blacklisted_captures |= set(
+            player_blacklist = set(
                 self.options.blacklist_random_mons.get_blacklist("wild")
             )
+            self.blacklisted_captures |= player_blacklist
             mon_placers = early_place_random_restricted(self)
             for m_placer in mon_placers:
                 m_placer.finish_unresolved(
                     max_health=self.mission_affinities[self.get_rule_num()]
                 )
+            self.capture_groups.default_ids_used |= {
+                data.form_id_to_species[i].browser_id
+                for i in mon_placers[0].added_forms
+            }
+            if len(mon_placers) >= 2:
+                self.capture_groups.ocean_ids_used |= {
+                    data.form_id_to_species[i].browser_id
+                    for i in mon_placers[1].added_forms
+                }
+            for i, j in [
+                (30, FieldMove(6, 1)),
+                (30, FieldMove(6, 2)),
+                (114, FieldMove(4, 1)),
+                (115, FieldMove(4, 2)),
+                (116, FieldMove(4, 3)),
+                (41, FieldMove(6, 1)),
+                (42, FieldMove(6, 2)),
+                (54, FieldMove(4, 4)),
+                (212, FieldMove(4, 3)),
+            ]:
+                if j in mon_placers[0].added_moves and i not in player_blacklist:
+                    self.blacklisted_captures -= {i}
 
-                print(m_placer.added_forms)
-
-            early_place_random_event_mon(self, mon_placers[0])
+            early_place_random_event_mon(self)
 
             for m_placer in mon_placers:
                 del m_placer
         if (
-            self.get_rule_num() >= 16
+            rule_num >= 16
             and "Earlier save spots Altru Building"
-            in self.options.remove_roadblocks.value
+            in self.options.optional_patches.value
         ):
             self.modified_regions["m038_018"].modified = True
 
@@ -324,17 +346,6 @@ class PokemonRSOA(World):
             if not rules_scope.region_included(map_name, data_):
                 continue
             for i, mon in data_.POKEMON_SPAWN.items():
-                if (map_name, i) in [
-                    ("m001_011", 0),
-                    ("m001_011", 1),
-                    ("m001_011", 2),
-                    ("m001_011", 3),
-                    # ("m001_001", 5),
-                    # ("m001_006", 0),
-                    # ("m001_006", 1),
-                    # ("m006_001", 5),
-                ]:
-                    continue
                 if (
                     mon.SPECIES_NAME not in ["Doduo", "Bidoof", "Staraptor"]
                     and mon.randomize is False
@@ -437,34 +448,32 @@ class PokemonRSOA(World):
     def create_item(self, name: str) -> items.PokemonRSOAItem:
         return items.create_item_with_correct_classification(self, name)
 
-    def fill_slot_data(self, include_patch_only: bool = False) -> Mapping[str, Any]:
+    def fill_slot_data(self) -> Mapping[str, Any]:
         slot_data = self.options.as_dict(
-            "goal",
+            # "goal",
             "mission_clear_target",
-            "quest_clear_target",
-            "capture_count_target",
-            "capture_rank_count_target",
-            "capture_rank_rank_target",
-            "death_link",
-            "death_link_damage",
-            "level_up_type",
-            "level_up_count",
-            "level_up_increment",
-            "rank_up_type",
-            "rank_up_count",
-            "rank_up_increment",
+            # "quest_clear_target",
+            # "capture_count_target",
+            # "capture_rank_count_target",
+            # "capture_rank_rank_target",
+            # "death_link",
+            # "death_link_damage",
+            # "level_up_type",
+            # "level_up_count",
+            # "level_up_increment",
+            # "rank_up_type",
+            # "rank_up_count",
+            # "rank_up_increment",
             "field_move_item",
             "randomize_pokemon",
             "randomize_pokemon_etc",
-            "randomize_target_field_move",
+            # "randomize_target_field_move",
             "randomize_partners",
             "partner_starters",
             "partners",
             "blacklist_random_mons",
+            "optional_patches",
         )
-
-        if include_patch_only:
-            slot_data |= self.options.as_dict("remove_roadblocks")
 
         # slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
         slot_data["blacklisted_captures"] = self.blacklisted_captures

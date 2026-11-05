@@ -415,10 +415,6 @@ class MonSelect:
             include={
                 "m001_006": [0, 1],  # make it so these are random just
                 # more appropriate in the future (pichu)
-                "m001_008": [
-                    0,
-                    3,
-                ],  # this is to make sure the field move is present. Make different!
                 "m001_011": [0, 1, 2, 3],
                 "m001_013": [0],
                 "m001_001": [5],  # needs to match up to the slakoth encounter
@@ -1179,10 +1175,6 @@ class MonPlacer:
         out = apply_place_on_random(
             self.world, self.all_maps, form_id, exclude=to_exclude
         )
-        if fieldmove and fieldmove.category == FieldMoveCategory.RAIN_DANCE:
-            print(fieldmove, out)
-        if form_id == 91:
-            print(form_id, out)
         self.all_maps[out[0]].remove(out[1])
         self.added_forms.add(form_id)
 

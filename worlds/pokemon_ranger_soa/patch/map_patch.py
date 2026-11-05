@@ -183,7 +183,7 @@ def add_map_base_patches(map_name: str, data: Dict[int, Any], slot_data) -> None
         return
 
     if map_name == "m038_018" and "Earlier save spots Altru Building" in slot_data.get(
-        "remove_roadblocks", []
+        "optional_patches", []
     ):
         data[0x08] |= {8: {"id": 92, "x": 430, "y": 180}}
         return

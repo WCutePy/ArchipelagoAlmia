@@ -35,7 +35,7 @@ NOP_INSTRUCTION_BYTES = bytes.fromhex("0000A0E3")
 
 
 class PokemonRangerSOA(BizHawkClient):
-    game = "PokemonRangerSOA"
+    game = "Pokemon Ranger Shadows of Almia"
     system = "NDS"
     patch_suffix = ".apprsoa"
 

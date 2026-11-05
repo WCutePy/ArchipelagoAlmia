@@ -35,14 +35,18 @@ def attach_pokemon_encounter(
     instance_name: str,
     spawn_data: PokemonSpawnEntry,
     connect_to: Region,
-) -> Region:
-    pokemon_region = Region(instance_name, world.player, world.multiworld)
-    connect_to.connect(pokemon_region, instance_name)
+) -> Optional[Region]:
     species: SpeciesData = data.form_id_to_species.get(spawn_data.SPECIES_ID, None)
     if species is None:
+        if spawn_data.SPECIES_ID in [328, 329]:
+            #  these are reserved form ids for modifications
+            return None
         raise ValueError(
             f"no species is given for\n{instance_name=}, {spawn_data=}, {connect_to=}"
         )
+    pokemon_region = Region(instance_name, world.player, world.multiworld)
+    connect_to.connect(pokemon_region, instance_name)
+
     place_locked = False
     if (
         world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla
