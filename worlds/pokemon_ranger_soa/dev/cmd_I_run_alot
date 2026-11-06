@@ -3,6 +3,7 @@ py Launcher.py "Build APWorlds" -- "PokemonRangerSOA"
 
 py -m pytest -n auto --ignore=test/worlds --ignore-glob='worlds/**'
 
+python fuzz.py -g "pokemon_ranger_soa" -r 100 -n 1 -t 100 -j 3 -m .\hooks\prsoa_meta.yaml
 
 search print message with specific id
 PUSH\s+34[^\n]*\n[^\n]*\n\s*SYSCALL\s+2,\s*24,\s*4

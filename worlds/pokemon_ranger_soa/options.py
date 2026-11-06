@@ -38,6 +38,12 @@ class MissionClearTarget(Choice):
     When mission clear is set as goal, this is the
     mission/story section required to be
     beaten to complete the game.
+
+    Pokémon and maps after the mission goal will
+    NOT be randomized. To play as much of the game
+    randomized as possible set it to the highest
+    included goal target, currently
+    execute_operation_brighton.
     """
 
     display_name = "Missing clear target"
