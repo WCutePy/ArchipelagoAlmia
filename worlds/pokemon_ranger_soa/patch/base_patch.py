@@ -740,9 +740,13 @@ def patch(
             ]
 
     if random_pokemon:
-        script_mons = orjson.loads(
-            prsoa_patch_instance.get_file("modified_script_mons.json")
-        )
+        try:
+            script_mons = orjson.loads(
+                prsoa_patch_instance.get_file("modified_script_mons.json")
+            )
+        except:
+            script_mons = {}
+
         m = CompactMapData.from_map_name(prsoa_patch_instance, "m001_002")
         if m:
             bidoof = m.npcs[4]["id"]
@@ -1157,9 +1161,12 @@ def patch(
                 (2795, push_national(m.npcs[7]["id"])),
                 # PUSH 121		; @2839
                 (2839, m.npcs[7]["id"] << 16 | 0x10),
-                (2841, script_mons["NUZLEAF_2_1"] << 16 | 0x10),
-                (2843, script_mons["NUZLEAF_2_2"] << 16 | 0x10),
             ]
+            if script_mons.get("NUZLEAF_2_1", False):
+                CHAPTER_PATCHES["c061"] += [
+                    (2841, script_mons["NUZLEAF_2_1"] << 16 | 0x10),
+                    (2843, script_mons["NUZLEAF_2_2"] << 16 | 0x10),
+                ]
         m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_002")
         if m:
             CHAPTER_PATCHES["c061"] += [
@@ -1205,8 +1212,11 @@ def patch(
                 (9762, push_national(m.npcs[1]["id"])),
                 # PUSH 89		; @9783
                 (9783, m.npcs[1]["id"] << 16 | 0x10),
-                (9785, script_mons["UMBREON"] << 16 | 0x10),
             ]
+            if script_mons.get("UMBREON", False):
+                CHAPTER_PATCHES["c061"] += [
+                    (9785, script_mons["UMBREON"] << 16 | 0x10),
+                ]
         m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_009")
         if m:
             CHAPTER_PATCHES["c061"] += [
@@ -1214,8 +1224,11 @@ def patch(
                 (10273, push_national(m.npcs[2]["id"])),
                 # PUSH 208		; @10303
                 (10303, m.npcs[2]["id"] << 16 | 0x10),
-                (10305, script_mons["BRONZONG"] << 16 | 0x10),
             ]
+            if script_mons.get("BRONZONG", False):
+                CHAPTER_PATCHES["c061"] += [
+                    (10305, script_mons["BRONZONG"] << 16 | 0x10),
+                ]
         m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_003")
         if m:
             CHAPTER_PATCHES["c061"] += [
@@ -1272,9 +1285,12 @@ def patch(
                 (16221, push_national(m.npcs[1]["id"])),
                 # PUSH 30		; @16256
                 (16256, m.npcs[1]["id"] << 16 | 0x10),
-                (16258, script_mons["SCEPTILE"] << 16 | 0x10),
-                (16260, script_mons["LUXRAY"] << 16 | 0x10),
             ]
+            if script_mons.get("SCEPTILE", False):
+                CHAPTER_PATCHES["c061"] += [
+                    (16258, script_mons["SCEPTILE"] << 16 | 0x10),
+                    (16260, script_mons["LUXRAY"] << 16 | 0x10),
+                ]
         m = CompactMapData.from_map_name(prsoa_patch_instance, "m038_018")
         if m:
             CHAPTER_PATCHES["c061"] += [

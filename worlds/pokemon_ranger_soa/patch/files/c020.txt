@@ -189,7 +189,7 @@ loc_d2:
 	JMP loc_a ;
 loc_continue:
 	PUSH 21		; @13
-	; SYSCALL 2, 129, 1		;sc2_unk_0x0081 @14
+	SYSCALL 2, 129, 1		;sc2_unk_0x0081 @14
 	PUSH 0		; @15
 	RETURN 1, 0		; @16
 
