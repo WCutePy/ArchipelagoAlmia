@@ -65,7 +65,7 @@ suffer from this. Future changes will limit the unique entity count on these map
 ## Credits
 
 I would like to thank several people for making this project possible.
-Thank you happylappy and Chesyon for the large work put into dissassembling.
-Pokemonlover1234 for being there from the start, and everyone else who chimed in or
-helped test during development of the randomizer.
-I'd also like to thank Fexean for creating almiascript years ago
+Thank you happylappy and Chesyon for the large work put into dissassembling and their large knowledge on NDS modding.
+Pokemonlover1234 for being there from the start, Lucarr10 for helping with sprites and other file formats
+and everyone else who chimed in or helped test during development of the randomizer.
+I'd also like to explicitly thank Fexean for creating almiascript years ago.
