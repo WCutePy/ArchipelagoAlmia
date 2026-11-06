@@ -65,7 +65,7 @@ class MissionClearTarget(Choice):
     option_protect_ranger_union_hq = 15
     option_execute_operation_brighton = 16
 
-    default = option_investigate_the_marine_cave
+    default = option_execute_operation_brighton
 
 
 class QuestClearTarget(Range):
@@ -323,7 +323,7 @@ class RandomizePokemonEtc(Choice):
     option_vanilla = 0
     option_full_random = 1
 
-    default = option_vanilla
+    default = option_full_random
 
 
 class RandomizePartners(Choice):
@@ -602,7 +602,6 @@ class OptionalPatches(OptionSet):
         "Instant text",
         "Skip School",
         "Protect the Ranger Union HQ!",
-        "Earlier save spots Altru Building",
     ]
 
 
