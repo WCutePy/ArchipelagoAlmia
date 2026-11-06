@@ -29,7 +29,7 @@ Movement field moves such as swim, river flow or airlift have multiple copies pl
 Quest required pokemon are placed across all potential spots.
 Static encounters are filled such that they have a similar HP to their original counter part. Remaining wild spots are filled randomly, ensuring one of each species exists in the wild.
 
-**NOTE** This rando spans the full story, the randomizer does randomize postgame or ensure postgame quests are beatable.
+**NOTE** This rando spans the full story, the randomizer does **NOT** randomize postgame or ensure postgame quests are beatable.
 
 ## What items and locations get randomized?
 Locations
