@@ -145,6 +145,7 @@ def form_options_by_criteria(
     options = []
     lowest_form = None
     lowest_health: int | None = None
+    blacklisted_lowest = False
 
     for species in world.modified_species.values():
         if field_move.category != species.field_move.category:
@@ -155,6 +156,9 @@ def form_options_by_criteria(
             continue
         for form, form_data in species.forms.items():
             if lowest_form is None or lowest_health > form_data.friendship_gauge:
+                if species.browser_id in world.blacklisted_captures:
+                    blacklisted_lowest = species.browser_id
+                    continue
                 lowest_form = form
                 lowest_health = form_data.friendship_gauge
             if species.browser_id in world.blacklisted_captures:
@@ -165,6 +169,9 @@ def form_options_by_criteria(
 
     if options:
         return options
+    if lowest_form is None:
+        #  TODO honestly just make torterra not require tackle 4
+        return [blacklisted_lowest]
     return [lowest_form]
 
 

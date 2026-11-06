@@ -304,6 +304,7 @@ class PokemonRSOA(World):
                 54,  # torterra
                 212,  # abomasnow
             }
+            self.blacklisted_captures |= player_blacklist
 
             early_place_random_event_mon(self)
 
@@ -339,22 +340,22 @@ class PokemonRSOA(World):
             apply_randomize_npc_pokemon(self)
             randomized = True
 
-        rules_scope = MonSelect.get_rules_scope()
-        for map_name, data_ in self.modified_regions.items():
-            if not rules_scope.region_included(map_name, data_):
-                continue
-            for i, mon in data_.POKEMON_SPAWN.items():
-                if (
-                    mon.SPECIES_NAME not in ["Doduo", "Bidoof", "Staraptor"]
-                    and mon.randomize is False
-                ):
-                    print(
-                        map_name,
-                        i,
-                        mon.SPECIES_NAME,
-                        data.form_id_to_species[mon.SPECIES_ID].field_move,
-                        mon.missable,
-                    )
+        # rules_scope = MonSelect.get_rules_scope()
+        # for map_name, data_ in self.modified_regions.items():
+        #     if not rules_scope.region_included(map_name, data_):
+        #         continue
+        #     for i, mon in data_.POKEMON_SPAWN.items():
+        #         if (
+        #             mon.SPECIES_NAME not in ["Doduo", "Bidoof", "Staraptor"]
+        #             and mon.randomize is False
+        #         ):
+        #             print(
+        #                 map_name,
+        #                 i,
+        #                 mon.SPECIES_NAME,
+        #                 data.form_id_to_species[mon.SPECIES_ID].field_move,
+        #                 mon.missable,
+        #             )
 
         MonSelect.world = None
 
