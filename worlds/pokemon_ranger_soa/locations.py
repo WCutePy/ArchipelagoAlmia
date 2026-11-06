@@ -227,19 +227,6 @@ def create_pokemon_locations(
     dupe_captures = world.random.choices(available_pool, k=capture_mons - len(one_each))
     captures = one_each + dupe_captures
 
-    for i in [
-        114,  # oddish
-        115,  # Gloom
-        116,  # Vileplume
-        41,  # geodude
-        42,  # graveler
-        30,  # bonsly
-        31,  # sudowoodo
-        54,  # torterra
-        212,  # abomasnow
-    ]:
-        if i in available_pool:
-            available_pool.remove(i)
     ocean_captures += world.random.choices(
         available_pool, k=capture_ocean_mons - len(ocean_captures)
     )

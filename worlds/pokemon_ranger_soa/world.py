@@ -293,19 +293,17 @@ class PokemonRSOA(World):
                     data.form_id_to_species[i].browser_id
                     for i in mon_placers[1].added_forms
                 }
-            for i, j in [
-                (30, FieldMove(6, 1)),
-                (30, FieldMove(6, 2)),
-                (114, FieldMove(4, 1)),
-                (115, FieldMove(4, 2)),
-                (116, FieldMove(4, 3)),
-                (41, FieldMove(6, 1)),
-                (42, FieldMove(6, 2)),
-                (54, FieldMove(4, 4)),
-                (212, FieldMove(4, 3)),
-            ]:
-                if j in mon_placers[0].added_moves and i not in player_blacklist:
-                    self.blacklisted_captures -= {i}
+            self.blacklisted_captures -= {
+                114,  # oddish
+                115,  # Gloom
+                116,  # Vileplume
+                41,  # geodude
+                42,  # graveler
+                30,  # bonsly
+                31,  # sudowoodo
+                54,  # torterra
+                212,  # abomasnow
+            }
 
             early_place_random_event_mon(self)
 

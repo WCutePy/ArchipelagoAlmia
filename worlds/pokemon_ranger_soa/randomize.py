@@ -34,14 +34,11 @@ def get_random_form_health_range(
     browser_ids: List[int],
     min_health: int = 0,
     max_health: int = 10000,
-    blacklist: List[int] = [],  # browser_id
 ) -> int:
     options = []
     closet_min = 0
     closest = None
     for i in browser_ids:
-        if i in blacklist:
-            continue
         forms = []
         for form, form_data in world.modified_species[i].forms.items():
             health = form_data.friendship_gauge
@@ -261,6 +258,9 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     # tangrowth
     maps.add_requires(get_required_fieldmove(world, "m001_001", 0), [("m001_015", 0)])
 
+    maps.add_requires(FieldMove(FieldMoveCategory.TACKLE, 4), [])  # fetch torterra :)
+    maps.add_requires(FieldMove(FieldMoveCategory.SOAK, 2), [])  # fetch graveler :)
+
     if mission_goal <= 0:
         return (maps,)
 
@@ -281,8 +281,6 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     red_gigaremo = get_required_fieldmove(world, "m006_001", 0)
     maps.place_random(fieldmove=red_gigaremo, max_health=world.mission_affinities[1])
 
-    maps.add_requires(FieldMove(FieldMoveCategory.TACKLE, 1), [])  # fetch oddish
-    maps.add_requires(FieldMove(FieldMoveCategory.SOAK, 1), [])  # fetch bonsly, geodude
     if mission_goal <= 2:
         return (maps,)
 
@@ -366,8 +364,6 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     maps.place_random(fieldmove=green_gigaremo_right, max_health=max_health)
     maps.place_random(fieldmove=blue_gigaremo, max_health=max_health)
 
-    maps.add_requires(FieldMove(FieldMoveCategory.TACKLE, 2), [])  # fetch gloom
-    maps.add_requires(FieldMove(FieldMoveCategory.SOAK, 2), [])  # fetch sudowoodo
     if mission_goal <= 4:
         return (maps,)
 
@@ -422,6 +418,8 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     sea.added_forms.add(form_id)
     sea.all_maps[out[0]].remove(out[1])
 
+    sea.add_requires(FieldMove(FieldMoveCategory.TACKLE, 4), [])  # fetch torterra :)
+    sea.add_requires(FieldMove(FieldMoveCategory.SOAK, 2), [])  # fetch graveler :)
     if mission_goal <= 5:
         return maps, sea
     maps.requires_forms_one.append(69)  # fetch eevee quest 08
@@ -602,9 +600,6 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     last_one = {"m020_016": [0]}
     out = apply_place_on_random(world, last_one, world.random.choice(tackle_2_options))
 
-    maps.add_requires(
-        FieldMove(FieldMoveCategory.TACKLE, 3), []
-    )  # fetch vileplume, abomasnow
     if mission_goal <= 8:
         return maps, sea
 
@@ -917,7 +912,6 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     maps.place_random(form_id=216)  # fetch riolu
     maps.place_random(form_id=216, ignore_dupe=False)  # fetch riolu
 
-    maps.add_requires(FieldMove(FieldMoveCategory.TACKLE, 4), [])  # fetch torterra
     if mission_goal <= 10:
         return maps, sea
     """mission 11"""
@@ -1279,17 +1273,6 @@ def early_place_random_event_mon(world: PokemonRSOA):
         not_had,
         min_health=500,
         max_health=1000,
-        blacklist=[
-            114,  # oddish
-            115,  # Gloom
-            116,  # Vileplume
-            41,  # geodude
-            42,  # graveler
-            30,  # bonsly
-            31,  # sudowoodo
-            54,  # torterra
-            212,  # abomasnow
-        ],
     )
     sharpedo_browser = data.form_id_to_species[sharpedo_form].browser_id
     PInstanceEvent.SHARPEDO.form_id = sharpedo_form
@@ -1314,6 +1297,12 @@ def early_place_random_event_mon(world: PokemonRSOA):
     min_i = 0
     max_i = 0
     for event in sorted_events:
+        if (
+            world.options.randomize_pokemon
+            == RandomizePokemonEncounters.option_mostly_bidoof
+        ):
+            event.form_id = 173
+            continue
         species = world.modified_species[
             data.form_id_to_species[event.form_id].browser_id
         ]
@@ -1358,15 +1347,15 @@ def early_place_random_event_mon(world: PokemonRSOA):
 
     apply_place_on_random(world, {"m001_001": [5]}, PInstanceEvent.SLAKOTH.form_id)
 
-    # if mission_goal <= 0:
-    #     return
+    if mission_goal <= 0:
+        return
     apply_place_on_random(world, {"m006_001": [5]}, PInstanceEvent.CAVE_ZUBAT.form_id)
-    # if mission_goal <= 2:
-    #     return
-    # if mission_goal <= 3:
-    #     return
-    # if mission_goal <= 4:
-    #     return
+    if mission_goal <= 2:
+        return
+    if mission_goal <= 3:
+        return
+    if mission_goal <= 4:
+        return
     for i in [
         ("m011_001", 0),
         ("m011_002", 0),
@@ -1375,24 +1364,24 @@ def early_place_random_event_mon(world: PokemonRSOA):
         place_npc(world, i, PInstanceEvent.SHARPEDO.form_id)
     apply_place_on_random(world, {"m011_005": [5]}, PInstanceEvent.SHARPEDO.form_id)
 
-    # if mission_goal <= 5:
-    #     return
-    # if mission_goal <= 6:
-    #     return
-    # if mission_goal <= 7:
-    #     return
-    # if mission_goal <= 8:
-    #     return
-    # if mission_goal <= 9:
-    #     return
-    # if mission_goal <= 10:
-    #     return
-    # if mission_goal <= 11:
-    #     return
-    # if mission_goal <= 12:
-    #     return
-    # if mission_goal <= 15:
-    #     return
+    if mission_goal <= 5:
+        return
+    if mission_goal <= 6:
+        return
+    if mission_goal <= 7:
+        return
+    if mission_goal <= 8:
+        return
+    if mission_goal <= 9:
+        return
+    if mission_goal <= 10:
+        return
+    if mission_goal <= 11:
+        return
+    if mission_goal <= 12:
+        return
+    if mission_goal <= 15:
+        return
     world.modified_script_mons |= {
         "NUZLEAF_2_1": PInstanceEvent.NUZLEAF_2.form_id,
         "NUZLEAF_2_2": PInstanceEvent.NUZLEAF_2.form_id,
