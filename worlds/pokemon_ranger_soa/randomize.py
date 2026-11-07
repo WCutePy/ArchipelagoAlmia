@@ -101,14 +101,16 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     world.random.shuffle(starters)
     world.random.shuffle(partners)
 
-    place_npc(world, ("m005_003", 2), 311)
-    place_npc(world, ("m008_006", 5), 311)
+    print("starters:", starters)
+
+    place_npc(world, ("m005_003", 4), 313)
+    place_npc(world, ("m008_006", 10), 313)
 
     place_npc(world, ("m005_003", 3), 312)
     place_npc(world, ("m008_006", 4), 312)
 
-    place_npc(world, ("m005_003", 4), 313)
-    place_npc(world, ("m008_006", 10), 313)
+    place_npc(world, ("m005_003", 2), 311)
+    place_npc(world, ("m008_006", 5), 311)
 
     vanilla_partners_in_some_order = [
         82,  # kricketot
@@ -249,6 +251,9 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m003_001": [1, 2, 4],
         "m007_001": [1, 3, 4],
     }
+
+    out = apply_place_on_random(world, {"m003_001": [1]}, 305)
+    maps.remove_if(*out)
 
     tree_fieldmove = get_required_fieldmove(world, "m001_001", 5)
     tree_spots = [("m001_001", 5), ("m007_001", 4)]
@@ -1254,7 +1259,6 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
 
 def early_place_random_event_mon(world: PokemonRSOA):
     mission_goal = world.get_rule_num()
-    ...  # randomizer parts
 
     options = {
         i
@@ -1328,8 +1332,8 @@ def early_place_random_event_mon(world: PokemonRSOA):
     for event in PInstanceEvent.events():
         if event.i is None or event.form_id is None:
             continue
-        # if event.m <= mission_goal:
-        #     continue
+        if mission_goal < event.m:
+            continue
         try:
             for i in event.i:
                 place_npc(world, (event.map_name, i), event.form_id)

@@ -1377,6 +1377,7 @@ def code_patch(
         code_bytes = bytes.fromhex("".join(ARM_INSTRUCTION_BYTES))
 
         if slot_data.get("randomize_partners") == RandomizePartners.option_starter_only:
+            #  TODO fix back!!!
             partner_ids = [311, 312, 313] + partners[3:]
         else:
             partner_ids = list(range(311, 311 + min(len(partners), 18))) + [0] * max(

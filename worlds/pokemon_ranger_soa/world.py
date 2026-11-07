@@ -5,14 +5,12 @@ from dataclasses import fields, dataclass, field
 from typing import Any, Dict, List, Set, ClassVar, Tuple
 
 import settings
-from BaseClasses import Tutorial, Location, Item, CollectionState, ItemClassification
-from Fill import sweep_from_pool
+from BaseClasses import Tutorial, Location, Item, CollectionState
 from Options import Option
-from test.hosting import world
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData, SpeciesData, Party, ItemCategory, FieldMove
+from .data import data, MapData, SpeciesData, Party, ItemCategory
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
@@ -33,8 +31,7 @@ from .randomize import (
     apply_randomize_npc_pokemon,
     early_place_random_event_mon,
 )
-from .rom import PokemonRangerSOAProcedurePatch, write_tokens, PokemonRSOAPatch
-from Fill import FillError, fill_restrictive
+from .rom import PokemonRangerSOAProcedurePatch, PokemonRSOAPatch
 
 PokemonRangerSOA
 
@@ -332,6 +329,8 @@ class PokemonRSOA(World):
 
         randomized = False
 
+        if self.options.randomize_partners != RandomizePartners.option_vanilla:
+            randomized = True
         if self.options.randomize_pokemon != RandomizePokemonEncounters.option_vanilla:
             apply_randomized_pokemon(self)
             randomized = True

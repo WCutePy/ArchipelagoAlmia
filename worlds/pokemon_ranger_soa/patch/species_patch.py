@@ -196,7 +196,7 @@ def patch(
 
         starly, pach, munchlax, *_ = partners
         pokemon_to_npc_sprite(rom, data.form_id_to_species[starly].national_id, 111)
-        pokemon_to_npc_sprite(rom, data.form_id_to_species[pach].national_id, 112)
+        # pokemon_to_npc_sprite(rom, data.form_id_to_species[pach].national_id, 112)
         pokemon_to_npc_sprite(rom, data.form_id_to_species[munchlax].national_id, 113)
 
     npc_mon_to = prsoa_patch_instance.files.get("npc_mon_to.txt")
