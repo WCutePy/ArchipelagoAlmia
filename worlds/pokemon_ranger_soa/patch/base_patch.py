@@ -1348,11 +1348,18 @@ def code_patch(
             (0xA85C, 0xEA000005),
         ]
 
-    data = bytearray(rom.arm9)
+    arm9 = bytearray(rom.arm9)
 
     for offset, instruction in patches:
-        struct.pack_into("<I", data, offset, instruction)
+        struct.pack_into("<I", arm9, offset, instruction)
 
+    """set last cleared mission for the beach fanfare too"""
+    offset = 0x02011480 - 0x02000000
+    arm9[offset + 4 : offset + 4 + 36] = arm9[offset : offset + 36]
+    struct.pack_into("<I", arm9, offset, 0xE5_84_00_04)
+    struct.pack_into("<I", arm9, offset + 8, 0x2A00_00_07)
+
+    """partners"""
     partners = prsoa_patch_instance.files.get("partners.txt")
     if partners:
         partners = orjson.loads(partners)
@@ -1390,7 +1397,7 @@ def code_patch(
 
         is_partner_patch = code_bytes + table_bytes
 
-        data[offset : offset + len(is_partner_patch)] = is_partner_patch
+        arm9[offset : offset + len(is_partner_patch)] = is_partner_patch
 
         # improve patch quality
         # overlay 0, 0213a658
@@ -1404,4 +1411,4 @@ def code_patch(
         #  patch GetPartnerIndexFromFormId
         #  don't know current impact of this...
 
-    rom.arm9 = bytes(data)
+    rom.arm9 = bytes(arm9)

@@ -461,10 +461,35 @@ def _init():
 
     extracted_species: List[Dict] = load_json_data("species.json")
 
+    # TODO CONSIDER MOVING THIS, probably NOT the place to do this for
+    #  unrandomized
+    #  most of these are untested by me probably :)
+    blacklisted_forms = [
+        #  bidoof - test if both are issue, one had its reaction alignment set wrong (easy fix)
+        301,
+        310,
+        #  bibarel - one or more behave weird / unnecessarily difficult, idk which
+        300,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        #  sharpedo - was said to not move
+        406,
+        #  darkrai - unused by code, maybe in dlc???
+        428,
+        #  dialga - just guessing i need to blacklist this one lol
+        441,
+        442,
+    ]
     for species_data in extracted_species:
         species = SpeciesData(**species_data)
         data.species[species.browser_id] = species
         for form in species.forms.keys():
+            if form in blacklisted_forms:
+                continue
             data.form_id_to_species[form] = species
 
     extracted_items: List[Dict] = load_json_data("items.json")

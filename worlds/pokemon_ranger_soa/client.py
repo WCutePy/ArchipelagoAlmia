@@ -39,6 +39,8 @@ class PokemonRangerSOA(BizHawkClient):
     system = "NDS"
     patch_suffix = ".apprsoa"
 
+    ram = "ARM9 System Bus"
+
     local_checked_locations: Set[int]
     local_set_events: Dict[str, bool]
     local_found_key_items: Dict[str, bool]
@@ -92,10 +94,6 @@ class PokemonRangerSOA(BizHawkClient):
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
 
-        raw = bytes(header[0])
-        if not raw.startswith(b"POKEMONLINK"):
-            return False
-
         self.initialize_client()
 
         return True
@@ -105,70 +103,44 @@ class PokemonRangerSOA(BizHawkClient):
             return
 
         try:
+            # with open("debug_log.txt", "a") as f:
+            #     f.write(f"[DEBUG] {ctx.slot_data["field_move_stages"]}\n")
+
             guards: Dict[str, Tuple[int, bytes, str]] = {}
 
             await self.handle_tracker_info(ctx, guards)
             await self.handle_death_link(ctx, guards)
 
-            game_state = None
-            browser_captures_bytes = bytes(0)
-            quest_bytes = bytes(0)
-
-            num_receieved_items = 0
-            styler_and_rank = None
-            current_mission = None
-            room_id = None
-            partner_pokemon = bytes(0)
-
             read_result = await bizhawk.read(
                 ctx.bizhawk_ctx,
                 [
-                    (data.ram_addresses["GAME_STATE"].first, 1, "ARM9 System Bus"),
+                    (data.ram_addresses["GAME_STATE"].first, 1, self.ram),
                     (
                         data.ram_addresses["BROWSER_TABLE_ADDRESS"].first,
                         0x7A,
-                        "ARM9 System Bus",
+                        self.ram,
                     ),
-                    (RECEIVED_ITEM_ADDRESS.first, 3, "ARM9 System Bus"),
-                    (
-                        data.ram_addresses["CURRENT_STYLER_AND_RANK"].first,
-                        1,
-                        "ARM9 System Bus",
-                    ),
-                    (data.ram_addresses["CURRENT_MISSION"].first, 1, "ARM9 System Bus"),
-                    (data.ram_addresses["CURRENT_ROOM_ID"].first, 2, "ARM9 System Bus"),
-                    (
-                        data.ram_addresses["QUEST_TABLE_ADDRESS"].first,
-                        60,
-                        "ARM9 System Bus",
-                    ),
-                    (
-                        data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first,
-                        10,
-                        "ARM9 System Bus",
-                    ),
+                    (RECEIVED_ITEM_ADDRESS.first, 3, self.ram),
+                    (data.ram_addresses["CURRENT_STYLER_AND_RANK"].first, 1, self.ram),
+                    (data.ram_addresses["CURRENT_MISSION"].first, 3, self.ram),
+                    (data.ram_addresses["CURRENT_ROOM_ID"].first, 2, self.ram),
+                    (data.ram_addresses["QUEST_TABLE_ADDRESS"].first, 60, self.ram),
+                    (data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first, 10, self.ram),
+                    (data.ram_addresses["LAST_MISSION_ID"].first, 1, self.ram),
                 ],
             )
 
-            if read_result is not None:
-                game_state = int.from_bytes(read_result[0], "little")
-                browser_captures_bytes = read_result[1]
-                num_receieved_items = int.from_bytes(read_result[2], "little")
-                styler_and_rank = int.from_bytes(read_result[3], "little")
-                current_mission = int.from_bytes(read_result[4], "little")
-                room_id = int.from_bytes(read_result[5], "little")
-                quest_bytes = read_result[6]
-                partner_pokemon = read_result[7]
-
-            if (
-                ctx.slot_data["level_up_type"] != options.LevelUpType.option_vanilla
-                and game_state == GameStateEnum.BATTLE
-            ):
-                if not self.level_up_patched:
-                    # await self.patch_level_up_instructions(ctx)
-                    self.level_up_patched = True
+            if read_result is None:
                 return
-            self.level_up_patched = False
+            game_state = int.from_bytes(read_result[0], "little")
+            browser_captures_bytes = read_result[1]
+            num_receieved_items = int.from_bytes(read_result[2], "little")
+            styler_and_rank = int.from_bytes(read_result[3], "little")
+            current_mission = read_result[4][0]
+            last_mission_id = read_result[4][2]
+            room_id = int.from_bytes(read_result[5], "little")
+            quest_bytes = read_result[6]
+            partner_pokemon = read_result[7]
 
             """
             BEING IN BATTLE WILL STOP THINGS BELOW OCCURRING!
@@ -204,10 +176,6 @@ class PokemonRangerSOA(BizHawkClient):
                 and partner not in self.allowed_partners
                 and partner != 0
             ):
-                # with open("debug_log.txt", "a") as f:
-                #     f.write(
-                #         f"[DEBUG] {partner_pokemon=}, {partner_counts_as_party_slot=}, {partner=}, {self.allowed_partners=}\n"
-                #     )
                 if len(self.allowed_partners) >= 1:
                     partner = 0x0FFF0000 | self.first_partner
                     default_partner = (0x0FFF00BC).to_bytes(4, "little")
@@ -238,6 +206,7 @@ class PokemonRangerSOA(BizHawkClient):
             game_clear = False
             local_checked_locations: Set[int] = set()
 
+            local_captures: Set[int] = set()
             for browser_number, species in data.species.items():
                 offset = species.browser_offset
 
@@ -250,14 +219,27 @@ class PokemonRangerSOA(BizHawkClient):
                         species.browser_id, LocationCategory.BROWSER
                     )
 
-                    if species.browser_id in ctx.slot_data["blacklisted_captures"]:
-                        continue
-                    local_checked_locations.add(location_id)
+                    # if species.browser_id in ctx.slot_data["blacklisted_captures"]:
+                    #     continue  # TODO figure out if this should be done at all
+                    #  blacklisting should be respected during gen, so if you can catch
+                    #  it it's fair game
+                    local_captures.add(location_id)
 
-            local_captured_pokemon = len(local_checked_locations)
-            target = ctx.slot_data["capture_count_target"]
-            # if local_captured_pokemon >= target:
-            #     game_clear = True
+            local_checked_locations |= local_captures
+            del local_captures
+
+            mission_checked: Set[int] = set()
+            if last_mission_id == 33:
+                mission_checked.add(
+                    location_category_to_id(0, LocationCategory.MISSION)
+                )
+            elif last_mission_id:
+                for i in range(min(last_mission_id + 1, 17)):
+                    mission_checked.add(
+                        location_category_to_id(i, LocationCategory.MISSION)
+                    )
+            local_checked_locations |= mission_checked
+            del mission_checked
 
             quests_checked: Set[int] = set()
             alternate_quests: Set[int] = set()
@@ -268,9 +250,9 @@ class PokemonRangerSOA(BizHawkClient):
                 if not (byte & 0b00000010):
                     continue
 
-                index = None
                 if 41 <= i <= 43:
                     alternate_quests.add(i)
+                    continue  # TODO tesing, but makes sense!
                 elif i > 43:
                     index = i - 1
                 else:
@@ -286,8 +268,9 @@ class PokemonRangerSOA(BizHawkClient):
                 )[: len(alternate_quests)]
             )
             quests_checked |= alternate_to_actual
-
             local_checked_locations |= quests_checked
+            del quests_checked
+
             if local_checked_locations != self.local_checked_locations:
                 self.local_checked_locations = local_checked_locations
 
@@ -617,13 +600,20 @@ class PokemonRangerSOA(BizHawkClient):
         self, ctx: "BizHawkClientContext", item: ItemData, item_id: int
     ):
         writes = []
+        received = sum(1 for it in ctx.items_received if it.item == item_id)
 
-        field_move = item.item_id % 100
+        field_move = item.item_id % 100  # technically correct ...
+        levels = ctx.slot_data["field_move_stages"].get(str(field_move), None)
+        if levels is None or received > len(levels):
+            level = 5
+        else:
+            level = levels[received - 1]
         for pok in data.species.values():
             if pok.field_move.category != field_move:
                 continue
-            for row in pok.poke_id_indexes:
-
+            if pok.field_move.level > level:
+                continue
+            for row in pok.forms.keys():
                 writes += [
                     (
                         data.ram_addresses["POKE_ID_TABLE_ADDRESS"].first

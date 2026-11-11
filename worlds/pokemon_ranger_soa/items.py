@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Dict, FrozenSet, Optional, TYPE_CHECKING, List, Tuple
 
 from BaseClasses import ItemClassification, Item
-from .data import data, BASE_OFFSET, ItemCategory
+from .data import data, BASE_OFFSET, ItemCategory, FieldMoveCategory
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -78,9 +78,16 @@ def create_all_items(world: PokemonRSOA) -> None:
         for i, item in data.items.items():
             if ItemCategory.FIELD_MOVE not in item.item_categories:
                 continue
-            new_item = world.create_item(item.label)
-            itempool.append(new_item)
+            copies = world.field_move_stages.get(
+                FieldMoveCategory(item.item_id - 10000), None
+            )
+            if copies is None:
+                continue
+            for _ in range(len(copies) + 1):
+                new_item = world.create_item(item.label)
+                itempool.append(new_item)
 
+    print(itempool)
     # print(f"{sum(1 for a in world.multiworld.get_locations(world.player))=}")
     # print(f"{len(
     #     world.multiworld.get_unfilled_locations(world.player)

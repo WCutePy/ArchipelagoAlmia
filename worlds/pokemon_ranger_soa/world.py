@@ -10,7 +10,7 @@ from Options import Option
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData, SpeciesData, Party, ItemCategory
+from .data import data, MapData, SpeciesData, Party, ItemCategory, FieldMoveCategory
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
@@ -160,6 +160,8 @@ class PokemonRSOA(World):
     modified_npc_mon_to: Dict[int, int]  # npc_id national_id
     modified_script_mons: Dict[str, int]  # identifier form_id
 
+    field_move_stages: Dict[int, List[int]]
+
     ut_can_gen_without_yaml = True  # Needed to inform UT that no yaml is needed
 
     # topology_present = True
@@ -307,6 +309,95 @@ class PokemonRSOA(World):
 
             for m_placer in mon_placers:
                 del m_placer
+
+        """field move item stages"""
+        if rule_num >= 0:
+            self.field_move_stages = {
+                FieldMoveCategory.CUT: [],
+            }
+        if rule_num >= 2:
+            self.field_move_stages |= {
+                FieldMoveCategory.TACKLE: [],
+                FieldMoveCategory.CRUSH: [1],
+                FieldMoveCategory.SOAK: [],
+            }
+        if rule_num >= 3:
+            self.field_move_stages |= {
+                FieldMoveCategory.RAIN_DANCE: [],
+            }
+        if rule_num >= 4:
+            self.field_move_stages |= {
+                FieldMoveCategory.FLY: [],
+                FieldMoveCategory.BURN: [],
+                FieldMoveCategory.ELECTRIFY: [],
+            }
+        if rule_num >= 5:
+            self.field_move_stages |= {
+                FieldMoveCategory.SWIM: [],  # really need to rebalance these to need more
+            }
+        if rule_num >= 6:
+            self.field_move_stages |= {
+                FieldMoveCategory.TELEPORT: [],
+                # really change the cut required for the vine
+                FieldMoveCategory.CRUSH: [1, 2],
+            }
+        print("here", self.field_move_stages)
+        if rule_num >= 7:
+            self.field_move_stages |= {
+                FieldMoveCategory.AGILITY: [],
+            }
+        if rule_num >= 8:
+            self.field_move_stages |= {
+                FieldMoveCategory.AIRLIFT: [],
+                FieldMoveCategory.FLASH: [],
+                FieldMoveCategory.CUT: [1],
+                FieldMoveCategory.TACKLE: [1],
+                FieldMoveCategory.PSY_POWER: [],
+            }
+        if rule_num >= 9:
+            self.field_move_stages |= {
+                FieldMoveCategory.CUT: [1, 2],
+                FieldMoveCategory.TACKLE: [1, 2],
+                FieldMoveCategory.DEMIST: [],
+                FieldMoveCategory.ELEVATE: [],
+                FieldMoveCategory.PSY_POWER: [1, 2],
+                FieldMoveCategory.TUNNEL: [],
+            }
+        if rule_num >= 10:
+            self.field_move_stages |= {
+                FieldMoveCategory.RIVER_FLOW: [],
+                FieldMoveCategory.CRUSH: [1, 2],  # actually needed here
+                FieldMoveCategory.BURN: [2, 4],
+            }
+        if rule_num >= 11:
+            self.field_move_stages |= {
+                FieldMoveCategory.MAGMA_FLOW: [],
+                FieldMoveCategory.TACKLE: [1, 2, 3],
+            }
+        if rule_num >= 12:
+            self.field_move_stages |= {
+                FieldMoveCategory.CUT: [1, 2, 3],
+                FieldMoveCategory.CRUSH: [1, 2, 3],
+            }
+        if rule_num >= 13:
+            self.field_move_stages |= {
+                FieldMoveCategory.CUT: [1, 2, 3],
+                FieldMoveCategory.ELECTRIFY: [2],
+            }
+        if rule_num >= 14:
+            self.field_move_stages |= {
+                FieldMoveCategory.CRUSH: [1, 2, 3, 4],
+                FieldMoveCategory.ELECTRIFY: [2],
+                FieldMoveCategory.SAND_FILL: [],
+            }
+        if rule_num >= 16:
+            self.field_move_stages |= {
+                FieldMoveCategory.CUT: [1, 2, 3, 4],
+                FieldMoveCategory.SOAK: [2],
+            }
+
+        """"""
+
         if (
             rule_num >= 16
             and "Earlier save spots Altru Building"
@@ -454,14 +545,15 @@ class PokemonRSOA(World):
             # "capture_count_target",
             # "capture_rank_count_target",
             # "capture_rank_rank_target",
-            # "death_link",
-            # "death_link_damage",
+            "death_link",
+            "death_link_damage",
             # "level_up_type",
             # "level_up_count",
-            # "level_up_increment",
+            "level_up_increment",
             # "rank_up_type",
             # "rank_up_count",
-            # "rank_up_increment",
+            "rank_up_increment",
+            "styler_model_item",
             "field_move_item",
             "randomize_pokemon",
             "randomize_pokemon_etc",
@@ -469,12 +561,16 @@ class PokemonRSOA(World):
             "randomize_partners",
             "partner_starters",
             "partners",
-            "blacklist_random_mons",
+            # "blacklist_random_mons",
             "optional_patches",
         )
 
+        slot_data["field_move_stages"] = {
+            str(k): v for k, v in self.field_move_stages.items()
+        }
+
         # slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
-        slot_data["blacklisted_captures"] = self.blacklisted_captures
+        # slot_data["blacklisted_captures"] = self.blacklisted_captures
         slot_data["seed"] = self.seed  # Needs to be sent to UT
 
         return slot_data

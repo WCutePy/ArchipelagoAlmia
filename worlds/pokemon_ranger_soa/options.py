@@ -263,33 +263,6 @@ class FieldMoveItem(Choice):
     default = option_vanilla
 
 
-class FieldMoveLevelItem(Range):
-    """
-    If this is higher than 1, Each Fieldmove with multiple levels turns
-    into a progressive field move. The maximum field moves for each
-    level is the maximum available level.
-
-    For moves that go up to 5:
-
-    1: 5
-    2: 2 - 5
-    3: 1 - 3 - 5
-    4: 1 - 2 - 3 - 5
-    5: 1 - 2 - 3 - 4 - 5
-
-    Moves that go up to 3:
-    1: 3
-    2: 1 - 3
-    3: 1 - 2 - 3
-    """
-
-    auto_display_name = True
-    range_start = 1
-    range_end = 5
-
-    default = 1
-
-
 class RandomizePokemonEncounters(Choice):
     """
     Randomizes wild Pokémon encounters and static
@@ -614,21 +587,20 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     # capture_rank_count_target: CaptureRankCountTarget
     # capture_rank_rank_target: CaptureRankRankTarget
 
-    # death_link: PokemonRSOADeathLink
-    # death_link_damage: DeathlinkDamage
+    death_link: PokemonRSOADeathLink
+    death_link_damage: DeathlinkDamage
 
     # level_up_type: LevelUpType
     # level_up_count: LevelUpCount
-    # level_up_increment: LevelUpIncrement
+    level_up_increment: LevelUpIncrement
 
     # rank_up_type: RankUpType
     # rank_up_count: RankUpItemCount
-    # rank_up_increment: RankUpIncrement
+    rank_up_increment: RankUpIncrement
 
-    # styler_model_item: StylerModelItem
+    styler_model_item: StylerModelItem
 
     field_move_item: FieldMoveItem
-    field_move_levels: FieldMoveLevelItem
     # randomize_target_field_move: RandomizeTargetFieldMove
 
     randomize_pokemon: RandomizePokemonEncounters
@@ -714,6 +686,6 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         "Field move options",
-        [FieldMoveItem, FieldMoveLevelItem, RandomizeTargetFieldMove],
+        [FieldMoveItem, RandomizeTargetFieldMove],
     ),
 ]

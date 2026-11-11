@@ -76,10 +76,10 @@ def pokemon_to_npc_sprite(rom: Rom, national_dex: int, npc_form: int) -> None:
     if national_dex in POKEMON_TO_NPC_BLACKLIST:
         raise ValueError(f"pokemon #{national_dex} is missing required sprites")
     if national_dex in (421, 423):
-        pokemon_filename = f"p{str(national_dex).rjust(3,'0')}_01"
+        pokemon_filename = f"p{str(national_dex).rjust(3, '0')}_01"
     else:
-        pokemon_filename = f"p{str(national_dex).rjust(3,'0')}_00"
-    npc_filename = f"npc{str(npc_form).rjust(3,'0')}"
+        pokemon_filename = f"p{str(national_dex).rjust(3, '0')}_00"
+    npc_filename = f"npc{str(npc_form).rjust(3, '0')}"
     pokemon_data = decompress(rom.files[f"/data/poke/{pokemon_filename}_LZ.bin"])
     if (
         national_dex == 291
@@ -92,7 +92,6 @@ def pokemon_to_npc_sprite(rom: Rom, national_dex: int, npc_form: int) -> None:
 def write_patch(
     prsoa_patch_instance: "PokemonRSOAPatch", opened_zipfile: zipfile.ZipFile
 ) -> None:
-
     # patches: Dict[int, FormPatch] = {}
     world = prsoa_patch_instance.world
     #
@@ -160,7 +159,6 @@ def patch(
     prsoa_patch_instance: "PokemonRSOAPatch",
     files_dump: dict[str, bytes | bytearray],
 ) -> None:
-
     slot_data = orjson.loads(prsoa_patch_instance.get_file("slot_data.json"))
 
     # species_file = prsoa_patch_instance.files["species.json"]
@@ -181,6 +179,17 @@ def patch(
 
     field_move_item = slot_data.get("field_move_item", None)
     if field_move_item and field_move_item != FieldMoveItem.option_vanilla:
+        """zeros all field moves in game!"""
+        field_moves = slot_data.get("field_move_stages", None)
+        field_moves = {int(k): v for k, v in field_moves.items()}
+        for form in range(443):  #  could probably skip some forms but eeeeh
+            poke_id = get_pokeid(form)
+            from_data = form_file[poke_id + 5 : poke_id + 7]
+            if from_data[0] not in field_moves:
+                continue
+            from_data[0] = 0
+            # from_data[1] = 0
+            struct.pack_into(f"<{len(from_data)}B", form_file, poke_id + 5, *from_data)
         clone_form_to_form_id(rom, form_file, 173, 328)
         clone_form_to_form_id(rom, form_file, 14, 329)
 

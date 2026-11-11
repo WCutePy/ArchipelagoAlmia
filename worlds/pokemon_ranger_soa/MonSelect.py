@@ -92,9 +92,13 @@ def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
     if world.options.field_move_item == FieldMoveItem.option_vanilla:
         return True_()
 
+    sections = world.field_move_stages.get(field_move.category, None)
+    if sections is None:
+        return True_()
+    amount = sum(1 for i in sections if i < field_move.level) + 1
     return Has(
         field_move.category.item_name,
-        1,
+        amount,
     )
 
 

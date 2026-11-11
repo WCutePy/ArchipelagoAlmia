@@ -73,12 +73,17 @@
     },
     {
         "label": "CURRENT_ROOM_ID",
-        "address": ["0x020B263A"],
+        "address": ["0x020B26BA"],
         "bit_length": 16
     },
     {
         "label": "PARTNER_POKEMON_ADDRESS",
         "address": ["0x020BAEA4"],
         "bit_length": 192
+    },
+    {
+        "label": "LAST_MISSION_ID",
+        "address": ["0x020B263C"],
+        "bit_length": 8
     }
 ]
