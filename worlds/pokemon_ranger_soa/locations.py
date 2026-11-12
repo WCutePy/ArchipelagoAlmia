@@ -173,7 +173,7 @@ def create_pokemon_locations(
     regions[region.name] = region
     regions["Overworld"].connect(region, "Browser")
 
-    full_map = MonSelect.get_rules_scope()
+    full_map = MonSelect.get_rules_scope(world)
     if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
 
         for pokemon_id in world.capture_groups.get_ids_all:

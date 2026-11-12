@@ -226,11 +226,26 @@ class StylerModelItem(Choice):
     default = 1
 
 
-class PokemonRSOADeathLink(DeathLink):
-    __doc__ = (
-        DeathLink.__doc__
-        + "\n\n    In Pokemon Ranger:    Shadows of Almia, whiting out sends a death and receiving a death causes you to white out."
-    )
+class PokemonRSOADeathLink(Choice):
+    """
+    When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    In Pokemon Ranger: Shadows of Almia, reaching 0 energy in combat or on the overworld sends a Death.
+    Death Links will reduce your energy according to the configured damage.
+
+    false and true function like any Death Link setting would.
+    true_max_energy_on_death will reset your energy to its maximum after dying,
+    either by Death Link or normally. This options aims to offset a
+    difficult death spiral by saving somewhere on 1 energy.
+    """
+
+    display_name = "Death Link"
+    rich_text_doc = True
+
+    option_false = 0
+    option_true = 1
+    option_true_max_energy_on_death = 2
+
+    default = 0
 
 
 class DeathlinkDamage(Range):

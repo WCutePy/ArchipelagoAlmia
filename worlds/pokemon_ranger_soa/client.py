@@ -26,6 +26,7 @@ from .data import (
 )
 from . import items, options
 from .items import offset_item_value
+from .options import PokemonRSOADeathLink
 
 if TYPE_CHECKING:
     from worlds._bizhawk.context import BizHawkClientContext
@@ -50,7 +51,7 @@ class PokemonRangerSOA(BizHawkClient):
 
     death_counter: Optional[int]
     previous_death_link: float
-    ignore_next_death_link: bool
+    ignore_next_death_link: int
 
     current_map_id: Optional[int]
 
@@ -73,7 +74,7 @@ class PokemonRangerSOA(BizHawkClient):
         self.goal_flag = None
         self.death_counter = None
         self.previous_death_link = 0
-        self.ignore_next_death_link = False
+        self.ignore_next_death_link = 0
         self.current_map_id = None
         self.level_up_patched = False
         self.has_energy_plus = False
@@ -304,7 +305,10 @@ class PokemonRangerSOA(BizHawkClient):
     async def handle_death_link(
         self, ctx: "BizHawkClientContext", guards: Dict[str, Tuple[int, bytes, str]]
     ) -> None:
-        if ctx.slot_data.get("death_link", Toggle.option_false) != Toggle.option_true:
+        if (
+            ctx.slot_data.get("death_link", PokemonRSOADeathLink.option_false)
+            == PokemonRSOADeathLink.option_false
+        ):
             return
 
         if "DeathLink" not in ctx.tags:
@@ -314,7 +318,7 @@ class PokemonRangerSOA(BizHawkClient):
         read_result = await bizhawk.read(
             ctx.bizhawk_ctx,
             [
-                (data.ram_addresses["CURRENT_HEALTH"].first, 1, self.ram),
+                (data.ram_addresses["CURRENT_HEALTH"].first, 2, self.ram),
                 (data.ram_addresses["GAME_STATE"].first, 1, self.ram),
                 (data.ram_addresses["CUR_SCENE"].first, 4, self.ram),
             ],
@@ -324,19 +328,22 @@ class PokemonRangerSOA(BizHawkClient):
             return
 
         current_hp = read_result[0][0]
+        max_hp = read_result[0][1]
         game_state = read_result[1][0]
         cur_scene = int.from_bytes(read_result[2], "little")
 
         hp_address = data.ram_addresses["CURRENT_HEALTH"].first
 
-        # if game_state == GameStateEnum.FLUSHING:
-        #     return  # not sure yet if needed or not :)
+        if game_state == GameStateEnum.FLUSHING and self.ignore_next_death_link:
+            return  # otherwise the hp reset is consumed :(
         if game_state in (
             GameStateEnum.INTRO_SCREEN,
             GameStateEnum.TITLE_SCREEN,
             GameStateEnum.RESUME_GAME,
         ):
             self.previous_death_link = ctx.last_death_link
+            if self.ignore_next_death_link == 2:
+                self.ignore_next_death_link = 1
             return
 
         if game_state == GameStateEnum.BATTLE:
@@ -345,36 +352,52 @@ class PokemonRangerSOA(BizHawkClient):
             )
             hp_address2 = int.from_bytes(read_result[0], "little") + 0x19C
             read_result = await bizhawk.read(
-                ctx.bizhawk_ctx, [(hp_address, 1, self.ram)]
+                ctx.bizhawk_ctx, [(hp_address2, 1, self.ram)]
             )
             if read_result is None:
                 return  # just try again next time
             current_hp = read_result[0][0]
 
-        if current_hp == 0 and self.ignore_next_death_link:
-            self.previous_death_link = ctx.last_death_link
-            return
-        elif current_hp == 0:
+        if current_hp == 0:
+            if self.ignore_next_death_link:
+                self.previous_death_link = ctx.last_death_link
+                return
             if game_state == GameStateEnum.BATTLE:
                 text = f"{ctx.player_names[ctx.slot]} died in battle"
             else:
                 text = f"{ctx.player_names[ctx.slot]} died walking around"
 
             await ctx.send_death(text)
-            self.ignore_next_death_link = True
+            self.ignore_next_death_link = 2
             return
 
         # if current_hp != 0:
-        self.ignore_next_death_link = False
+        if self.ignore_next_death_link:
+            if self.ignore_next_death_link == 2:
+                return
+            self.ignore_next_death_link = 0
+            if (
+                ctx.slot_data.get("death_link")
+                != PokemonRSOADeathLink.option_true_max_energy_on_death
+            ):
+                return
+            await bizhawk.write(
+                ctx.bizhawk_ctx,
+                [
+                    (data.ram_addresses["CURRENT_HEALTH"].first, [max_hp], self.ram),
+                ],
+            )
+            return
         if self.previous_death_link == ctx.last_death_link:
             return
 
         self.previous_death_link = ctx.last_death_link
 
-        new_hp = 0
+        death_link_damage = ctx.slot_data["death_link_damage"]
+        new_hp = max(0, current_hp - max(1, int(max_hp * death_link_damage / 100)))
         base_write = [(hp_address, [new_hp], self.ram)]
         guard = []
-        if GameStateEnum.BATTLE:
+        if game_state == GameStateEnum.BATTLE:
             base_write += [(hp_address2, [new_hp], self.ram)]
             guard += [(data.ram_addresses["GAME_STATE"].first, [game_state], self.ram)]
         succeeded = await bizhawk.guarded_write(
@@ -385,6 +408,8 @@ class PokemonRangerSOA(BizHawkClient):
         if not succeeded:
             self.previous_death_link -= 1
             return
+        if new_hp == 0:
+            self.ignore_next_death_link = 2
         return
 
     async def handle_received_items(

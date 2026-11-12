@@ -114,8 +114,7 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     connections: List[Tuple[str, str, str]] = []
 
     """Logic chain"""
-    MonSelect.world = world
-    full_map = MonSelect.get_rules_scope()
+    full_map = MonSelect.get_rules_scope(world)
 
     for region_name, region_data in world.modified_regions.items():
 

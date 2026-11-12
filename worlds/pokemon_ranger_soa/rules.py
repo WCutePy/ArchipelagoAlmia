@@ -88,7 +88,7 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
 
 def set_all_rules(world: PokemonRSOA) -> None:
     # print(world.multiworld.regions.)
-    full_map = MonSelect.get_rules_scope()
+    full_map = MonSelect.get_rules_scope(world)
 
     field_move_rules: Dict[FieldMove, List[Rule]] = {}
 
@@ -251,7 +251,7 @@ def set_all_rules(world: PokemonRSOA) -> None:
 
 
 def set_tutorial_rules(world: PokemonRSOA) -> None:
-    full_map = MonSelect.get_rules_scope()
+    full_map = MonSelect.get_rules_scope(world)
 
     world.set_rule(
         get_pokemon_instance(world, "m001_002", 7),
@@ -417,7 +417,7 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 
     """Mission 2 - Investigate the Marine Cave!"""
     """Marine cave"""
-    full_map = MonSelect.get_rules_scope()
+    full_map = MonSelect.get_rules_scope(world)
 
     can_destroy_wooden_gate = full_map.can_destroy_target(
         "m006_001", 2
@@ -473,7 +473,7 @@ def set_mission_3_rules(world: PokemonRSOA):
         Has(get_mission_event(2)),
     )
 
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     for loc in [data.locations["QUEST_48"].label, get_quest_event(48)]:
         world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
@@ -581,7 +581,7 @@ def set_mission_3_rules(world: PokemonRSOA):
 
 
 def set_mission_4_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     """quests"""
 
@@ -826,7 +826,7 @@ def set_mission_4_rules(world: PokemonRSOA):
 
 
 def set_mission_5_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     for loc in [data.locations["QUEST_02"].label, get_quest_event(2)]:
         world.set_rule(
@@ -928,7 +928,7 @@ def set_mission_5_rules(world: PokemonRSOA):
 
 
 def set_mission_6_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
     world.set_rule(
         get_connection(world, "m010_001", "m014_003b"),
         Has(get_mission_event(5)),
@@ -1124,7 +1124,7 @@ def set_mission_6_rules(world: PokemonRSOA):
 
 
 def set_mission_7_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    # all_maps = MonSelect.get_rules_scope(world)
 
     for i in [0, 1, 4, 5, 6, 8, 9, 10]:
         world.set_rule(
@@ -1200,7 +1200,7 @@ def set_mission_7_rules(world: PokemonRSOA):
 
 
 def set_mission_8_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
     """Boyleland m018"""
     world.set_rule(
         get_connection(world, "npc_m010_020", "m018_001"), Has(get_mission_event(7))
@@ -1289,7 +1289,7 @@ def set_mission_8_rules(world: PokemonRSOA):
 
 
 def set_mission_9_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     for loc in [data.locations["QUEST_10"].label, get_quest_event(10)]:
         world.set_rule(
@@ -1487,7 +1487,7 @@ def set_mission_9_rules(world: PokemonRSOA):
 
 
 def set_mission_10_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     for map_name, i in [("m010_002", 3), ("m010_022", 6), ("m021_001", 6)]:
         world.set_rule(
@@ -1634,7 +1634,7 @@ def set_mission_10_rules(world: PokemonRSOA):
 
 
 def set_mission_11_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     for loc in [data.locations["QUEST_17"].label, get_quest_event(17)]:
         world.set_rule(
@@ -1753,7 +1753,7 @@ def set_mission_11_rules(world: PokemonRSOA):
 
 
 def set_mission_12_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     for loc in [data.locations["QUEST_20"].label, get_quest_event(20)]:
         world.set_rule(
@@ -1870,7 +1870,7 @@ def set_mission_12_rules(world: PokemonRSOA):
 
 
 def set_mission_13_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     world.set_rule(
         get_connection(world, "m029_001", "m030_001"), Has(get_mission_event(12))
@@ -1935,7 +1935,7 @@ def set_mission_13_rules(world: PokemonRSOA):
 
 
 def set_mission_14_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     world.set_rule(
         get_connection(world, "npc_m010_020", "m033_001"), Has(get_mission_event(13))
@@ -2031,7 +2031,7 @@ def set_mission_14_rules(world: PokemonRSOA):
 
 
 def set_mission_15_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    # all_maps = MonSelect.get_rules_scope(world)
 
     # after reporting to the ranger union you can do 4 more quests
 
@@ -2095,7 +2095,7 @@ def set_mission_15_rules(world: PokemonRSOA):
 
 
 def set_mission_16_rules(world: PokemonRSOA):
-    all_maps = MonSelect.get_rules_scope()
+    all_maps = MonSelect.get_rules_scope(world)
 
     for b in [
         PInstanceEvent.YANMEGA,

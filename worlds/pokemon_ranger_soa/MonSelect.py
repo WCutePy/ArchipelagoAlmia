@@ -181,7 +181,7 @@ def form_options_by_criteria(
 
 @dataclass
 class MonSelect:
-    world: ClassVar[Optional[PokemonRSOA]]
+    world: Optional[PokemonRSOA]
     include: Dict[str, List] = field(default_factory=dict)
     exclude: Dict[str, List] = field(default_factory=dict)
     event_mon: List[PInstanceEvent] = field(default_factory=list)
@@ -362,83 +362,70 @@ class MonSelect:
         #     field_move
         # )
 
-    @classmethod
-    def full_map(cls) -> MonSelect:
-        return MonSelect()
+    def missable(self) -> Dict[str, List[int]]:
+        include = {
+            "m001_004": [0, 1],
+            "m001_006": [0, 1],
+            "m001_007": [0, 1, 2, 3],
+            "m001_008": [0, 1, 2, 3, 4],
+            "m001_011": [0, 1, 2, 3],  # technically not missable but one time
+            "m009_002": [12, 14, 15],  # should be correct with logic
+            "m009_010": [0, 1, 2, 3, 4],  # salamence is likely not missable
+            # and if the script can use some random number generator, none are missable.
+            "m020_001": [*range(0, 7)],
+            "m020_002": [*range(0, 13)],
+            "m020_016": [0],
+            "m015_002": [0, 1, 2, 3, 4],
+            "m038_019": [],  # can't get back to elevator shoot
+            "m038_018": [0],  # magmortar npc as wild
+        }
 
-    @classmethod
-    def missable(cls) -> MonSelect:
-        m = MonSelect(
-            include={
-                "m001_004": [0, 1],
-                "m001_006": [0, 1],
-                "m001_007": [0, 1, 2, 3],
-                "m001_008": [0, 1, 2, 3, 4],
-                "m001_011": [0, 1, 2, 3],  # technically not missable but one time
-                "m009_002": [12, 14, 15],  # should be correct with logic
-                "m009_010": [0, 1, 2, 3, 4],  # salamence is likely not missable
-                # and if the script can use some random number generator, none are missable.
-                "m020_001": [*range(0, 7)],
-                "m020_002": [*range(0, 13)],
-                "m020_016": [0],
-                "m015_002": [0, 1, 2, 3, 4],
-                "m038_019": [],  # can't get back to elevator shoot
-                "m038_018": [0],  # magmortar npc as wild
-            }
-        )
+        if self.world.get_rule_num() == 6:
+            include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
 
-        if cls.world.get_rule_num() == 6:
-            m.include |= {"m015_004": [0, 1, 4, 5, 6, 7, 8, 9, 10]}
-
-        if cls.world.get_rule_num() >= 9:
+        if self.world.get_rule_num() >= 9:
             if (
-                cls.world.options.randomize_pokemon
+                self.world.options.randomize_pokemon
                 != RandomizePokemonEncounters.option_vanilla
             ):
-                m.include["m022_001"] = [0, 8, 10]
+                include["m022_001"] = [0, 8, 10]
 
-        return m
+        return include
 
-    @classmethod
-    def browser_before_capture(cls) -> MonSelect:
-        return MonSelect(
-            include={
-                "m006_001": [*range(0, 7)],
-                "m010_001": [*range(0, 7)],
-                "m010_002": [0, 1, 2, 4, 5, 6, 7, 8, 9],
-                "m010_003": [
-                    14,
-                    13,
-                    12,
-                    10,
-                    9,
-                ],
-                "m010_022": [0, 1, 2, 3, 4, 5, 7, 8],
-                "m016_002": [
-                    *range(0, 14)
-                ],  # except the cherrim but does it ever spawn at all?
-            }
-        )
+    def browser_before_capture(self) -> Dict[str, List[int]]:
+        return {
+            "m006_001": [*range(0, 7)],
+            "m010_001": [*range(0, 7)],
+            "m010_002": [0, 1, 2, 4, 5, 6, 7, 8, 9],
+            "m010_003": [
+                14,
+                13,
+                12,
+                10,
+                9,
+            ],
+            "m010_022": [0, 1, 2, 3, 4, 5, 7, 8],
+            "m016_002": [
+                *range(0, 14)
+            ],  # except the cherrim but does it ever spawn at all?
+        }
 
-    @classmethod
-    def randomize_false(cls) -> MonSelect:
-        m = MonSelect(
-            include={
-                "m001_006": [0, 1],  # make it so these are random just
-                # more appropriate in the future (pichu)
-                "m001_011": [0, 1, 2, 3],
-                "m001_013": [0],
-                "m001_001": [5],  # needs to match up to the slakoth encounter
-                "m006_001": [5],  # zubat can be randomized when
-                # randomizing the event encounter attached
-                "m011_005": [5],  # sharpedo
-                "m016_004": [2],  # rampardos (could be random already techn)
-                "m021_001": [6, 14],  # Vespiquen and combee that show up in the quest
-                "m035_001": [2],  # hippowdon
-                "m036_017": [0],  # cresselia
-                "m038_018": [0],  # magmortar npc as wild
-            },
-        )
+    def randomize_false(self) -> Dict[str, List[int]]:
+        include = {
+            "m001_006": [0, 1],  # make it so these are random just
+            # more appropriate in the future (pichu)
+            "m001_011": [0, 1, 2, 3],
+            "m001_013": [0],
+            "m001_001": [5],  # needs to match up to the slakoth encounter
+            "m006_001": [5],  # zubat can be randomized when
+            # randomizing the event encounter attached
+            "m011_005": [5],  # sharpedo
+            "m016_004": [2],  # rampardos (could be random already techn)
+            "m021_001": [6, 14],  # Vespiquen and combee that show up in the quest
+            "m035_001": [2],  # hippowdon
+            "m036_017": [0],  # cresselia
+            "m038_018": [0],  # magmortar npc as wild
+        }
 
         STARAPTOR = {
             "m003_001": [0],
@@ -461,7 +448,7 @@ class MonSelect:
             "m041_002": [0],
         }
 
-        add_to(m.include, STARAPTOR)
+        add_to(include, STARAPTOR)
 
         DODUO = {
             "m001_001": [2],
@@ -474,16 +461,16 @@ class MonSelect:
             "m021_001": [9],
             "m035_001": [3],
         }
-        add_to(m.include, DODUO)
+        add_to(include, DODUO)
 
         EMPOLEON = {
             "m027_002": [9],
         }
-        add_to(m.include, EMPOLEON)
-        return m
+        add_to(include, EMPOLEON)
+        return include
 
     @classmethod
-    def get_rules_scope(cls) -> MonSelect:
+    def get_rules_scope(cls, world) -> MonSelect:
         """
         Go through the rules to determine the currently
         applicable MonSelect instance
@@ -506,10 +493,11 @@ class MonSelect:
             15: cls.goal_mission_15,
             16: cls.goal_mission_16,
         }
-        return goals[cls.world.get_rule_num()]()
+        monselect = goals[world.get_rule_num()](world)
+        return monselect
 
     @classmethod
-    def goal_school(cls) -> MonSelect:
+    def goal_school(cls, world) -> MonSelect:
         """
         Goal: capture cutscene Tangrowth
 
@@ -528,6 +516,7 @@ class MonSelect:
         capture_locations:
         """
         m = MonSelect(
+            world,
             include={
                 "m001": [],
                 "m003": [],
@@ -551,19 +540,19 @@ class MonSelect:
             events=[PREvent.SCHOOL_COMPLETE_NIGHT, PREvent.SCHOOL_COLLECT_STYLERS],
         )
 
-        if cls.world.options.get_skip_school():
+        if world.options.get_skip_school():
             m.event_mon = []
         return m
 
     @classmethod
-    def goal_marine_cave(cls) -> MonSelect:
+    def goal_marine_cave(cls, world) -> MonSelect:
         """
 
         Unique Browser Captures: 57
         Browser Instances: 1
         Capture Instances: 56
         """
-        base = cls.goal_school()
+        base = cls.goal_school(world)
         base.include |= {
             "m005_001b": [],
             "m006": [],
@@ -571,8 +560,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_forest_fire(cls) -> MonSelect:
-        base = cls.goal_marine_cave()
+    def goal_forest_fire(cls, world) -> MonSelect:
+        base = cls.goal_marine_cave(world)
         base.include |= {
             "m009_002": [],
             "m009_001a": [],
@@ -586,8 +575,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_4(cls) -> MonSelect:
-        base = cls.goal_forest_fire()
+    def goal_mission_4(cls, world) -> MonSelect:
+        base = cls.goal_forest_fire(world)
         base.include |= {
             "m009_001b": [2, 3, 4, 8],  # rest is copied over
             "m009_008": [],
@@ -619,10 +608,7 @@ class MonSelect:
         }
 
         base.exclude |= {"m010_002": [3], "m010_022": [6]}
-        if (
-            cls.world.options.randomize_pokemon
-            == RandomizePokemonEncounters.option_vanilla
-        ):
+        if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
             base.exclude["m009_008"] = [
                 4,
                 5,
@@ -635,8 +621,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_5(cls) -> MonSelect:
-        base = cls.goal_mission_4()
+    def goal_mission_5(cls, world) -> MonSelect:
+        base = cls.goal_mission_4(world)
 
         base.include |= {
             "m011_001": [],
@@ -654,8 +640,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_6(cls) -> MonSelect:
-        base = cls.goal_mission_5()
+    def goal_mission_6(cls, world) -> MonSelect:
+        base = cls.goal_mission_5(world)
 
         base.include |= {
             "m015_001": [],
@@ -679,8 +665,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_7(cls) -> MonSelect:
-        base = cls.goal_mission_6()
+    def goal_mission_7(cls, world) -> MonSelect:
+        base = cls.goal_mission_6(world)
 
         base.exclude["m009_009"].remove(2)  # ambipom
 
@@ -702,8 +688,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_8(cls) -> MonSelect:
-        base = cls.goal_mission_7()
+    def goal_mission_8(cls, world) -> MonSelect:
+        base = cls.goal_mission_7(world)
 
         base.include |= {
             "m018_001": [1, 2],
@@ -744,8 +730,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_9(cls) -> MonSelect:
-        base = cls.goal_mission_8()
+    def goal_mission_9(cls, world) -> MonSelect:
+        base = cls.goal_mission_8(world)
 
         base.include |= {
             "m020_010": [0],
@@ -773,10 +759,7 @@ class MonSelect:
             "m023_016": [],
         }
 
-        if (
-            cls.world.options.randomize_pokemon
-            == RandomizePokemonEncounters.option_vanilla
-        ):
+        if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
             base.exclude["m023_010"] = []
             base.exclude["m023_016"] = []
 
@@ -807,8 +790,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_10(cls) -> MonSelect:
-        base = cls.goal_mission_9()
+    def goal_mission_10(cls, world) -> MonSelect:
+        base = cls.goal_mission_9(world)
 
         base.include |= {
             "m023_014": [],
@@ -864,10 +847,7 @@ class MonSelect:
         del base.exclude["m009_009"]
         del base.exclude["m015_004"]
 
-        if (
-            cls.world.options.randomize_pokemon
-            == RandomizePokemonEncounters.option_vanilla
-        ):
+        if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
             base.exclude["m009_006"] = []
             base.exclude["m028_024"] = [0]
 
@@ -885,8 +865,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_11(cls) -> MonSelect:
-        base = cls.goal_mission_10()
+    def goal_mission_11(cls, world) -> MonSelect:
+        base = cls.goal_mission_10(world)
 
         base.include |= {
             "m019_005": [],
@@ -921,8 +901,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_12(cls) -> MonSelect:
-        base = cls.goal_mission_11()
+    def goal_mission_12(cls, world) -> MonSelect:
+        base = cls.goal_mission_11(world)
 
         base.include |= {
             "m029_001": [],
@@ -947,8 +927,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_13(cls) -> MonSelect:
-        base = cls.goal_mission_12()
+    def goal_mission_13(cls, world) -> MonSelect:
+        base = cls.goal_mission_12(world)
 
         base.include |= {
             "m029_007": [0, 3, 5],
@@ -992,8 +972,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_14(cls) -> MonSelect:
-        base = cls.goal_mission_13()
+    def goal_mission_14(cls, world) -> MonSelect:
+        base = cls.goal_mission_13(world)
 
         base.include |= {
             "m032_001": [],
@@ -1036,8 +1016,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_15(cls) -> MonSelect:
-        base = cls.goal_mission_14()
+    def goal_mission_15(cls, world) -> MonSelect:
+        base = cls.goal_mission_14(world)
 
         base.include |= {}
 
@@ -1054,8 +1034,8 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_16(cls) -> MonSelect:
-        base = cls.goal_mission_15()
+    def goal_mission_16(cls, world) -> MonSelect:
+        base = cls.goal_mission_15(world)
 
         base.include |= {
             "m038_019": [],

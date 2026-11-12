@@ -187,19 +187,20 @@ class PokemonRSOA(World):
     def generate_early(self) -> None:
         self.options.verify(self.player_name)
 
-        MonSelect.world = self
+        monselect = MonSelect(self)
         self.modified_regions = copy.deepcopy(data.regions)
-        for map_name, map_indexes in MonSelect.missable().include.items():
+        for map_name, map_indexes in monselect.missable().items():
             for i in map_indexes:
                 self.modified_regions[map_name].POKEMON_SPAWN[i].missable = True
-        for map_name, map_indexes in MonSelect.randomize_false().include.items():
+        for map_name, map_indexes in monselect.randomize_false().items():
             for i in map_indexes:
                 self.modified_regions[map_name].POKEMON_SPAWN[i].randomize = False
-        for map_name, map_indexes in MonSelect.browser_before_capture().include.items():
+        for map_name, map_indexes in monselect.browser_before_capture().items():
             for i in map_indexes:
                 self.modified_regions[map_name].POKEMON_SPAWN[
                     i
                 ].browser_before_capture = True
+        del monselect
         self.modified_species = copy.deepcopy(data.species)
 
         ut_active = False
@@ -430,7 +431,6 @@ class PokemonRSOA(World):
             apply_randomize_npc_pokemon(self)
             randomized = True
 
-        # rules_scope = MonSelect.get_rules_scope()
         # for map_name, data_ in self.modified_regions.items():
         #     if not rules_scope.region_included(map_name, data_):
         #         continue
@@ -446,8 +446,6 @@ class PokemonRSOA(World):
         #                 data.form_id_to_species[mon.SPECIES_ID].field_move,
         #                 mon.missable,
         #             )
-
-        MonSelect.world = None
 
         if randomized:
             import json
