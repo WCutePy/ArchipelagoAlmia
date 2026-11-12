@@ -85,5 +85,10 @@
         "label": "LAST_MISSION_ID",
         "address": ["0x020B263C"],
         "bit_length": 8
+    },
+    {
+        "label": "CUR_SCENE",
+        "address": ["0217B3E8"],
+        "bit_length": 32
     }
 ]

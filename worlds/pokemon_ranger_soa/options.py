@@ -229,7 +229,7 @@ class StylerModelItem(Choice):
 class PokemonRSOADeathLink(DeathLink):
     __doc__ = (
         DeathLink.__doc__
-        + "\n\n    In Pokemon Emerald, whiting out sends a death and receiving a death causes you to white out."
+        + "\n\n    In Pokemon Ranger:    Shadows of Almia, whiting out sends a death and receiving a death causes you to white out."
     )
 
 

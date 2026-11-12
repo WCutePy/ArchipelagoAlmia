@@ -23,7 +23,11 @@ class GameStateEnum(IntEnum):
     OVERWORLD = 0x00
     BATTLE = 0x01
     BLACK_SCREEN = 0x02
+    TITLE_SCREEN = 0x03  # idk if used elsewhere
     MISSION_SCREEN = 0x08
+    INTRO_SCREEN = 0x0B
+    RESUME_GAME = 0x18
+    FLUSHING = 0xFF
     ...
 
 

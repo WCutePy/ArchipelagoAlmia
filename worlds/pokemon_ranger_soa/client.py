@@ -306,7 +306,6 @@ class PokemonRangerSOA(BizHawkClient):
     ) -> None:
         if ctx.slot_data.get("death_link", Toggle.option_false) != Toggle.option_true:
             return
-        return
 
         if "DeathLink" not in ctx.tags:
             await ctx.update_death_link(True)
@@ -315,18 +314,78 @@ class PokemonRangerSOA(BizHawkClient):
         read_result = await bizhawk.read(
             ctx.bizhawk_ctx,
             [
-                (data.ram_addresses["CURRENT_HEALTH"].first, 1, "ARM9 System Bus"),
+                (data.ram_addresses["CURRENT_HEALTH"].first, 1, self.ram),
+                (data.ram_addresses["GAME_STATE"].first, 1, self.ram),
+                (data.ram_addresses["CUR_SCENE"].first, 4, self.ram),
             ],
-        )  # combat health uses a different memory address, find this.
-        #
+        )
 
-        current_hp = read_result[0][0]
-
-        if current_hp is None:
+        if read_result is None:
             return
 
-        if current_hp == 0:
-            pass
+        current_hp = read_result[0][0]
+        game_state = read_result[1][0]
+        cur_scene = int.from_bytes(read_result[2], "little")
+
+        hp_address = data.ram_addresses["CURRENT_HEALTH"].first
+
+        # if game_state == GameStateEnum.FLUSHING:
+        #     return  # not sure yet if needed or not :)
+        if game_state in (
+            GameStateEnum.INTRO_SCREEN,
+            GameStateEnum.TITLE_SCREEN,
+            GameStateEnum.RESUME_GAME,
+        ):
+            self.previous_death_link = ctx.last_death_link
+            return
+
+        if game_state == GameStateEnum.BATTLE:
+            read_result = await bizhawk.read(
+                ctx.bizhawk_ctx, [(cur_scene + 0xD8, 4, self.ram)]
+            )
+            hp_address2 = int.from_bytes(read_result[0], "little") + 0x19C
+            read_result = await bizhawk.read(
+                ctx.bizhawk_ctx, [(hp_address, 1, self.ram)]
+            )
+            if read_result is None:
+                return  # just try again next time
+            current_hp = read_result[0][0]
+
+        if current_hp == 0 and self.ignore_next_death_link:
+            self.previous_death_link = ctx.last_death_link
+            return
+        elif current_hp == 0:
+            if game_state == GameStateEnum.BATTLE:
+                text = f"{ctx.player_names[ctx.slot]} died in battle"
+            else:
+                text = f"{ctx.player_names[ctx.slot]} died walking around"
+
+            await ctx.send_death(text)
+            self.ignore_next_death_link = True
+            return
+
+        # if current_hp != 0:
+        self.ignore_next_death_link = False
+        if self.previous_death_link == ctx.last_death_link:
+            return
+
+        self.previous_death_link = ctx.last_death_link
+
+        new_hp = 0
+        base_write = [(hp_address, [new_hp], self.ram)]
+        guard = []
+        if GameStateEnum.BATTLE:
+            base_write += [(hp_address2, [new_hp], self.ram)]
+            guard += [(data.ram_addresses["GAME_STATE"].first, [game_state], self.ram)]
+        succeeded = await bizhawk.guarded_write(
+            ctx.bizhawk_ctx,
+            base_write,
+            guard,
+        )
+        if not succeeded:
+            self.previous_death_link -= 1
+            return
+        return
 
     async def handle_received_items(
         self,
