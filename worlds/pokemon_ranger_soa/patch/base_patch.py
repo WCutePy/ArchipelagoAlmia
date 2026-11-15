@@ -320,6 +320,8 @@ def patch(
         #  PUSH 33		; @12
         (12, 0x00_00_00_10)
     ]
+    #  TODO could modify to prevent leaving after beating rampardos
+    #  would just be nice to be more qol on what to do
 
     from ._data import m004_002
 

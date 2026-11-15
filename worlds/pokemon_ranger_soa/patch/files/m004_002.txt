@@ -661,9 +661,9 @@ loc_719:
 	SYSCALL 2, 131, 1		;get_event_variable @702
     PUSHRESULT ;
     PUSH 6		; @704
-	IS_LT 		; @705
-	JZ loc_857		; @706
-    PUSH32 33648642		; @715
+	IS_GE 		; @705
+	JNZ loc_857		; @706
+	PUSH32 33648642		; @715
 	SYSCALL 2, 54, 1		;set_object_hidden @717
 	JMP loc_857		; @719
 
