@@ -235,6 +235,7 @@ class PokemonRSOA(World):
 
         self.blacklisted_captures = {
             238,  # wailord
+            43,  # doduo (early chapters break with doduo)
             # until I ensure their required field moves are always in the pool
             114,  # oddish
             115,  # Gloom

@@ -1,0 +1,834 @@
+
+main:
+	PUSHSTRING 0		; @8
+	SYSCALL 0, 3, 1		;debug_printf @9
+	PUSH 120		; @10
+	PUSH 400		; @11
+	PUSH32 33648640		; @12
+	SYSCALL 2, 64, 3		;set_object_location @14
+	PUSH 16384		; @15
+	PUSH32 33648640		; @16
+	SYSCALL 2, 48, 2		;turn_object_to_angle @18
+	PUSH 188		; @19
+	PUSH 363		; @20
+	PUSH32 33648641		; @21
+	SYSCALL 2, 64, 3		;set_object_location @23
+	PUSH 16384		; @24
+	PUSH32 33648641		; @25
+	SYSCALL 2, 48, 2		;turn_object_to_angle @27
+	PUSH 193		; @28
+	PUSH 320		; @29
+	PUSH32 33648642		; @30
+	SYSCALL 2, 64, 3		;set_object_location @32
+	PUSH 16384		; @33
+	PUSH32 33648642		; @34
+	SYSCALL 2, 48, 2		;turn_object_to_angle @36
+	PUSH 194		; @37
+	PUSH 280		; @38
+	PUSH32 33648643		; @39
+	SYSCALL 2, 64, 3		;set_object_location @41
+	PUSH 16384		; @42
+	PUSH32 33648643		; @43
+	SYSCALL 2, 48, 2		;turn_object_to_angle @45
+	PUSH 194		; @46
+	PUSH 350		; @47
+	PUSH32 33648644		; @48
+	SYSCALL 2, 64, 3		;set_object_location @50
+	PUSH 16384		; @51
+	PUSH32 33648644		; @52
+	SYSCALL 2, 48, 2		;turn_object_to_angle @54
+	PUSH 194		; @55
+	PUSH 384		; @56
+	PUSH32 33648645		; @57
+	SYSCALL 2, 64, 3		;set_object_location @59
+	PUSH 16384		; @60
+	PUSH32 33648645		; @61
+	SYSCALL 2, 48, 2		;turn_object_to_angle @63
+	PUSH 209		; @64
+	PUSH 408		; @65
+	PUSH32 33648646		; @66
+	SYSCALL 2, 64, 3		;set_object_location @68
+	PUSH 16384		; @69
+	PUSH32 33648646		; @70
+	SYSCALL 2, 48, 2		;turn_object_to_angle @72
+	PUSH 230		; @73
+	PUSH 382		; @74
+	PUSH32 33648647		; @75
+	SYSCALL 2, 64, 3		;set_object_location @77
+	PUSH 16384		; @78
+	PUSH32 33648647		; @79
+	SYSCALL 2, 48, 2		;turn_object_to_angle @81
+	PUSH 230		; @82
+	PUSH 258		; @83
+	PUSH32 33648648		; @84
+	SYSCALL 2, 64, 3		;set_object_location @86
+	PUSH 16384		; @87
+	PUSH32 33648648		; @88
+	SYSCALL 2, 48, 2		;turn_object_to_angle @90
+	PUSH 330		; @91
+	PUSH 344		; @92
+	PUSH32 33648649		; @93
+	SYSCALL 2, 64, 3		;set_object_location @95
+	PUSH 16384		; @96
+	PUSH32 33648649		; @97
+	SYSCALL 2, 48, 2		;turn_object_to_angle @99
+	PUSH 128		; @100
+	PUSH 432		; @101
+	PUSH32 33648653		; @102
+	SYSCALL 2, 64, 3		;set_object_location @104
+	PUSH32 33648653		; @105
+	SYSCALL 2, 55, 1		;set_object_displayed @107
+	PUSH 135		; @108
+	PUSH 247		; @109
+	PUSH32 50425856		; @110
+	SYSCALL 2, 64, 3		;set_object_location @112
+	PUSH 138		; @113
+	PUSH 240		; @114
+	PUSH32 50425857		; @115
+	SYSCALL 2, 64, 3		;set_object_location @117
+	PUSH 230		; @118
+	PUSH 382		; @119
+	PUSH32 33648651		; @120
+	SYSCALL 2, 64, 3		;set_object_location @122
+	PUSH 16384		; @123
+	PUSH32 33648651		; @124
+	SYSCALL 2, 48, 2		;turn_object_to_angle @126
+	SYSCALL 2, 155, 0		;getchapter @127
+	PUSHRESULT 		; @128
+	CASE 13, loc_136		; @129
+	CASE 21, loc_137		; @130
+	CASE 23, loc_147		; @131
+	CASE 26, loc_151		; @132
+	CASE 28, loc_152		; @133
+	DROP 1		; @134
+	JMP loc_153		; @135
+
+loc_136:
+	JMP loc_212		; @136
+
+loc_137:
+	PUSH 11		; @137
+	SYSCALL 2, 131, 1		;get_event_variable @138
+	PUSHRESULT 		; @139
+	PUSH 1		; @140
+	IS_EQ 		; @141
+	JZ loc_146		; @142
+	PUSH32 33648649		; @143
+	SYSCALL 2, 55, 1		;set_object_displayed @145
+
+loc_146:
+	JMP loc_212		; @146
+
+loc_147:
+	PUSH32 33648649		; @147
+	SYSCALL 2, 54, 1		;set_object_hidden @149
+	JMP loc_212		; @150
+
+loc_151:
+	JMP loc_212		; @151
+
+loc_152:
+	JMP loc_212		; @152
+
+loc_153:
+	PUSH32 33648640		; @153
+	SYSCALL 2, 55, 1		;set_object_displayed @155
+	PUSH32 33648642		; @156
+	SYSCALL 2, 55, 1		;set_object_displayed @158
+	PUSH32 33648643		; @159
+	SYSCALL 2, 55, 1		;set_object_displayed @161
+	PUSH32 33648646		; @162
+	SYSCALL 2, 55, 1		;set_object_displayed @164
+	PUSH32 33648648		; @165
+	SYSCALL 2, 55, 1		;set_object_displayed @167
+	SYSCALL 2, 155, 0		;getchapter @168
+	PUSHRESULT 		; @169
+	PUSH 34		; @170
+	IS_LE 		; @171
+	JZ loc_174		; @172
+	JMP loc_212		; @173
+
+loc_174:
+	PUSH 28		; @174
+	SYSCALL 2, 310, 1		;is_quest_available @175
+	PUSHRESULT 		; @176
+	PUSH 1		; @177
+	IS_EQ 		; @178
+	JPZ loc_187		; @179
+	PUSH 28		; @180
+	SYSCALL 2, 159, 1		;should_show_quest_name @181
+	PUSHRESULT 		; @182
+	PUSH 0		; @183
+	IS_EQ 		; @184
+	JPZ loc_187		; @185
+	PUSH 1		; @186
+
+loc_187:
+	JZ loc_192		; @187
+	PUSH32 33648647		; @188
+	SYSCALL 2, 54, 1		;set_object_hidden @190
+	JMP loc_212		; @191
+
+loc_192:
+	SYSCALL 2, 160, 0		;get_active_quest @192
+	PUSHRESULT 		; @193
+	PUSH 54		; @194
+	IS_EQ 		; @195
+	JPZ loc_204		; @196
+	PUSH 54		; @197
+	SYSCALL 2, 159, 1		;should_show_quest_name @198
+	PUSHRESULT 		; @199
+	PUSH 0		; @200
+	IS_EQ 		; @201
+	JPZ loc_204		; @202
+	PUSH 1		; @203
+
+loc_204:
+	JZ loc_209		; @204
+	PUSH32 33648647		; @205
+	SYSCALL 2, 54, 1		;set_object_hidden @207
+	JMP loc_212		; @208
+
+loc_209:
+	PUSH32 33648647		; @209
+	SYSCALL 2, 55, 1		;set_object_displayed @211
+
+loc_212:
+	SYSCALL 2, 155, 0		;getchapter @212
+	PUSHRESULT 		; @213
+	CASE 13, loc_234		; @214
+	CASE 21, loc_306		; @215
+	CASE 23, loc_352		; @216
+	CASE 24, loc_353		; @217
+	CASE 26, loc_460		; @218
+	CASE 27, loc_479		; @219
+	CASE 28, loc_533		; @220
+	CASE 29, loc_615		; @221
+	CASE 30, loc_711		; @222
+	CASE 31, loc_715		; @223
+	CASE 33, loc_719		; @224
+	CASE 36, loc_720		; @225
+	CASE 38, loc_733		; @226
+	CASE 39, loc_737		; @227
+	CASE 41, loc_744		; @228
+	CASE 43, loc_776		; @229
+	CASE 67, loc_777		; @230
+	CASE 69, loc_787		; @231
+	DROP 1		; @232
+	JMP loc_837		; @233
+
+loc_234:
+	PUSH 7		; @234
+	SYSCALL 2, 131, 1		;get_event_variable @235
+	PUSHRESULT 		; @236
+	PUSH 0		; @237
+	IS_NE 		; @238
+	JZ loc_296		; @239
+	PUSH 168		; @240
+	PUSH 320		; @241
+	PUSH32 33648642		; @242
+	SYSCALL 2, 64, 3		;set_object_location @244
+	PUSH 16384		; @245
+	PUSH32 33648642		; @246
+	SYSCALL 2, 48, 2		;turn_object_to_angle @248
+	PUSH 195		; @249
+	PUSH 275		; @250
+	PUSH32 33648643		; @251
+	SYSCALL 2, 64, 3		;set_object_location @253
+	PUSH 8192		; @254
+	PUSH32 33648643		; @255
+	SYSCALL 2, 48, 2		;turn_object_to_angle @257
+	PUSH 223		; @258
+	PUSH 256		; @259
+	PUSH32 33648646		; @260
+	SYSCALL 2, 64, 3		;set_object_location @262
+	PUSH 0		; @263
+	PUSH32 33648646		; @264
+	SYSCALL 2, 48, 2		;turn_object_to_angle @266
+	PUSH 190		; @267
+	PUSH 375		; @268
+	PUSH32 33648648		; @269
+	SYSCALL 2, 64, 3		;set_object_location @271
+	PUSH 24576		; @272
+	PUSH32 33648648		; @273
+	SYSCALL 2, 48, 2		;turn_object_to_angle @275
+	PUSH 200		; @276
+	PUSH 320		; @277
+	PUSH32 33648644		; @278
+	SYSCALL 2, 64, 3		;set_object_location @280
+	PUSH32 49152		; @281
+	PUSH32 33648644		; @283
+	SYSCALL 2, 48, 2		;turn_object_to_angle @285
+	PUSH 120		; @286
+	PUSH 400		; @287
+	PUSH32 33648640		; @288
+	SYSCALL 2, 64, 3		;set_object_location @290
+	PUSH 16384		; @291
+	PUSH32 33648640		; @292
+	SYSCALL 2, 48, 2		;turn_object_to_angle @294
+	JMP loc_305		; @295
+
+loc_296:
+	PUSH 120		; @296
+	PUSH 400		; @297
+	PUSH32 33648640		; @298
+	SYSCALL 2, 64, 3		;set_object_location @300
+	PUSH 16384		; @301
+	PUSH32 33648640		; @302
+	SYSCALL 2, 48, 2		;turn_object_to_angle @304
+
+loc_305:
+	JMP loc_857		; @305
+
+loc_306:
+	PUSH 0		; @306
+	SYSCALL 2, 131, 1		;get_event_variable @307
+	PUSHRESULT 		; @308
+	PUSH 3		; @309
+	IS_EQ 		; @310
+	JZ loc_351		; @311
+	PUSH 192		; @312
+	PUSH 352		; @313
+	PUSH32 33648642		; @314
+	SYSCALL 2, 64, 3		;set_object_location @316
+	PUSH 224		; @317
+	PUSH 384		; @318
+	PUSH32 33648646		; @319
+	SYSCALL 2, 64, 3		;set_object_location @321
+	PUSH 224		; @322
+	PUSH 368		; @323
+	PUSH32 33648648		; @324
+	SYSCALL 2, 64, 3		;set_object_location @326
+	PUSH 192		; @327
+	PUSH 400		; @328
+	PUSH32 33648649		; @329
+	SYSCALL 2, 64, 3		;set_object_location @331
+	PUSH 0		; @332
+	PUSH32 33648642		; @333
+	SYSCALL 2, 48, 2		;turn_object_to_angle @335
+	PUSH32 32768		; @336
+	PUSH32 33648649		; @338
+	SYSCALL 2, 48, 2		;turn_object_to_angle @340
+	PUSH32 49152		; @341
+	PUSH32 33648646		; @343
+	SYSCALL 2, 48, 2		;turn_object_to_angle @345
+	PUSH32 49152		; @346
+	PUSH32 33648648		; @348
+	SYSCALL 2, 48, 2		;turn_object_to_angle @350
+
+loc_351:
+	JMP loc_857		; @351
+
+loc_352:
+	JMP loc_857		; @352
+
+loc_353:
+	PUSH32 33648643		; @353
+	SYSCALL 2, 54, 1		;set_object_hidden @355
+	PUSH 0		; @356
+	SYSCALL 2, 131, 1		;get_event_variable @357
+	PUSHRESULT 		; @358
+	PUSH 0		; @359
+	IS_EQ 		; @360
+	JZ loc_378		; @361
+	PUSH 248		; @362
+	PUSH 320		; @363
+	PUSH32 33648645		; @364
+	SYSCALL 2, 64, 3		;set_object_location @366
+	PUSH32 49152		; @367
+	PUSH32 33648645		; @369
+	SYSCALL 2, 48, 2		;turn_object_to_angle @371
+	PUSH -1		; @372
+	PUSH 0		; @373
+	PUSH32 33648645		; @374
+	SYSCALL 2, 58, 3		;set_object_reaction @376
+	JMP loc_443		; @377
+
+loc_378:
+	PUSH 0		; @378
+	SYSCALL 2, 131, 1		;get_event_variable @379
+	PUSHRESULT 		; @380
+	PUSH 3		; @381
+	IS_EQ 		; @382
+	JZ loc_443		; @383
+	PUSH32 33648643		; @384
+	SYSCALL 2, 55, 1		;set_object_displayed @386
+	PUSH 176		; @387
+	PUSH 256		; @388
+	PUSH32 50425856		; @389
+	SYSCALL 2, 64, 3		;set_object_location @391
+	PUSH 144		; @392
+	PUSH 256		; @393
+	PUSH32 33648642		; @394
+	SYSCALL 2, 64, 3		;set_object_location @396
+	PUSH 152		; @397
+	PUSH 232		; @398
+	PUSH32 33648643		; @399
+	SYSCALL 2, 64, 3		;set_object_location @401
+	PUSH 176		; @402
+	PUSH 224		; @403
+	PUSH32 33648648		; @404
+	SYSCALL 2, 64, 3		;set_object_location @406
+	PUSH 208		; @407
+	PUSH 256		; @408
+	PUSH32 33648641		; @409
+	SYSCALL 2, 64, 3		;set_object_location @411
+	PUSH 176		; @412
+	PUSH 288		; @413
+	PUSH32 33648646		; @414
+	SYSCALL 2, 64, 3		;set_object_location @416
+	PUSH 16384		; @417
+	PUSH32 33648642		; @418
+	SYSCALL 2, 48, 2		;turn_object_to_angle @420
+	PUSH 16384		; @421
+	PUSH32 33648643		; @422
+	SYSCALL 2, 48, 2		;turn_object_to_angle @424
+	PUSH 0		; @425
+	PUSH32 33648648		; @426
+	SYSCALL 2, 48, 2		;turn_object_to_angle @428
+	PUSH32 32768		; @429
+	PUSH32 33648646		; @431
+	SYSCALL 2, 48, 2		;turn_object_to_angle @433
+	PUSH32 49152		; @434
+	PUSH32 33648641		; @436
+	SYSCALL 2, 48, 2		;turn_object_to_angle @438
+	PUSH 8		; @439
+	PUSH32 50425856		; @440
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @442
+
+loc_443:
+	SYSCALL 2, 155, 0		;getchapter @443
+	PUSHRESULT 		; @444
+	PUSH 24		; @445
+	IS_EQ 		; @446
+	JPZ loc_455		; @447
+	PUSH 4		; @448
+	SYSCALL 2, 131, 1		;get_event_variable @449
+	PUSHRESULT 		; @450
+	PUSH 1		; @451
+	IS_EQ 		; @452
+	JPZ loc_455		; @453
+	PUSH 1		; @454
+
+loc_455:
+	JZ loc_459		; @455
+	PUSH 0		; @456
+	PUSHSTRING 28		; @457
+	SYSCALL 14, 1, 2		;sc14_unk_0x0001 @458
+
+loc_459:
+	JMP loc_857		; @459
+
+loc_460:
+	PUSH32 33648643		; @460
+	SYSCALL 2, 54, 1		;set_object_hidden @462
+	PUSH32 50425856		; @463
+	SYSCALL 2, 55, 1		;set_object_displayed @465
+	PUSH 8		; @466
+	PUSH32 50425856		; @467
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @469
+	PUSH32 33648652		; @470
+	SYSCALL 2, 142, 1		;get_party_contains_unique_id @472
+	PUSHRESULT 		; @473
+	JZ loc_478		; @474
+	PUSH32 33648648		; @475
+	SYSCALL 2, 54, 1		;set_object_hidden @477
+
+loc_478:
+	JMP loc_857		; @478
+
+loc_479:
+	PUSH32 50425856		; @479
+	SYSCALL 2, 55, 1		;set_object_displayed @481
+	PUSH 8		; @482
+	PUSH32 50425856		; @483
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @485
+	PUSH 1		; @486
+	SYSCALL 2, 131, 1		;get_event_variable @487
+	PUSHRESULT 		; @488
+	PUSH 1		; @489
+	IS_EQ 		; @490
+	JZ loc_512		; @491
+	PUSH 200		; @492
+	PUSH 360		; @493
+	PUSH32 33648643		; @494
+	SYSCALL 2, 64, 3		;set_object_location @496
+	PUSH 0		; @497
+	PUSH32 33648643		; @498
+	SYSCALL 2, 48, 2		;turn_object_to_angle @500
+	PUSH 200		; @501
+	PUSH 400		; @502
+	PUSH32 33648647		; @503
+	SYSCALL 2, 64, 3		;set_object_location @505
+	PUSH32 32768		; @506
+	PUSH32 33648647		; @508
+	SYSCALL 2, 48, 2		;turn_object_to_angle @510
+	JMP loc_522		; @511
+
+loc_512:
+	PUSH 224		; @512
+	PUSH 320		; @513
+	PUSH32 33648647		; @514
+	SYSCALL 2, 64, 3		;set_object_location @516
+	PUSH32 49152		; @517
+	PUSH32 33648647		; @519
+	SYSCALL 2, 48, 2		;turn_object_to_angle @521
+
+loc_522:
+	PUSH 0		; @522
+	SYSCALL 2, 131, 1		;get_event_variable @523
+	PUSHRESULT 		; @524
+	PUSH 1		; @525
+	IS_EQ 		; @526
+	JZ loc_532		; @527
+	PUSH 512		; @528
+	PUSH32 33648647		; @529
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @531
+
+loc_532:
+	JMP loc_857		; @532
+
+loc_533:
+	PUSH 185		; @533
+	PUSH 282		; @534
+	PUSH32 33648642		; @535
+	SYSCALL 2, 64, 3		;set_object_location @537
+	PUSH32 49152		; @538
+	PUSH32 33648642		; @540
+	SYSCALL 2, 48, 2		;turn_object_to_angle @542
+	PUSH 138		; @543
+	PUSH 278		; @544
+	PUSH32 33648644		; @545
+	SYSCALL 2, 64, 3		;set_object_location @547
+	PUSH32 32768		; @548
+	PUSH32 33648644		; @550
+	SYSCALL 2, 48, 2		;turn_object_to_angle @552
+	PUSH 122		; @553
+	PUSH 247		; @554
+	PUSH32 33648646		; @555
+	SYSCALL 2, 64, 3		;set_object_location @557
+	PUSH 16384		; @558
+	PUSH32 33648646		; @559
+	SYSCALL 2, 48, 2		;turn_object_to_angle @561
+	PUSH 200		; @562
+	PUSH 360		; @563
+	PUSH32 33648643		; @564
+	SYSCALL 2, 64, 3		;set_object_location @566
+	PUSH 0		; @567
+	PUSH32 33648643		; @568
+	SYSCALL 2, 48, 2		;turn_object_to_angle @570
+	PUSH 0		; @571
+	SYSCALL 2, 131, 1		;get_event_variable @572
+	PUSHRESULT 		; @573
+	PUSH 9		; @574
+	IS_EQ 		; @575
+	JZ loc_580		; @576
+	PUSH32 33648648		; @577
+	SYSCALL 2, 55, 1		;set_object_displayed @579
+
+loc_580:
+	PUSH 224		; @580
+	PUSH 250		; @581
+	PUSH32 33648652		; @582
+	SYSCALL 2, 64, 3		;set_object_location @584
+	PUSH32 49152		; @585
+	PUSH32 33648652		; @587
+	SYSCALL 2, 48, 2		;turn_object_to_angle @589
+	PUSH 200		; @590
+	PUSH 400		; @591
+	PUSH32 33648647		; @592
+	SYSCALL 2, 64, 3		;set_object_location @594
+	PUSH32 32768		; @595
+	PUSH32 33648647		; @597
+	SYSCALL 2, 48, 2		;turn_object_to_angle @599
+	PUSH 512		; @600
+	PUSH32 33648647		; @601
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @603
+	PUSH 135		; @604
+	PUSH 247		; @605
+	PUSH32 50425856		; @606
+	SYSCALL 2, 64, 3		;set_object_location @608
+	PUSH 138		; @609
+	PUSH 240		; @610
+	PUSH32 50425857		; @611
+	SYSCALL 2, 64, 3		;set_object_location @613
+	JMP loc_857		; @614
+
+loc_615:
+	PUSH 185		; @615
+	PUSH 262		; @616
+	PUSH32 33648642		; @617
+	SYSCALL 2, 64, 3		;set_object_location @619
+	PUSH32 49152		; @620
+	PUSH32 33648642		; @622
+	SYSCALL 2, 48, 2		;turn_object_to_angle @624
+	PUSH 138		; @625
+	PUSH 278		; @626
+	PUSH32 33648644		; @627
+	SYSCALL 2, 64, 3		;set_object_location @629
+	PUSH32 32768		; @630
+	PUSH32 33648644		; @632
+	SYSCALL 2, 48, 2		;turn_object_to_angle @634
+	PUSH 122		; @635
+	PUSH 247		; @636
+	PUSH32 33648646		; @637
+	SYSCALL 2, 64, 3		;set_object_location @639
+	PUSH 16384		; @640
+	PUSH32 33648646		; @641
+	SYSCALL 2, 48, 2		;turn_object_to_angle @643
+	PUSH 0		; @644
+	SYSCALL 2, 131, 1		;get_event_variable @645
+	PUSHRESULT 		; @646
+	PUSH 1		; @647
+	IS_GE 		; @648
+	JZ loc_653		; @649
+	PUSH32 33648641		; @650
+	SYSCALL 2, 54, 1		;set_object_hidden @652
+
+loc_653:
+	PUSH 138		; @653
+	PUSH 240		; @654
+	PUSH32 50425857		; @655
+	SYSCALL 2, 64, 3		;set_object_location @657
+	PUSH 200		; @658
+	PUSH 400		; @659
+	PUSH32 33648647		; @660
+	SYSCALL 2, 64, 3		;set_object_location @662
+	PUSH 0		; @663
+	PUSH32 33648647		; @664
+	SYSCALL 2, 48, 2		;turn_object_to_angle @666
+	PUSH 3		; @667
+	SYSCALL 2, 131, 1		;get_event_variable @668
+	PUSHRESULT 		; @669
+	PUSH 0		; @670
+	IS_EQ 		; @671
+	JZ loc_677		; @672
+	PUSH 512		; @673
+	PUSH32 33648647		; @674
+	SYSCALL 2, 71, 2		;sc2_unk_0x0047 @676
+
+loc_677:
+	PUSH 0		; @677
+	SYSCALL 2, 131, 1		;get_event_variable @678
+	PUSHRESULT 		; @679
+	PUSH 1		; @680
+	IS_GE 		; @681
+	JZ loc_692		; @682
+	PUSH32 33648643		; @683
+	SYSCALL 2, 54, 1		;set_object_hidden @685
+	PUSH32 33648642		; @686
+	SYSCALL 2, 54, 1		;set_object_hidden @688
+	PUSH32 33648644		; @689
+	SYSCALL 2, 54, 1		;set_object_hidden @691
+
+loc_692:
+	PUSH 9		; @692
+	SYSCALL 2, 131, 1		;get_event_variable @693
+	PUSHRESULT 		; @694
+	PUSH 1		; @695
+	IS_EQ 		; @696
+	JZ loc_701		; @697
+	PUSH 0		; @698
+	PUSHSTRING 38		; @699
+	SYSCALL 14, 1, 2		;sc14_unk_0x0001 @700
+
+loc_701:
+	PUSH 10		; @701
+	SYSCALL 2, 131, 1		;get_event_variable @702
+	PUSHRESULT 		; @703
+	PUSH 1		; @704
+	IS_EQ 		; @705
+	JZ loc_710		; @706
+	PUSH 0		; @707
+	PUSHSTRING 50		; @708
+	SYSCALL 14, 1, 2		;sc14_unk_0x0001 @709
+
+loc_710:
+	JMP loc_857		; @710
+
+loc_711:
+	PUSH32 33648642		; @711
+	SYSCALL 2, 54, 1		;set_object_hidden @713
+	JMP loc_857		; @714
+
+loc_715:
+	PUSH32 33648642		; @715
+	SYSCALL 2, 54, 1		;set_object_hidden @717
+	JMP loc_857		; @718
+
+loc_719:
+    PUSH 0		; @701
+	SYSCALL 2, 131, 1		;get_event_variable @702
+    PUSHRESULT ;
+    PUSH 6		; @704
+	IS_LT 		; @705
+	JZ loc_857		; @706
+    PUSH32 33648642		; @715
+	SYSCALL 2, 54, 1		;set_object_hidden @717
+	JMP loc_857		; @719
+
+loc_720:
+	PUSH 192		; @720
+	PUSH 320		; @721
+	PUSH32 33648643		; @722
+	SYSCALL 2, 64, 3		;set_object_location @724
+	PUSH 16384		; @725
+	PUSH32 33648643		; @726
+	SYSCALL 2, 48, 2		;turn_object_to_angle @728
+	PUSH32 33648642		; @729
+	SYSCALL 2, 54, 1		;set_object_hidden @731
+	JMP loc_857		; @732
+
+loc_733:
+	PUSH32 33648642		; @733
+	SYSCALL 2, 54, 1		;set_object_hidden @735
+	JMP loc_857		; @736
+
+loc_737:
+	PUSH32 33648643		; @737
+	SYSCALL 2, 54, 1		;set_object_hidden @739
+	PUSH32 33648648		; @740
+	SYSCALL 2, 54, 1		;set_object_hidden @742
+	JMP loc_857		; @743
+
+loc_744:
+	PUSH 188		; @744
+	PUSH 363		; @745
+	PUSH32 33648641		; @746
+	SYSCALL 2, 64, 3		;set_object_location @748
+	PUSH 194		; @749
+	PUSH 384		; @750
+	PUSH32 33648645		; @751
+	SYSCALL 2, 64, 3		;set_object_location @753
+	PUSH 224		; @754
+	PUSH 384		; @755
+	PUSH32 33648647		; @756
+	SYSCALL 2, 64, 3		;set_object_location @758
+	SYSCALL 2, 155, 0		;getchapter @759
+	PUSHRESULT 		; @760
+	PUSH 41		; @761
+	IS_EQ 		; @762
+	JPZ loc_771		; @763
+	PUSH 2		; @764
+	SYSCALL 2, 131, 1		;get_event_variable @765
+	PUSHRESULT 		; @766
+	PUSH 1		; @767
+	IS_EQ 		; @768
+	JPZ loc_771		; @769
+	PUSH 1		; @770
+
+loc_771:
+	JZ loc_775		; @771
+	PUSH 0		; @772
+	PUSHSTRING 63		; @773
+	SYSCALL 14, 1, 2		;sc14_unk_0x0001 @774
+
+loc_775:
+	JMP loc_857		; @775
+
+loc_776:
+	JMP loc_857		; @776
+
+loc_777:
+	PUSH32 33648642		; @777
+	SYSCALL 2, 54, 1		;set_object_hidden @779
+	PUSH32 33648643		; @780
+	SYSCALL 2, 54, 1		;set_object_hidden @782
+	PUSH32 33648648		; @783
+	SYSCALL 2, 54, 1		;set_object_hidden @785
+	JMP loc_857		; @786
+
+loc_787:
+	SYSCALL 2, 358, 0		;sc2_unk_0x0166 @787
+	PUSHRESULT 		; @788
+	PUSH 1		; @789
+	IS_EQ 		; @790
+	JPZ loc_799		; @791
+	PUSH 2		; @792
+	SYSCALL 2, 131, 1		;get_event_variable @793
+	PUSHRESULT 		; @794
+	PUSH 0		; @795
+	IS_EQ 		; @796
+	JPZ loc_799		; @797
+	PUSH 1		; @798
+
+loc_799:
+	JPZ loc_807		; @799
+	PUSH 1		; @800
+	SYSCALL 2, 131, 1		;get_event_variable @801
+	PUSHRESULT 		; @802
+	PUSH 1		; @803
+	IS_EQ 		; @804
+	JPZ loc_807		; @805
+	PUSH 1		; @806
+
+loc_807:
+	JZ loc_836		; @807
+	PUSH 193		; @808
+	PUSH 320		; @809
+	PUSH32 33648642		; @810
+	SYSCALL 2, 64, 3		;set_object_location @812
+	PUSH 24576		; @813
+	PUSH32 33648642		; @814
+	SYSCALL 2, 48, 2		;turn_object_to_angle @816
+	PUSH 192		; @817
+	PUSH 284		; @818
+	PUSH32 33648643		; @819
+	SYSCALL 2, 64, 3		;set_object_location @821
+	PUSH 8192		; @822
+	PUSH32 33648643		; @823
+	SYSCALL 2, 48, 2		;turn_object_to_angle @825
+	PUSH 224		; @826
+	PUSH 288		; @827
+	PUSH32 33648648		; @828
+	SYSCALL 2, 64, 3		;set_object_location @830
+	PUSH32 57344		; @831
+	PUSH32 33648648		; @833
+	SYSCALL 2, 48, 2		;turn_object_to_angle @835
+
+loc_836:
+	JMP loc_857		; @836
+
+loc_837:
+	SYSCALL 2, 155, 0		;getchapter @837
+	PUSHRESULT 		; @838
+	PUSH 68		; @839
+	IS_LT 		; @840
+	JZ loc_843		; @841
+	JMP loc_857		; @842
+
+loc_843:
+	SYSCALL 2, 155, 0		;getchapter @843
+	PUSHRESULT 		; @844
+	PUSH 45		; @845
+	IS_GE 		; @846
+	JZ loc_857		; @847
+	PUSH32 33648642		; @848
+	SYSCALL 2, 54, 1		;set_object_hidden @850
+	PUSH32 33648643		; @851
+	SYSCALL 2, 54, 1		;set_object_hidden @853
+	PUSH32 33648648		; @854
+	SYSCALL 2, 54, 1		;set_object_hidden @856
+
+loc_857:
+	PUSH 1		; @857
+	JZ loc_862		; @858
+	PUSH 0		; @859
+	SETFIELD20 		; @860
+	JMP loc_857		; @861
+
+loc_862:
+	PUSH 0		; @862
+	RETURN 1, 0		; @863
+
+;Functions:
+.func main
+
+;Symbols:
+
+;Strings:
+.asciiz "MapScript enter (m004_002)\0a"		;28
+.asciiz "c024Tuika"		;38
+.asciiz "c029Newsend"		;50
+.asciiz "c029News2end"		;63
+.asciiz "c041Tuika"		;73

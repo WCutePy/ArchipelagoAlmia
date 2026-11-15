@@ -310,11 +310,20 @@ def patch(
     ]
 
     """mission 6"""
-    """Enables backtracking before completing mission 6"""
+    """Enables backtracking before completing mission 6
+    The eventrect enables backtracking, the map script
+    prevents ending the chapter before completing all the required
+    flags in a vanilla game. Can consider removing the doduo from
+    required. But likely not possible
+    """
     EVENTRECT_PATCHES["EventRect015102"] += [
         #  PUSH 33		; @12
         (12, 0x00_00_00_10)
     ]
+
+    from ._data import m004_002
+
+    rom.files[f"/data/Script/field/map/m004/m004_002.fsb"] = m004_002
 
     """Prevents a softlock due to using Crush 4 and destroying the boulder, 
     and going to the east without completing mission 6 first
@@ -1336,7 +1345,9 @@ def code_patch(
     files_dump: dict[str, bytes | bytearray],
     slot_data,
 ):
-    NOP_INSTRUCTION = 0xE3A00000
+    NOP_INSTRUCTION = 0xE3A00000  # mov r0, #0x0 (not really nop)
+    # NOP	00 F0 20 E3
+    # MOV R0, R0	00 00 A0 E1
     patches = []
 
     """instant text speed"""
