@@ -10,10 +10,11 @@ from Options import Option
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData, SpeciesData, Party, ItemCategory, FieldMoveCategory
+from .data import data, MapData, SpeciesData, Party, FieldMoveCategory
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
+from .data_dir.items import ItemCategory
 from .items import PokemonRSOAItem
 from .options import (
     PokemonRSOAOptions,
@@ -343,7 +344,6 @@ class PokemonRSOA(World):
                 # really change the cut required for the vine
                 FieldMoveCategory.CRUSH: [1, 2],
             }
-        print("here", self.field_move_stages)
         if rule_num >= 7:
             self.field_move_stages |= {
                 FieldMoveCategory.AGILITY: [],
@@ -546,13 +546,15 @@ class PokemonRSOA(World):
             # "capture_rank_rank_target",
             "death_link",
             "death_link_damage",
-            # "level_up_type",
-            # "level_up_count",
+            #
+            "level_up_item",
+            "level_up_count",
             "level_up_increment",
-            # "rank_up_type",
-            # "rank_up_count",
-            "rank_up_increment",
+            "rank_up_item",
             "styler_model_item",
+            "capture_card_sanity",
+            "partner_sanity",
+            #
             "field_move_item",
             "randomize_pokemon",
             "randomize_pokemon_etc",

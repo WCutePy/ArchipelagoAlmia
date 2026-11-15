@@ -48,7 +48,7 @@ class MissionClearTarget(Choice):
 
     display_name = "Missing clear target"
 
-    option_graduate_school = 0
+    # option_graduate_school = 0
     option_investigate_the_marine_cave = 2
     option_fight_the_forest_fire = 3
     option_destroy_the_strange_machines = 4
@@ -123,99 +123,78 @@ class CaptureRankRankTarget(Choice):
     default = option_A
 
 
-class LevelUpType(Choice):
+class LevelUpItem(Choice):
     """
-    Lets you choose if level up is locked behind progressive level up.
-    The progression items will automatically level you up to the next stat cap.
-
-    Lets you choose between not modifying it,
-    Having separate progression items for Power and Energy or
-    having both together.
+    Lets you choose if level up is locked behind a level up item.
+    Level cap: Progressive level increases the level cap
+    Separate: Progressive Energy and Progressive Strength increase the stats associated to level independently.
+        Levelling up vanilla is not possible
+    Together: Progressive level raises your level
     """
 
-    display_name = "Option to modify how leveling up works"
+    auto_display_name = True
 
     option_vanilla = 0
-    option_separate = 1
-    option_together = 2
+    option_level_cap = 1
+    option_separate = 2
+    option_together = 3
 
-    default = option_separate
+    default = option_vanilla
 
 
-class LevelUpCount(Range):
+class LevelUpItemMax(Range):
     """
-    The amount of level up items in the pool.
-    Regardless of setting,
-    Leveling beyond 99 is not possible.
+    Sets the maximum level achievable
+    with level up items enabled.
     """
 
-    display_name = "Level up items"
+    range_start = 5
+    range_end = 99
+
+    default = 20
+
+
+class LevelUpItemCount(Range):
+    """
+    Used to determine the amount of level
+    up related items.
+    Will automatically calculate the level up effect of each
+    based on the maximum, minimum of 1 per.
+    Can be increased on early goals with a warning if
+    not enough locations are available.
+    """
+
+    auto_display_name = True
 
     range_start = 1
-    range_end = 98
+    range_end = 30
 
-    default = 10
+    default = 5
 
 
-class LevelUpIncrement(Range):
+class RankUpItem(Choice):
     """
-    Each level up progression item will level you up by this
-    amount of levels. Leveling beyond 99 is not possible.
-    """
+    Rank up influences the party size limit and impacts Power Charge stages.
 
-    display_name = "Level up increment"
-
-    range_start = 1
-    range_end = 98
-
-    default = 4
-
-
-class RankUpType(Choice):
-    """
-    Choose between ranking up vanilla or as progression item.
+    Vanilla: Rank up happens as vanilla
+    Item: Progressive Rank up relevant ranks - 4 items
+    Item_all: Progressive Rank up each rank - 10 items
     """
 
-    display_name = "Rank up type"
+    auto_display_name = True
 
     option_vanilla = 0
     option_item = 1
+    option_item_all = 2
 
-    default = option_item
-
-
-class RankUpItemCount(Range):
-    """
-    Rank is logically required for certain locations.
-    Selecting below 10 rank items restricts what is
-    accessible.
-    """
-
-    display_name = "Rank up items"
-
-    range_start = 0
-    range_end = 15
-    default = 10
-
-
-class RankUpIncrement(Range):
-    """
-    How much Ranger Rank will increment for each Rank up item
-    """
-
-    display_name = "Rank up increment"
-
-    range_start = 1
-    range_end = 10
-
-    default = 1
+    default = option_vanilla
 
 
 class StylerModelItem(Choice):
     """
-    Determines if the styler models
-    School, Capture, ... are provided vanilla
-    or as an item.
+    Determines if stylers are unlocked as item or vanilla
+    Vanilla: Styler unlocks happen as vanilla
+    Item: Progressive Styler
     """
 
     auto_display_name = True
@@ -223,7 +202,38 @@ class StylerModelItem(Choice):
     option_vanilla = 0
     option_item = 1
 
-    default = 1
+    default = option_vanilla
+
+
+class CaptureCardSanity(Choice):
+    """
+    Determines if styler upgrades (capture cards) are unlocked by completing quests or as items
+    Vanilla: Styler upgrades are vanilla, these quests will not be locations
+    Item: quest rewards are randomized
+    """
+
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_item = 1
+
+    default = option_vanilla
+
+
+class PartnerSanity(Choice):
+    """
+    Determines if partners are unlocked as item or vanilla
+    The first partner is always unlocked as vanilla.
+    Vanilla: Partner unlocks happen as vanilla, partner quests will not be locations
+    Item: Unlock Partner XXX unlocks the partners in partner farm, quest rewards are randomized
+    """
+
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_item = 1
+
+    default = option_vanilla
 
 
 class PokemonRSOADeathLink(Choice):
@@ -285,7 +295,7 @@ class RandomizePokemonEncounters(Choice):
     Not all wild or static encounters are necessarily included
     at the time due to technical limitations.
 
-    mostly bidoof is a meme option that will turn most wild
+    mostly bidoof is a meme option that will turn most
     encounters into a bidoof, leaving only minimal placements
     to beat the story and most quests. This will limit the possible locations severely.
     """
@@ -605,15 +615,14 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     death_link: PokemonRSOADeathLink
     death_link_damage: DeathlinkDamage
 
-    # level_up_type: LevelUpType
-    # level_up_count: LevelUpCount
-    level_up_increment: LevelUpIncrement
+    level_up_item: LevelUpItem
+    level_up_count: LevelUpItemMax
+    level_up_increment: LevelUpItemCount
 
-    # rank_up_type: RankUpType
-    # rank_up_count: RankUpItemCount
-    rank_up_increment: RankUpIncrement
-
+    rank_up_item: RankUpItem
     styler_model_item: StylerModelItem
+    capture_card_sanity: CaptureCardSanity
+    partner_sanity: PartnerSanity
 
     field_move_item: FieldMoveItem
     # randomize_target_field_move: RandomizeTargetFieldMove
@@ -673,12 +682,10 @@ OPTION_GROUPS = [
     OptionGroup(
         "Player options",
         [
-            LevelUpType,
-            LevelUpCount,
-            LevelUpIncrement,
-            RankUpType,
-            RankUpItemCount,
-            RankUpIncrement,
+            LevelUpItem,
+            LevelUpItemMax,
+            LevelUpItemCount,
+            RankUpItem,
             StylerModelItem,
         ],
     ),

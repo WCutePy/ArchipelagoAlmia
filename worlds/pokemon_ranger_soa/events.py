@@ -109,7 +109,7 @@ class PInstanceEvent(EventRegistry):
         "m001_001", 129, i=[4], m=0, mandatory=True
     )  # stolen stylers
     TIM_BIDOOF = InstanceEvent(
-        "m001_001", 310, i=[2, 3], m=0, mandatory=True
+        "m001_001", 173, i=[2, 3], m=0, mandatory=True
     )  # 2 bidoof that attack Tim when leaving school, fight only 1
     #
     TANGROWTH = InstanceEvent(

@@ -1,17 +1,12 @@
 from __future__ import annotations
 
-from enum import StrEnum
 from typing import (
     TYPE_CHECKING,
     Dict,
     Union,
     Optional,
     List,
-    TypeAlias,
-    Iterable,
     Sized,
-    ClassVar,
-    Any,
     Tuple,
 )
 from collections import defaultdict
@@ -19,39 +14,27 @@ from dataclasses import field, dataclass
 from rule_builder.rules import (
     Has,
     Rule,
-    HasAllCounts,
     True_,
     CanReachLocation,
-    CanReachRegion,
     False_,
-    HasFromList,
-    HasFromListUnique,
 )
 
 from .data import (
     data,
-    ItemCategory,
     FieldMove,
-    LocationCategory,
-    pokemon_to_target_id,
-    FieldMoveCategory,
     MapData,
     Party,
     sanitize_map_name,
 )
 from .events import (
     PREvent,
-    get_instance_base,
     get_instance_capture,
     get_instance_target,
-    get_loading_zone_name,
     get_instance_browser,
     PInstanceEvent,
-    get_mission_event,
-    get_quest_event,
     get_instance_missable,
 )
-from .options import FieldMoveItem, Goal, RandomizePokemonEncounters
+from .options import FieldMoveItem, RandomizePokemonEncounters
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -1162,6 +1145,9 @@ class MonPlacer:
             added_moves += [form_fieldmove]
         else:
             raise ValueError("No fieldmove or form id was passed")
+
+        if form_id == 305:
+            raise ValueError(fieldmove, form_id, max_health)
 
         out = apply_place_on_random(
             self.world, self.all_maps, form_id, exclude=to_exclude

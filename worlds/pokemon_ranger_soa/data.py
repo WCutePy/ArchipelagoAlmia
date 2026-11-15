@@ -1,22 +1,41 @@
 import pkgutil
 from dataclasses import dataclass, field
 from enum import IntEnum, StrEnum, auto
-from typing import NamedTuple, Union, List, FrozenSet, Dict, Any, Optional, Tuple
+from typing import NamedTuple, Union, List, Dict, Any, Optional, Tuple
 
-import re
-import json
-from dataclasses import dataclass, asdict
-from enum import Enum
-from pathlib import Path
+from dataclasses import dataclass
 
-import unicodedata
 from orjson import orjson
 
 from BaseClasses import ItemClassification
+from .data_dir.items import BASE_ITEMS, ItemData, ItemCategory
 
 BASE_OFFSET = 1000
 POKE_ID_ROW_ROM_SIZE = 28
 POKE_ID_ROW_RAM_SIZE = 24
+
+VANILLA_PARTNERS_FORMS_UNLOCK_ORDER = (
+    175,  # kricketot
+    182,  # cranidos
+    161,  # turtwig
+    220,  # croagunk
+    210,  # mime jr.
+    183,  # shieldon
+    #
+    164,  # chimchar
+    167,  # piplup
+    152,  # snorunt
+    99,  # sneasel
+    92,  # misdreavus
+    #
+    31,  # machop
+    217,  # hippopotas
+    213,  # gible
+    #
+    170,  # starly
+    188,  # pach
+    215,  # munchlax
+)
 
 
 class GameStateEnum(IntEnum):
@@ -238,18 +257,6 @@ class SpeciesData:
         return f"CAPTURE_RANK_{self.name}"
 
 
-class ItemCategory(StrEnum):
-    STYLER_UPGRADE = auto()
-    PLAYER_ATTRIBUTES = auto()
-    FILLER = auto()
-    UNIQUE = auto()
-    PROGRESSIVE = auto()
-    EVENT = auto()
-    PARTNER = auto()
-    FIELD_MOVE = auto()
-    POWER_LEVEL = auto()
-
-
 class AddressesGroup(NamedTuple):
     addresses: list[int]
     label: str
@@ -271,25 +278,6 @@ class AddressesGroup(NamedTuple):
             bit_length=info.get("bit_offset"),
             label=info.get("label"),
             descriptor=info.get("descriptor"),
-        )
-
-
-@dataclass()
-class ItemData:
-    label: str
-    item_id: int
-    classification: ItemClassification
-    item_categories: Tuple[ItemCategory, ...]
-    bit_offset: Optional[int] = None
-    copies: int = 1
-
-    def __post_init__(self):
-        if not isinstance(self.classification, ItemClassification):
-            self.classification = ItemClassification(self.classification)
-
-        self.item_categories = tuple(
-            c if isinstance(c, ItemCategory) else ItemCategory(c)
-            for c in self.item_categories
         )
 
 
@@ -415,7 +403,7 @@ class PokemonRSOAData:
 
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
     return orjson.loads(
-        pkgutil.get_data(__name__, "data/" + data_name).decode("utf-8-sig")
+        pkgutil.get_data(__name__, "data_dir/" + data_name).decode("utf-8-sig")
     )
 
 
@@ -491,21 +479,23 @@ def _init():
     for species_data in extracted_species:
         species = SpeciesData(**species_data)
         data.species[species.browser_id] = species
-        for form in species.forms.keys():
+        for form in list(species.forms.keys()):
             if form in blacklisted_forms:
+                species.forms.pop(form)
                 continue
             data.form_id_to_species[form] = species
 
-    extracted_items: List[Dict] = load_json_data("items.json")
-
-    for i, item_data in enumerate(extracted_items):
-        try:
-            item = ItemData(**item_data)
-        except:
-            print("errored loading item: ")
-            print(item_data)
-            raise
+    for item in BASE_ITEMS:
         data.items[item.item_id] = item
+    for i, species in data.species.items():
+        data.items[species.national_id + 100] = ItemData(
+            label=f"Partner Pokemon - {species.name}",
+            item_id=100 + species.national_id,
+            classification=ItemClassification.useful
+            | ItemClassification.skip_balancing,
+            item_categories=(ItemCategory.PARTNER,),
+            copies=1,
+        )
 
     extracted_regions: List[Dict] = load_json_data("regions.json")
 

@@ -33,7 +33,6 @@ from rule_builder.rules import (
 )
 from .data import (
     data,
-    ItemCategory,
     FieldMove,
     LocationCategory,
     pokemon_to_target_id,
@@ -46,13 +45,11 @@ from .events import (
     get_instance_capture,
     get_instance_target,
     get_loading_zone_name,
-    get_instance_browser,
     PInstanceEvent,
     get_mission_event,
     get_quest_event,
-    get_instance_missable,
 )
-from .options import FieldMoveItem, RandomizePokemonEncounters
+from .options import RandomizePokemonEncounters
 from .MonSelect import sanitize_map_name, MonSelect, has_field_move_item
 
 if TYPE_CHECKING:
@@ -466,8 +463,9 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
 
 
 def set_mission_3_rules(world: PokemonRSOA):
-    for loc in [data.locations["QUEST_01"].label, get_quest_event(1)]:
-        world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_01"].label, get_quest_event(1)]:
+            world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
     world.set_rule(
         get_entrance(world, PInstanceEvent.MILTANK.event_name),
         Has(get_mission_event(2)),
@@ -475,8 +473,9 @@ def set_mission_3_rules(world: PokemonRSOA):
 
     all_maps = MonSelect.get_rules_scope(world)
 
-    for loc in [data.locations["QUEST_48"].label, get_quest_event(48)]:
-        world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_48"].label, get_quest_event(48)]:
+            world.set_rule(get_location(world, loc), Has(get_mission_event(2)))
 
     """m009_002"""
     # TODO, figure out how mandatory the happiny are and in what way.
@@ -584,14 +583,14 @@ def set_mission_4_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope(world)
 
     """quests"""
-
-    for loc in [data.locations["QUEST_03"].label, get_quest_event(3)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(3))
-            & Has(data.species[59].event_can_capture())
-            & CanReachLocation(data.species[59].location_capture_name),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_03"].label, get_quest_event(3)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(3))
+                & Has(data.species[59].event_can_capture())
+                & CanReachLocation(data.species[59].location_capture_name),
+            )
 
     """
     During quest 11 te following are unavailable to destroy the first obstacle, 
@@ -603,20 +602,20 @@ def set_mission_4_rules(world: PokemonRSOA):
     0xA,  # cherubi
     0xD,  # wartortle
     """
-
-    for loc in [data.locations["QUEST_11"].label, get_quest_event(11)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(3))
-            & all_maps.can_destroy_target("m009_002", 2)
-            & all_maps.can_destroy_target("m009_002", 7),
-        )  # really identical fallen logs
-
-    for loc in [data.locations["QUEST_49"].label, get_quest_event(49)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(3)) & all_maps.can_destroy_target("m005_001b", 1),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_11"].label, get_quest_event(11)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(3))
+                & all_maps.can_destroy_target("m009_002", 2)
+                & all_maps.can_destroy_target("m009_002", 7),
+            )  # really identical fallen logs
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_49"].label, get_quest_event(49)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(3)) & all_maps.can_destroy_target("m005_001b", 1),
+            )
 
     """m009_001b"""
 
@@ -812,12 +811,13 @@ def set_mission_4_rules(world: PokemonRSOA):
 
     """After saving pueltown"""
 
-    for loc in [data.locations["QUEST_04"].label, get_quest_event(4)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(PREvent.RESCUE_PUELTOWN.event_name)
-            & all_maps.can_destroy_target("m009_011", 0),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_04"].label, get_quest_event(4)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(PREvent.RESCUE_PUELTOWN.event_name)
+                & all_maps.can_destroy_target("m009_011", 0),
+            )
 
     for loc in [data.locations["MISSION_04"].label, get_mission_event(4)]:
         world.set_rule(
@@ -828,17 +828,19 @@ def set_mission_4_rules(world: PokemonRSOA):
 def set_mission_5_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope(world)
 
-    for loc in [data.locations["QUEST_02"].label, get_quest_event(2)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(4)) & all_maps.can_destroy_target("m005_001b", 0),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_02"].label, get_quest_event(2)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(4)) & all_maps.can_destroy_target("m005_001b", 0),
+            )
 
-    for loc in [data.locations["QUEST_35"].label, get_quest_event(35)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(4)),
-        )
+    if world.options.partner_sanity:
+        for loc in [data.locations["QUEST_35"].label, get_quest_event(35)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(4)),
+            )
 
     for event in [
         PInstanceEvent.KRICKETOT,
@@ -1032,32 +1034,35 @@ def set_mission_6_rules(world: PokemonRSOA):
     gigaremo_showcase = all_maps.can_destroy_target("m017_004", 0)
     # can do next quests right after before ending the day
 
-    for loc in [data.locations["QUEST_50"].label, get_quest_event(50)]:
-        world.set_rule(
-            get_location(world, loc),
-            gigaremo_showcase,
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_50"].label, get_quest_event(50)]:
+            world.set_rule(
+                get_location(world, loc),
+                gigaremo_showcase,
+            )
 
     world.set_rule(get_pokemon_instance(world, "m010_003", 11), gigaremo_showcase)
-    for loc in [data.locations["QUEST_08"].label, get_quest_event(8)]:
-        world.set_rule(
-            get_location(world, loc),
-            gigaremo_showcase
-            & (
-                Has(data.species[97].event_can_capture(form=69))
-                # | Has(data.species[97].event_can_capture(form=281))
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_08"].label, get_quest_event(8)]:
+            world.set_rule(
+                get_location(world, loc),
+                gigaremo_showcase
+                & (
+                    Has(data.species[97].event_can_capture(form=69))
+                    # | Has(data.species[97].event_can_capture(form=281))
+                )
+                & CanReachLocation(data.species[97].location_capture_name),
             )
-            & CanReachLocation(data.species[97].location_capture_name),
-        )
     #  TODO fix that it can take either eevee, currently a 69 eevee is forced in specifically.
 
     world.set_rule(get_pokemon_instance(world, "m011_005", 2), gigaremo_showcase)
-    for loc in [data.locations["QUEST_05"].label, get_quest_event(5)]:
-        world.set_rule(
-            get_location(world, loc),
-            gigaremo_showcase
-            & CanReachLocation(data.species[87].location_capture_name),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_05"].label, get_quest_event(5)]:
+            world.set_rule(
+                get_location(world, loc),
+                gigaremo_showcase
+                & CanReachLocation(data.species[87].location_capture_name),
+            )
     #  presumbly this is enough, need a bit more testing.
 
     """m016_001  mission 6"""
@@ -1145,39 +1150,42 @@ def set_mission_7_rules(world: PokemonRSOA):
             get_pokemon_instance(world, map_name, i), Has(get_mission_event(6))
         )
 
-    for loc in [data.locations["QUEST_06"].label, get_quest_event(6)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(6))
-            & Has(data.species[44].event_can_capture(form=133))
-            & CanReachLocation(data.species[44].location_capture_name),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_06"].label, get_quest_event(6)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(6))
+                & Has(data.species[44].event_can_capture(form=133))
+                & CanReachLocation(data.species[44].location_capture_name),
+            )
 
     world.set_rule(
         get_pokemon_instance(world, "m009_009", 2), Has(get_mission_event(6))
     )
-    for loc in [data.locations["QUEST_07"].label, get_quest_event(7)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(6))
-            & Has(data.species[109].event_can_capture(form=195))
-            & CanReachLocation(data.species[109].location_capture_name),
-        )
-
-    for loc in [data.locations["QUEST_09"].label, get_quest_event(9)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(6))
-            & Has(data.species[114].event_can_capture(form=22))
-            & CanReachLocation(data.species[114].location_capture_name),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_07"].label, get_quest_event(7)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(6))
+                & Has(data.species[109].event_can_capture(form=195))
+                & CanReachLocation(data.species[109].location_capture_name),
+            )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_09"].label, get_quest_event(9)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(6))
+                & Has(data.species[114].event_can_capture(form=22))
+                & CanReachLocation(data.species[114].location_capture_name),
+            )
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.TURTWIG.event_name),
         Has(get_mission_event(6)),
     )
-    for loc in [data.locations["QUEST_45"].label, get_quest_event(45)]:
-        world.set_rule(get_location(world, loc), Has(get_mission_event(6)))
+    if world.options.partner_sanity:
+        for loc in [data.locations["QUEST_45"].label, get_quest_event(45)]:
+            world.set_rule(get_location(world, loc), Has(get_mission_event(6)))
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.CROAGUNK.event_name),
@@ -1291,54 +1299,55 @@ def set_mission_8_rules(world: PokemonRSOA):
 def set_mission_9_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope(world)
 
-    for loc in [data.locations["QUEST_10"].label, get_quest_event(10)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(8))
-            & all_maps.can_destroy_target("m001_002", 2)
-            & all_maps.can_destroy_target("m001_002", 8)
-            & all_maps.can_destroy_target("m001_002", 9),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_10"].label, get_quest_event(10)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(8))
+                & all_maps.can_destroy_target("m001_002", 2)
+                & all_maps.can_destroy_target("m001_002", 8)
+                & all_maps.can_destroy_target("m001_002", 9),
+            )
 
-    for loc in [data.locations["QUEST_12"].label, get_quest_event(12)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(8))
-            & Has(data.species[48].event_can_capture(form=192))
-            & CanReachLocation(data.species[48].location_capture_name),
-        )
+        for loc in [data.locations["QUEST_12"].label, get_quest_event(12)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(8))
+                & Has(data.species[48].event_can_capture(form=192))
+                & CanReachLocation(data.species[48].location_capture_name),
+            )
+        for loc in [data.locations["QUEST_13"].label, get_quest_event(13)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(8))
+                & all_maps.can_destroy_target("m019_002", 4)
+                & all_maps.can_destroy_target("m019_002", 5),
+                #  beating the charmander mon
+            )
+
+        for loc in [data.locations["QUEST_14"].label, get_quest_event(14)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(8))
+                & Has(data.species[152].event_can_capture(form=45))
+                & CanReachLocation(data.species[152].location_capture_name),
+            )
+        for loc in [data.locations["QUEST_51"].label, get_quest_event(51)]:
+            world.set_rule(get_location(world, loc), Has(get_mission_event(8)))
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.CHARMANDER.event_name),
         Has(get_mission_event(8)),
     )
-    for loc in [data.locations["QUEST_13"].label, get_quest_event(13)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(8))
-            & all_maps.can_destroy_target("m019_002", 4)
-            & all_maps.can_destroy_target("m019_002", 5),
-            #  beating the charmander mon
-        )
 
-    for loc in [data.locations["QUEST_14"].label, get_quest_event(14)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(8))
-            & Has(data.species[152].event_can_capture(form=45))
-            & CanReachLocation(data.species[152].location_capture_name),
-        )
-
-    for loc in [data.locations["QUEST_36"].label, get_quest_event(36)]:
-        world.set_rule(get_location(world, loc), Has(get_mission_event(8)))
+    if world.options.partner_sanity:
+        for loc in [data.locations["QUEST_36"].label, get_quest_event(36)]:
+            world.set_rule(get_location(world, loc), Has(get_mission_event(8)))
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.SHIELDON.event_name),
         Has(get_mission_event(8)),
     )
-
-    for loc in [data.locations["QUEST_51"].label, get_quest_event(51)]:
-        world.set_rule(get_location(world, loc), Has(get_mission_event(8)))
 
     """chroma"""
 
@@ -1494,20 +1503,21 @@ def set_mission_10_rules(world: PokemonRSOA):
             get_pokemon_instance(world, map_name, i), Has(get_mission_event(9))
         )
 
-    for loc in [data.locations["QUEST_15"].label, get_quest_event(15)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(9))
-            & Has(data.species[185].event_can_capture(form=91), 2)
-            & CanReachLocation(data.species[185].location_capture_name),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_15"].label, get_quest_event(15)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(9))
+                & Has(data.species[185].event_can_capture(form=91), 2)
+                & CanReachLocation(data.species[185].location_capture_name),
+            )
 
-    for loc in [data.locations["QUEST_16"].label, get_quest_event(16)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(9)),
-            # and can beat the vespiqueen but eh, implied is fine
-        )
+        for loc in [data.locations["QUEST_16"].label, get_quest_event(16)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(9)),
+                # and can beat the vespiqueen but eh, implied is fine
+            )
 
     for event in [PInstanceEvent.CHIMCHAR, PInstanceEvent.BEEDRILl_2_Q]:
         world.set_rule(
@@ -1515,11 +1525,12 @@ def set_mission_10_rules(world: PokemonRSOA):
             Has(get_mission_event(9)),
         )
 
-    for loc in [data.locations["QUEST_37"].label, get_quest_event(37)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(9)),
-        )
+    if world.options.partner_sanity:
+        for loc in [data.locations["QUEST_37"].label, get_quest_event(37)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(9)),
+            )
 
     """water Vien Forest"""
 
@@ -1636,31 +1647,32 @@ def set_mission_10_rules(world: PokemonRSOA):
 def set_mission_11_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope(world)
 
-    for loc in [data.locations["QUEST_17"].label, get_quest_event(17)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(10))
-            & Has(data.species[205].event_can_capture(form=204))
-            & CanReachLocation(data.species[205].location_capture_name),
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_17"].label, get_quest_event(17)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(10))
+                & Has(data.species[205].event_can_capture(form=204))
+                & CanReachLocation(data.species[205].location_capture_name),
+            )
 
-    for loc in [data.locations["QUEST_18"].label, get_quest_event(18)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(10))
-            & Has(get_quest_event(9))
-            & Has(data.species[212].event_can_capture(form=227))
-            & CanReachLocation(data.species[212].location_capture_name),
-        )
+        for loc in [data.locations["QUEST_18"].label, get_quest_event(18)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(10))
+                & Has(get_quest_event(9))
+                & Has(data.species[212].event_can_capture(form=227))
+                & CanReachLocation(data.species[212].location_capture_name),
+            )
 
-    for loc in [data.locations["QUEST_19"].label, get_quest_event(19)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(10))
-            & all_maps.can_destroy_target("m024_004", 2)
-            & all_maps.can_destroy_target("m024_002", 0)
-            & all_maps.can_destroy_target("m024_001", 0),
-        )
+        for loc in [data.locations["QUEST_19"].label, get_quest_event(19)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(10))
+                & all_maps.can_destroy_target("m024_004", 2)
+                & all_maps.can_destroy_target("m024_002", 0)
+                & all_maps.can_destroy_target("m024_001", 0),
+            )
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.PIPLUP.event_name),
@@ -1670,12 +1682,13 @@ def set_mission_11_rules(world: PokemonRSOA):
         get_entrance(world, PInstanceEvent.HOUNDOOM_Q.event_name),
         Has(get_mission_event(10)),
     )
-    for loc in [data.locations["QUEST_44"].label, get_quest_event(44)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(10)),
-            # and the fight?
-        )
+    if world.options.partner_sanity:
+        for loc in [data.locations["QUEST_44"].label, get_quest_event(44)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(10)),
+                # and the fight?
+            )
 
     world.set_rule(
         get_connection(world, "m018_001", "m019_005"),
@@ -1755,37 +1768,39 @@ def set_mission_11_rules(world: PokemonRSOA):
 def set_mission_12_rules(world: PokemonRSOA):
     all_maps = MonSelect.get_rules_scope(world)
 
-    for loc in [data.locations["QUEST_20"].label, get_quest_event(20)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(11)),
-            #  capture 3 drifblim, if randomized have 3 captures of that species!!
-        )
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_20"].label, get_quest_event(20)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(11)),
+                #  capture 3 drifblim, if randomized have 3 captures of that species!!
+            )
 
-    for loc in [data.locations["QUEST_21"].label, get_quest_event(21)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(11))
-            & Has(get_quest_event(13))
-            & all_maps.can_destroy_target("m019_003", 0)
-            & all_maps.can_destroy_target("m019_004", 3),
-        )
+        for loc in [data.locations["QUEST_21"].label, get_quest_event(21)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(11))
+                & Has(get_quest_event(13))
+                & all_maps.can_destroy_target("m019_003", 0)
+                & all_maps.can_destroy_target("m019_004", 3),
+            )
 
-    for loc in [data.locations["QUEST_22"].label, get_quest_event(22)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(11)) & all_maps.can_destroy_target("m025_001", 5),
-        )
+        for loc in [data.locations["QUEST_22"].label, get_quest_event(22)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(11)) & all_maps.can_destroy_target("m025_001", 5),
+            )
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.SNOVER.event_name),
         Has(get_mission_event(11)),
     )
-    for loc in [data.locations["QUEST_39"].label, get_quest_event(39)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(11)),
-        )
+    if world.options.partner_sanity:
+        for loc in [data.locations["QUEST_39"].label, get_quest_event(39)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(11)),
+            )
 
     """sea of wailord"""
     # normal 0, 1, 2, 3, 4, 5,
@@ -1987,40 +2002,42 @@ def set_mission_14_rules(world: PokemonRSOA):
 
     can_do_quests = CanReachRegion(world.modified_regions["m036_001"].HUMAN_NAME)
 
-    for loc in [data.locations["QUEST_24"].label, get_quest_event(24)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_quest_event(5))
-            & can_do_quests
-            & CanReachLocation(data.species[236].location_capture_name),
-        )
+    if world.options.capture_card_sanity:
+
+        for loc in [data.locations["QUEST_24"].label, get_quest_event(24)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_quest_event(5))
+                & can_do_quests
+                & CanReachLocation(data.species[236].location_capture_name),
+            )
+        for loc in [data.locations["QUEST_25"].label, get_quest_event(25)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_quest_event(18))
+                & can_do_quests
+                & Has(data.species[240].event_can_capture(form=144))
+                & CanReachLocation(data.species[240].location_capture_name),
+            )
     world.set_rule(
         get_pokemon_instance(world, "m029_004", 5),
         Has(get_quest_event(5)) & can_do_quests,
     )
 
-    for loc in [data.locations["QUEST_25"].label, get_quest_event(25)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_quest_event(18))
-            & can_do_quests
-            & Has(data.species[240].event_can_capture(form=144))
-            & CanReachLocation(data.species[240].location_capture_name),
-        )
-
     world.set_rule(
         get_entrance(world, PInstanceEvent.SNEASEL.event_name),
         can_do_quests,
     )
-    for loc in [data.locations["QUEST_38"].label, get_quest_event(38)]:
-        world.set_rule(get_location(world, loc), can_do_quests)
+    if world.options.partner_sanity:
+        for loc in [data.locations["QUEST_38"].label, get_quest_event(38)]:
+            world.set_rule(get_location(world, loc), can_do_quests)
+        for loc in [data.locations["QUEST_40"].label, get_quest_event(40)]:
+            world.set_rule(get_location(world, loc), can_do_quests)
 
     world.set_rule(
         get_entrance(world, PInstanceEvent.MISDREAVUS.event_name),
         can_do_quests,
     )
-    for loc in [data.locations["QUEST_40"].label, get_quest_event(40)]:
-        world.set_rule(get_location(world, loc), can_do_quests)
 
     for loc in [data.locations["MISSION_14"].label, get_mission_event(14)]:
         world.set_rule(
@@ -2035,48 +2052,43 @@ def set_mission_15_rules(world: PokemonRSOA):
 
     # after reporting to the ranger union you can do 4 more quests
 
-    for loc in [data.locations["QUEST_23"].label, get_quest_event(23)]:
-        world.set_rule(get_location(world, loc), Has(get_mission_event(14)))
-        # just walking
+    if world.options.capture_card_sanity:
+        for loc in [data.locations["QUEST_23"].label, get_quest_event(23)]:
+            world.set_rule(get_location(world, loc), Has(get_mission_event(14)))
+            # just walking
 
-    for loc in [data.locations["QUEST_26"].label, get_quest_event(26)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(14))
-            & Has(get_quest_event(14))
-            & Has(data.species[188].event_can_capture(form=54))
-            & CanReachLocation(data.species[188].location_capture_name)
-            & Has(data.species[145].event_can_capture(form=206))
-            & CanReachLocation(data.species[145].location_capture_name),
-        )
-
-    world.set_rule(
-        get_entrance(world, PInstanceEvent.CLAYDOL_2.event_name),
-        Has(get_mission_event(14)),
-    )
-    for loc in [data.locations["QUEST_27"].label, get_quest_event(27)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(14)),
-            #  just fighting
-        )
+        for loc in [data.locations["QUEST_26"].label, get_quest_event(26)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(14))
+                & Has(get_quest_event(14))
+                & Has(data.species[188].event_can_capture(form=54))
+                & CanReachLocation(data.species[188].location_capture_name)
+                & Has(data.species[145].event_can_capture(form=206))
+                & CanReachLocation(data.species[145].location_capture_name),
+            )
+        for loc in [data.locations["QUEST_27"].label, get_quest_event(27)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(14)),
+                #  just fighting
+            )
+        for loc in [data.locations["QUEST_28"].label, get_quest_event(28)]:
+            world.set_rule(
+                get_location(world, loc),
+                Has(get_mission_event(14))
+                & Has(data.species[219].event_can_capture(form=403))
+                & CanReachLocation(data.species[219].location_capture_name),
+                #  just fighting
+            )
 
     world.set_rule(
         get_pokemon_instance(world, "m028_003", 2), Has(get_mission_event(14))
     )
 
-    for loc in [data.locations["QUEST_28"].label, get_quest_event(28)]:
-        world.set_rule(
-            get_location(world, loc),
-            Has(get_mission_event(14))
-            & Has(data.species[219].event_can_capture(form=403))
-            & CanReachLocation(data.species[219].location_capture_name),
-            #  just fighting
-        )
-
     for b in [
-        PInstanceEvent.SNEASEL,
-        PInstanceEvent.MISDREAVUS,
+        PInstanceEvent.MAGNEZONE,
+        PInstanceEvent.CLAYDOL_2,
         PInstanceEvent.ELECTIVIRE,
         PInstanceEvent.GARCHOMP,
         PInstanceEvent.BIDOOF_8,

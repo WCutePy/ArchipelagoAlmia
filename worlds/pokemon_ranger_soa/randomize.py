@@ -13,7 +13,14 @@ from .MonSelect import (
     form_options_by_criteria,
     add_to_normal,
 )
-from .data import SpeciesData, data, FieldMove, Party, FieldMoveCategory
+from .data import (
+    SpeciesData,
+    data,
+    FieldMove,
+    Party,
+    FieldMoveCategory,
+    VANILLA_PARTNERS_FORMS_UNLOCK_ORDER,
+)
 from .events import PInstanceEvent
 from .items import PokemonRSOAItem
 from .options import (
@@ -112,30 +119,14 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     place_npc(world, ("m005_003", 2), 311)
     place_npc(world, ("m008_006", 5), 311)
 
-    vanilla_partners_in_some_order = [
-        82,  # kricketot
-        84,  # cranidos
-        80,  # croagunk
-        164,  # mime jr.
-        181,  # shieldon
-        #
-        168,  # chimchar
-        206,  # piplup
-        52,  # turtwig
-        213,  # snorunt
-        244,  # sneasel
-        220,  # misdreavus
-        #
-        161,  # machop
-        246,  # hippopotas
-        251,  # gible
-    ]
     if starters_only:
-        world.blacklisted_captures |= set(vanilla_partners_in_some_order)
-        world.modified_partners = starters + [
-            list(data.species[i].forms.keys())[0]
-            for i in vanilla_partners_in_some_order
-        ]
+        ordered_partners = list(VANILLA_PARTNERS_FORMS_UNLOCK_ORDER)
+        ordered_partners.remove(170)
+        ordered_partners.remove(188)
+        ordered_partners.remove(215)
+
+        world.blacklisted_captures |= set(ordered_partners)
+        world.modified_partners = starters + ordered_partners
         return
     # kricketot
     place_npc(world, ("m008_006", 8), 314)
@@ -184,7 +175,7 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     place_npc(world, ("m026_001", 10), 321)
     PInstanceEvent.PIPLUP.form_id = partners[7]
 
-    # snover
+    # snorunt
     place_npc(world, ("m008_008", 3), 322)
     place_npc(world, ("m019_005", 1), 322)
     PInstanceEvent.SNOVER.form_id = partners[8]
@@ -251,9 +242,6 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m003_001": [1, 2, 4],
         "m007_001": [1, 3, 4],
     }
-
-    out = apply_place_on_random(world, {"m003_001": [1]}, 305)
-    maps.remove_if(*out)
 
     tree_fieldmove = get_required_fieldmove(world, "m001_001", 5)
     tree_spots = [("m001_001", 5), ("m007_001", 4)]
@@ -1327,6 +1315,7 @@ def early_place_random_event_mon(world: PokemonRSOA):
         browser_id = sorted_mons[world.random.choice(running_options)][0]
         event.form_id = list(world.modified_species[browser_id].forms.keys())[0]
 
+    #  careful this might unlist a species that is assigned
     PInstanceEvent.BIDOOF_TOWER.form_id = PInstanceEvent.BIDOOF_8.form_id
 
     for event in PInstanceEvent.events():

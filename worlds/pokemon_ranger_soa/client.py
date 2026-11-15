@@ -3,7 +3,7 @@ import copy
 import orjson
 import random
 import time
-from typing import TYPE_CHECKING, Optional, Dict, Set, Tuple, List
+from typing import TYPE_CHECKING, Optional, Dict, Set, Tuple, List, Any
 import uuid
 
 from NetUtils import ClientStatus
@@ -16,7 +16,6 @@ from worlds._bizhawk.client import BizHawkClient
 
 from .data import (
     data,
-    ItemCategory,
     ItemData,
     GameStateEnum,
     LocationCategory,
@@ -25,8 +24,9 @@ from .data import (
     POKE_ID_ROW_RAM_SIZE,
 )
 from . import items, options
+from .data_dir.items import ItemCategory
 from .items import offset_item_value
-from .options import PokemonRSOADeathLink
+from .options import PokemonRSOADeathLink, RankUpItem, StylerModelItem
 
 if TYPE_CHECKING:
     from worlds._bizhawk.context import BizHawkClientContext
@@ -43,11 +43,6 @@ class PokemonRangerSOA(BizHawkClient):
     ram = "ARM9 System Bus"
 
     local_checked_locations: Set[int]
-    local_set_events: Dict[str, bool]
-    local_found_key_items: Dict[str, bool]
-    local_captured_pokemon: int
-
-    goal_flag: Optional[int]
 
     death_counter: Optional[int]
     previous_death_link: float
@@ -60,26 +55,22 @@ class PokemonRangerSOA(BizHawkClient):
     has_energy_plus: bool
     styler_model: int
 
-    level_up_patched: bool
+    battle_patched: bool
+    item_info: Dict[str, Any]
 
-    partner_quests = Set[int]
     first_partner = Optional[int]
     allowed_partners = Set[int]
 
     def initialize_client(self):
         self.local_checked_locations = set()
-        self.local_set_events = {}
-        self.local_found_key_items = {}
-        self.local_captured_pokemon = 0
-        self.goal_flag = None
         self.death_counter = None
         self.previous_death_link = 0
         self.ignore_next_death_link = 0
         self.current_map_id = None
-        self.level_up_patched = False
+        self.battle_patched = False
+        self.item_info = {}
         self.has_energy_plus = False
         self.styler_model = 0
-        self.partner_quests = set()
         self.first_partner = None
         self.allowed_partners = set()
 
@@ -127,7 +118,6 @@ class PokemonRangerSOA(BizHawkClient):
                     (data.ram_addresses["CURRENT_ROOM_ID"].first, 2, self.ram),
                     (data.ram_addresses["QUEST_TABLE_ADDRESS"].first, 60, self.ram),
                     (data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first, 10, self.ram),
-                    (data.ram_addresses["LAST_MISSION_ID"].first, 1, self.ram),
                 ],
             )
 
@@ -143,66 +133,15 @@ class PokemonRangerSOA(BizHawkClient):
             quest_bytes = read_result[6]
             partner_pokemon = read_result[7]
 
-            """
-            BEING IN BATTLE WILL STOP THINGS BELOW OCCURRING!
-            AT THE MOMENT THE SOMETHING IS LAGGY, THIS IS TO REDUCE
-            LAG IN COMBAT.
-            """
+            if game_state == 1 and not self.battle_patched:
+                writes = []
+                if self.item_info.get("vatonage"):
+                    writes += [(0x0212B950, [0xA0], self.ram)]
 
-            if (
-                ctx.slot_data["styler_model_item"]
-                != options.StylerModelItem.option_vanilla
-                and (current_mission == 0x01)  # means it's AFTER the ingame upgrade
-                and ((styler_and_rank >> 4) & 0xF != self.styler_model)
-            ):
-                item = next(
-                    i for i in data.items.values() if i.label == "Progressive Styler"
-                )
-                # can be replaced with id when more stable / settled on static ids.
-                item_id = offset_item_value(item.item_id)
-
-                output = await self.handle_player_attributes(ctx, item, item_id)
-                await bizhawk.write(
-                    ctx.bizhawk_ctx,
-                    output,
-                )
-
-            partner_counts_as_party_slot = partner_pokemon[8]
-            partner = int.from_bytes(partner_pokemon[0:2], "little")
-
-            # TODO reconsider this???
-            # just make a progressive partner
-            if (
-                partner_counts_as_party_slot == 7
-                and partner not in self.allowed_partners
-                and partner != 0
-            ):
-                if len(self.allowed_partners) >= 1:
-                    partner = 0x0FFF0000 | self.first_partner
-                    default_partner = (0x0FFF00BC).to_bytes(4, "little")
-
-                    await bizhawk.write(
-                        ctx.bizhawk_ctx,
-                        [
-                            (
-                                data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first,
-                                default_partner,
-                                "ARM9 System Bus",
-                            )
-                        ],
-                    )
-                else:
-                    """Experimental feature!!!"""
-                    await bizhawk.write(
-                        ctx.bizhawk_ctx,
-                        [
-                            (
-                                data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first,
-                                (0).to_bytes(24, "little"),
-                                "ARM9 System Bus",
-                            )
-                        ],
-                    )
+                await bizhawk.write(ctx.bizhawk_ctx, writes)
+                self.battle_patched = True
+            elif game_state != 1:
+                self.battle_patched = False
 
             game_clear = False
             local_checked_locations: Set[int] = set()
@@ -230,6 +169,7 @@ class PokemonRangerSOA(BizHawkClient):
             del local_captures
 
             mission_checked: Set[int] = set()
+            last_mission = 0
             if last_mission_id == 33:
                 mission_checked.add(
                     location_category_to_id(0, LocationCategory.MISSION)
@@ -240,7 +180,6 @@ class PokemonRangerSOA(BizHawkClient):
                         location_category_to_id(i, LocationCategory.MISSION)
                     )
             local_checked_locations |= mission_checked
-            del mission_checked
 
             quests_checked: Set[int] = set()
             alternate_quests: Set[int] = set()
@@ -569,11 +508,21 @@ class PokemonRangerSOA(BizHawkClient):
             )
             styler_and_rank = int.from_bytes(read_result[0], "little")
 
-            if item.label == "Progressive Rank":
-                rank = min(count * ctx.slot_data["rank_up_increment"], 10)
+            if (
+                item.label == "Progressive Rank"
+                and ctx.slot_data["RankUpItem"] != RankUpItem.option_vanilla
+            ):
+                if ctx.slot_data["RankUpItem"] == RankUpItem.option_item:
+                    ranks = {1: 4, 2: 6, 3: 8, 4: 10}
+                    rank = ranks.get(count, 10)
+                else:
+                    rank = min(count, 10)
                 new_value = (styler_and_rank & 0xF0) | (rank & 0x0F)
 
-            elif item.label == "Progressive Styler":
+            elif (
+                item.label == "Progressive Styler"
+                and ctx.slot_data["RankUpItem"] != StylerModelItem.option_vanilla
+            ):
                 styler = min(2, count)  # Figure out if there are only 2 styler models
                 self.styler_model = styler
                 new_value = (styler_and_rank & 0x0F) | (styler << 4)
@@ -591,7 +540,7 @@ class PokemonRangerSOA(BizHawkClient):
         level = min(1 + (ctx.slot_data["level_up_increment"] * count), 99)
 
         writes = []
-        if item.label in ["Progressive Power", "Progressive Attributes"]:
+        if item.label in ["Progressive Power", "Progressive Level"]:
             writes.append(
                 (
                     data.ram_addresses["STYLUS_LEVEL"].first,
@@ -599,7 +548,7 @@ class PokemonRangerSOA(BizHawkClient):
                     "ARM9 System Bus",
                 )
             )
-        if item.label in ["Progressive Energy", "Progressive Attributes"]:
+        if item.label in ["Progressive Energy", "Progressive Level"]:
             read_result = await bizhawk.read(
                 ctx.bizhawk_ctx,
                 [

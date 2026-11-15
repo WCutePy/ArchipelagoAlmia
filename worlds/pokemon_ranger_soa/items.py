@@ -3,7 +3,14 @@ from __future__ import annotations
 from typing import Dict, FrozenSet, Optional, TYPE_CHECKING, List, Tuple
 
 from BaseClasses import ItemClassification, Item
-from .data import data, BASE_OFFSET, ItemCategory, FieldMoveCategory
+from .data import (
+    data,
+    BASE_OFFSET,
+    FieldMoveCategory,
+    VANILLA_PARTNERS_FORMS_UNLOCK_ORDER,
+)
+from .data_dir.items import ItemCategory
+from .options import StylerModelItem, LevelUpItem, RankUpItem
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -71,7 +78,38 @@ def create_item_with_correct_classification(
 
 
 def create_all_items(world: PokemonRSOA) -> None:
+    """
+    some estimates to reference on early goals for vanilla vs non vanilla
+    with field moves turned on
 
+    goal: 2
+    locations: 20, field_moves: 5
+    goal: 3
+    locations: 32, field_moves: 6
+    goal: 4
+    locations: 50, field_moves: 9
+    goal: 5
+    locations: 61, field_moves: 10
+    goal: 16
+    locations: 267, field_moves: 37
+
+    random mons
+    goal: 2
+    locations: 57, field_moves: 5
+    goal: 3
+    locations: 89, field_moves: 6
+    goal: 16
+    locations: 308, field_moves: 37
+
+
+    bidoof mostly
+    goal: 3
+    locations: 14, field_moves: 6
+    """
+
+    number_of_unfilled_locations = len(
+        world.multiworld.get_unfilled_locations(world.player)
+    ) - len(world.capture_groups)
     itempool: List[Item] = []
 
     if world.options.field_move_item != world.options.field_move_item.option_vanilla:
@@ -87,57 +125,101 @@ def create_all_items(world: PokemonRSOA) -> None:
                 new_item = world.create_item(item.label)
                 itempool.append(new_item)
 
-    print(itempool)
-    # print(f"{sum(1 for a in world.multiworld.get_locations(world.player))=}")
-    # print(f"{len(
-    #     world.multiworld.get_unfilled_locations(world.player)
-    # )=}")
-    # print(f"{len(world.capture_groups)=}")
-
     number_of_items = len(itempool)
-    number_of_unfilled_locations = len(
-        world.multiworld.get_unfilled_locations(world.player)
-    ) - len(world.capture_groups)
 
-    #  Something is wrong with these calculations
-    #  And also vanilla vs randomized needs different methods to
-    #  do these calculations ;.;
-    # print(f"printing: {number_of_unfilled_locations}")
+    print("--- items ---")
+    print(
+        f"goal: {world.options.mission_clear_target.value}\nlocations: {number_of_unfilled_locations}, field_moves: {number_of_items}"
+    )
+    print("--- ---")
+
+    """styler - 1 item"""
+    if world.options.styler_model_item != StylerModelItem.option_vanilla:
+        styler = world.create_item("Progressive Styler")
+        world.push_precollected(styler)
+
+        itempool.append(world.create_item("Progressive Styler"))
+
+    """partner - 0 to 16 items"""
+    partner_options = []
+    if world.options.partner_sanity:
+        amounts = {
+            5: 2,
+            6: 2,
+            7: 4,
+            8: 5,
+            9: 6,
+            10: 7,
+            11: 8,
+            12: 9,
+            13: 9,
+            14: 11,
+            15: 11,
+            16: 11,
+        }
+        if world.options.randomize_partners.option_vanilla:
+            partner_options = VANILLA_PARTNERS_FORMS_UNLOCK_ORDER
+        else:
+            partner_options = world.modified_partners[3:] + world.modified_partners[:3]
+        amount = amounts.get(world.get_rule_num(), 0)
+        for i in range(0, amount):
+            national = data.form_id_to_species[partner_options[i]].national_id
+            label = data.items[national + 100]
+            itempool.append(label)
+        partner_options = partner_options[amount:]
+
+    """capture cards - 0 to many"""
+    capture_card_options = []
+    if world.options.capture_card_sanity:
+        amounts = {
+            3: 2,
+            4: 6,
+            5: 7,
+            6: 10,
+            7: 13,
+            8: 13,
+            9: 18,
+            10: 20,
+            11: 23,
+            12: 26,
+            13: 26,
+            14: 28,
+            15: 32,
+            16: 32,
+        }
+        for i in range(1, 26):
+            item = data.items[i]
+            capture_card_options += [item.label for _ in range(item.copies)]
+        amount = amounts.get(world.get_rule_num(), 0)
+        chosen = world.random.sample(capture_card_options, amount)
+        for label in chosen:
+            capture_card_options.remove(label)
+            new_item = world.create_item(label)
+            itempool.append(new_item)
+
+    to_create = {}
+    consider = {}
+    """rank - 4 / 10 items"""
+    to_create["Progressive Rank"] = 0
+    if world.options.rank_up_item == RankUpItem.option_item:
+        to_create["Progressive Rank"] = 4
+    elif world.options.rank_up_item == RankUpItem.option_item_all:
+        to_create["Progressive Rank"] = 10
     #
-    # print(f"{number_of_items=}")
-    # print(f"{number_of_unfilled_locations=}")
-    # print(f"{len(world.capture_groups)=}")
-
-    needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
-    # print(f"{needed_number_of_filler_items=}")
-
-    # if not world.options.level_up_type.option_vanilla:
-    #     items = []
-    #     if world.options.level_up_type.option_separate:
+    # if not world.options.level_up_item.option_vanilla:
+    #     if world.options.level_up_item.option_separate:
     #         items = ["Progressive Power", "Progressive Energy"]
     #     else:
-    #         items = ["Progressive Attributes"]
+    #         items = ["Progressive Level"]
     #
     #     for label in items:
     #         for i in range(world.options.level_up_count):
     #             new_item = world.create_item(label)
     #             itempool.append(new_item)
     #             needed_number_of_filler_items -= 1
-    #
-    # for i, item in data.items.items():
-    #     if ItemCategory.STYLER_UPGRADE in item.item_categories:
-    #
-    #         for j in range(item.copies):
-    #             if not needed_number_of_filler_items:
-    #                 break
-    #
-    #             new_item = world.create_item(item.label)
-    #             itempool.append(new_item)
-    #             needed_number_of_filler_items -= 1
-    #
-    #     if not needed_number_of_filler_items:
-    #         break
-    #
+
+    needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
+
     while needed_number_of_filler_items:
 
         item = world.create_filler()

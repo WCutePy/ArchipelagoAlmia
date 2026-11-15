@@ -289,7 +289,7 @@ def _nop_instructions(
         ].addresses
         # addresses += data.rom_addresses["INSTRUCTION_LEVEL_UP_MAX_HEALTH_UP"].addresses
         # This sets the game to 0 hp on new save. Causes issues.
-    if world.options.rank_up_type > 0:
+    if world.options.rank_up_item > 0:
         addresses += data.rom_addresses["INSTRUCTION_RANGER_RANK_SET"].addresses
 
     if world.options.styler_model_item > 0:

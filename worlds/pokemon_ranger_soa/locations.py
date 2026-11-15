@@ -113,8 +113,15 @@ def create_all_locations(
         14: [24, 25, 38, 40],
         15: [23, 26, 27, 28],
     }
+
+    partner_quests = [35, 45, 36, 37, 44, 39, 38, 40]
+
     for i in range(0, max_mission + 1):
-        permitted_quests += quests_table.get(i, [])
+        for j in quests_table.get(i, []):
+            if j in partner_quests and world.options.partner_sanity:
+                permitted_quests.append(j)
+            elif j not in partner_quests and world.options.capture_card_sanity:
+                permitted_quests.append(j)
 
     for name, location_data in data.locations.items():
         if location_data.category not in locations_categories:
@@ -231,10 +238,9 @@ def create_pokemon_locations(
         available_pool, k=capture_ocean_mons - len(ocean_captures)
     )
 
-    if (
-        world.options.randomize_pokemon
-        == RandomizePokemonEncounters.option_mostly_bidoof
-    ):
+    if world.options.randomize_pokemon in [
+        RandomizePokemonEncounters.option_mostly_bidoof,
+    ]:
         captures = len(captures) * [4]
         ocean_captures = len(ocean_captures) * [4]
 
