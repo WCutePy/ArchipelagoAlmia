@@ -43,7 +43,6 @@ from .events import (
     PREvent,
     get_instance_base,
     get_instance_capture,
-    get_instance_target,
     get_loading_zone_name,
     PInstanceEvent,
     get_mission_event,
@@ -278,23 +277,13 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     #         has_crate_field_move,  # crate
     #     )
     #
-    world.set_rule(
-        get_location(world, PREvent.SCHOOL_COLLECT_STYLERS.event_name),
-        # has_crate_field_move,  # crate
-        True_(),
-    )
 
     # basement access
     for from_ in ["m001_003a", "m001_003b"]:
         world.set_rule(
             get_connection(world, from_, "m001_011"),
-            Has(PREvent.SCHOOL_COLLECT_STYLERS.event_name),
+            True_(),
         )
-    world.set_rule(
-        get_location(world, PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
-        # has_crate_field_move & has_gate_field_move,  # crate
-        True_(),
-    )
 
     # for i in [0, 1, 2, 3]:
     #     world.set_rule(
@@ -310,7 +299,7 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
 
     world.set_rule(
         get_pokemon_instance(world, "m001_009", 0),
-        Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
+        True_(),
     )
 
     #  a sequence break is still possible, but for now not considered in logic
@@ -321,21 +310,18 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
     )
     world.set_rule(
         get_connection(world, "m001_014", "m001_016"),
-        (
-            Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name)
-            & full_map.can_destroy_target("m001_005", 1)
-        ),
+        (True_() & full_map.can_destroy_target("m001_005", 1)),
     )  # TODO if acquired early, allows for sequence break by moving to cargo ship that allows crash
 
     for i in [0, 1, 2, 3]:
         world.set_rule(
             get_pokemon_instance(world, "m001_005", i),
-            Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
+            True_(),
         )
 
     world.set_rule(
         get_connection(world, "m001_002", "m001_001"),
-        Has(PREvent.SCHOOL_COMPLETE_NIGHT.event_name),
+        True_(),
     )
     for name in [get_instance_capture("m001_001", 5)]:
         world.set_rule(
@@ -428,16 +414,14 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
         can_destroy_wooden_gate & full_map.can_destroy_target("m006_001", 1),
     )
 
-    world.set_rule(
-        get_location(world, get_instance_target("m006_001", 0)), can_destroy_wooden_gate
-    )
+    can_complete = full_map.can_destroy_target("m006_001", 0) & can_destroy_wooden_gate
 
     # The pokemon can be added to browser before destroying the machine
     # capturing for field move is only possible after
     for i in range(7):
         world.set_rule(
             get_location(world, get_instance_capture("m006_001", i)),
-            full_map.can_destroy_target("m006_001", 0),
+            can_complete,
         )  # only 2 zubats at first, after mission 2 complete the rest
 
         if i in [5, 6]:
@@ -453,12 +437,10 @@ def set_mission_1_and_2_rules(world: PokemonRSOA):
     )  # optional when randomized pokémon
 
     mission_2 = data.locations["MISSION_02"].label
-    world.set_rule(
-        get_location(world, mission_2), full_map.can_destroy_target("m006_001", 0)
-    )
+    world.set_rule(get_location(world, mission_2), can_complete)
     world.set_rule(
         get_location(world, get_mission_event(2)),
-        full_map.can_destroy_target("m006_001", 0),
+        can_complete,
     )
 
 

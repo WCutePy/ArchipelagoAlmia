@@ -17,6 +17,7 @@ from rule_builder.rules import (
     True_,
     CanReachLocation,
     False_,
+    CanReachRegion,
 )
 
 from .data import (
@@ -237,48 +238,6 @@ class MonSelect:
 
         return True
 
-    def event_mon_included(self, event: PInstanceEvent):
-        return True
-
-    def access_field_move(
-        self,
-        field_move: FieldMove,
-    ) -> Rule:
-        pokemon_rules = False_()
-        for region_name, region_data in self.world.modified_regions.items():
-            region_name = region_name.lower()
-
-            if not self.region_included(region_name, region_data):
-                continue
-            include_region: Sized
-
-            for i, spawn_data in region_data.POKEMON_SPAWN.items():
-
-                if not self.instance_included(region_name, i):
-                    continue
-
-                if not self.include_missable and spawn_data.missable:
-                    continue
-                if not self.include_one_time and spawn_data.one_time:
-                    continue
-
-                species = data.form_id_to_species[spawn_data.SPECIES_ID]
-                if species.field_move.satisfies(field_move):
-                    if self.include_missable and spawn_data.missable:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_missable(region_name, i)
-                        )
-                    elif self.include_one_time and spawn_data.one_time:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_browser(region_name, i)
-                        )
-                    else:
-                        pokemon_rules |= CanReachLocation(
-                            get_instance_capture(region_name, i)
-                        )
-
-        return pokemon_rules
-
     def can_destroy_target(
         self,
         map_name: Union[str, int],
@@ -295,17 +254,16 @@ class MonSelect:
         its use
         """
         map_name = sanitize_map_name(map_name)
-        target = get_instance_target(map_name, i)
+        # target = get_instance_target(map_name, i)
 
         field_move = get_required_fieldmove(self.world, map_name, i)
 
         party: Party = get_party_type(map_name)
 
-        base = Has(field_move.event_can_use_field_move_party(party)) & Has(target)
+        base = Has(field_move.event_can_use_field_move_party(party)) & CanReachRegion(
+            data.regions[map_name].HUMAN_NAME
+        )
 
-        # CanReachRegion(
-        #             data.regions[map_name].HUMAN_NAME
-        #         )
         return base
 
         # if not self.include and not self.exclude:
@@ -520,7 +478,6 @@ class MonSelect:
                 PInstanceEvent.TANGROWTH,
                 PInstanceEvent.SLAKOTH,
             ],
-            events=[PREvent.SCHOOL_COMPLETE_NIGHT, PREvent.SCHOOL_COLLECT_STYLERS],
         )
 
         if world.options.get_skip_school():

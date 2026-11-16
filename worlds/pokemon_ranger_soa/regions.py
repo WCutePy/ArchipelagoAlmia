@@ -129,14 +129,14 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
         if not full_map.region_included(region_name, region_data):
             continue
 
-        for i, target_data in region_data.TARGETS.items():
-            field_move = data.target_field_move_requirements[target_data.TARGET_ID]
-            if field_move.category == FieldMoveCategory.NONE:
-                continue
-
-            event_name = get_instance_target(region_name, i)
-
-            target_location = create_event_location(world, event_name, new_region)
+        # for i, target_data in region_data.TARGETS.items():
+        #     field_move = data.target_field_move_requirements[target_data.TARGET_ID]
+        #     if field_move.category == FieldMoveCategory.NONE:
+        #         continue
+        #
+        #     event_name = get_instance_target(region_name, i)
+        #
+        #     target_location = create_event_location(world, event_name, new_region)
 
         for i, spawn_data in region_data.POKEMON_SPAWN.items():
             if not full_map.instance_included(region_name, i):

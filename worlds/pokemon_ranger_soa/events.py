@@ -62,9 +62,6 @@ class PRSOAEvent(Enum):
 class PREvent(PRSOAEvent):
     """Regular events"""
 
-    SCHOOL_COLLECT_STYLERS = "m001_003a"
-    SCHOOL_COMPLETE_NIGHT = "m001_011"
-
     GIVE_HAPPINY_TO_MIMI = "m009_002"
     RESCUE_PUELTOWN = "m010_003"
 
