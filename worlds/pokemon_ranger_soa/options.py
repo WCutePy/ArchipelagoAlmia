@@ -660,7 +660,18 @@ class PokemonRSOAOptions(PerGameCommonOptions):
 
         if len(self.partners.value) > (18 - len(self.partner_starters.value)):
             errors.append(
-                f"{len(self.partner_starters.value)} starter partners have been specified. A maximum of {18 - len(self.partner_starters.value)} can be set"
+                f"{len(self.partner_starters.value)} starter partners have been specified. "
+                f"A maximum of {18 - len(self.partner_starters.value)} can be set"
+            )
+
+        min_goal = 5
+        if (
+            self.get_rule_num() < min_goal
+            and self.rank_up_item == RankUpItem.option_item_all
+        ):
+            errors.append(
+                f"Player {player_name}, rank_up_item option item_all is can not be used below {min_goal}, "
+                f"currently {self.get_rule_num()}"
             )
 
         if len(errors) != 0:

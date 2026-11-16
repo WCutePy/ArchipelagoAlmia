@@ -101,7 +101,6 @@ def create_all_items(world: PokemonRSOA) -> None:
     goal: 16
     locations: 308, field_moves: 37
 
-
     bidoof mostly
     goal: 3
     locations: 14, field_moves: 6
@@ -210,18 +209,17 @@ def create_all_items(world: PokemonRSOA) -> None:
         to_create["Progressive Rank"] = 4
     elif world.options.rank_up_item == RankUpItem.option_item_all:
         to_create["Progressive Rank"] = 10
-    #
-    # if not world.options.level_up_item.option_vanilla:
-    #     if world.options.level_up_item.option_separate:
-    #         items = ["Progressive Power", "Progressive Energy"]
-    #     else:
-    #         items = ["Progressive Level"]
-    #
-    #     for label in items:
-    #         for i in range(world.options.level_up_count):
-    #             new_item = world.create_item(label)
-    #             itempool.append(new_item)
-    #             needed_number_of_filler_items -= 1
+
+    if not world.options.level_up_item.option_vanilla:
+        if world.options.level_up_item.option_separate:
+            items = ["Progressive Power", "Progressive Energy"]
+        else:
+            items = ["Progressive Level"]
+
+        for label in items:
+            for i in range(world.options.level_up_count):
+                new_item = world.create_item(label)
+                itempool.append(new_item)
 
     needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
 
