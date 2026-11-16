@@ -110,14 +110,14 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
 
     print("starters:", starters)
 
-    place_npc(world, ("m005_003", 4), 313)
-    place_npc(world, ("m008_006", 10), 313)
+    place_npc(world, ("m005_003", 2), 311)
+    place_npc(world, ("m008_006", 5), 311)
 
     place_npc(world, ("m005_003", 3), 312)
     place_npc(world, ("m008_006", 4), 312)
 
-    place_npc(world, ("m005_003", 2), 311)
-    place_npc(world, ("m008_006", 5), 311)
+    place_npc(world, ("m005_003", 4), 313)
+    place_npc(world, ("m008_006", 10), 313)
 
     if starters_only:
         ordered_partners = list(VANILLA_PARTNERS_FORMS_UNLOCK_ORDER)
@@ -134,7 +134,7 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     PInstanceEvent.KRICKETOT.form_id = partners[0]
 
     # cranidos
-    place_npc(world, ("m008_006", 9), 315)
+    place_npc(world, ("m008_006", 6), 315)
     place_npc(world, ("m016_003", 1), 315)
     PInstanceEvent.CRANIDOS.form_id = partners[1]
 

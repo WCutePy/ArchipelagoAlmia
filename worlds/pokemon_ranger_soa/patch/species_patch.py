@@ -196,10 +196,7 @@ def patch(
     partners = prsoa_patch_instance.files.get("partners.txt")
     if partners:
         partners = orjson.loads(partners)
-        clone_until = len(partners)
-        if slot_data.get("randomize_partners") == RandomizePartners.option_starter_only:
-            clone_until = min(3, len(partners))
-        for i in range(0, clone_until):
+        for i in range(0, len(partners)):
             from_form_id = partners[i]
             clone_form_to_form_id(rom, form_file, from_form_id, 311 + i)
 

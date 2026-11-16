@@ -27,7 +27,7 @@
     {
         "label": "PARTNER_POKEMON_TABLE_ADDRESS",
         "address": ["0x020BAE68"],
-        "bit_length": null
+        "bit_lengxth": null
     },
     {
         "label": "POKE_ID_TABLE_ADDRESS",

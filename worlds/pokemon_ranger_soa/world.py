@@ -510,18 +510,6 @@ class PokemonRSOA(World):
         spoiler_handle.write(f"  Capture Instances: {capture_instances}\n")
 
     def generate_output(self, output_directory: str) -> None:
-
-        # patch = PokemonRangerSOAProcedurePatch(
-        #     player=self.player, player_name=self.player_name
-        # )
-        # write_tokens(self, patch)
-        # out_file_name = self.multiworld.get_out_file_name_base(self.player)
-        # patch.write(
-        #     os.path.join(
-        #         output_directory, f"{out_file_name}_old{patch.patch_file_ending}"
-        #     )
-        # )
-
         PokemonRSOAPatch(
             path=os.path.join(
                 output_directory,
@@ -569,6 +557,7 @@ class PokemonRSOA(World):
         slot_data["field_move_stages"] = {
             str(k): v for k, v in self.field_move_stages.items()
         }
+        slot_data["modified_partners"] = list(self.modified_partners)
 
         # slot_data = self.options.as_dict(*[f.name for f in fields(PokemonRSOAOptions)])
         # slot_data["blacklisted_captures"] = self.blacklisted_captures

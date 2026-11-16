@@ -22,6 +22,7 @@ from .data import (
     location_category_to_id,
     FieldMoveCategory,
     POKE_ID_ROW_RAM_SIZE,
+    VANILLA_PARTNERS_FORMS_UNLOCK_ORDER,
 )
 from . import items, options
 from .data_dir.items import ItemCategory
@@ -59,7 +60,6 @@ class PokemonRangerSOA(BizHawkClient):
     item_info: Dict[str, Any]
 
     first_partner = Optional[int]
-    allowed_partners = Set[int]
 
     def initialize_client(self):
         self.local_checked_locations = set()
@@ -72,7 +72,6 @@ class PokemonRangerSOA(BizHawkClient):
         self.has_energy_plus = False
         self.styler_model = 0
         self.first_partner = None
-        self.allowed_partners = set()
 
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
         header = await bizhawk.read(ctx.bizhawk_ctx, ((0x00000000, 0x10, "ROM"),))
@@ -510,9 +509,9 @@ class PokemonRangerSOA(BizHawkClient):
 
             if (
                 item.label == "Progressive Rank"
-                and ctx.slot_data["RankUpItem"] != RankUpItem.option_vanilla
+                and ctx.slot_data["rank_up_item"] != RankUpItem.option_vanilla
             ):
-                if ctx.slot_data["RankUpItem"] == RankUpItem.option_item:
+                if ctx.slot_data["rank_up_item"] == RankUpItem.option_item:
                     ranks = {1: 4, 2: 6, 3: 8, 4: 10}
                     rank = ranks.get(count, 10)
                 else:
@@ -521,7 +520,7 @@ class PokemonRangerSOA(BizHawkClient):
 
             elif (
                 item.label == "Progressive Styler"
-                and ctx.slot_data["RankUpItem"] != StylerModelItem.option_vanilla
+                and ctx.slot_data["rank_up_item"] != StylerModelItem.option_vanilla
             ):
                 styler = min(2, count)  # Figure out if there are only 2 styler models
                 self.styler_model = styler
@@ -592,38 +591,63 @@ class PokemonRangerSOA(BizHawkClient):
     async def handle_give_partner_pokemon(
         self, ctx: "BizHawkClientContext", item: ItemData, item_id: int
     ):
-        item_type, pokemon_name = item.label.split(" - ")
+        form_id = items.reverse_offset_item_value(item_id - 100)
 
-        pokemon = None
-        for p in data.species.values():
-            if p.name == pokemon_name:
-                pokemon = p
-                break
-        self.allowed_partners += list(pokemon.species_ids)
-        # currently I just add al HOWEVER not all forms should be possible
-        # as partner vanilla. unless we randomize or set partners randomly this is not an issue.
+        mapping = {
+            164: 1,
+            167: 2,
+            161: 3,
+            188: 4,
+            152: 5,
+            31: 6,  # machop
+            220: 7,
+            217: 8,  # hippo
+            210: 10,
+            175: 11,
+            182: 12,
+            92: 13,
+            213: 14,
+            99: 15,
+            183: 16,
+            #  TODO add munchlax and starly, those dont work well cuz of some flag
+        }  # this order is dangerous ;.;
 
-        byte_offset = item.bit_offset // 8
+        bit_offsets = []
+        if not ctx.slot_data.get("randomize_partners", False):
+            bit_offset = mapping.get(form_id, None)
+            if bit_offset is None:
+                return []
+            bit_offsets.append(bit_offset)
+        else:
+            forms = ctx.slot_data["modified_partners"]
+            if form_id not in forms:
+                return []
+            received = sum(1 for it in ctx.items_received if it.item == item_id)
+            forms = forms[3:] + forms[:3]
+            for i, form in enumerate(forms):
+                if form == form_id:
+                    bit_offsets.append(
+                        mapping.get(VANILLA_PARTNERS_FORMS_UNLOCK_ORDER[i])
+                    )
+                    if len(bit_offsets) >= received:
+                        break
+
         result = await bizhawk.read(
             ctx.bizhawk_ctx,
-            [
-                (
-                    data.ram_addresses["PARTNER_POKEMON_TABLE_ADDRESS"].first
-                    + byte_offset,
-                    1,
-                    "ARM9 System Bus",
-                )
-            ],
+            [(data.ram_addresses["PARTNER_POKEMON_TABLE_ADDRESS"].first, 2, self.ram)],
         )
-        current = result[0][0]
-        bit = item.bit_offset % 8
+        result = list(result[0])
 
-        new_value = current | (0b1 << bit)
+        for bit_offset in bit_offsets:
+            byte_offset = bit_offset // 8
+            bit = bit_offset % 8
+
+            result[byte_offset] |= 0b1 << bit
 
         writes = [
             (
-                data.ram_addresses["PARTNER_POKEMON_TABLE_ADDRESS"].first + byte_offset,
-                new_value.to_bytes(1, "little"),
+                data.ram_addresses["PARTNER_POKEMON_TABLE_ADDRESS"].first,
+                result,
                 "ARM9 System Bus",
             )
         ]

@@ -584,6 +584,8 @@ class OptionalPatches(OptionSet):
         This moves the save spot on the outside to the right,
         allowing saving before fighting Magmortar.
         Only matters when playing with deathlink.
+    - Early Staraptor
+        Staraptor becomes available from the start of the game
     """
 
     display_name = "Optional Patches"
@@ -594,11 +596,13 @@ class OptionalPatches(OptionSet):
         "Out of logic surf Almia Castle",
         "Protect the Ranger Union HQ!",
         "Earlier save spots Altru Building",
+        "Early Staraptor",
     ]
 
     default = [
         "Instant text",
         "Skip School",
+        "Early Staraptor",
         "Protect the Ranger Union HQ!",
     ]
 

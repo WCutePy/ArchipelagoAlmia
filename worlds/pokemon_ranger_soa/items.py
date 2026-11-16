@@ -10,7 +10,7 @@ from .data import (
     VANILLA_PARTNERS_FORMS_UNLOCK_ORDER,
 )
 from .data_dir.items import ItemCategory
-from .options import StylerModelItem, LevelUpItem, RankUpItem
+from .options import StylerModelItem, LevelUpItem, RankUpItem, RandomizePartners
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -112,6 +112,9 @@ def create_all_items(world: PokemonRSOA) -> None:
     ) - len(world.capture_groups)
     itempool: List[Item] = []
 
+    """field moves
+    always paid for by the seeded / required mons for new field moves
+    """
     if world.options.field_move_item != world.options.field_move_item.option_vanilla:
         for i, item in data.items.items():
             if ItemCategory.FIELD_MOVE not in item.item_categories:
@@ -141,6 +144,7 @@ def create_all_items(world: PokemonRSOA) -> None:
         itempool.append(world.create_item("Progressive Styler"))
 
     """partner - 0 to 16 items"""
+    """runs at a deficit of 1 - 3 checks"""
     partner_options = []
     if world.options.partner_sanity:
         amounts = {
@@ -157,18 +161,19 @@ def create_all_items(world: PokemonRSOA) -> None:
             15: 11,
             16: 11,
         }
-        if world.options.randomize_partners.option_vanilla:
+        if not world.options.randomize_partners:
             partner_options = VANILLA_PARTNERS_FORMS_UNLOCK_ORDER
         else:
             partner_options = world.modified_partners[3:] + world.modified_partners[:3]
         amount = amounts.get(world.get_rule_num(), 0)
         for i in range(0, amount):
-            national = data.form_id_to_species[partner_options[i]].national_id
-            label = data.items[national + 100]
-            itempool.append(label)
+            label = data.items[partner_options[i] + 100].label
+            new_item = world.create_item(label)
+            itempool.append(new_item)
         partner_options = partner_options[amount:]
 
     """capture cards - 0 to many"""
+    """paid for by the quests"""
     capture_card_options = []
     if world.options.capture_card_sanity:
         amounts = {

@@ -14,6 +14,7 @@ BASE_OFFSET = 1000
 POKE_ID_ROW_ROM_SIZE = 28
 POKE_ID_ROW_RAM_SIZE = 24
 
+#  DO NOT CHANGE EVER
 VANILLA_PARTNERS_FORMS_UNLOCK_ORDER = (
     175,  # kricketot
     182,  # cranidos
@@ -488,9 +489,10 @@ def _init():
     for item in BASE_ITEMS:
         data.items[item.item_id] = item
     for i, species in data.species.items():
-        data.items[species.national_id + 100] = ItemData(
+        item_id = 100 + list(species.forms.keys())[0]
+        data.items[item_id] = ItemData(
             label=f"Partner Pokemon - {species.name}",
-            item_id=100 + species.national_id,
+            item_id=item_id,
             classification=ItemClassification.useful
             | ItemClassification.skip_balancing,
             item_categories=(ItemCategory.PARTNER,),

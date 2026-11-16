@@ -654,53 +654,93 @@ def patch(
             (799, misdreavus << 16 | 0x10)
         ]
 
-    unlock_partner_as_items = True  # TODO make option!
+    unlock_partner_as_items = slot_data.get("partner_sanity")
     if unlock_partner_as_items:
+
+        CHAPTER_PATCHES["c029"] += [(4914, 0x0), (4915, 0x0)]
+
+        CHAPTER_PATCHES["c036"] += [(2772, 0x0), (2773, 0x0)]
+        CHAPTER_PATCHES["c051"] += [(8278, 0x0), (8279, 0x0)]
 
         """Makes cranidos automatically leave"""
         QUEST_PATCHES["q035"] += [
+            #  SYSCALL 2, 173, 1		;orr_partner_pokemon @962
+            (961, 0x0),
+            (962, 0x0),
             # PUSH 1		; @966 -> JMP loc_1177
-            (966, 0x00_D2_00_08)
+            (966, 0x00_D2_00_08),
         ]
 
         # TODO UNTESTED (nobody has time for that)
         QUEST_PATCHES["q046"] += [
+            (925, 0x0),
+            (926, 0x0),
             # PUSH 1		; @930
-            (930, 0x00_D2_00_08)
+            (930, 0x00_D2_00_08),
         ]
 
         QUEST_PATCHES["q036"] += [
+            (839, 0x0),
+            (840, 0x0),
+            (841, 0x0),
             # 	PUSH 1		; @845
-            (845, 0x00_CF_00_08)
+            (845, 0x00_CF_00_08),
         ]
 
         QUEST_PATCHES["q037"] += [
+            (1116, 0x0),
+            (1117, 0x0),
             # PUSH 1		; @1121
-            (1121, 0x00_CE_00_08)
+            (1121, 0x00_CE_00_08),
         ]
 
         QUEST_PATCHES["q045"] += [
+            (940, 0x0),
+            (941, 0x0),
             # PUSH 1		; @987
-            (987, 0x00_D1_00_08)
+            (987, 0x00_D1_00_08),
         ]
 
         QUEST_PATCHES["q039"] += [
+            (1252, 0x0),
+            (1253, 0x0),
             # 	PUSH 1		; @1257
-            (1257, 0x00_D1_00_08)
+            (1257, 0x00_D1_00_08),
         ]
 
         QUEST_PATCHES["q038"] += [
+            (1044, 0x0),
+            (1045, 0x0),
+            (1046, 0x0),
             # 	PUSH 1		; @1050
-            (1050, 0x00_D2_00_08)
+            (1050, 0x00_D2_00_08),
         ]
 
         QUEST_PATCHES["q040"] += [
+            (1444, 0x0),
+            (1445, 0x0),
             #  PUSH 1		; @1449
-            (1449, 0x00_D2_00_08)
+            (1449, 0x00_D2_00_08),
         ]
 
-    early_staraptor = True
-    if early_staraptor:
+    """ranger rank"""
+    if slot_data.get("rank_up_item"):
+        for ch, instr in [
+            ("c024", 1198),
+            ("c027", 1156),
+            ("c029", 8081),
+            ("c033", 4198),
+            ("c043", 13712),
+            ("c048", 8416),
+            ("c052", 1288),
+            ("c054", 12254),
+            ("c059", 5964),
+            ("c069", 1921),
+        ]:
+            CHAPTER_PATCHES[ch] += [(instr, 0x0), (instr + 1, 0x0)]
+
+    """staraptor"""
+    if "Early Staraptor" in slot_data.get("optional_patches", []):
         m003_st = [
             2,
             3,
@@ -1347,23 +1387,44 @@ def code_patch(
     files_dump: dict[str, bytes | bytearray],
     slot_data,
 ):
-    NOP_INSTRUCTION = 0xE3A00000  # mov r0, #0x0 (not really nop)
+    NOP_INSTRUCTION = 0xE1A0_0000  # mov r0, #0x0 (not really nop)
     # NOP	00 F0 20 E3
     # MOV R0, R0	00 00 A0 E1
-    patches = []
+    arm9_patches = []
 
     """instant text speed"""
     # just forces it in, which means no custom text speeds are used anymore
     if "Instant text" in slot_data.get("optional_patches", []):
-        patches += [
+        arm9_patches += [
             (0xA854, 0xE3A00000),
             (0xA858, 0xE584009C),
             (0xA85C, 0xEA000005),
         ]
 
+    if slot_data.get("rank_up_item"):
+        for i in [
+            0x19018,
+            0x19034,
+            0x19050,
+            0x1906C,
+            0x19088,
+            0x19088,
+            0x190C0,
+            0x190DC,
+            0x190F4,
+            0x19104,
+            0x1911C,
+            0x19130,
+            0x19138,
+        ]:
+            arm9_patches += [(i, NOP_INSTRUCTION)]
+
+    if slot_data.get("capture_card_sanity"):
+        arm9_patches.append((0x16C8C, NOP_INSTRUCTION))
+
     arm9 = bytearray(rom.arm9)
 
-    for offset, instruction in patches:
+    for offset, instruction in arm9_patches:
         struct.pack_into("<I", arm9, offset, instruction)
 
     """set last cleared mission for the beach fanfare too"""
@@ -1400,9 +1461,7 @@ def code_patch(
             #  TODO fix back!!!
             partner_ids = [311, 312, 313] + partners[3:]
         else:
-            partner_ids = list(range(311, 311 + min(len(partners), 18))) + [0] * max(
-                0, 18 - len(partners)
-            )  # because imagine making this match any length of partners, has to be exactly 18.
+            partner_ids = list(range(311, 328))
         table_bytes = struct.pack(
             f"<{len(partner_ids)}H",
             *partner_ids,
