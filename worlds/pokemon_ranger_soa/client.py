@@ -27,13 +27,22 @@ from .data import (
 from . import items, options
 from .data_dir.items import ItemCategory
 from .items import offset_item_value
-from .options import PokemonRSOADeathLink, RankUpItem, StylerModelItem
+from .options import PokemonRSOADeathLink, RankUpItem, StylerModelItem, LevelUpItem
 
 if TYPE_CHECKING:
     from worlds._bizhawk.context import BizHawkClientContext
 
 RECEIVED_ITEM_ADDRESS = data.ram_addresses["RECEIVED_ITEM_ADDRESS"]
 NOP_INSTRUCTION_BYTES = bytes.fromhex("0000A0E3")
+
+
+"""
+EMPTY SAVE LOCATIONS I USE
+
+020BA2E4 - for level cap - pokemon bitflags
+
+020BA302 - received items - idk anymore
+"""
 
 
 class PokemonRangerSOA(BizHawkClient):
@@ -134,7 +143,7 @@ class PokemonRangerSOA(BizHawkClient):
 
             if game_state == 1 and not self.battle_patched:
                 writes = []
-                if self.item_info.get("vatonage"):
+                if self.item_info.get("vatonage", False):
                     writes += [(0x0212B950, [0xA0], self.ram)]
 
                 await bizhawk.write(ctx.bizhawk_ctx, writes)
@@ -381,6 +390,10 @@ class PokemonRangerSOA(BizHawkClient):
             val = await self.handle_give_field_move(ctx, item, next_item.item)
             writes.extend(val)
 
+        elif ItemCategory.TRAP in item.item_categories:
+            val = await self.handle_trap(ctx, item, next_item.item)
+            writes.extend(val)
+
         await bizhawk.write(
             ctx.bizhawk_ctx,
             [
@@ -492,6 +505,10 @@ class PokemonRangerSOA(BizHawkClient):
     async def handle_player_attributes(
         self, ctx: "BizHawkClientContext", item: ItemData, item_id: int
     ):
+        if item.item_id == 1006:
+            self.item_info["vatonage"] = True
+            return []
+
         count = sum(1 for it in ctx.items_received if it.item == item_id)
 
         if item.label in ["Progressive Styler", "Progressive Rank"]:
@@ -501,7 +518,7 @@ class PokemonRangerSOA(BizHawkClient):
                     (
                         data.ram_addresses["CURRENT_STYLER_AND_RANK"].first,
                         1,
-                        "ARM9 System Bus",
+                        self.ram,
                     )
                 ],
             )
@@ -532,39 +549,51 @@ class PokemonRangerSOA(BizHawkClient):
                 (
                     data.ram_addresses["CURRENT_STYLER_AND_RANK"].first,
                     bytes([new_value]),
-                    "ARM9 System Bus",
+                    self.ram,
                 )
             ]
 
-        level = min(1 + (ctx.slot_data["level_up_increment"] * count), 99)
+        increment = int(
+            ctx.slot_data["level_up_max"] / ctx.slot_data["level_up_percent"]
+        )
+        level = min(1 + (increment * count), 99)
 
         writes = []
-        if item.label in ["Progressive Power", "Progressive Level"]:
-            writes.append(
+        level_up_item = ctx.slot_data["level_up_item"]
+        if item.label in ["Progressive Power", "Progressive Level"] and level_up_item:
+            writes += [
+                (data.ram_addresses["LEVEL_CAP"].first, [level], self.ram),
+            ]
+            if (
+                item.label == "Progressive Level"
+                and level_up_item == LevelUpItem.option_level_cap
+            ):
+                return writes
+            writes += [
                 (
                     data.ram_addresses["STYLUS_LEVEL"].first,
                     bytes([level]),
-                    "ARM9 System Bus",
+                    self.ram,
                 )
-            )
-        if item.label in ["Progressive Energy", "Progressive Level"]:
+            ]
+        if item.label in [
+            "Progressive Energy",
+            "Progressive Level",
+        ] and level_up_item in [
+            LevelUpItem.option_separate,
+            LevelUpItem.option_together,
+        ]:
             read_result = await bizhawk.read(
                 ctx.bizhawk_ctx,
                 [
-                    (
-                        data.ram_addresses["CURRENT_HEALTH"].first,
-                        1,
-                        "ARM9 System Bus",
-                    ),
-                    (data.ram_addresses["MAX_HEALTH"].first, 1, "ARM9 System Bus"),
+                    (data.ram_addresses["CURRENT_HEALTH"].first, 1, self.ram),
+                    (data.ram_addresses["MAX_HEALTH"].first, 1, self.ram),
                 ],
             )
             if count == 1:
                 prev_level = 1
             else:
-                prev_level = min(
-                    1 + (ctx.slot_data["level_up_increment"] * (count - 1)), 99
-                )
+                prev_level = min(1 + (increment * (count - 1)), 99)
 
             current_hp = int.from_bytes(read_result[0], "little")
             max_hp = int.from_bytes(read_result[1], "little")
@@ -577,12 +606,12 @@ class PokemonRangerSOA(BizHawkClient):
                 (
                     data.ram_addresses["CURRENT_HEALTH"].first,
                     bytes([current_hp + increase]),
-                    "ARM9 System Bus",
+                    self.ram,
                 ),
                 (
                     data.ram_addresses["MAX_HEALTH"].first,
                     bytes([max_hp + increase]),
-                    "ARM9 System Bus",
+                    self.ram,
                 ),
             ]
 
@@ -648,7 +677,7 @@ class PokemonRangerSOA(BizHawkClient):
             (
                 data.ram_addresses["PARTNER_POKEMON_TABLE_ADDRESS"].first,
                 result,
-                "ARM9 System Bus",
+                self.ram,
             )
         ]
         return writes
@@ -662,13 +691,18 @@ class PokemonRangerSOA(BizHawkClient):
         field_move = item.item_id % 100  # technically correct ...
         levels = ctx.slot_data["field_move_stages"].get(str(field_move), None)
         if levels is None or received > len(levels):
-            level = 5
+            min_level = 0
+            max_level = 5
         else:
-            level = levels[received - 1]
+            if received == 1:
+                min_level = 0
+            else:
+                min_level = levels[received - 2]
+            max_level = levels[received - 1]
         for pok in data.species.values():
             if pok.field_move.category != field_move:
                 continue
-            if pok.field_move.level > level:
+            if min_level > pok.field_move.level or max_level < pok.field_move.level:
                 continue
             for row in pok.forms.keys():
                 writes += [
@@ -677,29 +711,65 @@ class PokemonRangerSOA(BizHawkClient):
                         + row * POKE_ID_ROW_RAM_SIZE
                         + 5,
                         field_move.to_bytes(1, "little"),
-                        "ARM9 System Bus",
+                        self.ram,
                     )
                 ]
         return writes
 
-    async def patch_level_up_instructions(self, ctx: "BizHawkClientContext"):
-        await bizhawk.write(
-            ctx.bizhawk_ctx,
-            [
-                # (
-                #     data.ram_addresses["INSTRUCTION_LEVEL_UP_STYLER_LEVEL_UP"].first,
-                #     NOP_INSTRUCTION_BYTES,
-                #     "ARM9 System Bus",
-                # ),
-                # (
-                #     data.ram_addresses["INSTRUCTION_LEVEL_UP_MAX_HEALTH_UP"].first,
-                #     NOP_INSTRUCTION_BYTES,
-                #     "ARM9 System Bus",
-                # ),
+    async def handle_trap(
+        self, ctx: "BizHawkClientContext", item: ItemData, item_id: int
+    ):
+        base_id = item.item_id - 15000
+
+        with open("debug_log.txt", "a") as f:
+            f.write(f"[DEBUG] {item, base_id, item_id}\n")
+
+        writes = []
+        if base_id == 1:
+            result = await bizhawk.read(
+                ctx.bizhawk_ctx,
+                [(data.ram_addresses["SAVE_START"].first, 1, self.ram)],
+            )
+            return [
                 (
-                    data.ram_addresses["INSTRUCTION_LEVEL_UP_HEALTH_UP"].first,
-                    NOP_INSTRUCTION_BYTES,
-                    "ARM9 System Bus",
-                ),
-            ],
-        )
+                    data.ram_addresses["SAVE_START"].first,
+                    [(result[0][0] + 1) % 2],
+                    self.ram,
+                )
+            ]
+        elif 1000 < base_id < 2000:
+            result = await bizhawk.read(
+                ctx.bizhawk_ctx,
+                [(data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first, 0xC2, self.ram)],
+            )
+            new_bytes = (base_id - 1000).to_bytes(2, "little")
+            line = [new_bytes[0], new_bytes[1], 0, 0, 0, 0, 0, 0, 1]
+            for i in range(0, 0xC2, 0x18):
+                writes += [
+                    (
+                        data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first + i + 0xF0,
+                        line,
+                        self.ram,
+                    )
+                ]
+                if i == 0 and result[0][2] == 0xFF:
+                    continue
+                writes += [
+                    (
+                        data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first + i,
+                        line,
+                        self.ram,
+                    )
+                ]
+            return writes
+
+        return writes
+
+    #
+    # async def handle_rom_startup(self, ctx: "BizHawkClientContext"):
+    #
+    #     result = await bizhawk.read(
+    #         ctx.bizhawk_ctx,
+    #         [(data.ram_addresses["PARTNER_POKEMON_TABLE_ADDRESS"].first, 2, self.ram)],
+    #     )
+    #     result = list(result[0])

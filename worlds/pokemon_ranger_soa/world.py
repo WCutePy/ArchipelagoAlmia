@@ -536,8 +536,8 @@ class PokemonRSOA(World):
             "death_link_damage",
             #
             "level_up_item",
-            "level_up_count",
-            "level_up_increment",
+            "level_up_max",
+            "level_up_percent",
             "rank_up_item",
             "styler_model_item",
             "capture_card_sanity",

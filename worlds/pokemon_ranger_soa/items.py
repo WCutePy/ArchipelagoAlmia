@@ -217,7 +217,7 @@ def create_all_items(world: PokemonRSOA) -> None:
             items = ["Progressive Level"]
 
         for label in items:
-            for i in range(world.options.level_up_count):
+            for i in range(world.options.level_up_max):
                 new_item = world.create_item(label)
                 itempool.append(new_item)
 

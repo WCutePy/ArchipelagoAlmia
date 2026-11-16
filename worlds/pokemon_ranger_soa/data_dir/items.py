@@ -15,6 +15,7 @@ class ItemCategory(StrEnum):
     PARTNER = auto()
     FIELD_MOVE = auto()
     POWER_LEVEL = auto()
+    TRAP = auto()
 
 
 @dataclass()
@@ -37,6 +38,7 @@ class ItemData:
 
 
 BASE_ITEMS = [
+    # -------------- capture cards -----------------
     ItemData(
         label="Progressive Grass Defense",
         item_id=1,
@@ -241,127 +243,7 @@ BASE_ITEMS = [
         bit_offset=None,
         copies=1,
     ),
-    ItemData(
-        label="Vatonage Styler",
-        item_id=1006,
-        classification=ItemClassification.filler,
-        item_categories=(ItemCategory.PLAYER_ATTRIBUTES,),
-        bit_offset=None,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Piplup",
-        item_id=102,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=2,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Turtwig",
-        item_id=103,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=3,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Pachirisu",
-        item_id=104,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=4,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Snorunt",
-        item_id=105,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=5,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Machop",
-        item_id=106,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=6,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Croagunk",
-        item_id=107,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=7,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Hippopotas",
-        item_id=108,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=8,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Mime Jr.",
-        item_id=109,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=10,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Kricketot",
-        item_id=110,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=11,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Cranidos",
-        item_id=111,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=12,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Misdreavus",
-        item_id=112,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=13,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Gible",
-        item_id=113,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=14,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Sneasel",
-        item_id=114,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=15,
-        copies=1,
-    ),
-    ItemData(
-        label="Partner Pokemon - Shieldon",
-        item_id=115,
-        classification=ItemClassification.useful | ItemClassification.skip_balancing,
-        item_categories=(ItemCategory.PARTNER,),
-        bit_offset=16,
-        copies=1,
-    ),
-    # -----------------------------------------
+    # -------------- player attributes -----------------
     ItemData(
         label="Progressive Power",
         item_id=1001,
@@ -405,7 +287,15 @@ BASE_ITEMS = [
         bit_offset=None,
         copies=10,
     ),
-    # -----------------------------------------
+    ItemData(
+        label="Vatonage Styler",
+        item_id=1006,
+        classification=ItemClassification.filler,
+        item_categories=(ItemCategory.PLAYER_ATTRIBUTES,),
+        bit_offset=None,
+        copies=1,
+    ),
+    # -------------- fieldmoves -----------------
     ItemData(
         label="Progressive Cut Unlock",
         item_id=10001,
@@ -590,6 +480,32 @@ BASE_ITEMS = [
         bit_offset=None,
         copies=1,
     ),
+    # -------------- traps -----------------
+    ItemData(
+        label="Gender Swap",
+        item_id=15001,
+        classification=ItemClassification.trap,
+        item_categories=(ItemCategory.TRAP,),
+        bit_offset=None,
+        copies=1,
+    ),
+    ItemData(
+        label="Bidoof Day",
+        item_id=15002,
+        classification=ItemClassification.trap,
+        item_categories=(ItemCategory.TRAP,),
+        bit_offset=None,
+        copies=1,
+    ),
+    ItemData(
+        label="Eevee Day",
+        item_id=15003,
+        classification=ItemClassification.trap,
+        item_categories=(ItemCategory.TRAP,),
+        bit_offset=None,
+        copies=1,
+    ),
+    # -------------- true filler -----------------
     ItemData(
         label="Woah. This is worthless!",
         item_id=100000,

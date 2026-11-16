@@ -154,22 +154,24 @@ class LevelUpItemMax(Range):
     default = 20
 
 
-class LevelUpItemCount(Range):
+class LevelUpItemPercent(Range):
     """
     Used to determine the amount of level
-    up related items.
-    Will automatically calculate the level up effect of each
-    based on the maximum, minimum of 1 per.
-    Can be increased on early goals with a warning if
-    not enough locations are available.
+    up related items, and the increment they level up.
+    If max is 20, and percent 100, one Progressive Level
+    will level to 20. For percent 20, it will be
+    4 -> 8 -> 12 -> 16 -> 20
+
+    Will be automatically adjusted if not enough
+    available locations.
     """
 
     auto_display_name = True
 
     range_start = 1
-    range_end = 30
+    range_end = 100
 
-    default = 5
+    default = 15
 
 
 class RankUpItem(Choice):
@@ -620,8 +622,8 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     death_link_damage: DeathlinkDamage
 
     level_up_item: LevelUpItem
-    level_up_count: LevelUpItemMax
-    level_up_increment: LevelUpItemCount
+    level_up_max: LevelUpItemMax
+    level_up_percent: LevelUpItemPercent
 
     rank_up_item: RankUpItem
     styler_model_item: StylerModelItem
@@ -699,7 +701,7 @@ OPTION_GROUPS = [
         [
             LevelUpItem,
             LevelUpItemMax,
-            LevelUpItemCount,
+            LevelUpItemPercent,
             RankUpItem,
             StylerModelItem,
         ],

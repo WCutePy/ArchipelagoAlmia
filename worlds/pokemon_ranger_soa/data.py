@@ -489,15 +489,26 @@ def _init():
     for item in BASE_ITEMS:
         data.items[item.item_id] = item
     for i, species in data.species.items():
-        item_id = 100 + list(species.forms.keys())[0]
-        data.items[item_id] = ItemData(
-            label=f"Partner Pokemon - {species.name}",
-            item_id=item_id,
-            classification=ItemClassification.useful
-            | ItemClassification.skip_balancing,
-            item_categories=(ItemCategory.PARTNER,),
-            copies=1,
-        )
+        if species.name not in ["Wailord"]:
+            item_id = 100 + list(species.forms.keys())[0]
+            data.items[item_id] = ItemData(
+                label=f"Partner Pokemon - {species.name}",
+                item_id=item_id,
+                classification=ItemClassification.useful
+                | ItemClassification.skip_balancing,
+                item_categories=(ItemCategory.PARTNER,),
+                copies=1,
+            )
+
+        if species.name not in ["Doduo", "Wailord"]:
+            item_id = 16000 + list(species.forms.keys())[0]
+            data.items[item_id] = ItemData(
+                label=f"{species.name} for days!",
+                item_id=item_id,
+                classification=ItemClassification.trap,
+                item_categories=(ItemCategory.TRAP,),
+                copies=1,
+            )
 
     extracted_regions: List[Dict] = load_json_data("regions.json")
 

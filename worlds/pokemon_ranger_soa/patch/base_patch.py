@@ -1429,9 +1429,38 @@ def code_patch(
         arm9_patches.append((0x16C8C, NOP_INSTRUCTION))
 
     arm9 = bytearray(rom.arm9)
+    overlay1 = bytearray(rom.arm9_overlays[1].data)
+
+    overlay1_patches = []
+
+    if slot_data.get("level_up_item"):
+        arm9_patches += [
+            (
+                0x10E60,
+                0xE5_9F_00_04,
+            ),
+            (0x10E64, 0xE5_D0_00_00),
+            (0x10E68, 0xE1_2F_FF_1E),
+            (0x10E6C, data.ram_addresses["LEVEL_CAP"].first),
+        ]
+        """prevent level ups if level is above level cap"""
+        """Prevents issues if I fuck up changing the level cap"""
+        overlay1_start = 0x0211C9E0
+        overlay1_patches += [
+            (0x02139CC4 - overlay1_start, 0xA3_A0_00_01),  # becomes ge
+            (0x02139CC8 - overlay1_start, 0xB3_A0_00_00),  # becomes lt
+            #
+            (0x021395D8 - overlay1_start, 0xA3_A0_00_01),  # becomes ge
+            (0x021395DC - overlay1_start, 0xA5_84_00_20),  # becomes ge
+        ]
 
     for offset, instruction in arm9_patches:
         struct.pack_into("<I", arm9, offset, instruction)
+
+    for offset, instruction in overlay1_patches:
+        struct.pack_into("<I", overlay1, offset, instruction)
+
+    rom.arm9_overlays[1].data = bytes(overlay1)
 
     """set last cleared mission for the beach fanfare too"""
     offset = 0x02011480 - 0x02000000

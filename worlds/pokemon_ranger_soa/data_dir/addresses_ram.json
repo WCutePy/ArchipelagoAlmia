@@ -1,5 +1,10 @@
 [
     {
+        "label": "SAVE_START",
+        "address": ["0x020B26A0"],
+        "bit_length": null
+    },
+    {
         "label": "RECEIVED_ITEM_ADDRESS",
         "address": ["0x020BA302"],
         "bit_length": 24
@@ -47,6 +52,11 @@
     {
         "label": "STYLUS_LEVEL",
         "address": ["0x020BAE7B"],
+        "bit_length": 8
+    },
+    {
+        "label": "LEVEL_CAP",
+        "address": ["0x020BA2E4"],
         "bit_length": 8
     },
     {
