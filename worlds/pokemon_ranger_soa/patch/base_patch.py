@@ -739,6 +739,11 @@ def patch(
         ]:
             CHAPTER_PATCHES[ch] += [(instr, 0x0), (instr + 1, 0x0)]
 
+    """styler type"""
+    if slot_data.get("styler_model_item"):
+        for ch, instr in [("c021", 2331), ("c043", 1805)]:
+            CHAPTER_PATCHES[ch] += [(instr, 0x0), (instr + 1, 0x0)]
+
     """staraptor"""
     if "Early Staraptor" in slot_data.get("optional_patches", []):
         m003_st = [
@@ -1401,6 +1406,7 @@ def code_patch(
             (0xA85C, 0xEA000005),
         ]
 
+    """UNSURE which of these is really necessary, test better, but it does get called separate from the syscalls"""
     if slot_data.get("rank_up_item"):
         for i in [
             0x19018,
