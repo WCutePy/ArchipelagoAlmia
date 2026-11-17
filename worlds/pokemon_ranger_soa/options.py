@@ -151,7 +151,7 @@ class LevelUpItemMax(Range):
     range_start = 5
     range_end = 99
 
-    default = 20
+    default = 99
 
 
 class LevelUpItemPercent(Range):
@@ -171,7 +171,7 @@ class LevelUpItemPercent(Range):
     range_start = 1
     range_end = 100
 
-    default = 15
+    default = 1
 
 
 class RankUpItem(Choice):
@@ -180,14 +180,15 @@ class RankUpItem(Choice):
 
     Vanilla: Rank up happens as vanilla
     Item: Progressive Rank up relevant ranks - 4 items
-    Item_all: Progressive Rank up each rank - 10 items
     """
+
+    #      Item_all: Progressive Rank up each rank - 10 items
 
     auto_display_name = True
 
     option_vanilla = 0
     option_item = 1
-    option_item_all = 2
+    # option_item_all = 2
 
     default = option_vanilla
 
@@ -197,6 +198,22 @@ class StylerModelItem(Choice):
     Determines if stylers are unlocked as item or vanilla
     Vanilla: Styler unlocks happen as vanilla
     Item: Progressive Styler
+    """
+
+    auto_display_name = True
+
+    option_vanilla = 0
+    option_item = 1
+
+    default = option_vanilla
+
+
+class FieldMoveItem(Choice):
+    """
+    If this is on, all Field moves are locked
+    behind their respective items.
+    Not all field moves might be included as item
+    based on available locations and will always be locked.
     """
 
     auto_display_name = True
@@ -272,22 +289,6 @@ class DeathlinkDamage(Range):
     range_start = 1
     range_end = 100
     default = 40
-
-
-class FieldMoveItem(Choice):
-    """
-    If this is on, all Field moves are locked
-    behind their respective items.
-    Not all field moves might be included as item
-    based on available locations and will always be locked.
-    """
-
-    auto_display_name = True
-
-    option_vanilla = 0
-    option_item = 1
-
-    default = option_vanilla
 
 
 class RandomizePokemonEncounters(Choice):
@@ -552,6 +553,28 @@ class BlacklistRandomMons(OptionDict):
         return species
 
 
+class TrapsPercentage(Range):
+    """
+    The percentage of randomly generated filler items replaced by a trap item.
+    """
+
+    display_name = "Traps Probability"
+    default = 0
+    range_start = 0
+    range_end = 100
+
+
+class GenderSwapTrapPercentage(Range):
+    """
+    The percentage of traps that are gender swap, proportional to other traps.
+    """
+
+    display_name = "Traps Probability"
+    default = 0
+    range_start = 0
+    range_end = 100
+
+
 class OptionalPatches(OptionSet):
     """
     This option allows removing roadblocks in the game
@@ -624,17 +647,16 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     level_up_item: LevelUpItem
     level_up_max: LevelUpItemMax
     level_up_percent: LevelUpItemPercent
-
     rank_up_item: RankUpItem
     styler_model_item: StylerModelItem
+    field_move_item: FieldMoveItem
+
     capture_card_sanity: CaptureCardSanity
     partner_sanity: PartnerSanity
 
-    field_move_item: FieldMoveItem
-    # randomize_target_field_move: RandomizeTargetFieldMove
-
     randomize_pokemon: RandomizePokemonEncounters
     randomize_pokemon_etc: RandomizePokemonEtc
+    # randomize_target_field_move: RandomizeTargetFieldMove
     randomize_partners: RandomizePartners
     partner_starters: PartnerStarters
     partners: Partners
@@ -695,17 +717,6 @@ OPTION_GROUPS = [
             CaptureRankRankTarget,
         ],
     ),
-    OptionGroup("Deathlink options", [PokemonRSOADeathLink, DeathlinkDamage]),
-    OptionGroup(
-        "Player options",
-        [
-            LevelUpItem,
-            LevelUpItemMax,
-            LevelUpItemPercent,
-            RankUpItem,
-            StylerModelItem,
-        ],
-    ),
     OptionGroup(
         "Pokemon Randomization options",
         [
@@ -717,14 +728,24 @@ OPTION_GROUPS = [
             BlacklistRandomMons,
         ],
     ),
+    OptionGroup("Deathlink options", [PokemonRSOADeathLink, DeathlinkDamage]),
+    OptionGroup(
+        "Item options",
+        [
+            LevelUpItem,
+            LevelUpItemMax,
+            LevelUpItemPercent,
+            RankUpItem,
+            StylerModelItem,
+            FieldMoveItem,
+        ],
+    ),
+    OptionGroup("Sanity", [PartnerSanity, CaptureCardSanity]),
+    OptionGroup("Traps", []),
     OptionGroup(
         "Optional patches",
         [
             OptionalPatches,
         ],
-    ),
-    OptionGroup(
-        "Field move options",
-        [FieldMoveItem, RandomizeTargetFieldMove],
     ),
 ]

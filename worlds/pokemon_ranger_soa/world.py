@@ -415,7 +415,8 @@ class PokemonRSOA(World):
         self.multiworld.regions.extend(all_regions.values())
 
     def create_items(self) -> None:
-        items.create_all_items(self)
+        item_list = items.create_all_items(self)
+        self.multiworld.itempool += item_list
 
     def set_rules(self) -> None:
         rules.set_all_rules(self)

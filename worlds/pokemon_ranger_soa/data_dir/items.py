@@ -25,7 +25,7 @@ class ItemData:
     classification: ItemClassification
     item_categories: Tuple[ItemCategory, ...]
     bit_offset: Optional[int] = None
-    copies: int = 1
+    copies: Optional[int] = None
 
     def __post_init__(self):
         if not isinstance(self.classification, ItemClassification):
@@ -251,7 +251,6 @@ BASE_ITEMS = [
         | ItemClassification.skip_balancing,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.PLAYER_ATTRIBUTES),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Energy",
@@ -260,7 +259,6 @@ BASE_ITEMS = [
         | ItemClassification.skip_balancing,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.PLAYER_ATTRIBUTES),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Level",
@@ -269,7 +267,6 @@ BASE_ITEMS = [
         | ItemClassification.skip_balancing,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.PLAYER_ATTRIBUTES),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Styler",
@@ -285,7 +282,7 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.PLAYER_ATTRIBUTES),
         bit_offset=None,
-        copies=10,
+        copies=4,
     ),
     ItemData(
         label="Vatonage Styler",
@@ -302,7 +299,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Crush Unlock",
@@ -310,7 +306,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Psy Power Unlock",
@@ -318,7 +313,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Tackle Unlock",
@@ -326,7 +320,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Electrify Unlock",
@@ -334,7 +327,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Soak Unlock",
@@ -342,7 +334,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Burn Unlock",
@@ -350,7 +341,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Tunnel Unlock",
@@ -358,7 +348,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive Recharge Unlock",
@@ -366,7 +355,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Agility Unlock",
@@ -374,7 +362,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Fly Unlock",
@@ -382,7 +369,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Teleport Unlock",
@@ -390,7 +376,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Rain Dance Unlock",
@@ -398,7 +383,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Demist Unlock",
@@ -406,7 +390,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Flash Unlock",
@@ -414,7 +397,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Airlift Unlock",
@@ -422,7 +404,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Elevate Unlock",
@@ -430,7 +411,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Stink Unlock",
@@ -438,7 +418,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Sand Fill Unlock",
@@ -446,7 +425,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Progressive River Flow Unlock",
@@ -454,7 +432,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Magma Flow Unlock",
@@ -462,7 +439,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Swim Unlock",
@@ -470,7 +446,6 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     ItemData(
         label="Dark Power Unlock",
@@ -478,28 +453,11 @@ BASE_ITEMS = [
         classification=ItemClassification.progression,
         item_categories=(ItemCategory.PROGRESSIVE, ItemCategory.FIELD_MOVE),
         bit_offset=None,
-        copies=1,
     ),
     # -------------- traps -----------------
     ItemData(
         label="Gender Swap",
         item_id=15001,
-        classification=ItemClassification.trap,
-        item_categories=(ItemCategory.TRAP,),
-        bit_offset=None,
-        copies=1,
-    ),
-    ItemData(
-        label="Bidoof Day",
-        item_id=15002,
-        classification=ItemClassification.trap,
-        item_categories=(ItemCategory.TRAP,),
-        bit_offset=None,
-        copies=1,
-    ),
-    ItemData(
-        label="Eevee Day",
-        item_id=15003,
         classification=ItemClassification.trap,
         item_categories=(ItemCategory.TRAP,),
         bit_offset=None,

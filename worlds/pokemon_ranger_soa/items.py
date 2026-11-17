@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import logging
+import math
 from typing import Dict, FrozenSet, Optional, TYPE_CHECKING, List, Tuple
 
 from BaseClasses import ItemClassification, Item
+from Options import OptionError
 from .data import (
     data,
     BASE_OFFSET,
@@ -77,7 +80,7 @@ def create_item_with_correct_classification(
     return PokemonRSOAItem(name, classification, item_id, world.player)
 
 
-def create_all_items(world: PokemonRSOA) -> None:
+def create_all_items(world: PokemonRSOA) -> List[Item]:
     """
     some estimates to reference on early goals for vanilla vs non vanilla
     with field moves turned on
@@ -111,6 +114,8 @@ def create_all_items(world: PokemonRSOA) -> None:
     ) - len(world.capture_groups)
     itempool: List[Item] = []
 
+    itempool_full = lambda: number_of_unfilled_locations <= len(itempool)
+
     """field moves
     always paid for by the seeded / required mons for new field moves
     """
@@ -135,16 +140,9 @@ def create_all_items(world: PokemonRSOA) -> None:
     )
     print("--- ---")
 
-    """styler - 1 item"""
-    if world.options.styler_model_item != StylerModelItem.option_vanilla:
-        styler = world.create_item("Progressive Styler")
-        world.push_precollected(styler)
-
-        itempool.append(world.create_item("Progressive Styler"))
-
     """partner - 0 to 16 items"""
     """runs at a deficit of 1 - 3 checks"""
-    partner_options = []
+    still_possible = []
     if world.options.partner_sanity:
         amounts = {
             5: 2,
@@ -169,7 +167,7 @@ def create_all_items(world: PokemonRSOA) -> None:
             label = data.items[partner_options[i] + 100].label
             new_item = world.create_item(label)
             itempool.append(new_item)
-        partner_options = partner_options[amount:]
+        still_possible += partner_options[amount:]
 
     """capture cards - 0 to many"""
     """paid for by the quests"""
@@ -200,33 +198,84 @@ def create_all_items(world: PokemonRSOA) -> None:
             capture_card_options.remove(label)
             new_item = world.create_item(label)
             itempool.append(new_item)
+        still_possible += capture_card_options
 
-    to_create = {}
-    consider = {}
-    """rank - 4 / 10 items"""
-    to_create["Progressive Rank"] = 0
+    """styler - 1 item"""
+    if world.options.styler_model_item != StylerModelItem.option_vanilla:
+        styler = world.create_item("Progressive Styler")
+        world.push_precollected(styler)
+
+        itempool.append(world.create_item("Progressive Styler"))
+
+    """rank - 0-4 items"""
+    """starting from mission 5 all rank ups are in the game"""
     if world.options.rank_up_item == RankUpItem.option_item:
-        to_create["Progressive Rank"] = 4
-    elif world.options.rank_up_item == RankUpItem.option_item_all:
-        to_create["Progressive Rank"] = 10
+        for i in range(min(4, max(0, world.get_rule_num() - 1))):
+            new_item = world.create_item("Progressive Rank")
+            itempool.append(new_item)
+    # elif world.options.rank_up_item == RankUpItem.option_item_all:
+    #     to_create["Progressive Rank"] = 10
 
-    if not world.options.level_up_item.option_vanilla:
-        if world.options.level_up_item.option_separate:
+    """level up items 0 - 198 items"""
+    if world.options.level_up_item.value:
+        original_percent = world.options.level_up_percent.value
+        while True:
+            remaining = number_of_unfilled_locations - len(itempool)
+            max_level = world.options.level_up_max
+            percent = world.options.level_up_percent
+
+            amount_per_item = max_level * (percent / 100)
+            each = math.ceil(max_level / amount_per_item)
+            total = each * (
+                1 + (world.options.level_up_item == LevelUpItem.option_separate)
+            )
+            if (remaining - total) < min(10, remaining):
+                world.options.level_up_percent.value += 2
+                if world.options.level_up_percent > 100:
+                    raise OptionError(
+                        f"Player {world.player} has not enough locations to "
+                        f"support level_up_item as {world.options.level_up_item}"
+                    )
+            else:
+                break
+
+        if original_percent != world.options.level_up_percent:
+            logging.warning(
+                f"Player {world.player} level_up_percent adjusted from "
+                f"{original_percent}% to {world.options.level_up_percent.value}%."
+                f" Each now gives an increase of {math.ceil(amount_per_item)}."
+            )
+
+        if world.options.level_up_item == LevelUpItem.option_separate:
             items = ["Progressive Power", "Progressive Energy"]
         else:
             items = ["Progressive Level"]
 
         for label in items:
-            for i in range(world.options.level_up_max):
+            for i in range(each):
                 new_item = world.create_item(label)
                 itempool.append(new_item)
 
-    needed_number_of_filler_items = number_of_unfilled_locations - number_of_items
+    # if
 
-    while needed_number_of_filler_items:
+    limited_filler = ["Vatonage Styler"]
 
+    world.random.shuffle(limited_filler)
+    for label in limited_filler:
+        item = world.create_item(label)
+        itempool.append(item)
+        if itempool_full:
+            return itempool
+
+    world.random.shuffle(still_possible)
+    for label in still_possible:
+        item = world.create_item(label)
+        itempool.append(item)
+        if itempool_full:
+            return itempool
+
+    while not itempool_full:
         item = world.create_filler()
         itempool.append(item)
 
-        needed_number_of_filler_items -= 1
-    world.multiworld.itempool += itempool
+    return itempool
