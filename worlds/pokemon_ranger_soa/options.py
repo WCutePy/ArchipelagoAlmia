@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from typing import Any, cast
 
 from BaseClasses import PlandoOptions
 from Options import (
@@ -7,46 +8,70 @@ from Options import (
     OptionGroup,
     PerGameCommonOptions,
     Range,
-    Toggle,
-    DeathLink,
     OptionList,
     OptionError,
     OptionDict,
     OptionSet,
 )
-from .data import data
+from .data import data, QUESTS_TABLE
 from ..AutoWorld import World
 
 
-class Goal(Choice):
-    """
+class GoalKeys:
+    mission = "mission_clear"
+    quest = "quest_clear"
+    capture = "capture_count"
+
+
+class Goals(OptionSet):
+    f"""
     The goal type for when the game is considered complete.
-    Certain goals require configuring the exact amount/target
-    in their specific option
+    Goals can be combined.
+    
+    options: {GoalKeys.mission}, {GoalKeys.quest}, {GoalKeys.capture}
+    Warning: capture goals are VERY slow in generation
     """
 
     display_name = "Goal type"
+    valid_keys = frozenset({GoalKeys.mission, GoalKeys.quest, GoalKeys.capture})
+    preset_none = frozenset({GoalKeys.mission})
+    preset_all = valid_keys
+    default = preset_none
 
-    option_mission_clear = 0
-    option_quest_clear = 1
-    option_capture_count = 2
-    option_capture_rank_count = 3
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, OptionSet):
+            return set(self.value) == other.value
+        if isinstance(other, OptionList):
+            return set(self.value) == set(other.value)
+        else:
+            return cast(bool, self.value == other)
+
+    def verify(
+        self,
+        world: type[World],
+        player_name: str,
+        plando_options: PlandoOptions,
+    ) -> None:
+        super().verify(world, player_name, plando_options)
+
+        if len(self.value) == 0:
+            raise OptionError(f"Player {player_name} has selected no goals")
 
 
 class MissionClearTarget(Choice):
     """
-    When mission clear is set as goal, this is the
-    mission/story section required to be
-    beaten to complete the game.
+    Must be set at all times. Indicates how far
+    into the game you will play. Will require beating the
+    mission for mission_clear
 
     Pokémon and maps after the mission goal will
-    NOT be randomized. To play as much of the game
-    randomized as possible set it to the highest
+    NOT be randomized, nor be locations.
+    To play as much of the game randomized as possible set it to the highest
     included goal target, currently
     execute_operation_brighton.
     """
 
-    display_name = "Missing clear target"
+    display_name = "Mission clear target"
 
     # option_graduate_school = 0
     option_investigate_the_marine_cave = 2
@@ -71,7 +96,10 @@ class MissionClearTarget(Choice):
 class QuestClearTarget(Range):
     """
     Amount of quests required to clear to complete the game if
-    quest clear is set as goal
+    quest clear is one of the goals.
+    Ignored otherwise.
+    Errors if mission_clear_target does not
+    enable access to enough quests.
     """
 
     display_name = "Quest clear target"
@@ -81,15 +109,18 @@ class QuestClearTarget(Range):
     default = 4
 
 
-class CaptureCountTarget(Range):
+class CapturePercentTarget(Range):
     """
-    Amount of Pokémon required to be captured in the browser
+    Percentage of Pokémon required to be captured in the browser
     to complete the game if this is set as goal.
+    A max of 270 Pokémon might be required to catch.
+
+    WARNING: VERY slow on generation
     """
 
-    display_name = "Capture count target"
+    display_name = "Capture percent target"
     range_start = 1
-    range_end = 270
+    range_end = 100
     default = 30
 
 
@@ -258,7 +289,7 @@ class PartnerSanity(Choice):
 class PokemonRSOADeathLink(Choice):
     """
     When you die, everyone who enabled death link dies. Of course, the reverse is true too.
-    In Pokemon Ranger: Shadows of Almia, reaching 0 energy in combat or on the overworld sends a Death.
+    In Pokémon Ranger: Shadows of Almia, reaching 0 energy in combat or on the overworld sends a Death.
     Death Links will reduce your energy according to the configured damage.
 
     false and true function like any Death Link setting would.
@@ -355,7 +386,7 @@ partner_blacklist = {
 
 class PartnerStarters(OptionList):
     """
-    Allows setting 0 - 3 of the starters species.
+    Allows setting 0 - 3 of the starters' species.
     It is used like ["Gardevoir", "Riolu"] to have a Gardevoir
     and Riolu be 2 of the 3 starters to choose from, with the other
     being determined fully randomly.
@@ -634,10 +665,10 @@ class OptionalPatches(OptionSet):
 
 @dataclass
 class PokemonRSOAOptions(PerGameCommonOptions):
-    # goal: Goal
+    goals: Goals
     mission_clear_target: MissionClearTarget
-    # quest_clear_target: QuestClearTarget
-    # capture_count_target: CaptureCountTarget
+    quest_clear_target: QuestClearTarget
+    capture_percent_target: CapturePercentTarget
     # capture_rank_count_target: CaptureRankCountTarget
     # capture_rank_rank_target: CaptureRankRankTarget
 
@@ -667,10 +698,6 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     def get_rule_num(self):
         return self.mission_clear_target.value
 
-        if self.goal == Goal.option_mission_clear:
-            return self.mission_clear_target.value
-        raise ValueError("Unsupported yaml goal")
-
     def get_skip_school(self):
         return "Skip School" in self.optional_patches.value
 
@@ -698,6 +725,23 @@ class PokemonRSOAOptions(PerGameCommonOptions):
                 f"currently {self.get_rule_num()}"
             )
 
+        if GoalKeys.quest in self.goals.value:
+            quests = sum(
+                len(QUESTS_TABLE.get(i, []))
+                for i in range(self.mission_clear_target.value + 1)
+            )
+            if quests < self.quest_clear_target:
+                running = 0
+                mission = 0
+                while 61 > running < self.quest_clear_target:
+                    running += len(QUESTS_TABLE.get(mission, []))
+                    mission += 1
+                errors.append(
+                    f"Player {player_name} has quest_clear for {self.quest_clear_target.value}, "
+                    f"while mission {self.mission_clear_target.value} only supports {quests} quests."
+                    f"Reduce quests or raise the mission to {mission}"
+                )
+
         if len(errors) != 0:
             errors = [
                 f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
@@ -709,10 +753,10 @@ OPTION_GROUPS = [
     OptionGroup(
         "Goal options",
         [
-            Goal,
+            Goals,
             MissionClearTarget,
             QuestClearTarget,
-            CaptureCountTarget,
+            CapturePercentTarget,
             CaptureRankCountTarget,
             CaptureRankRankTarget,
         ],
@@ -728,7 +772,7 @@ OPTION_GROUPS = [
             BlacklistRandomMons,
         ],
     ),
-    OptionGroup("Deathlink options", [PokemonRSOADeathLink, DeathlinkDamage]),
+    OptionGroup("Death link options", [PokemonRSOADeathLink, DeathlinkDamage]),
     OptionGroup(
         "Item options",
         [
@@ -741,7 +785,7 @@ OPTION_GROUPS = [
         ],
     ),
     OptionGroup("Sanity", [PartnerSanity, CaptureCardSanity]),
-    OptionGroup("Traps", []),
+    # OptionGroup("Traps", []),
     OptionGroup(
         "Optional patches",
         [

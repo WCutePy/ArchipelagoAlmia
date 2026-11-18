@@ -6,7 +6,6 @@ from orjson import orjson
 
 from .map_patch import CompactMapData
 from ..apnds.rom import Rom
-from ..apnds.narc import Narc
 from ..data import data
 from ..options import RandomizePartners
 

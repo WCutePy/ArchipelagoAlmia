@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import math
-from typing import Dict, FrozenSet, Optional, TYPE_CHECKING, List, Tuple
+from typing import Dict, Optional, TYPE_CHECKING, List, Tuple
 
 from BaseClasses import ItemClassification, Item
 from Options import OptionError
@@ -13,7 +13,7 @@ from .data import (
     VANILLA_PARTNERS_FORMS_UNLOCK_ORDER,
 )
 from .data_dir.items import ItemCategory
-from .options import StylerModelItem, LevelUpItem, RankUpItem, RandomizePartners
+from .options import StylerModelItem, LevelUpItem, RankUpItem
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -264,17 +264,19 @@ def create_all_items(world: PokemonRSOA) -> List[Item]:
     for label in limited_filler:
         item = world.create_item(label)
         itempool.append(item)
-        if itempool_full:
+        if itempool_full():
+            print("hi itempool full")
             return itempool
 
     world.random.shuffle(still_possible)
     for label in still_possible:
         item = world.create_item(label)
         itempool.append(item)
-        if itempool_full:
+        if itempool_full():
             return itempool
 
-    while not itempool_full:
+    print("hello", itempool_full, len(itempool))
+    while not itempool_full():
         item = world.create_filler()
         itempool.append(item)
 

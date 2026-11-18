@@ -1,7 +1,8 @@
 import json
 from dataclasses import is_dataclass, asdict
 from typing import Any
-from .data import data, SpeciesData
+
+from .data import data
 
 
 def modify_data_to_new_json(

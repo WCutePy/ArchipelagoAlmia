@@ -1,10 +1,9 @@
 import logging
 import zipfile
 from collections import defaultdict
-from ..apnds.rom import Rom
 
 from .base_patch import patch_script_in_place_four_bytes
-from .map_patch import CompactMapData
+from ..apnds.rom import Rom
 
 
 def write_patch(

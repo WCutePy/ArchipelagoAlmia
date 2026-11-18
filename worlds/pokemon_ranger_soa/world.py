@@ -10,10 +10,11 @@ from Options import Option
 from worlds.AutoWorld import World, WebWorld
 from . import items, locations, regions, rules
 from . import options as prsoa_options
-from .data import data, MapData, SpeciesData, Party, FieldMoveCategory
+from .MonSelect import MonSelect
 from .client import (
     PokemonRangerSOA,
 )  # Unused, but required to register with BizHawkClient
+from .data import data, MapData, SpeciesData, Party, FieldMoveCategory
 from .data_dir.items import ItemCategory
 from .items import PokemonRSOAItem
 from .options import (
@@ -22,9 +23,7 @@ from .options import (
     RandomizePokemonEncounters,
     RandomizePartners,
     RandomizePokemonEtc,
-    Goal,
 )
-from .MonSelect import MonSelect
 from .randomize import (
     apply_randomized_pokemon,
     early_place_random_restricted,
@@ -39,7 +38,7 @@ PokemonRangerSOA
 
 class PokemonRangerSOAWebWorld(WebWorld):
     """
-    Webhost info for Pokemon Emerald
+    Webhost info for Pokémon Ranger: Shadows of Almia
     """
 
     theme = "ocean"
@@ -122,6 +121,7 @@ class CaptureGroups:
 
     @property
     def get_ids_one_time(self) -> List[int]:
+        #  TODO use this for rank!!
         return sorted(self.one_time_ids)
 
     @property
@@ -527,10 +527,10 @@ class PokemonRSOA(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         slot_data = self.options.as_dict(
-            # "goal",
+            "goals",
             "mission_clear_target",
-            # "quest_clear_target",
-            # "capture_count_target",
+            "quest_clear_target",
+            "capture_percent_target",
             # "capture_rank_count_target",
             # "capture_rank_rank_target",
             "death_link",

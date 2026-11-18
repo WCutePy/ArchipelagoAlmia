@@ -1,33 +1,26 @@
-import asyncio
-import copy
-import orjson
-import random
-import time
 from typing import TYPE_CHECKING, Optional, Dict, Set, Tuple, List, Any
-import uuid
 
-from NetUtils import ClientStatus
-from Options import Toggle
-import Utils
 import worlds._bizhawk as bizhawk
+from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
-
-from worlds._bizhawk.client import BizHawkClient
-
+from . import items
 from .data import (
     data,
     ItemData,
     GameStateEnum,
     LocationCategory,
     location_category_to_id,
-    FieldMoveCategory,
     POKE_ID_ROW_RAM_SIZE,
     VANILLA_PARTNERS_FORMS_UNLOCK_ORDER,
 )
-from . import items, options
 from .data_dir.items import ItemCategory
-from .items import offset_item_value
-from .options import PokemonRSOADeathLink, RankUpItem, StylerModelItem, LevelUpItem
+from .options import (
+    PokemonRSOADeathLink,
+    RankUpItem,
+    StylerModelItem,
+    LevelUpItem,
+    GoalKeys,
+)
 
 if TYPE_CHECKING:
     from worlds._bizhawk.context import BizHawkClientContext
@@ -151,7 +144,6 @@ class PokemonRangerSOA(BizHawkClient):
             elif game_state != 1:
                 self.battle_patched = False
 
-            game_clear = False
             local_checked_locations: Set[int] = set()
 
             local_captures: Set[int] = set()
@@ -174,6 +166,7 @@ class PokemonRangerSOA(BizHawkClient):
                     local_captures.add(location_id)
 
             local_checked_locations |= local_captures
+            capture_count = len(local_captures)
             del local_captures
 
             mission_checked: Set[int] = set()
@@ -184,6 +177,7 @@ class PokemonRangerSOA(BizHawkClient):
                 )
             elif last_mission_id:
                 for i in range(min(last_mission_id + 1, 17)):
+                    last_mission = i
                     mission_checked.add(
                         location_category_to_id(i, LocationCategory.MISSION)
                     )
@@ -217,7 +211,6 @@ class PokemonRangerSOA(BizHawkClient):
             )
             quests_checked |= alternate_to_actual
             local_checked_locations |= quests_checked
-            del quests_checked
 
             if local_checked_locations != self.local_checked_locations:
                 self.local_checked_locations = local_checked_locations
@@ -225,7 +218,26 @@ class PokemonRangerSOA(BizHawkClient):
                 if local_checked_locations is not None:
                     await ctx.check_locations(local_checked_locations)
 
-            if not ctx.finished_game and game_clear:
+            mission_goal_enabled = GoalKeys.mission in ctx.slot_data["goals"]
+            mission_goal_achieved = (
+                last_mission >= ctx.slot_data["mission_clear_target"]
+            )
+            quest_goal_enabled = GoalKeys.quest in ctx.slot_data["goals"]
+            quest_goal_achieved = (
+                len(quests_checked) >= ctx.slot_data["quest_clear_target"]
+            )
+            capture_goal_enabled = GoalKeys.capture in ctx.slot_data["goals"]
+            capture_goal_achieved = (
+                capture_count >= ctx.slot_data["capture_percent_target"]
+            )
+
+            if (
+                (mission_goal_enabled or quest_goal_enabled or capture_goal_enabled)
+                and (mission_goal_achieved or not mission_goal_enabled)
+                and (quest_goal_achieved or not quest_goal_enabled)
+                and (capture_goal_achieved or not capture_goal_enabled)
+                and not ctx.finished_game
+            ):
                 ctx.finished_game = True
                 await ctx.send_msgs(
                     [

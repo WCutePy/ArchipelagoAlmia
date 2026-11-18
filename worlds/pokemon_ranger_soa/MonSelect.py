@@ -1,25 +1,22 @@
 from __future__ import annotations
 
+from collections import defaultdict
+from dataclasses import field, dataclass
 from typing import (
     TYPE_CHECKING,
     Dict,
     Union,
     Optional,
     List,
-    Sized,
     Tuple,
 )
-from collections import defaultdict
-from dataclasses import field, dataclass
+
 from rule_builder.rules import (
     Has,
     Rule,
     True_,
-    CanReachLocation,
-    False_,
     CanReachRegion,
 )
-
 from .data import (
     data,
     FieldMove,
@@ -29,11 +26,7 @@ from .data import (
 )
 from .events import (
     PREvent,
-    get_instance_capture,
-    get_instance_target,
-    get_instance_browser,
     PInstanceEvent,
-    get_instance_missable,
 )
 from .options import FieldMoveItem, RandomizePokemonEncounters
 
@@ -242,7 +235,6 @@ class MonSelect:
         self,
         map_name: Union[str, int],
         i: int,
-        on_self: bool = False,
     ) -> Rule:
         """
         TODO, reconsider if it's necessary to have a field move restriction to target events
@@ -411,7 +403,7 @@ class MonSelect:
         return include
 
     @classmethod
-    def get_rules_scope(cls, world) -> MonSelect:
+    def get_rules_scope(cls, world: PokemonRSOA) -> MonSelect:
         """
         Go through the rules to determine the currently
         applicable MonSelect instance
@@ -438,7 +430,7 @@ class MonSelect:
         return monselect
 
     @classmethod
-    def goal_school(cls, world) -> MonSelect:
+    def goal_school(cls, world: PokemonRSOA) -> MonSelect:
         """
         Goal: capture cutscene Tangrowth
 
@@ -480,12 +472,14 @@ class MonSelect:
             ],
         )
 
+        m.exclude["m001_002"] += [3, 4, 8, 11]  # TODO map limit
+
         if world.options.get_skip_school():
             m.event_mon = []
         return m
 
     @classmethod
-    def goal_marine_cave(cls, world) -> MonSelect:
+    def goal_marine_cave(cls, world: PokemonRSOA) -> MonSelect:
         """
 
         Unique Browser Captures: 57
@@ -500,7 +494,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_forest_fire(cls, world) -> MonSelect:
+    def goal_forest_fire(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_marine_cave(world)
         base.include |= {
             "m009_002": [],
@@ -509,13 +503,16 @@ class MonSelect:
             "m009_004": [8],
         }
         base.exclude |= {"m009_009": [2, 3]}
+        base.exclude |= {
+            "m009_002": [4, 7, 8, 9, 10, 11, 13, 14, 15, 17, 16, 18],
+        }  # TODO map limit
 
         base.event_mon += [PInstanceEvent.MILTANK, PInstanceEvent.BUDEW_4]
         base.events += [PREvent.GIVE_HAPPINY_TO_MIMI]
         return base
 
     @classmethod
-    def goal_mission_4(cls, world) -> MonSelect:
+    def goal_mission_4(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_forest_fire(world)
         base.include |= {
             "m009_001b": [2, 3, 4, 8],  # rest is copied over
@@ -548,6 +545,10 @@ class MonSelect:
         }
 
         base.exclude |= {"m010_002": [3], "m010_022": [6]}
+
+        # TODO map limit
+        base.exclude["m010_003"] = [1, 7, 8, 9, 10, 12, 13, 14, 16, 17]
+
         if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
             base.exclude["m009_008"] = [
                 4,
@@ -561,7 +562,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_5(cls, world) -> MonSelect:
+    def goal_mission_5(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_4(world)
 
         base.include |= {
@@ -580,7 +581,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_6(cls, world) -> MonSelect:
+    def goal_mission_6(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_5(world)
 
         base.include |= {
@@ -605,7 +606,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_7(cls, world) -> MonSelect:
+    def goal_mission_7(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_6(world)
 
         base.exclude["m009_009"].remove(2)  # ambipom
@@ -628,7 +629,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_8(cls, world) -> MonSelect:
+    def goal_mission_8(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_7(world)
 
         base.include |= {
@@ -670,7 +671,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_9(cls, world) -> MonSelect:
+    def goal_mission_9(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_8(world)
 
         base.include |= {
@@ -703,7 +704,9 @@ class MonSelect:
             base.exclude["m023_010"] = []
             base.exclude["m023_016"] = []
 
-        del base.exclude["m001_002"]  # charmander are now present from the ship
+        # del base.exclude["m001_002"]  # charmander are now present from the ship
+        base.exclude["m001_002"].remove(6)
+        base.exclude["m001_002"].remove(12)
         # staraptor's are now available
         del base.exclude["m003_001"]
         del base.exclude["m007_001"]
@@ -730,7 +733,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_10(cls, world) -> MonSelect:
+    def goal_mission_10(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_9(world)
 
         base.include |= {
@@ -805,7 +808,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_11(cls, world) -> MonSelect:
+    def goal_mission_11(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_10(world)
 
         base.include |= {
@@ -841,7 +844,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_12(cls, world) -> MonSelect:
+    def goal_mission_12(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_11(world)
 
         base.include |= {
@@ -867,7 +870,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_13(cls, world) -> MonSelect:
+    def goal_mission_13(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_12(world)
 
         base.include |= {
@@ -912,7 +915,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_14(cls, world) -> MonSelect:
+    def goal_mission_14(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_13(world)
 
         base.include |= {
@@ -956,7 +959,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_15(cls, world) -> MonSelect:
+    def goal_mission_15(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_14(world)
 
         base.include |= {}
@@ -974,7 +977,7 @@ class MonSelect:
         return base
 
     @classmethod
-    def goal_mission_16(cls, world) -> MonSelect:
+    def goal_mission_16(cls, world: PokemonRSOA) -> MonSelect:
         base = cls.goal_mission_15(world)
 
         base.include |= {

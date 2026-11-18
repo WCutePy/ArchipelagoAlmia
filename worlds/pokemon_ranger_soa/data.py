@@ -1,9 +1,9 @@
 import pkgutil
-from dataclasses import dataclass, field
-from enum import IntEnum, StrEnum, auto
-from typing import NamedTuple, Union, List, Dict, Any, Optional, Tuple
-
 from dataclasses import dataclass
+from dataclasses import field
+from enum import IntEnum, StrEnum, auto
+from types import MappingProxyType
+from typing import NamedTuple, Union, List, Dict, Any, Optional, Tuple
 
 from orjson import orjson
 
@@ -36,6 +36,23 @@ VANILLA_PARTNERS_FORMS_UNLOCK_ORDER = (
     170,  # starly
     188,  # pach
     215,  # munchlax
+)
+
+
+QUESTS_TABLE = MappingProxyType(
+    {
+        3: (1, 48),
+        4: (3, 11, 49, 4),
+        5: (2, 35),
+        6: (5, 8, 50),
+        7: (6, 7, 9, 45),
+        9: (10, 12, 13, 14, 36, 51),
+        10: (15, 16, 37),
+        11: (17, 18, 19, 44),
+        12: (20, 21, 22, 39),
+        14: (24, 25, 38, 40),
+        15: (23, 26, 27, 28),
+    }
 )
 
 

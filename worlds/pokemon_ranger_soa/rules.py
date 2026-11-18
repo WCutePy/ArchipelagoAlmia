@@ -1,40 +1,31 @@
 from __future__ import annotations
 
 import logging
-from collections import defaultdict
-from dataclasses import field, dataclass
 from typing import (
     TYPE_CHECKING,
     Dict,
     Union,
-    Optional,
     List,
-    TypeAlias,
-    Iterable,
-    Sized,
-    ClassVar,
 )
 
-from BaseClasses import CollectionState, Entrance, Location, ItemClassification
-
+from BaseClasses import Entrance, Location
 from rule_builder.rules import (
     Has,
     Rule,
-    HasAllCounts,
     True_,
     CanReachLocation,
     CanReachRegion,
     False_,
-    HasFromList,
     HasFromListUnique,
     CanReachEntrance,
     Or,
     And,
+    AtLeast,
 )
+from .MonSelect import sanitize_map_name, MonSelect, has_field_move_item
 from .data import (
     data,
     FieldMove,
-    LocationCategory,
     pokemon_to_target_id,
     FieldMoveCategory,
     Party,
@@ -48,8 +39,7 @@ from .events import (
     get_mission_event,
     get_quest_event,
 )
-from .options import RandomizePokemonEncounters
-from .MonSelect import sanitize_map_name, MonSelect, has_field_move_item
+from .options import RandomizePokemonEncounters, GoalKeys
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -203,9 +193,6 @@ def set_all_rules(world: PokemonRSOA) -> None:
                 world.set_rule(field_move_location, field_move_rule)
             except KeyError:
                 continue
-                logging.warning(
-                    f"{field_move} is part of browser, but potentially not as capture - {party}"
-                )
 
     # for region_name, region_data in world.modified_regions.items():
     #     if not full_map.region_included(region_name, region_data):
@@ -479,18 +466,27 @@ def set_mission_3_rules(world: PokemonRSOA):
     )
 
     # not at all: 2 cherubi, 4 sphinx, 5 taillow, 8 cherubi, 0xB pichu, 0xC happiny
-    world.set_rule(
-        get_pokemon_instance(world, "m009_002", 0x13),
-        all_maps.can_destroy_target_type(72),
-    )
-    world.set_rule(
-        get_pokemon_instance(world, "m009_002", 0x14),
-        all_maps.can_destroy_target_type(72),
-    )
-    world.set_rule(
-        get_pokemon_instance(world, "m009_002", 0x15),
-        all_maps.can_destroy_target_type(72) & burning_log,
-    )
+    try:
+        world.set_rule(
+            get_pokemon_instance(world, "m009_002", 0x13),
+            all_maps.can_destroy_target_type(72),
+        )
+    except KeyError:
+        ...
+    try:
+        world.set_rule(
+            get_pokemon_instance(world, "m009_002", 0x14),
+            all_maps.can_destroy_target_type(72),
+        )
+    except KeyError:
+        ...
+    try:
+        world.set_rule(
+            get_pokemon_instance(world, "m009_002", 0x15),
+            all_maps.can_destroy_target_type(72) & burning_log,
+        )
+    except KeyError:
+        ...
 
     for i in [
         0xE,  # happiny
@@ -500,7 +496,6 @@ def set_mission_3_rules(world: PokemonRSOA):
         0x12,  # wartortle
         # occurences past this require & (target_type(49) | target_type(49))
         # for now irrelevant.
-        0x0,  # blastoise
         0x1,  # wartortle
         0x3,  # sphinx
         0x6,  # pichu
@@ -509,10 +504,21 @@ def set_mission_3_rules(world: PokemonRSOA):
         0xA,  # cherubi
         0xD,  # wartortle
     ]:
+        try:
+            world.set_rule(
+                get_pokemon_instance(world, "m009_002", i),
+                burning_log,
+            )
+        except KeyError:
+            ...
+
+    try:
         world.set_rule(
-            get_pokemon_instance(world, "m009_002", i),
-            burning_log,
+            get_pokemon_instance(world, "m009_002", 0),
+            completed_mimi,
         )
+    except KeyError:
+        ...
 
     for to in ["m009_004", "m009_009"]:
         world.set_rule(
@@ -613,7 +619,8 @@ def set_mission_4_rules(world: PokemonRSOA):
     for to in ["m009_001c", "m017_001", "m017_002"]:
         world.set_rule(get_connection(world, "m009_008", to), False_())
 
-    # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06, beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B
+    # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06,
+    # beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B
     # bonsly, torterra
 
     fallen_tree = all_maps.can_destroy_target("m009_008", 1)
@@ -745,21 +752,22 @@ def set_mission_4_rules(world: PokemonRSOA):
         gigaremos_east,  # could add needing to defeat toxicroak
     )
 
-    for i in range(
-        15,
-    ):
+    for i in range(15):
         if i in [4, 8, 11]:
             continue
-        if i in [14, 13, 12, 10, 9]:
-            world.set_rule(
-                get_location(world, get_instance_capture("m010_003", i)),
-                Has(PREvent.RESCUE_PUELTOWN.event_name),
-            )
-        else:
-            world.set_rule(
-                get_pokemon_instance(world, "m010_003", i),
-                Has(PREvent.RESCUE_PUELTOWN.event_name),
-            )
+        try:
+            if i in [14, 13, 12, 10, 9]:
+                world.set_rule(
+                    get_location(world, get_instance_capture("m010_003", i)),
+                    Has(PREvent.RESCUE_PUELTOWN.event_name),
+                )
+            else:
+                world.set_rule(
+                    get_pokemon_instance(world, "m010_003", i),
+                    Has(PREvent.RESCUE_PUELTOWN.event_name),
+                )
+        except KeyError:
+            continue
 
     for to in ["m011_001", "m201_003"]:
         world.set_rule(get_connection(world, "m010_003", to), False_())
@@ -1434,8 +1442,7 @@ def set_mission_9_rules(world: PokemonRSOA):
             world.set_rule(
                 get_pokemon_instance(world, "m023_014", i), Has(get_mission_event(9))
             )
-
-    except:
+    except KeyError:
         ...
 
     world.set_rule(
@@ -1461,7 +1468,7 @@ def set_mission_9_rules(world: PokemonRSOA):
             get_pokemon_instance(world, "m023_016", 0),
             all_maps.can_destroy_target("m023_016", 0),
         )
-    except:
+    except KeyError:
         pass
 
     #  this automatically leads to all others maps that are unlisted, and set to False_() from m022_001
@@ -1533,7 +1540,7 @@ def set_mission_10_rules(world: PokemonRSOA):
             get_pokemon_instance(world, "m009_006", 0),
             all_maps.can_destroy_target("m009_006", 0),
         )
-    except:
+    except KeyError:
         pass
 
     world.set_rule(get_connection(world, "m015_004", "m015_005"), can_river_flow)
@@ -1601,7 +1608,7 @@ def set_mission_10_rules(world: PokemonRSOA):
             get_pokemon_instance(world, "m028_024", 0),
             all_maps.can_destroy_target("m028_024", 1),
         )
-    except:
+    except KeyError:
         pass
 
     world.set_rule(get_connection(world, "m028_020", "m028_008"), has_f3_center)
@@ -2001,9 +2008,11 @@ def set_mission_14_rules(world: PokemonRSOA):
                 & Has(data.species[240].event_can_capture(form=144))
                 & CanReachLocation(data.species[240].location_capture_name),
             )
+
     world.set_rule(
         get_pokemon_instance(world, "m029_004", 5),
-        Has(get_quest_event(5)) & can_do_quests,
+        CanReachLocation(data.species[87].location_capture_name)
+        & can_do_quests,  # relies on quest_05
     )
 
     world.set_rule(
@@ -2248,51 +2257,32 @@ def set_mission_16_rules(world: PokemonRSOA):
 
 def set_completion_condition(world) -> None:
 
-    # # browser = world.options.capture_count_target.value
-    # browser = 180  # 30
-    browser = 0
-    missions = world.options.mission_clear_target.value
-    # missions = 6
-    # quests = 16  # 7
-    quests = 0
-
-    capture_check = []
-    for i in world.capture_groups.get_ids_all:
-        mon = data.species[i]
-        for form_id in mon.forms.keys():
-            capture_check.append(mon.event_add_to_browser(form=form_id))
-            capture_check.append(mon.event_can_capture(form=form_id))
-
-    ocean_check = []
-    for i in world.capture_groups.get_ids_ocean:
-        mon = data.species[i]
-        rules = []
-        for form_id in mon.forms.keys():
-            rules.append(
-                Has(
-                    mon.event_can_capture(
-                        party=Party.OCEAN,
-                        form=form_id,
-                    )
-                )
-            )
-        ocean_check.append(Or(*rules))
-
-    has_captures = HasFromListUnique(*capture_check, count=browser) & And(*ocean_check)
-    has_missions = True_()
-    count = 0
-    for loc_name, loc_data in data.locations.items():
-        count += 1
-
-        if count > missions:
-            break
-        if loc_data.category == LocationCategory.MISSION:
-            has_missions &= Has(get_mission_event(count))
-
-    has_quests = HasFromListUnique(
-        *[get_quest_event(i) for i in range(1, 61)], count=quests
-    )
-    completion_condition = has_captures & has_missions & has_quests
-    # completion_condition = Has("EVENT_USE_FIELD-CUT-1")
-    # completion_condition = has_captures
-    world.set_completion_rule(completion_condition)
+    conditions = []
+    if GoalKeys.mission in world.options.goals.value:
+        missions = world.options.mission_clear_target.value
+        has_missions = Has(get_mission_event(missions))
+        conditions.append(has_missions)
+    if GoalKeys.quest in world.options.goals.value:
+        quests = world.options.quest_clear_target
+        has_quests = HasFromListUnique(
+            *[get_quest_event(i) for i in range(1, 61)], count=quests
+        )
+        conditions.append(has_quests)
+    if GoalKeys.capture in world.options.goals.value:
+        """currently is potentially inneficient with CanReachLocation
+        can consider putting all captures in its unique region
+        and use CanReachRegion instead
+        The alternative is a seperate layer of events for each
+        mon.
+        """
+        captures = world.capture_groups.get_ids_all
+        capture_count = int(len(captures) * world.options.capture_percent_target / 100)
+        has_captures = AtLeast(
+            capture_count,
+            *[
+                CanReachLocation(data.species[i].location_capture_name)
+                for i in captures
+            ],
+        )
+        conditions.append(has_captures)
+    world.set_completion_rule(And(*conditions))

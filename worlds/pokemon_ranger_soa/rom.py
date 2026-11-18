@@ -1,26 +1,20 @@
 import logging
 import os
-import pathlib
-import struct
 import sys
 from types import ModuleType
-from typing import TYPE_CHECKING, Iterable, Dict, Any, Callable, Protocol
-from zipfile import ZipFile, ZIP_DEFLATED
+from typing import TYPE_CHECKING, Dict, Any, Callable, Protocol
+from zipfile import ZipFile
 
 from orjson import orjson
 
 import NetUtils
 import Utils
-from BaseClasses import Location
 from settings import get_settings
 from worlds.Files import (
     APProcedurePatch,
     APTokenMixin,
-    APTokenTypes,
     APAutoPatchInterface,
 )
-from .data import data, POKE_ID_ROW_ROM_SIZE
-from .options import RandomizePokemonEncounters, RandomizePokemonEtc
 
 if TYPE_CHECKING:
     from . import PokemonRSOA
@@ -260,24 +254,3 @@ class PokemonRangerSOAProcedurePatch(APProcedurePatch, APTokenMixin):
             base_rom_bytes = bytes(infile.read())
 
         return base_rom_bytes
-
-
-def _nop_instructions(
-    world: "PokemonRSOA", patch: PokemonRangerSOAProcedurePatch
-) -> None:
-
-    addresses = []
-
-    if world.options.level_up_type > 0:
-        addresses += data.rom_addresses[
-            "INSTRUCTION_LEVEL_UP_STYLER_LEVEL_UP"
-        ].addresses
-        # addresses += data.rom_addresses["INSTRUCTION_LEVEL_UP_MAX_HEALTH_UP"].addresses
-        # This sets the game to 0 hp on new save. Causes issues.
-
-    for address in addresses:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            address,
-            struct.pack("<I", 0xE3A00000),
-        )

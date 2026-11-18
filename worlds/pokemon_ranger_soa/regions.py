@@ -1,22 +1,18 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, List, Tuple, Set, Optional
+from typing import TYPE_CHECKING, Dict, List, Tuple, Optional
 
-from BaseClasses import Entrance, Region, ItemClassification
-
+from BaseClasses import Region
+from .MonSelect import MonSelect, get_party_type
 from .data import (
     data,
     SpeciesData,
     PokemonSpawnEntry,
-    FieldMove,
-    MapData,
-    FieldMoveCategory,
     Party,
 )
 from .events import (
     PInstanceEvent,
     PREvent,
-    get_instance_target,
     get_instance_base,
     get_instance_browser,
     get_instance_capture,
@@ -24,7 +20,6 @@ from .events import (
 )
 from .locations import create_event_location
 from .options import RandomizePokemonEncounters
-from .MonSelect import MonSelect, get_party_type
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA

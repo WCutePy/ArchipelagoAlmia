@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from collections import defaultdict
+from math import floor
 from typing import Dict, TYPE_CHECKING, Optional, List, Tuple
 
 from BaseClasses import ItemClassification, CollectionState
-from Fill import fill_restrictive
 from .MonSelect import (
-    add_to,
     MonPlacer,
     get_required_fieldmove,
     apply_place_on_random,
@@ -30,7 +28,6 @@ from .options import (
     RandomizePokemonEncounters,
     FieldMoveItem,
 )
-from math import floor, ceil
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -79,7 +76,6 @@ def early_place_random_partners(world: PokemonRSOA) -> None:
     ]
     partners = [name_to_id[name.lower()] for name in world.options.partners.value]
 
-    all_random = world.options.randomize_partners == RandomizePartners.option_all_random
     starters_only = (
         world.options.randomize_partners == RandomizePartners.option_starter_only
     )
@@ -227,7 +223,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     options |= {
         "m001_007": [0, 1, 2, 3],
     }
-    out = apply_place_on_random(world, options, zubat)
+    apply_place_on_random(world, options, zubat)
 
     maps = MonPlacer(world)
     maps.all_maps |= {
@@ -242,6 +238,8 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m003_001": [1, 2, 4],
         "m007_001": [1, 3, 4],
     }
+
+    maps.all_maps["m001_002"] = [0, 1, 2, 5, 7, 9, 10]  # TODO map limit
 
     tree_fieldmove = get_required_fieldmove(world, "m001_001", 5)
     tree_spots = [("m001_001", 5), ("m007_001", 4)]
@@ -282,16 +280,19 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m009_002": [2, 4, 5, 8, 11, 19],
         "m009_001a": [5],
     }
+    maps.all_maps["m009_002"] = [2, 5, 19]  # TODO max limit
     maps.add_requires(tree_fieldmove, [("m009_002", 19), ("m009_002", 20)])
 
     burning_log = get_required_fieldmove(world, "m009_002", 5)
     maps.place_random(fieldmove=burning_log, max_health=world.mission_affinities[2])
 
-    maps.all_maps["m009_002"] += [0, 1, 3, 6, 7, 9, 10, 13, 16, 17, 18, 20, 21]
+    # maps.all_maps["m009_002"] += [1, 3, 6, 7, 9, 10, 13, 16, 17, 18, 20, 21]
+    maps.all_maps["m009_002"] += [1, 3, 6, 20, 21]  # TODO max limit
     maps.add_requires(tree_fieldmove, [("m009_002", 21)])
 
     maps.place_random(form_id=211)  # fetch happiny!
 
+    maps.all_maps["m009_002"] += [0]
     maps.all_maps["m009_001a"] += [0, 1, 2, 3, 4]
     maps.all_maps |= {
         "m009_009": [0, 1],
@@ -374,6 +375,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m010_002": [0, 1, 2, 4, 5, 6, 7, 8, 9],
         "m010_003": [0, 1, 2, 3, 5, 6, 7, 9, 10, 12, 13, 14],
     }
+    maps.all_maps["m010_003"] = [0, 2, 3, 5, 6]  # TODO max limit
 
     sea = MonPlacer(world)
     sea.all_maps |= {
@@ -591,7 +593,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     options["m020_003"] += [0, 2]
 
     last_one = {"m020_016": [0]}
-    out = apply_place_on_random(world, last_one, world.random.choice(tackle_2_options))
+    apply_place_on_random(world, last_one, world.random.choice(tackle_2_options))
 
     if mission_goal <= 8:
         return maps, sea
@@ -1073,7 +1075,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
         "m030_011": [0],
     }
 
-    # idk why I even place this, id never change this one
+    # IDK why I even place this, id never change this one
     maps.place_random(FieldMove(FieldMoveCategory.STINK, 1), max_health=max_health)
     maps.all_maps |= {
         "m030_017": [0, 1, 2, 4, 5, 6, 7],
@@ -1125,7 +1127,7 @@ def early_place_random_restricted(world: PokemonRSOA) -> Tuple[MonPlacer, ...]:
     #  Since the omastar spot only becomes accessible once
     #  you start the omastar quest, and the quest becomes accessible on lumineon capture
     #  the lumineon can NOT be in m029_004.5
-    #  I could improve my algorithms to add exclude when setting the place forms
+    #  I could improve my algorithms to add exclude when setting the place forms,
     #  but I don't want or need to right now.
     if lumineon_where:
         sea.place_random(form_id=224, ignore_dupe=True)
@@ -1286,7 +1288,6 @@ def early_place_random_event_mon(world: PokemonRSOA):
         key=lambda x: x[1],
     )
     running_options = []
-    min_i = 0
     max_i = 0
     for event in sorted_events:
         if (
@@ -1326,7 +1327,7 @@ def early_place_random_event_mon(world: PokemonRSOA):
         try:
             for i in event.i:
                 place_npc(world, (event.map_name, i), event.form_id)
-        except:
+        except Exception:
             print(event)
             raise
 
@@ -1492,7 +1493,6 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
             region_name, _, i = loc.name.split(".")
             i = int(i.strip("_capturebrowsermissableocean"))
             _, mon_name, mon_id = loc.item.name.split(";")
-            mon: SpeciesData = name_to_mon[mon_name]
 
             region_data = world.modified_regions.get(region_name)
             region_data.modified = True
@@ -1501,7 +1501,7 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
 
             region_data.POKEMON_SPAWN[i].SPECIES_ID = species_id
             region_data.POKEMON_SPAWN[i].SPECIES_NAME = mon_name
-    except:
+    except Exception:
         raise
     apply_manually_fixed_pokemon(world)
 
@@ -1509,6 +1509,12 @@ def apply_randomized_pokemon(world: PokemonRSOA) -> None:
 def copy_over_map_pokemon(
     world: PokemonRSOA, from_: str, to: str, mapping: Optional[Dict[int, int]] = None
 ) -> None:
+    """
+    A dictionary of
+    to: from
+    entries
+    Where each to is unique, and multiple to can map to one from
+    """
     from_map = world.modified_regions[from_]
     if from_map.modified is False:
         return
@@ -1521,16 +1527,18 @@ def copy_over_map_pokemon(
         )
 
     to_map.modified = True
-    for i, mon_data in from_map.POKEMON_SPAWN.items():
+    for j, to_data in to_map.POKEMON_SPAWN.items():
 
         if mapping:
-            j = mapping.get(i, None)
-            if j is None:
+            i = mapping.get(j, None)
+            if i is None:
                 continue
         else:
-            j = i
-        to_map.POKEMON_SPAWN[j].SPECIES_ID = mon_data.SPECIES_ID
-        to_map.POKEMON_SPAWN[j].SPECIES_NAME = mon_data.SPECIES_NAME
+            i = j
+
+        from_data = from_map.POKEMON_SPAWN[i]
+        to_data.SPECIES_ID = from_data.SPECIES_ID
+        to_data.SPECIES_NAME = from_data.SPECIES_NAME
 
 
 def copy_over_spawn_to_npc(
@@ -1543,19 +1551,73 @@ def copy_over_spawn_to_npc(
 
 
 def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
+    #  TODO, map limit
+    m001_002_to_m001_002 = {
+        #  taillow
+        8: 0,
+        11: 0,
+        #  bidoof
+        3: 2,
+        4: 2,
+    }
+    copy_over_map_pokemon(world, "m001_002", "m001_002", m001_002_to_m001_002)
+    #  surely 9 species is enough
+    m009_002_to_m009_002 = {
+        #  wartortle
+        13: 1,
+        18: 1,
+        #  cherubi
+        8: 2,
+        9: 2,
+        10: 2,
+        #  shinx
+        4: 3,
+        17: 3,
+        #  taillow
+        7: 5,
+        #  pichu
+        11: 6,
+        16: 6,
+        #  happiny
+        14: 12,
+        15: 12,
+    }
+    copy_over_map_pokemon(world, "m009_002", "m009_002", m009_002_to_m009_002)
+
+    #  TODO, max size
+    #  surely 9 species is enough
+    m010_003_to_m010_003 = {
+        #  chatot
+        1: 0,
+        12: 0,
+        # raticate
+        9: 2,
+        # rattata
+        7: 3,
+        10: 3,
+        # wingull
+        8: 4,
+        14: 4,
+        16: 4,
+        17: 4,
+        # magnemite
+        13: 5,
+    }
+    copy_over_map_pokemon(world, "m010_003", "m010_003", m010_003_to_m010_003)
+
     m009_001a_to_m009_001b = {
         0: 0,
         1: 1,
-        2: 7,
-        3: 5,
-        4: 6,
-        5: 9,
+        7: 2,
+        5: 3,
+        6: 4,
+        9: 5,
     }
     copy_over_map_pokemon(world, "m009_001a", "m009_001b", m009_001a_to_m009_001b)
 
     #  since they already swapped things I need to confirm
     #  if the two bidoofs match in position or need to swap.
-    m001_005_to_m001_014 = {0: 1, 1: 0, 2: 2, 3: 3}
+    m001_005_to_m001_014 = {1: 0, 0: 1, 2: 2, 3: 3}
     copy_over_map_pokemon(world, "m001_005", "m001_014", m001_005_to_m001_014)
 
     # #  rampardos
@@ -1567,12 +1629,12 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
     #     copy_over_spawn_to_npc(world, "m021_001", 14, "m021_001", 6)
 
     m029_001_to_m029_007 = {
-        0: 1,
-        1: 2,
-        2: 4,
-        3: 7,
-        4: 6,
-        5: 8,
+        1: 0,
+        2: 1,
+        4: 2,
+        7: 3,
+        6: 4,
+        8: 5,
     }
     copy_over_map_pokemon(world, "m029_001", "m029_007", m029_001_to_m029_007)
 
@@ -1581,9 +1643,9 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
         1: 1,
         2: 2,
         3: 3,  # NOT actually a match vanilla (but irrelevant if not randoized)
-        4: 7,
+        7: 4,
         5: 5,
-        6: 8,
+        8: 6,
     }
     copy_over_map_pokemon(world, "m029_002", "m029_008", m029_002_to_m029_008)
 
@@ -1602,7 +1664,7 @@ def apply_manually_fixed_pokemon(world: PokemonRSOA) -> None:
         copy_over_spawn_to_npc(world, "m020_007", 1, "m018_004", 1)
 
         #  made the npcs somewhat the same as the mons that appear in the actual map,
-        #  as these are the pokemon that should be running away in m8 cutscene
+        #  as these are the Pokémon that should be running away in m8 cutscene
         #  doing it randomly however rather than setting the exact ones.
 
         for i in [0, 1, 2, 3]:

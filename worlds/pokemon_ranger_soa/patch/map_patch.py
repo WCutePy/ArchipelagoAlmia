@@ -1,17 +1,15 @@
-import dataclasses
 import logging
 import struct
 import zipfile
 from collections import defaultdict
-from typing import TYPE_CHECKING, Dict, Any, List, Optional
 from dataclasses import dataclass
+from typing import TYPE_CHECKING, Dict, Any, List, Optional
 
 from orjson import orjson
 
-from ..apnds.rom import Rom
-from ..apnds.narc import Narc
 from ..apnds.lz import compress, decompress
-from ..options import RandomizePokemonEncounters
+from ..apnds.narc import Narc
+from ..apnds.rom import Rom
 
 if TYPE_CHECKING:
     from ..rom import PokemonRSOAPatch

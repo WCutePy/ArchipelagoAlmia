@@ -1,23 +1,18 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, Set, Optional
+from typing import TYPE_CHECKING, Dict, Set, Optional, List
 
-from BaseClasses import ItemClassification, Location, Region, LocationProgressType
-
+from BaseClasses import ItemClassification, Location, Region
+from .MonSelect import MonSelect
 from .data import (
     data,
-    LocationData,
     LocationCategory,
-    SpeciesData,
     FieldMove,
     Party,
-    FieldMoveCategory,
+    QUESTS_TABLE,
 )
-from .events import PInstanceEvent
 from .items import PokemonRSOAItem
 from .options import RandomizePokemonEncounters
-from .MonSelect import MonSelect
-from .randomize import form_options_by_criteria
 
 if TYPE_CHECKING:
     from .world import PokemonRSOA
@@ -32,7 +27,7 @@ def create_event_location(
     event_loc_name: str,
     event_region: Region,
     event_item_name: Optional[str] = None,
-    show_spoiler: bool = False,  # todo swithc
+    show_spoiler: bool = False,  # todo switch
     place_locked: bool = True,
 ) -> PokemonRSOALocation:
     if event_item_name is None:
@@ -100,24 +95,11 @@ def create_all_locations(
 
     max_mission = world.options.mission_clear_target.value
     permitted_quests = []
-    quests_table = {
-        3: [1, 48],
-        4: [3, 11, 49, 4],
-        5: [2, 35],
-        6: [5, 8, 50],
-        7: [6, 7, 9, 45],
-        9: [10, 12, 13, 14, 36, 51],
-        10: [15, 16, 37],
-        11: [17, 18, 19, 44],
-        12: [20, 21, 22, 39],
-        14: [24, 25, 38, 40],
-        15: [23, 26, 27, 28],
-    }
 
     partner_quests = [35, 45, 36, 37, 44, 39, 38, 40]
 
     for i in range(0, max_mission + 1):
-        for j in quests_table.get(i, []):
+        for j in QUESTS_TABLE.get(i, []):
             if j in partner_quests and world.options.partner_sanity:
                 permitted_quests.append(j)
             elif j not in partner_quests and world.options.capture_card_sanity:
@@ -165,10 +147,6 @@ def create_all_locations(
         )
         extra_location.place_locked_item(world.create_item("Fly Unlock"))
         region.locations.append(extra_location)
-
-
-def create_quest_locations(world: PokemonRSOA) -> None:
-    return
 
 
 def create_pokemon_locations(
@@ -347,7 +325,7 @@ def add_field_move_events(world, pool, region, party: Party = Party.DEFAULT):
             field_move = FieldMove(category=pokemon.field_move.category, level=j)
             field_moves.add(field_move)
 
-    field_moves = sorted(field_moves)
+    field_moves: List[FieldMove] = sorted(field_moves)
     for field_move in field_moves:
         create_event_location(
             world, field_move.event_can_use_field_move_party(party), region
