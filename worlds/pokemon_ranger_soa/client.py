@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import TYPE_CHECKING, Optional, Dict, Set, Tuple, List, Any
 
 import worlds._bizhawk as bizhawk
@@ -12,6 +13,9 @@ from .data import (
     location_category_to_id,
     POKE_ID_ROW_RAM_SIZE,
     VANILLA_PARTNERS_FORMS_UNLOCK_ORDER,
+    get_party_type,
+    Party,
+    ItemBase,
 )
 from .data_dir.items import ItemCategory
 from .options import (
@@ -85,7 +89,7 @@ class PokemonRangerSOA(BizHawkClient):
         ctx.game = self.game
         ctx.items_handling = 0b111
         ctx.want_slot_data = True
-        ctx.watcher_timeout = 0.125
+        ctx.watcher_timeout = 0.3
 
         self.initialize_client()
 
@@ -101,8 +105,10 @@ class PokemonRangerSOA(BizHawkClient):
 
             guards: Dict[str, Tuple[int, bytes, str]] = {}
 
-            await self.handle_tracker_info(ctx, guards)
+            """rework so it can be put lower?"""
             await self.handle_death_link(ctx, guards)
+            if self.ignore_next_death_link:
+                return
 
             read_result = await bizhawk.read(
                 ctx.bizhawk_ctx,
@@ -114,11 +120,14 @@ class PokemonRangerSOA(BizHawkClient):
                         self.ram,
                     ),
                     (RECEIVED_ITEM_ADDRESS.first, 3, self.ram),
-                    (data.ram_addresses["CURRENT_STYLER_AND_RANK"].first, 1, self.ram),
                     (data.ram_addresses["CURRENT_MISSION"].first, 3, self.ram),
-                    (data.ram_addresses["CURRENT_ROOM_ID"].first, 2, self.ram),
+                    (data.ram_addresses["SAVE_START"].first, 0x1C, self.ram),
                     (data.ram_addresses["QUEST_TABLE_ADDRESS"].first, 60, self.ram),
-                    (data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first, 10, self.ram),
+                    (
+                        data.ram_addresses["POKE_ID_TABLE_ADDRESS"].first + 2,
+                        1,
+                        self.ram,
+                    ),
                 ],
             )
 
@@ -127,12 +136,27 @@ class PokemonRangerSOA(BizHawkClient):
             game_state = int.from_bytes(read_result[0], "little")
             browser_captures_bytes = read_result[1]
             num_receieved_items = int.from_bytes(read_result[2], "little")
-            styler_and_rank = int.from_bytes(read_result[3], "little")
-            current_mission = read_result[4][0]
-            last_mission_id = read_result[4][2]
-            room_id = int.from_bytes(read_result[5], "little")
-            quest_bytes = read_result[6]
-            partner_pokemon = read_result[7]
+            current_mission = read_result[3][0]
+            last_mission_id = read_result[3][2]
+            room_id = int.from_bytes(read_result[4][0x1B:0x1D], "little")
+            quest_bytes = read_result[5]
+            game_reset = read_result[6][0] == 0
+
+            if (
+                game_state
+                in [
+                    GameStateEnum.TITLE_SCREEN,
+                    GameStateEnum.INTRO_SCREEN,
+                    GameStateEnum.RESUME_GAME,
+                ]
+                or read_result[4][2] == 0
+            ):
+                return
+            if game_reset:
+                await self.handle_rom_startup(ctx)
+                return
+
+            await self.handle_tracker_info(ctx, guards)
 
             if game_state == 1 and not self.battle_patched:
                 writes = []
@@ -162,7 +186,7 @@ class PokemonRangerSOA(BizHawkClient):
                     # if species.browser_id in ctx.slot_data["blacklisted_captures"]:
                     #     continue  # TODO figure out if this should be done at all
                     #  blacklisting should be respected during gen, so if you can catch
-                    #  it it's fair game
+                    #  it it's fair game to send to the server
                     local_captures.add(location_id)
 
             local_checked_locations |= local_captures
@@ -181,6 +205,9 @@ class PokemonRangerSOA(BizHawkClient):
                     mission_checked.add(
                         location_category_to_id(i, LocationCategory.MISSION)
                     )
+            if last_mission >= 12:
+                value = location_category_to_id(1, LocationCategory.EXTRA)
+                mission_checked.add(value)
             local_checked_locations |= mission_checked
 
             quests_checked: Set[int] = set()
@@ -254,6 +281,9 @@ class PokemonRangerSOA(BizHawkClient):
         except bizhawk.RequestFailedError:
             # Exit handler and return to main loop to reconnect
             pass
+        except Exception as e:
+            print(e)
+            pass
 
     async def handle_tracker_info(
         self, ctx: "BizHawkClientContext", guards: Dict[str, Tuple[int, bytes, str]]
@@ -280,6 +310,7 @@ class PokemonRangerSOA(BizHawkClient):
                 (data.ram_addresses["CURRENT_HEALTH"].first, 2, self.ram),
                 (data.ram_addresses["GAME_STATE"].first, 1, self.ram),
                 (data.ram_addresses["CUR_SCENE"].first, 4, self.ram),
+                (data.ram_addresses["CURRENT_ROOM_ID"].first, 2, self.ram),
             ],
         )
 
@@ -290,6 +321,7 @@ class PokemonRangerSOA(BizHawkClient):
         max_hp = read_result[0][1]
         game_state = read_result[1][0]
         cur_scene = int.from_bytes(read_result[2], "little")
+        room_id = int.from_bytes(read_result[3], "little")
 
         hp_address = data.ram_addresses["CURRENT_HEALTH"].first
 
@@ -307,11 +339,17 @@ class PokemonRangerSOA(BizHawkClient):
 
         if game_state == GameStateEnum.BATTLE:
             read_result = await bizhawk.read(
-                ctx.bizhawk_ctx, [(cur_scene + 0xD8, 4, self.ram)]
+                ctx.bizhawk_ctx,
+                [(cur_scene + 0xD8, 4, self.ram), (0x0217B3E8 + 0x1444, 4, self.ram)],
             )
             hp_address2 = int.from_bytes(read_result[0], "little") + 0x19C
+            battle_exports_ptr = int.from_bytes(read_result[1], "little")
             read_result = await bizhawk.read(
-                ctx.bizhawk_ctx, [(hp_address2, 1, self.ram)]
+                ctx.bizhawk_ctx,
+                [
+                    (hp_address2, 1, self.ram),
+                    (battle_exports_ptr + 0x38, 0x20, self.ram),
+                ],
             )
             if read_result is None:
                 return  # just try again next time
@@ -321,10 +359,31 @@ class PokemonRangerSOA(BizHawkClient):
             if self.ignore_next_death_link:
                 self.previous_death_link = ctx.last_death_link
                 return
+
+            room = next(i for i in data.regions.values() if i.INDEX == room_id)
             if game_state == GameStateEnum.BATTLE:
-                text = f"{ctx.player_names[ctx.slot]} died in battle"
+                ids = Counter(
+                    [
+                        int.from_bytes(read_result[1][i : i + 4], "little")
+                        for i in range(0, 0x20, 4)
+                    ]
+                )
+                ids.pop(0, None)
+                pokemon = [
+                    (data.form_id_to_species[id_].name, c) for id_, c in ids.items()
+                ]
+
+                if len(pokemon) == 1 and pokemon[0][1] == 1:
+                    mons = pokemon[0][0]
+                else:
+                    mons = ", ".join(f"{c} {name}" for name, c in pokemon)
+
+                text = f"{ctx.player_names[ctx.slot]} died battling {mons} in {room.HUMAN_NAME}"
             else:
-                text = f"{ctx.player_names[ctx.slot]} died walking around"
+                movement = "walking"
+                if get_party_type(room.map_id) == Party.OCEAN:
+                    movement = "swimming"
+                text = f"{ctx.player_names[ctx.slot]} died {movement} around {room.HUMAN_NAME}"
 
             await ctx.send_death(text)
             self.ignore_next_death_link = 2
@@ -378,45 +437,36 @@ class PokemonRangerSOA(BizHawkClient):
         num_receieved_items: int,
     ) -> None:
 
-        next_item = ctx.items_received[num_receieved_items]
-        item = data.items[items.reverse_offset_item_value(next_item.item)]
+        for i in range(0, min(10, len(ctx.items_received) - num_receieved_items)):
+            next_item = ctx.items_received[num_receieved_items]
+            item = data.items[items.reverse_offset_item_value(next_item.item)]
 
-        writes = []
-        if ItemCategory.STYLER_UPGRADE in item.item_categories:
-            val = await self.handle_styler_upgrade(
-                ctx,
-                item,
-                next_item.item,
+            if ItemCategory.STYLER_UPGRADE in item.item_categories:
+                val = await self.handle_styler_upgrade(ctx, item, next_item.item)
+            elif ItemCategory.PLAYER_ATTRIBUTES in item.item_categories:
+                val = await self.handle_player_attributes(ctx, item, next_item.item)
+            elif ItemCategory.PARTNER in item.item_categories:
+                val = await self.handle_give_partner_pokemon(ctx, item, next_item.item)
+            elif ItemCategory.FIELD_MOVE in item.item_categories:
+                val = await self.handle_give_field_move(ctx, item, next_item.item)
+            elif ItemCategory.TRAP in item.item_categories:
+                val = await self.handle_trap(ctx, item, next_item.item)
+            elif ItemCategory.FILLER in item.item_categories:
+                val = await self.handle_filler(ctx, item, next_item.item)
+            else:
+                continue
+
+            await bizhawk.write(
+                ctx.bizhawk_ctx,
+                [
+                    *val,
+                    (
+                        data.ram_addresses["RECEIVED_ITEM_ADDRESS"].first,
+                        (num_receieved_items + 1).to_bytes(3, "little"),
+                        "ARM9 System Bus",
+                    ),
+                ],
             )
-            writes.extend(val)
-
-        elif ItemCategory.PLAYER_ATTRIBUTES in item.item_categories:
-            val = await self.handle_player_attributes(ctx, item, next_item.item)
-            writes.extend(val)
-
-        elif ItemCategory.PARTNER in item.item_categories:
-            val = await self.handle_give_partner_pokemon(ctx, item, next_item.item)
-            writes.extend(val)
-
-        elif ItemCategory.FIELD_MOVE in item.item_categories:
-            val = await self.handle_give_field_move(ctx, item, next_item.item)
-            writes.extend(val)
-
-        elif ItemCategory.TRAP in item.item_categories:
-            val = await self.handle_trap(ctx, item, next_item.item)
-            writes.extend(val)
-
-        await bizhawk.write(
-            ctx.bizhawk_ctx,
-            [
-                *writes,
-                (
-                    data.ram_addresses["RECEIVED_ITEM_ADDRESS"].first,
-                    (num_receieved_items + 1).to_bytes(3, "little"),
-                    "ARM9 System Bus",
-                ),
-            ],
-        )
 
     async def handle_styler_upgrade(
         self,
@@ -598,8 +648,7 @@ class PokemonRangerSOA(BizHawkClient):
             read_result = await bizhawk.read(
                 ctx.bizhawk_ctx,
                 [
-                    (data.ram_addresses["CURRENT_HEALTH"].first, 1, self.ram),
-                    (data.ram_addresses["MAX_HEALTH"].first, 1, self.ram),
+                    (data.ram_addresses["CURRENT_HEALTH"].first, 2, self.ram),
                 ],
             )
             if count == 1:
@@ -607,8 +656,8 @@ class PokemonRangerSOA(BizHawkClient):
             else:
                 prev_level = min(1 + (increment * (count - 1)), 99)
 
-            current_hp = int.from_bytes(read_result[0], "little")
-            max_hp = int.from_bytes(read_result[1], "little")
+            current_hp = read_result[0][0]
+            max_hp = read_result[0][1]
 
             increase = data.styler_levels[level][0] - data.styler_levels[prev_level][0]
             if data.styler_levels[prev_level][0] == max_hp and self.has_energy_plus:
@@ -617,12 +666,7 @@ class PokemonRangerSOA(BizHawkClient):
             writes += [
                 (
                     data.ram_addresses["CURRENT_HEALTH"].first,
-                    bytes([current_hp + increase]),
-                    self.ram,
-                ),
-                (
-                    data.ram_addresses["MAX_HEALTH"].first,
-                    bytes([max_hp + increase]),
+                    bytes([current_hp + increase, max_hp + increase]),
                     self.ram,
                 ),
             ]
@@ -632,7 +676,7 @@ class PokemonRangerSOA(BizHawkClient):
     async def handle_give_partner_pokemon(
         self, ctx: "BizHawkClientContext", item: ItemData, item_id: int
     ):
-        form_id = items.reverse_offset_item_value(item_id - 100)
+        form_id = items.reverse_offset_item_value(item.item_id - ItemBase.PARTNER)
 
         mapping = {
             164: 1,
@@ -749,39 +793,77 @@ class PokemonRangerSOA(BizHawkClient):
                     self.ram,
                 )
             ]
-        elif 1000 < base_id < 2000:
-            result = await bizhawk.read(
-                ctx.bizhawk_ctx,
-                [(data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first, 0xC2, self.ram)],
+        elif ItemBase.PARTY_REPLACE < item.item_id < ItemBase.PARTY_REPLACE + 1000:
+            return await self.give_mon(
+                ctx, item.item_id - ItemBase.PARTY_REPLACE, to_all=True
             )
-            new_bytes = (base_id - 1000).to_bytes(2, "little")
-            line = [new_bytes[0], new_bytes[1], 0, 0, 0, 0, 0, 0, 1]
-            for i in range(0, 0xC2, 0x18):
-                writes += [
-                    (
-                        data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first + i + 0xF0,
-                        line,
-                        self.ram,
-                    )
-                ]
-                if i == 0 and result[0][2] == 0xFF:
+        return writes
+
+    async def give_mon(self, ctx: "BizHawkClientContext", form_id: int, to_all=False):
+        result = await bizhawk.read(
+            ctx.bizhawk_ctx,
+            [
+                (data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first, 0xC2, self.ram),
+                (
+                    data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first + 0xF0,
+                    0xC2,
+                    self.ram,
+                ),
+                (data.ram_addresses["GAME_STATE"].first, 0x1, self.ram),
+            ],
+        )
+        if result[2][0] == GameStateEnum.PARTY_SCREEN:
+            """sadly can't give the pokemon in this screen"""
+            return []
+        new_bytes = form_id.to_bytes(2, "little")
+        line = [new_bytes[0], new_bytes[1], 0, 0, 0, 0, 0, 0, 1]
+
+        writes = []
+        """I hate needing to account for partners
+        I also hate that I want to fk over the sea too
+        """
+        for j in [0, 0xF0]:
+            max_to = [0xC2, 0xC2 - 0x18]
+            for i in range(0, max_to[j != 0], 0x18):
+                if j == 0 and i == 0 and result[0][2] == 0xFF:
+                    continue
+                if j == 0 and result[0][2] != 0xFF and i == 0xC0:
+                    break
+                if not to_all and (
+                    result[j != 0][i] != 0 or result[j != 0][1 + i] != 0
+                ):
                     continue
                 writes += [
                     (
-                        data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first + i,
+                        data.ram_addresses["PARTNER_POKEMON_ADDRESS"].first + i + j,
                         line,
                         self.ram,
                     )
                 ]
-            return writes
-
+                if not to_all:
+                    break
         return writes
 
-    #
-    # async def handle_rom_startup(self, ctx: "BizHawkClientContext"):
-    #
-    #     result = await bizhawk.read(
-    #         ctx.bizhawk_ctx,
-    #         [(data.ram_addresses["PARTNER_POKEMON_TABLE_ADDRESS"].first, 2, self.ram)],
-    #     )
-    #     result = list(result[0])
+    async def handle_filler(
+        self, ctx: "BizHawkClientContext", item: ItemData, item_id: int
+    ):
+        if ItemBase.FREE_MON < item.item_id < ItemBase.FREE_MON + 1000:
+            return await self.give_mon(
+                ctx, item.item_id - ItemBase.FREE_MON, to_all=False
+            )
+        return []
+
+    async def handle_rom_startup(self, ctx: "BizHawkClientContext"):
+        writes = [
+            (data.ram_addresses["POKE_ID_TABLE_ADDRESS"].first + 2, [1], self.ram)
+        ]
+        for i in range(0, len(ctx.items_received)):
+            next_item = ctx.items_received[i]
+            item = data.items[items.reverse_offset_item_value(next_item.item)]
+
+            if item.item_id == 1006:
+                self.item_info["vatonage"] = True
+            if ItemCategory.FIELD_MOVE in item.item_categories:
+                writes += await self.handle_give_field_move(ctx, item, next_item.item)
+
+        await bizhawk.write(ctx.bizhawk_ctx, writes)

@@ -246,7 +246,6 @@ def patch(
 
         map_data = CompactMapData.from_bytes(patch_file)
         if map_data is None:
-            print("wtf how", map_name)
             continue
 
         data = {0x04: map_data.objects, 0x08: map_data.npcs, 0x09: map_data.pokemon}

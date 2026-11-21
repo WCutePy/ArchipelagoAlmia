@@ -8,6 +8,7 @@ from BaseClasses import ItemClassification
 class ItemCategory(StrEnum):
     STYLER_UPGRADE = auto()
     PLAYER_ATTRIBUTES = auto()
+    USEFUL = auto()
     FILLER = auto()
     UNIQUE = auto()
     PROGRESSIVE = auto()

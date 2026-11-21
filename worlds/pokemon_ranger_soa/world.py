@@ -52,6 +52,8 @@ class PokemonRangerSOAWebWorld(WebWorld):
         ["WCutePy"],
     )
 
+    # options_presets = PRESETS
+
     tutorials = [setup_en]
     option_groups = OPTION_GROUPS
 
@@ -543,8 +545,11 @@ class PokemonRSOA(World):
             "styler_model_item",
             "capture_card_sanity",
             "partner_sanity",
-            #
             "field_move_item",
+            #
+            "trap_percentage",
+            "trap_distribution",
+            #
             "randomize_pokemon",
             "randomize_pokemon_etc",
             # "randomize_target_field_move",

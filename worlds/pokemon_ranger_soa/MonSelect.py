@@ -23,6 +23,7 @@ from .data import (
     MapData,
     Party,
     sanitize_map_name,
+    get_party_type,
 )
 from .events import (
     PREvent,
@@ -57,12 +58,6 @@ mission 3
  - 4 budew that jump out
  - maybe happiny related
 """
-
-
-def get_party_type(map_name: str) -> Party:
-    if map_name[:4] in ["m011", "m029"]:
-        return Party.OCEAN
-    return Party.DEFAULT
 
 
 def has_field_move_item(world: PokemonRSOA, field_move: FieldMove) -> Rule:
@@ -374,11 +369,11 @@ class MonSelect:
             "m025_001": [0],
             "m027_001": [1],
             "m027_002": [3],
-            "m027_005": [3],
+            # "m027_005": [3],  # TODO with DLC
             "m030_002": [0],
             "m034_001": [17],
             "m035_001": [1],
-            "m041_002": [0],
+            # "m041_002": [0],  # TODO
         }
 
         add_to(include, STARAPTOR)
@@ -703,6 +698,7 @@ class MonSelect:
         if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
             base.exclude["m023_010"] = []
             base.exclude["m023_016"] = []
+            base.exclude["m009_008"].remove(4)
 
         # del base.exclude["m001_002"]  # charmander are now present from the ship
         base.exclude["m001_002"].remove(6)
@@ -793,6 +789,7 @@ class MonSelect:
         if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
             base.exclude["m009_006"] = []
             base.exclude["m028_024"] = [0]
+            base.exclude["m009_003"].append(11)
 
         base.event_mon += [
             PInstanceEvent.CHIMCHAR,
@@ -829,6 +826,10 @@ class MonSelect:
 
         base.exclude["m019_003"].remove(0)
         del base.exclude["m019_001"]
+
+        if world.options.randomize_pokemon == RandomizePokemonEncounters.option_vanilla:
+            del base.exclude["m009_008"]
+            base.exclude["m009_003"].remove(11)
 
         base.event_mon += [
             PInstanceEvent.PIPLUP,

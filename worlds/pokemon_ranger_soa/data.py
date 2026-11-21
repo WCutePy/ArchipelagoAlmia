@@ -61,6 +61,7 @@ class GameStateEnum(IntEnum):
     BATTLE = 0x01
     BLACK_SCREEN = 0x02
     TITLE_SCREEN = 0x03  # idk if used elsewhere
+    PARTY_SCREEN = 0x07
     MISSION_SCREEN = 0x08
     INTRO_SCREEN = 0x0B
     RESUME_GAME = 0x18
@@ -343,11 +344,17 @@ class NPCEntry:
         self.NAME = data.form_id_to_species[form_id].name
 
 
+def get_party_type(map_name: str) -> Party:
+    if map_name[:4] in ["m011", "m029"]:
+        return Party.OCEAN
+    return Party.DEFAULT
+
+
 @dataclass
 class MapData:
     map_id: str
 
-    INDEX: str
+    INDEX: int
     HUMAN_NAME: str
 
     TARGETS: dict[int, TargetEntry] = field(default_factory=dict)
@@ -358,6 +365,8 @@ class MapData:
     modified: Optional[bool] = False
 
     def __post_init__(self):
+        if isinstance(self.INDEX, str):
+            self.INDEX = int(self.INDEX, base=16)
         self.TARGETS = {
             int(key): (
                 value if isinstance(value, TargetEntry) else TargetEntry(**value)
@@ -439,6 +448,12 @@ def location_category_to_id(base_number: int, category: str):
     raise ValueError(category)
 
 
+class ItemBase:
+    PARTNER = 100
+    PARTY_REPLACE = 16000
+    FREE_MON = 20000
+
+
 def sanitize_map_name(map_name: Union[str, int]) -> str:
     if isinstance(map_name, int):
         map_name = data.map_id_to_region_name[map_name]
@@ -506,8 +521,9 @@ def _init():
     for item in BASE_ITEMS:
         data.items[item.item_id] = item
     for i, species in data.species.items():
+        form_id = list(species.forms.keys())[0]
         if species.name not in ["Wailord"]:
-            item_id = 100 + list(species.forms.keys())[0]
+            item_id = ItemBase.PARTNER + form_id
             data.items[item_id] = ItemData(
                 label=f"Partner Pokemon - {species.name}",
                 item_id=item_id,
@@ -518,12 +534,20 @@ def _init():
             )
 
         if species.name not in ["Doduo", "Wailord"]:
-            item_id = 16000 + list(species.forms.keys())[0]
+            item_id = ItemBase.PARTY_REPLACE + form_id
             data.items[item_id] = ItemData(
                 label=f"{species.name} for days!",
                 item_id=item_id,
                 classification=ItemClassification.trap,
                 item_categories=(ItemCategory.TRAP,),
+                copies=1,
+            )
+            item_id = ItemBase.FREE_MON + form_id
+            data.items[item_id] = ItemData(
+                label=f"Free {species.name}",
+                item_id=item_id,
+                classification=ItemClassification.useful,
+                item_categories=(ItemCategory.FILLER,),
                 copies=1,
             )
 
@@ -545,15 +569,14 @@ def _init():
 
     extracted_locations: Dict[str, Dict] = load_json_data("locations.json")
 
-    counter = 0
     for name, location_data in extracted_locations.items():
-        counter += 1
         try:
             prefix, number = name.split("_")
             number = location_category_to_id(int(number), location_data["category"])
         except ValueError:
             number = None
             print(f"error generating a number for: {name}, {location_data}")
+            raise
 
         if isinstance(location_data.get("addresses", None), str):
             location_data["addresses"] = [location_data["addresses"]]

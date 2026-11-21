@@ -3,13 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Dict, List, Tuple, Optional
 
 from BaseClasses import Region
-from .MonSelect import MonSelect, get_party_type
-from .data import (
-    data,
-    SpeciesData,
-    PokemonSpawnEntry,
-    Party,
-)
+from .MonSelect import MonSelect
+from .data import data, SpeciesData, PokemonSpawnEntry, Party, get_party_type
 from .events import (
     PInstanceEvent,
     PREvent,
@@ -112,7 +107,49 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     full_map = MonSelect.get_rules_scope(world)
 
     for region_name, region_data in world.modified_regions.items():
-
+        if "DLC" in region_data.HUMAN_NAME or "CAPTURE_ARENA" in region_data.HUMAN_NAME:
+            continue
+        if region_data.HUMAN_NAME in [
+            "VIEN_FOREST-ROOM_02",
+            "VIEN_FOREST-HILL_OVERVIEW_PUELTOWN-UNK_2",
+            "VIEN_FOREST-HILL_OVERVIEW_PUELTOWN-UNK_3",
+            "VIEN_FOREST-HILL_OVERVIEW_PUELTOWN-UNK_4",
+            "VIEN_FOREST-HILL_OVERVIEW_PUELTOWN",
+            "ALTRU_PARK-PARK-UNK1",
+            "ALTRU_PARK-PARK-UNK2",
+            "RANGER_UNION-1F_HALLWAY-BROKEN_WALL",
+            "RANGER_UNION-1F_MIDDLE_ROOM-UNK1",
+            "RANGER_UNION-1F_MIDDLE_ROOM-UNK2",
+            "RANGER_UNION-3F_ROOF-UNK1",
+            "RANGER_UNION-2F-UNK1",
+            "VOLCANO_CAVE-UNUSED",
+            "CARGO_SHIP-B1_SOUTH_WEST-OPEN_VALVE",
+            "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-DARK",
+            "OIL_FIELD_HIDEOUT-B2_WEST_HALLWAY-UNK1",
+            "HIPPOWDON_TEMPLE-2F_REGIS_ROOM",
+            "HIPPOWDON_TEMPLE-2F_REGIGIGAS_ROOM",
+            "ALTRU_TOWER-1F_OUTER-BARRIER_1_DESTROYED",
+            "ALTRU_TOWER-1F_ROOM-BARRIER_1_DESTROYED",
+            "ALTRU_TOWER-2F_OUTER-BARRIER_2_DESTROYED",
+            "ALTRU_TOWER-2F_ROOM-BARRIER_2_DESTROYED",
+            "ALTRU_TOWER-3F_OUTER-BARRIER_3_DESTROYED",
+            "ALTRU_TOWER-3F_ROOM-BARRIER_3_DESTROYED",
+            "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS",
+            "ALTRU_TOWER-SKY-BLUE",
+            "ALTRU_TOWER-SKY-DARK_CLOUDS",
+            "ALTRU_TOWER-6F_ROOF-NORMAL",
+            "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_ELECTRIC"
+            "ALTRU_TOWER-6F_ROOF-GEMS_CUTSCENE",
+            "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_2",
+            "OCEAN_ROUTE-PUEL_SEA",
+            "RANGER_SCHOOL-UNK_1",
+            "VIENTOWN-RANGER_STATION_BACKROOM",
+            "UNION_ROAD-RIVER_SOUTH",
+            "SEA_OF_WAILORD-EAST-WAILORD_FIGHT",
+            "ALTRU_TOWER-6F_ROOF-DARK_CRYSTAL_DARK_CLOUDS_ELECTRIC",
+            "ALTRU_TOWER-6F_ROOF-GEMS_CUTSCENE",
+        ]:
+            continue
         new_region = Region(region_data.HUMAN_NAME, world.player, world.multiworld)
 
         regions[region_name] = new_region
@@ -161,7 +198,6 @@ def create_and_connect_regions(world: PokemonRSOA) -> Dict[str, Region]:
     regions["m029_001"].connect(
         regions["m030_001"], "m029_001 -> m030_001"
     )  # TODO, connect to proper region
-    regions["m029_001"].connect(regions["m029_009"], "m029_001 -> m029_009")
 
     for event in PInstanceEvent.events():
         if event not in full_map.event_mon:

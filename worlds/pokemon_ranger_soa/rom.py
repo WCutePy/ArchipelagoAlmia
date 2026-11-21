@@ -24,7 +24,7 @@ ARM9_ROM_OFFSET = 0x4000
 
 
 class PokemonRSOAPatch(APAutoPatchInterface):
-    game = "PokemonRangerSOA"
+    game = "Pokemon Ranger Shadows of Almia"
     patch_file_ending = ".apprsoa"
     result_file_ending = ".nds"
 

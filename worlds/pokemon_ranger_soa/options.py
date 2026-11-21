@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass
-from typing import Any, cast
+from typing import Any, cast, Dict
 
 from BaseClasses import PlandoOptions
 from Options import (
@@ -12,6 +12,7 @@ from Options import (
     OptionError,
     OptionDict,
     OptionSet,
+    OptionCounter,
 )
 from .data import data, QUESTS_TABLE
 from ..AutoWorld import World
@@ -24,14 +25,13 @@ class GoalKeys:
 
 
 class Goals(OptionSet):
-    f"""
+    __doc__ = f"""
     The goal type for when the game is considered complete.
     Goals can be combined.
     
     options: {GoalKeys.mission}, {GoalKeys.quest}, {GoalKeys.capture}
     Warning: capture goals are VERY slow in generation
     """
-
     display_name = "Goal type"
     valid_keys = frozenset({GoalKeys.mission, GoalKeys.quest, GoalKeys.capture})
     preset_none = frozenset({GoalKeys.mission})
@@ -53,9 +53,6 @@ class Goals(OptionSet):
         plando_options: PlandoOptions,
     ) -> None:
         super().verify(world, player_name, plando_options)
-
-        if len(self.value) == 0:
-            raise OptionError(f"Player {player_name} has selected no goals")
 
 
 class MissionClearTarget(Choice):
@@ -105,7 +102,7 @@ class QuestClearTarget(Range):
     display_name = "Quest clear target"
 
     range_start = 1
-    range_end = 60
+    range_end = 40
     default = 4
 
 
@@ -305,7 +302,7 @@ class PokemonRSOADeathLink(Choice):
     option_true = 1
     option_true_max_energy_on_death = 2
 
-    default = 0
+    default = option_false
 
 
 class DeathlinkDamage(Range):
@@ -586,24 +583,33 @@ class BlacklistRandomMons(OptionDict):
 
 class TrapsPercentage(Range):
     """
-    The percentage of randomly generated filler items replaced by a trap item.
+    The percentage of randomly generated filler items being replaced by a trap item.
     """
 
     display_name = "Traps Probability"
-    default = 0
     range_start = 0
     range_end = 100
 
-
-class GenderSwapTrapPercentage(Range):
-    """
-    The percentage of traps that are gender swap, proportional to other traps.
-    """
-
-    display_name = "Traps Probability"
     default = 0
-    range_start = 0
-    range_end = 100
+
+
+ALL_TRAPS = ["Gender Swap", "Party replaced"]
+
+
+class TrapDistribution(OptionCounter):
+    """
+    Specify the weighted chance of rolling individual traps when rolling a trap.
+    A trap on "200" will be twice as likely to roll compared to a trap on "100". A trap on "10" will be 10% as likely.
+    You can use weight "0" to disable this trap entirely. The maximum weight is 1000, for x10 chance
+    """
+
+    internal_name = "trap_distribution"
+    display_name = "Trap Distribution"
+    default_weight = 100
+    min = 0
+    max = 1000
+    valid_keys = frozenset(ALL_TRAPS)
+    default = {trap: 100 for trap in ALL_TRAPS} | {"Party replaced": 40}
 
 
 class OptionalPatches(OptionSet):
@@ -672,6 +678,14 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     # capture_rank_count_target: CaptureRankCountTarget
     # capture_rank_rank_target: CaptureRankRankTarget
 
+    randomize_pokemon: RandomizePokemonEncounters
+    randomize_pokemon_etc: RandomizePokemonEtc
+    # randomize_target_field_move: RandomizeTargetFieldMove
+    randomize_partners: RandomizePartners
+    partner_starters: PartnerStarters
+    partners: Partners
+    blacklist_random_mons: BlacklistRandomMons
+
     death_link: PokemonRSOADeathLink
     death_link_damage: DeathlinkDamage
 
@@ -685,13 +699,8 @@ class PokemonRSOAOptions(PerGameCommonOptions):
     capture_card_sanity: CaptureCardSanity
     partner_sanity: PartnerSanity
 
-    randomize_pokemon: RandomizePokemonEncounters
-    randomize_pokemon_etc: RandomizePokemonEtc
-    # randomize_target_field_move: RandomizeTargetFieldMove
-    randomize_partners: RandomizePartners
-    partner_starters: PartnerStarters
-    partners: Partners
-    blacklist_random_mons: BlacklistRandomMons
+    trap_percentage: TrapsPercentage
+    trap_distribution: TrapDistribution
 
     optional_patches: OptionalPatches
 
@@ -703,26 +712,13 @@ class PokemonRSOAOptions(PerGameCommonOptions):
 
     def verify(self, player_name: str):
         errors = []
-        if self.get_skip_school() and self.get_rule_num() == 0:
-            self.optional_patches.value.remove("Skip School")
-            logging.warning(
-                f"Player {player_name} Set goal to school and skip school. School will not be skipped."
-            )
+        if len(self.goals.value) == 0:
+            errors.append(f"Player {player_name} has selected no goals")
 
         if len(self.partners.value) > (18 - len(self.partner_starters.value)):
             errors.append(
                 f"{len(self.partner_starters.value)} starter partners have been specified. "
                 f"A maximum of {18 - len(self.partner_starters.value)} can be set"
-            )
-
-        min_goal = 5
-        if (
-            self.get_rule_num() < min_goal
-            and self.rank_up_item == RankUpItem.option_item_all
-        ):
-            errors.append(
-                f"Player {player_name}, rank_up_item option item_all is can not be used below {min_goal}, "
-                f"currently {self.get_rule_num()}"
             )
 
         if GoalKeys.quest in self.goals.value:
@@ -733,7 +729,7 @@ class PokemonRSOAOptions(PerGameCommonOptions):
             if quests < self.quest_clear_target:
                 running = 0
                 mission = 0
-                while 61 > running < self.quest_clear_target:
+                while 41 > running < self.quest_clear_target and mission <= 17:
                     running += len(QUESTS_TABLE.get(mission, []))
                     mission += 1
                 errors.append(
@@ -742,11 +738,39 @@ class PokemonRSOAOptions(PerGameCommonOptions):
                     f"Reduce quests or raise the mission to {mission}"
                 )
 
+            if (
+                self.capture_card_sanity == CaptureCardSanity.option_vanilla
+                or self.partner_sanity == PartnerSanity.option_vanilla
+            ):
+                errors.append(
+                    f"Player {player_name} has quest_clear as one of its goals."
+                    f"This requires capture_card_sanity and partner_sanity to be on."
+                )
+
         if len(errors) != 0:
             errors = [
                 f"For option {getattr(self, 'display_name', self)} of player {player_name}:"
             ] + errors
             raise OptionError("\n".join(errors))
+
+        if self.get_skip_school() and self.get_rule_num() == 0:
+            self.optional_patches.value.remove("Skip School")
+            logging.warning(
+                f"Player {player_name} Set goal to school and skip school. School will not be skipped."
+            )
+
+        if self.trap_percentage > 0:
+            for trap in ALL_TRAPS:
+                if (
+                    trap not in self.trap_distribution
+                    or self.trap_distribution[trap] > 0
+                ):
+                    continue
+            else:
+                self.trap_percentage.value = 0
+                logging.warning(
+                    f"Player {player_name} has set all trap distribution off. Turning traps off"
+                )
 
 
 OPTION_GROUPS = [
@@ -785,7 +809,7 @@ OPTION_GROUPS = [
         ],
     ),
     OptionGroup("Sanity", [PartnerSanity, CaptureCardSanity]),
-    # OptionGroup("Traps", []),
+    OptionGroup("Traps", [TrapsPercentage, TrapDistribution]),
     OptionGroup(
         "Optional patches",
         [
@@ -793,3 +817,10 @@ OPTION_GROUPS = [
         ],
     ),
 ]
+
+# randomizer = {
+#
+# }
+# PRESETS : Dict[str, Dict[str, Any]] = {
+#     "randomizer": {}
+# }

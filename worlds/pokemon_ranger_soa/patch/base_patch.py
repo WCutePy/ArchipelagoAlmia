@@ -51,7 +51,6 @@ def patch_script_add_doduo(rom: Rom, file_name: str, locations: list[int]):
 
         if (instruction >> 24) != 8:
             continue
-        print(f"{offset:08X}: {instruction:08X}")
 
 
 def message_file_to_json(rom, category: str, name: str) -> dict[int, str]:
@@ -177,6 +176,14 @@ def patch(
             mes[3] = mes[3].replace("Munchlax", munch.name)
 
         json_to_mes(rom, mes, "chapter", "chapter020_mes_us")
+
+    """to not have bidoof set in the broswer..."""
+    CHAPTER_PATCHES["c021"] += [
+        # PUSH 399		; @1106
+        (1106, 0x0),
+        # SYSCALL 2, 20, 1		;set_pokemon_caught @1107
+        (1107, 0x0),
+    ]
 
     """School gate"""
     EVENTRECT_PATCHES |= {

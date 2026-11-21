@@ -73,7 +73,6 @@ def get_location(world: PokemonRSOA, location: str) -> Location:
 
 
 def set_all_rules(world: PokemonRSOA) -> None:
-    # print(world.multiworld.regions.)
     full_map = MonSelect.get_rules_scope(world)
 
     field_move_rules: Dict[FieldMove, List[Rule]] = {}
@@ -328,7 +327,10 @@ def set_tutorial_rules(world: PokemonRSOA) -> None:
         ("m008_001", "m039_012"),
         ("m008_003", "m017_007"),
     ]:
-        world.set_rule(get_connection(world, from_, to), False_())
+        try:
+            world.set_rule(get_connection(world, from_, to), False_())
+        except KeyError:
+            pass
 
     # TODO figure out what the full scope for the tree in chicole will be before returning to school.
 
@@ -526,15 +528,20 @@ def set_mission_3_rules(world: PokemonRSOA):
         )
 
     for to in ["m009_001b", "m009_001c"]:
-        world.set_rule(get_connection(world, "m009_002", to), False_())
-
+        try:
+            world.set_rule(get_connection(world, "m009_002", to), False_())
+        except KeyError:
+            pass
     """m009_001a"""
     world.set_rule(
         get_connection(world, "m009_001a", "m009_009"), burning_log & completed_mimi
     )
 
     for to in ["m009_008", "m009_013", "m009_014", "m009_015", "m009_016"]:
-        world.set_rule(get_connection(world, "m009_001a", to), False_())
+        try:
+            world.set_rule(get_connection(world, "m009_001a", to), False_())
+        except KeyError:
+            pass
 
     # wartortle 0x5 is accessible without problems
     for i in [0, 1, 2, 3, 4]:
@@ -546,7 +553,10 @@ def set_mission_3_rules(world: PokemonRSOA):
     # i 2, 3 are not yet reachable from mission 3
 
     for to in ["m009_001b", "m009_001c"]:
-        world.set_rule(get_connection(world, "m009_002", to), False_())
+        try:
+            world.set_rule(get_connection(world, "m009_002", to), False_())
+        except KeyError:
+            pass
 
     """m009_004"""
     # only i 8, grotle is reachable at this stage
@@ -613,11 +623,17 @@ def set_mission_4_rules(world: PokemonRSOA):
         )
 
     for to in ["m009_013", "m009_014", "m009_015", "m009_016"]:
-        world.set_rule(get_connection(world, "m009_001b", to), False_())
+        try:
+            world.set_rule(get_connection(world, "m009_001b", to), False_())
+        except KeyError:
+            pass
 
     """m009_008"""
     for to in ["m009_001c", "m017_001", "m017_002"]:
-        world.set_rule(get_connection(world, "m009_008", to), False_())
+        try:
+            world.set_rule(get_connection(world, "m009_008", to), False_())
+        except KeyError:
+            pass
 
     # free mons: happiny 00, beedrill 01, pichu 02, beedrill 03,  bonsly 06,
     # beedrill 07, combee 0D,sphinx 0A, buneary 0C, combe 0B
@@ -637,13 +653,18 @@ def set_mission_4_rules(world: PokemonRSOA):
     """m009_010"""
     # set to missable as only one is spawned based on chapter scripts
     for to in ["m009_013", "m009_014", "m009_015", "m009_016"]:
-        world.set_rule(get_connection(world, "m009_010", to), False_())
+        try:
+            world.set_rule(get_connection(world, "m009_010", to), False_())
+        except KeyError:
+            pass
 
     """m009_011"""
     # all mons
     for to in ["m009_013", "m009_014", "m009_015", "m009_016"]:
-        world.set_rule(get_connection(world, "m009_011", to), False_())
-
+        try:
+            world.set_rule(get_connection(world, "m009_011", to), False_())
+        except KeyError:
+            pass
     """m009_012"""
     # staraptor and doduo not catchable yet
     world.set_rule(get_connection(world, "m009_012", "m014_003a"), False_())
@@ -651,8 +672,10 @@ def set_mission_4_rules(world: PokemonRSOA):
     """m009_001c"""
     # TODO
     for from_ in ["m009_002", "m009_009"]:
-        world.set_rule(get_connection(world, from_, "m009_001c"), False_())
-
+        try:
+            world.set_rule(get_connection(world, from_, "m009_001c"), False_())
+        except KeyError:
+            pass
     """m010"""
     gigaremos_center = all_maps.can_destroy_target(
         "m010_001", 3
@@ -697,7 +720,10 @@ def set_mission_4_rules(world: PokemonRSOA):
         ("npc_m010_001", "m011_001"),
         ("npc_m010_001", "m201_003"),
     ]:
-        world.set_rule(get_connection(world, from_, to), False_())
+        try:
+            world.set_rule(get_connection(world, from_, to), False_())
+        except KeyError:
+            pass
     """m010_022 west"""
 
     for i in range(0, 9):
@@ -732,7 +758,10 @@ def set_mission_4_rules(world: PokemonRSOA):
     world.set_rule(get_connection(world, "m010_002", "m010_003"), gigaremos_east)
 
     for to in ["m011_001", "m201_003", "m038_012", "m038_016"]:
-        world.set_rule(get_connection(world, "npc_m010_002", to), False_())
+        try:
+            world.set_rule(get_connection(world, "npc_m010_002", to), False_())
+        except KeyError:
+            pass
 
         """m010_002 east houses"""
         # elekid possible by access rule
@@ -770,8 +799,10 @@ def set_mission_4_rules(world: PokemonRSOA):
             continue
 
     for to in ["m011_001", "m201_003"]:
-        world.set_rule(get_connection(world, "m010_003", to), False_())
-
+        try:
+            world.set_rule(get_connection(world, "m010_003", to), False_())
+        except KeyError:
+            pass
     for to in [
         "m010_003",
         "m018_001",
@@ -794,8 +825,10 @@ def set_mission_4_rules(world: PokemonRSOA):
         "m201_003",
         "m011_001",
     ]:
-        world.set_rule(get_connection(world, "npc_m010_020", to), False_())
-
+        try:
+            world.set_rule(get_connection(world, "npc_m010_020", to), False_())
+        except KeyError:
+            pass
     """m014_003a"""
     world.set_rule(get_connection(world, "m014_003a", "m014_001"), False_())
 
@@ -849,7 +882,10 @@ def set_mission_5_rules(world: PokemonRSOA):
     )
 
     world.set_rule(get_connection(world, "m011_001", "m201_002"), False_())
-    world.set_rule(get_connection(world, "m011_001", "m201_003"), False_())
+    try:
+        world.set_rule(get_connection(world, "m011_001", "m201_003"), False_())
+    except KeyError:
+        pass
 
     access_north_right = all_maps.can_destroy_target(
         "m011_001",
@@ -932,10 +968,13 @@ def set_mission_6_rules(world: PokemonRSOA):
         )
 
     for to in ["m014_004", "m014_005"]:
-        world.set_rule(
-            get_connection(world, "m014_003b", to),
-            False_(),
-        )
+        try:
+            world.set_rule(
+                get_connection(world, "m014_003b", to),
+                False_(),
+            )
+        except KeyError:
+            pass
 
     """m014_001"""
 
@@ -946,17 +985,23 @@ def set_mission_6_rules(world: PokemonRSOA):
 
     """m014_002"""
     for to in ["m014_004", "m014_005"]:
-        world.set_rule(
-            get_connection(world, "m014_002", to),
-            False_(),
-        )
+        try:
+            world.set_rule(
+                get_connection(world, "m014_002", to),
+                False_(),
+            )
+        except KeyError:
+            pass
 
     """m038_001"""
     for to in ["m014_004", "m014_002", "m038_003", "m038_002"]:
-        world.set_rule(
-            get_connection(world, "m038_001", to),
-            False_(),
-        )
+        try:
+            world.set_rule(
+                get_connection(world, "m038_001", to),
+                False_(),
+            )
+        except KeyError:
+            pass
     world.set_rule(
         get_connection(world, "npc_m038_001", "m038_016"),
         False_(),
@@ -965,10 +1010,13 @@ def set_mission_6_rules(world: PokemonRSOA):
     """m014_001 -> m015_001 in logic after story triggers"""
     """m015_001"""
     for to in ["m014_004", "m014_005"]:
-        world.set_rule(
-            get_connection(world, "m015_001", to),
-            False_(),
-        )
+        try:
+            world.set_rule(
+                get_connection(world, "m015_001", to),
+                False_(),
+            )
+        except KeyError:
+            pass
     for to in ["m015_001", "m016_003"]:
         world.set_rule(
             get_connection(world, "npc_m015_001", to),
@@ -979,10 +1027,13 @@ def set_mission_6_rules(world: PokemonRSOA):
     #  TODO not all pokemon here are in logic for it all!!!
     #  make them missable for this rule scope??? (not know cuz eh)
     for to in ["m015_002", "m015_005"]:
-        world.set_rule(
-            get_connection(world, "m015_004", to),
-            False_(),
-        )
+        try:
+            world.set_rule(
+                get_connection(world, "m015_004", to),
+                False_(),
+            )
+        except KeyError:
+            pass
 
     world.set_rule(
         get_pokemon_instance(world, "m015_004", 11),
@@ -1015,10 +1066,13 @@ def set_mission_6_rules(world: PokemonRSOA):
         ("npc_m017_008", "m017_005"),
         ("npc_m017_008", "m017_008"),
     ]:
-        world.set_rule(
-            get_connection(world, from_, to),
-            False_(),
-        )
+        try:
+            world.set_rule(
+                get_connection(world, from_, to),
+                False_(),
+            )
+        except KeyError:
+            pass
 
     """cutscene"""
     gigaremo_showcase = all_maps.can_destroy_target("m017_004", 0)
@@ -1274,9 +1328,12 @@ def set_mission_8_rules(world: PokemonRSOA):
     world.set_rule(get_connection(world, "m020_001", "m020_016"), False_())
     world.set_rule(get_connection(world, "m020_002", "m020_002"), False_())
     world.set_rule(get_connection(world, "npc_m020_014", "m020_014"), False_())
-    world.set_rule(
-        get_connection(world, "m020_008", "m020_012"), False_()
-    )  # cutscene of valve
+    try:
+        world.set_rule(
+            get_connection(world, "m020_008", "m020_012"), False_()
+        )  # cutscene of valve
+    except KeyError:
+        pass
     world.set_rule(get_connection(world, "m020_008", "m020_008"), False_())
 
     for loc in [data.locations["MISSION_08"].label, get_mission_event(8)]:
@@ -1353,7 +1410,10 @@ def set_mission_9_rules(world: PokemonRSOA):
         )
 
     for to in ["m014_004", "m014_005"]:
-        world.set_rule(get_connection(world, "m021_001", to), False_())
+        try:
+            world.set_rule(get_connection(world, "m021_001", to), False_())
+        except KeyError:
+            pass
 
     for i in [8, 10]:
         world.set_rule(
@@ -1870,7 +1930,10 @@ def set_mission_12_rules(world: PokemonRSOA):
             #  strength level or something
         )
 
-    world.set_rule(get_connection(world, "m029_001", "m029_009"), False_())
+    try:
+        world.set_rule(get_connection(world, "m029_001", "m029_009"), False_())
+    except KeyError:
+        pass
 
 
 def set_mission_13_rules(world: PokemonRSOA):
@@ -1909,8 +1972,10 @@ def set_mission_13_rules(world: PokemonRSOA):
     # need to use stink
     # m030_011 becomes open after using stink if you didn't interact
 
-    world.set_rule(get_connection(world, "m030_016", "m030_028"), False_())  # idk
-
+    try:
+        world.set_rule(get_connection(world, "m030_016", "m030_028"), False_())  # idk
+    except KeyError:
+        pass
     world.set_rule(
         get_connection(world, "m030_017", "m030_020"),
         all_maps.can_destroy_target("m030_018", 1)
@@ -1945,7 +2010,10 @@ def set_mission_14_rules(world: PokemonRSOA):
         get_connection(world, "npc_m010_020", "m033_001"), Has(get_mission_event(13))
     )
 
-    world.set_rule(get_connection(world, "m032_001", "m041_001"), False_())
+    try:
+        world.set_rule(get_connection(world, "m032_001", "m041_001"), False_())
+    except KeyError:
+        pass
 
     cleared_village = all_maps.can_destroy_target("m033_001", 7)
     for i in range(18):
@@ -1980,10 +2048,12 @@ def set_mission_14_rules(world: PokemonRSOA):
         all_maps.can_destroy_target("m036_012", 9),
     )
 
-    world.set_rule(
-        get_connection(world, "m036_011", "m036_018"), False_()
-    )  # UNKNOWN WHEN ENTRY TO REGIS IS ALLOWED
-
+    try:
+        world.set_rule(
+            get_connection(world, "m036_011", "m036_018"), False_()
+        )  # UNKNOWN WHEN ENTRY TO REGIS IS ALLOWED
+    except KeyError:
+        pass
     world.set_rule(
         get_connection(world, "m036_013", "m036_016"),
         all_maps.can_destroy_target("m036_013", 0),
@@ -2216,8 +2286,10 @@ def set_mission_16_rules(world: PokemonRSOA):
         ("m039_008a", "m039_007b"),
         ("m039_002", "m039_007b"),
     ]:
-        world.set_rule(get_connection(world, from_, to), False_())
-
+        try:
+            world.set_rule(get_connection(world, from_, to), False_())
+        except KeyError:
+            pass
     for to in [
         "m034_001",
         "m017_007",
@@ -2227,8 +2299,10 @@ def set_mission_16_rules(world: PokemonRSOA):
         "m039_011b",
         "m039_012",
     ]:
-        world.set_rule(get_connection(world, "m039_009", to), False_())
-
+        try:
+            world.set_rule(get_connection(world, "m039_009", to), False_())
+        except KeyError:
+            pass
     for to in [
         "m026_001",
         "m039_011b",
@@ -2245,7 +2319,10 @@ def set_mission_16_rules(world: PokemonRSOA):
         "m009_016",
         "m039_010b",
     ]:
-        world.set_rule(get_connection(world, "m039_010b", to), False_())
+        try:
+            world.set_rule(get_connection(world, "m039_010b", to), False_())
+        except KeyError:
+            pass
 
     for loc in [data.locations["MISSION_16"].label, get_mission_event(16)]:
         world.set_rule(
@@ -2263,7 +2340,7 @@ def set_completion_condition(world) -> None:
         has_missions = Has(get_mission_event(missions))
         conditions.append(has_missions)
     if GoalKeys.quest in world.options.goals.value:
-        quests = world.options.quest_clear_target
+        quests = world.options.quest_clear_target.value
         has_quests = HasFromListUnique(
             *[get_quest_event(i) for i in range(1, 61)], count=quests
         )

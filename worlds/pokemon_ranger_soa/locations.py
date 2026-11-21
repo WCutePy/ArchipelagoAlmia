@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 class PokemonRSOALocation(Location):
-    game = "PokemonRangerSOA"
+    game = "Pokemon Ranger Shadows of Almia"
 
 
 def create_event_location(
